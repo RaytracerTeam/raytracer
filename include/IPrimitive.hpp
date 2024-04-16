@@ -7,11 +7,11 @@
 
 #pragma once
 
-#include "Math/Vector3.hpp"
+#include "Math/Vector3D.hpp"
 
 namespace Raytracer {
     class IPrimitive {
         public:
-            virtual void setPosition(Math::Vector3 &v) = 0;
+            virtual void setPosition(Math::Vector3D &v) = 0;
     };
 }
