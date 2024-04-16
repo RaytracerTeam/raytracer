@@ -7,6 +7,8 @@
 
 #pragma once
 
+#define EXIT_FAILURE_EPITECH 84
+
 namespace Raytracer {
     int raytracer(int argc, char **argv);
 }

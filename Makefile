@@ -5,7 +5,8 @@
 ## Makefile
 ##
 
-CORESRC	=	$(wildcard ./src/*.cpp)
+CORESRC	=	$(wildcard ./src/*.cpp) \
+			$(wildcard ./src/math/*.cpp)
 
 SRC	=	./src/main/main.cpp \
 		$(CORESRC)
