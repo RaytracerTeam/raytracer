@@ -1,0 +1,15 @@
+*.o
+*.gcno
+*.gcda
+*.gcov
+*.so
+
+raytracer
+unit-tests
+*.zip
+*.bin
+
+.vscode
+.DS_Store
+
+scores

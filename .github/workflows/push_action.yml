@@ -1,0 +1,50 @@
+name: raytracer-push-checker
+
+on:
+  push:
+    branches:
+      - "main"
+  pull_request:
+    branches:
+      - "main"
+
+env:
+  EXECUTABLES: "binary"
+  ARGUMENTS: ""
+  BIN_NAME: raytracer
+
+jobs:
+  check_compilation:
+    name: "Check the compilation of the binary."
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/thomas-pommier-epi/epitest-fast:cppgraphic
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Installing further dependencies
+        run: |
+          dnf -y --refresh install --setopt=tsflags=nodocs --setopt=deltarpm=false libconfig-devel
+
+      - name: Checking Makefile.
+        run: |
+          make
+          if [ $? -ne 0 ]; then
+            echo "Make failed."
+            exit 1
+          fi
+          if [ ! -f "${{ env.BIN_NAME }}" ]; then
+            echo "Bin not found."
+            exit 1
+          fi
+        timeout-minutes: 4
+
+      - name: Compiling and running tests.
+        run: |
+          make tests_run
+          if [ $? -ne 0 ]; then
+            echo "Make failed."
+            exit 1
+          fi
