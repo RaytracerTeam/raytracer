@@ -9,6 +9,7 @@
 #include "Error.hpp"
 #include "Math/Utils.hpp"
 
+#include <algorithm>
 #include <cmath>
 
 // temp
@@ -23,6 +24,11 @@ namespace Raytracer {
     void Scene::addCamera(std::unique_ptr<Camera> obj)
     {
         m_cameras.push_back(std::move(obj));
+    }
+
+    void Scene::addLight(std::unique_ptr<Light> obj)
+    {
+        m_lights.push_back(std::move(obj));
     }
 
     bool Scene::setCameraIndex(size_t index)
@@ -62,11 +68,13 @@ namespace Raytracer {
         auto val = Math::Vector3D(-10, -1.2, -18);
         m_primitives.front()->setOrigin(val);
 
+        addLight(std::make_unique<Light>(Math::Vector3D(1, 0, -1), Color(255, 255, 255, 255)));
+
         for (size_t y = 0; y < dimension.height; y++) {
             for (size_t x = 0; x < dimension.width; x++) {
                 double rayX = (2 * (x + 0.5) / (double)dimension.width - 1) * imageAspectRatio * scale;
                 double rayY = (1 - 2 * (y + 0.5) / (double)dimension.height) * scale;
-                Math::Vector3D dir = Math::Vector3D(rayX, rayY, -1);
+                Math::Vector3D dir = Math::Vector3D(rayX, rayY, -1).normalize();
                 buffer[curPosBuffer++] = castRay(Ray(camera->getPos(), dir));
             }
         }
@@ -77,9 +85,19 @@ namespace Raytracer {
     {
         for (auto &prim : m_primitives) {
             RayHit rayhit;
-            if (prim->hit(ray, rayhit))
-                return {255,50,0,200};
+            if (prim->hit(ray, rayhit)) {
+                for (auto &light : m_lights) {
+                    double val = std::max(
+                        rayhit.getNormal().dot(light->getOrigin()),
+                        0.);
+
+                    // temp, but average this each lights
+                    // purple shading
+                    return Color(255, val * 50, val * 0, val * 200);
+                }
+            }
+            // return { 255, 200, 0, 50 }; // unreachable
         }
-        return {255,0,0,0};
+        return { 255, 0, 0, 0 };
     }
 } // namespace Raytracer

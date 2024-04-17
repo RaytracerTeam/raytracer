@@ -25,9 +25,9 @@ namespace Raytracer {
         ofs << "P6\n"
             << width << " " << height << "\n255\n";
         for (size_t i = 0; i < height * width; i++) {
-            char r = (char)(255 * std::clamp(0, 1, (int)(buffer[i].r)));
-            char g = (char)(255 * std::clamp(0, 1, (int)(buffer[i].g)));
-            char b = (char)(255 * std::clamp(0, 1, (int)(buffer[i].b)));
+            char r = (char)(255 * std::clamp(0, 1, (int)(buffer[i][1])));
+            char g = (char)(255 * std::clamp(0, 1, (int)(buffer[i][2])));
+            char b = (char)(255 * std::clamp(0, 1, (int)(buffer[i][3])));
             ofs << r << g << b;
         }
     }

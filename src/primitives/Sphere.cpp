@@ -12,7 +12,7 @@
 #include <iostream>
 
 namespace Raytracer {
-    bool Sphere::hit(const Ray &ray, RayHit &rayhit)
+    bool Sphere::hit(const Ray &ray, RayHit &resultRayHit)
     {
         Math::Vector3D dstOrigin = ray.getOrigin() - m_origin;
         Math::Vector3D rayDir = ray.getDirection();
@@ -25,7 +25,7 @@ namespace Raytracer {
         if (delta >= 0) { // doesn't care about 2nd result, need the nearest
             double distance = (-b - std::sqrt(delta)) / (2 * a);
             Math::Vector3D hitPt = ray.getOrigin() + ray.getDirection() * distance;
-            rayhit = RayHit(true, distance, hitPt, (hitPt - m_origin).normalize());
+            resultRayHit = RayHit(distance, hitPt, (hitPt - m_origin).normalize());
             return true;
         }
         return false;

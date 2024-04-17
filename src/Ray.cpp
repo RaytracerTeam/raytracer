@@ -9,22 +9,20 @@
 
 namespace Raytracer {
     Ray::Ray(const Math::Vector3D &origin, const Math::Vector3D &direction)
+    : m_origin(origin)
+    , m_direction(direction)
     {
-        m_direction = direction.normalize();
-        m_origin = origin;
     }
 
-    RayHit::RayHit(bool hit, double distance, Math::Vector3D hitPt, Math::Vector3D normal)
-        : m_hit(hit)
-        , m_distance(distance)
+    RayHit::RayHit(double distance, Math::Vector3D hitPt, Math::Vector3D normal)
+        : m_distance(distance)
         , m_hitPt(hitPt)
         , m_normal(normal)
     {
     }
 
     RayHit::RayHit(const RayHit &rhit)
-        : m_hit(rhit.m_hit)
-        , m_distance(rhit.m_distance)
+        : m_distance(rhit.m_distance)
         , m_hitPt(rhit.m_hitPt)
         , m_normal(rhit.m_normal)
     {
@@ -32,7 +30,6 @@ namespace Raytracer {
 
     RayHit &RayHit::operator=(const RayHit &rhit)
     {
-        m_hit = rhit.m_hit;
         m_distance = rhit.m_distance;
         m_hitPt = rhit.m_hitPt;
         m_normal = rhit.m_normal;
