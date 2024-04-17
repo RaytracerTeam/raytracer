@@ -12,7 +12,7 @@
 namespace Raytracer {
     class APrimitive : public IPrimitive {
         public:
-            virtual void setOrigin(const Math::Point3D &v) override {
+            virtual void setOrigin(const Math::Vector3D &v) override {
                 m_origin = v;
             }
             virtual void setAngle(const Math::Angle3D &a) override {
@@ -23,6 +23,6 @@ namespace Raytracer {
             ~APrimitive() = default;
 
             Math::Angle3D m_angle;
-            Math::Point3D m_origin;
+            Math::Vector3D m_origin;
     };
 } // namespace Raytracer

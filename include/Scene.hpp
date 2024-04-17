@@ -13,6 +13,7 @@
 
 #include "IPrimitive.hpp"
 #include "Camera.hpp"
+#include "Color.hpp"
 
 namespace Raytracer {
     class Scene {
@@ -23,7 +24,7 @@ namespace Raytracer {
             void addPrimitive(std::unique_ptr<IPrimitive> obj);
             void addCamera(std::unique_ptr<Camera> obj);
 
-            std::vector<bool> render(void);
+            std::vector<Color> render(void);
 
             bool setCameraIndex(size_t index);
             bool setCameraIndexRelative(int64_t offset);
@@ -35,7 +36,7 @@ namespace Raytracer {
             }
 
         private:
-            bool castRay(const Ray &ray);
+            Color castRay(const Ray &ray);
 
             std::list<std::unique_ptr<IPrimitive>> m_primitives;
             std::vector<std::unique_ptr<Camera>> m_cameras;

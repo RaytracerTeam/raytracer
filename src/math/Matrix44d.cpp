@@ -28,6 +28,7 @@ namespace Raytracer {
             return *this;
         }
 
+        /* Vector distance operation */
         Vector3D Matrix44::operator*(const Vector3D &src) const
         {
             double x = src[0] * m_arr[0][0] + src[1] * m_arr[1][0] + src[2] * m_arr[2][0];
@@ -36,14 +37,15 @@ namespace Raytracer {
             return Vector3D(x, y, z);
         }
 
-        Point3D Matrix44::operator*(const Point3D &src) const
+        /* Vector Point operation */
+        Vector3D Matrix44::operator^(const Vector3D &src) const
         {
             double a = src[0] * m_arr[0][0] + src[1] * m_arr[1][0] + src[2] * m_arr[2][0] + m_arr[3][0];
             double b = src[0] * m_arr[0][1] + src[1] * m_arr[1][1] + src[2] * m_arr[2][1] + m_arr[3][1];
             double c = src[0] * m_arr[0][2] + src[1] * m_arr[1][2] + src[2] * m_arr[2][2] + m_arr[3][2];
             double w = src[0] * m_arr[0][3] + src[1] * m_arr[1][3] + src[2] * m_arr[2][3] + m_arr[3][3];
 
-            return Point3D(a / w, b / w, c / w);
+            return Vector3D(a / w, b / w, c / w);
         }
 
         Matrix44 Matrix44::transpose() const

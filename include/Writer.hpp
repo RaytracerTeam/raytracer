@@ -11,6 +11,8 @@
 #include <vector>
 #include <string>
 
+#include "Color.hpp"
+
 namespace Raytracer {
     class WriteFile {
     public:
@@ -27,6 +29,6 @@ namespace Raytracer {
             JPG,
             PNG
         };
-        static void writeImage(WriteType type, std::vector<bool> buffer, size_t width, size_t height);
+        static void writeImage(WriteType type, std::vector<Color> buffer, size_t width, size_t height);
     };
 } // namespace Raytracer

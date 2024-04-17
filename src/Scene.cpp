@@ -8,7 +8,6 @@
 #include "Scene.hpp"
 #include "Error.hpp"
 #include "Math/Utils.hpp"
-#include "Math/Matrix44d.hpp"
 
 #include <cmath>
 
@@ -44,7 +43,7 @@ namespace Raytracer {
 
     // https://stackoverflow.com/questions/28896001/read-write-to-ppm-image-file-c
     // https://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-generating-camera-rays/generating-camera-rays.html
-    std::vector<bool> Scene::render(void)
+    std::vector<Color> Scene::render(void)
     {
         Camera *camera = getCurrentCamera();
         if (camera == nullptr)
@@ -52,7 +51,7 @@ namespace Raytracer {
 
         pixels_t dimension = camera->getDimension();
 
-        std::vector<bool> buffer(dimension.height * dimension.width);
+        std::vector<Color> buffer(dimension.height * dimension.width);
         size_t curPosBuffer = 0;
 
         double scale = std::tan(Math::deg2rad(camera->getFov() * 0.5));
@@ -60,7 +59,7 @@ namespace Raytracer {
 
         // temp
         addPrimitive(std::make_unique<Sphere>(1.));
-        auto val = Math::Point3D(0, 0, -3);
+        auto val = Math::Vector3D(-10, -1.2, -18);
         m_primitives.front()->setOrigin(val);
 
         for (size_t y = 0; y < dimension.height; y++) {
@@ -74,12 +73,13 @@ namespace Raytracer {
         return buffer;
     }
 
-    bool Scene::castRay(const Ray &ray)
+    Color Scene::castRay(const Ray &ray)
     {
         for (auto &prim : m_primitives) {
-            if (prim->hit(ray))
-                return true;
+            RayHit rayhit;
+            if (prim->hit(ray, rayhit))
+                return {255,50,0,200};
         }
-        return false;
+        return {255,0,0,0};
     }
 } // namespace Raytracer

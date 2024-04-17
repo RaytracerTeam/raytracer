@@ -14,7 +14,7 @@
 #include <SFML/Graphics/Image.hpp>
 
 namespace Raytracer {
-    void WriteFile::writeImage(WriteType type, std::vector<bool> buffer,
+    void WriteFile::writeImage(WriteType type, std::vector<Color> buffer,
         size_t width, size_t height)
     {
         std::ofstream ofs("./out.ppm", std::ios::out | std::ios::binary);
@@ -25,9 +25,9 @@ namespace Raytracer {
         ofs << "P6\n"
             << width << " " << height << "\n255\n";
         for (size_t i = 0; i < height * width; i++) {
-            char r = (char)(255 * std::clamp(0, 1, (int)buffer[i]));
-            char g = (char)(255 * std::clamp(0, 1, (int)buffer[i]));
-            char b = (char)(255 * std::clamp(0, 1, (int)buffer[i]));
+            char r = (char)(255 * std::clamp(0, 1, (int)(buffer[i].r)));
+            char g = (char)(255 * std::clamp(0, 1, (int)(buffer[i].g)));
+            char b = (char)(255 * std::clamp(0, 1, (int)(buffer[i].b)));
             ofs << r << g << b;
         }
     }

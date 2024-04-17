@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2024
 ** B-OOP-400-LYN-4-1-raytracer-thomas.pommier
 ** File description:
-** Point3D.cpp
+** Vector3D.cpp
 */
 
 #include "Math/Angle3D.hpp"

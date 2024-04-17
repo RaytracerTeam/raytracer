@@ -12,12 +12,17 @@
 namespace Raytracer {
     namespace Math {
         Vector3D::Vector3D(double valX, double valY, double valZ)
-            : Point3D(valX, valY, valZ)
         {
+            x = valX;
+            y = valY;
+            z = valZ;
         }
 
-        Vector3D::Vector3D(const Vector3D &right) : Point3D(right.x, right.y, right.z)
+        Vector3D::Vector3D(const Vector3D &vec)
         {
+            x = vec.x;
+            y = vec.y;
+            z = vec.z;
         }
 
         Vector3D &Vector3D::operator=(const Vector3D &vec)
@@ -26,6 +31,11 @@ namespace Raytracer {
             y = vec.y;
             z = vec.z;
             return *this;
+        }
+
+        double Vector3D::dot(const Vector3D &v) const
+        {
+            return x * v.x + y * v.y + z * v.z;
         }
 
         double Vector3D::length(void) const

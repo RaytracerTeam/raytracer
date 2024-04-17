@@ -25,7 +25,7 @@ namespace Raytracer {
 
     class Camera {
     public:
-        Camera(Math::Point3D pos, Math::Angle3D angle, size_t width, size_t height, double fov)
+        Camera(Math::Vector3D pos, Math::Angle3D angle, size_t width, size_t height, double fov)
             : m_pos(pos)
             , m_angle(angle)
             , m_dimension({ width, height })
@@ -42,10 +42,10 @@ namespace Raytracer {
         pixels_t getDimension(void) const { return m_dimension; }
         double getFov(void) const { return m_fov; }
         Math::Angle3D getAngle(void) const { return m_angle; }
-        Math::Point3D getPos(void) const { return m_pos; }
+        Math::Vector3D getPos(void) const { return m_pos; }
 
     private:
-        Math::Point3D m_pos;
+        Math::Vector3D m_pos;
         Math::Angle3D m_angle;
         pixels_t m_dimension;
         double m_fov;
