@@ -38,7 +38,7 @@ namespace Raytracer {
             return std::sqrt(dot(*this));
         }
 
-        constexpr double Vector3D::dot(const Vector3D &v) const
+        double Vector3D::dot(const Vector3D &v) const
         {
             return x * v.x + y * v.y + z * v.z;
         }
@@ -166,6 +166,28 @@ namespace Raytracer {
         {
             return !(*this == right);
         }
+
+        //////////////////////
+
+        double Vector3D::gDist(const Vector3D &left, const Vector3D &right)
+        {
+            return std::sqrt(
+                std::pow(left.x - right.x, 2) +
+                std::pow(left.y - right.y, 2) +
+                std::pow(left.z - right.z, 2)
+            );
+        }
+
+        double Vector3D::gDot(const Vector3D &left, const Vector3D &right)
+        {
+            return left.x * right.x + left.y * right.y + left.z * right.z;
+        }
+
+        Vector3D Vector3D::gLerp(const Vector3D &left, const Vector3D &right, double t)
+        {
+            return left + (right - left) * t;
+        }
+
     } // namespace Math
 
 } // namespace Raytracer

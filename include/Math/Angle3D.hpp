@@ -15,9 +15,9 @@ namespace Raytracer {
         public:
             Angle3D(double x = 0, double y = 0, double z = 0);
         private:
-            double yaw; /* x axis */
-            double pitch; /* y axis */
-            double roll; /* z axis */
+            double yaw = 0; /* x axis */
+            double pitch = 0; /* y axis */
+            double roll = 0; /* z axis */
         };
     } // namespace Math
 

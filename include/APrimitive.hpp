@@ -11,8 +11,19 @@
 
 namespace Raytracer {
     class APrimitive : public IPrimitive {
-        private:
+        public:
+            virtual void setOrigin(Math::Vector3D &v) override {
+                m_origin = v;
+            }
+            virtual void setAngle(Math::Angle3D &a) override {
+                m_angle = a;
+            }
+            virtual bool hit(Ray &ray) = 0;
+        protected:
             APrimitive() = default;
             ~APrimitive() = default;
+
+            Math::Angle3D m_angle;
+            Math::Vector3D m_origin;
     };
 } // namespace Raytracer

@@ -21,4 +21,16 @@ namespace Raytracer {
         Math::Vector3D m_origin = Math::Vector3D(0., 0., 0.);
         Math::Vector3D m_direction = Math::Vector3D(0., 0., 0.);
     };
+
+    class RayHit {
+        public:
+            RayHit() = default;
+            RayHit(bool hit, double distance, Math::Vector3D m_hitPt, Math::Vector3D m_normal);
+            ~RayHit() = default;
+        private:
+            bool m_hit = false;
+            double m_distance = 0.;
+            Math::Vector3D m_hitPt;
+            Math::Vector3D m_normal;
+    };
 } // namespace Raytracer
