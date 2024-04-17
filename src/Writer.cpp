@@ -7,17 +7,23 @@
 
 #include "Writer.hpp"
 
-#include <iostream>
 #include <algorithm>
 #include <fstream>
+#include <iostream>
+
+#include <SFML/Graphics/Image.hpp>
 
 namespace Raytracer {
     void WriteFile::writeImage(WriteType type, std::vector<bool> buffer,
         size_t width, size_t height)
     {
         std::ofstream ofs("./out.ppm", std::ios::out | std::ios::binary);
+        sf::Image bernard;
 
-        ofs << "P6\n" << width << " " << height << "\n255\n";
+        if (type == PNG)
+            bernard.saveToFile("./out");
+        ofs << "P6\n"
+            << width << " " << height << "\n255\n";
         for (size_t i = 0; i < height * width; i++) {
             char r = (char)(255 * std::clamp(0, 1, (int)buffer[i]));
             char g = (char)(255 * std::clamp(0, 1, (int)buffer[i]));

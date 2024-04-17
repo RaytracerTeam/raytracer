@@ -2,30 +2,25 @@
 ** EPITECH PROJECT, 2024
 ** B-OOP-400-LYN-4-1-raytracer-thomas.pommier
 ** File description:
-** Vector3D.cpp
+** Vector3.cpp
 */
 
-#include "Math/Vector3D.hpp"
 #include "Error.hpp"
+#include "Math/Vector3D.hpp"
 #include <cmath>
 
 namespace Raytracer {
     namespace Math {
         Vector3D::Vector3D(double valX, double valY, double valZ)
+            : Point3D(valX, valY, valZ)
         {
-            x = valX;
-            y = valY;
-            z = valZ;
         }
 
-        Vector3D::Vector3D(const Vector3D &right)
+        Vector3D::Vector3D(const Vector3D &right) : Point3D(right.x, right.y, right.z)
         {
-            x = right.x;
-            y = right.y;
-            z = right.z;
         }
 
-        Vector3D &Vector3D::operator=(const Vector3D& vec)
+        Vector3D &Vector3D::operator=(const Vector3D &vec)
         {
             x = vec.x;
             y = vec.y;
@@ -172,10 +167,7 @@ namespace Raytracer {
         double Vector3D::gDist(const Vector3D &left, const Vector3D &right)
         {
             return std::sqrt(
-                std::pow(left.x - right.x, 2) +
-                std::pow(left.y - right.y, 2) +
-                std::pow(left.z - right.z, 2)
-            );
+                std::pow(left.x - right.x, 2) + std::pow(left.y - right.y, 2) + std::pow(left.z - right.z, 2));
         }
 
         double Vector3D::gDot(const Vector3D &left, const Vector3D &right)
