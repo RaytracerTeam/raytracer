@@ -32,15 +32,15 @@ namespace Raytracer {
                 return m_arr[x][y];
             }
 
+            const std::array<double, 4> &operator[](uint8_t i) const { return m_arr[i]; }
+            std::array<double, 4> &operator[](uint8_t i) { return m_arr[i]; }
+
             Vector3D operator*(const Vector3D &src) const;
             Point3D operator*(const Point3D &src) const;
 
             Matrix44 transpose() const;
             Matrix44 inverse() const;
         private:
-            const std::array<double, 4> &operator[](uint8_t i) const { return m_arr[i]; }
-            std::array<double, 4> &operator[](uint8_t i) { return m_arr[i]; }
-
             std::array<std::array<double, 4>, 4> m_arr;
         };
     } // namespace Math

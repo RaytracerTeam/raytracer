@@ -12,25 +12,25 @@
 namespace Raytracer {
     class Ray {
     public:
-        Ray(const Math::Vector3D &origin, const Math::Vector3D &direction);
+        Ray(const Math::Point3D &origin, const Math::Vector3D &direction);
         ~Ray() = default;
 
-        Math::Vector3D getOrigin(void) const { return m_origin; }
+        Math::Point3D getOrigin(void) const { return m_origin; }
         Math::Vector3D getDirection(void) const { return m_direction; }
     private:
-        Math::Vector3D m_origin = Math::Vector3D(0., 0., 0.);
+        Math::Point3D m_origin = Math::Vector3D(0., 0., 0.);
         Math::Vector3D m_direction = Math::Vector3D(0., 0., 0.);
     };
 
     class RayHit {
         public:
             RayHit() = default;
-            RayHit(bool hit, double distance, Math::Vector3D m_hitPt, Math::Vector3D m_normal);
+            RayHit(bool hit, double distance, Math::Point3D m_hitPt, Math::Vector3D m_normal);
             ~RayHit() = default;
         private:
             bool m_hit = false;
             double m_distance = 0.;
-            Math::Vector3D m_hitPt;
+            Math::Point3D m_hitPt;
             Math::Vector3D m_normal;
     };
 } // namespace Raytracer

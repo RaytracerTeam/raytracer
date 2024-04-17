@@ -4,6 +4,10 @@
 *.gcov
 *.so
 
+*.ppm
+*.png
+*.jpg
+
 raytracer
 unit-tests
 *.zip

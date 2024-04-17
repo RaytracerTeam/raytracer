@@ -35,7 +35,7 @@ namespace Raytracer {
             }
 
         private:
-            bool castRay(const Math::Vector3D &origin, const Math::Vector3D &dir);
+            bool castRay(const Ray &ray);
 
             std::list<std::unique_ptr<IPrimitive>> m_primitives;
             std::vector<std::unique_ptr<Camera>> m_cameras;

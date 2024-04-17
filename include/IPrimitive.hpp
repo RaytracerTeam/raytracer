@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "Math/Vector3D.hpp"
+#include "Math/Point3D.hpp"
 #include "Math/Angle3D.hpp"
 
 #include "Ray.hpp"
@@ -15,8 +15,8 @@
 namespace Raytracer {
     class IPrimitive {
         public:
-            virtual void setOrigin(Math::Vector3D &v) = 0;
-            virtual void setAngle(Math::Angle3D &v) = 0;
-            virtual bool hit(Ray &ray) = 0;
+            virtual void setOrigin(const Math::Point3D &v) = 0;
+            virtual void setAngle(const Math::Angle3D &v) = 0;
+            virtual bool hit(const Ray &ray) = 0;
     };
 }

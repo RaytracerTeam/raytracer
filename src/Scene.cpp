@@ -8,6 +8,7 @@
 #include "Scene.hpp"
 #include "Error.hpp"
 #include "Math/Utils.hpp"
+#include "Math/Matrix44d.hpp"
 
 #include <cmath>
 
@@ -59,24 +60,42 @@ namespace Raytracer {
 
         // temp
         addPrimitive(std::make_unique<Sphere>(1.));
-        auto val = Math::Vector3D(3, 0, 3);
+        auto val = Math::Point3D(3, 0, 3);
         m_primitives.front()->setOrigin(val);
+
+        Math::Matrix44 mat;
+        mat[0][0] = 0.945519;
+        mat[0][1] = 0;
+        mat[0][2] = -0.325569;
+        mat[0][3] = 0;
+        mat[1][0] = -0.179534;
+        mat[1][1] = 0.834209;
+        mat[1][2] = -0.521403;
+        mat[1][3] = 0;
+        mat[2][0] = 0.271593;
+        mat[2][1] = 0.551447;
+        mat[2][2] = 0.78876;
+        mat[2][3] = 0.78876;
+        mat[3][0] = 4.208271;
+        mat[3][1] = 8.374532;
+        mat[3][2] = 17.932925;
+        mat[3][3] = 1;
+        auto camPos = mat * camera->getPos();
 
         for (size_t y = 0; y < dimension.height; y++) {
             for (size_t x = 0; x < dimension.width; x++) {
                 double rayX = (2 * (x + 0.5) / (double)dimension.width - 1) * imageAspectRatio * scale;
                 double rayY = (1 - 2 * (y + 0.5) / (double)dimension.height) * scale;
-                Math::Vector3D dir = Math::Vector3D(rayX, rayY, -1) * dir;
-                buffer[curPosBuffer++] = castRay(camera->getPos(), dir);
+                Math::Vector3D dir = mat * Math::Vector3D(rayX, rayY, -1);
+                buffer[curPosBuffer++] = castRay(Ray(camPos, dir));
             }
         }
         return buffer;
     }
 
-    bool Scene::castRay(const Math::Vector3D &origin, const Math::Vector3D &dir)
+    bool Scene::castRay(const Ray &ray)
     {
         for (auto &prim : m_primitives) {
-            auto ray = Ray(origin, dir);
             if (prim->hit(ray))
                 return true;
         }

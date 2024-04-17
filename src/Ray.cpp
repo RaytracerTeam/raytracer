@@ -8,11 +8,9 @@
 #include "Ray.hpp"
 
 namespace Raytracer {
-    Ray::Ray(const Math::Vector3D &origin, const Math::Vector3D &direction)
+    Ray::Ray(const Math::Point3D &origin, const Math::Vector3D &direction)
     {
-        double length = direction.length();
-
-        m_direction = direction / length;
+        m_direction = direction.normalize();
         m_origin = origin;
     }
 }

@@ -14,10 +14,9 @@ namespace Raytracer {
     {
         Scene scene;
 
-        auto camera = std::make_unique<Camera>(100, 100, 0.60);
-        scene.addCamera(std::move(camera));
+        scene.addCamera(std::make_unique<Camera>(640, 480, 51.52));
         auto res = scene.render();
-        WriteFile::writeImage(WriteFile::PNG, res, 100, 100);
+        WriteFile::writeImage(WriteFile::PPM, res, 640, 480);
         return 0;
     }
 }

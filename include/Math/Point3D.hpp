@@ -8,6 +8,7 @@
 #pragma once
 
 #include <cstdint>
+#include "Error.hpp"
 
 namespace Raytracer {
     namespace Math {
@@ -24,8 +25,10 @@ namespace Raytracer {
                         return getX();
                     case 1:
                         return getY();
-                    default: // case 2
+                    case 2:
                         return getZ();
+                    default:
+                        throw Error("Invalid point index", "");
                 }
             }
             double &operator[](uint8_t i) {
@@ -34,8 +37,10 @@ namespace Raytracer {
                         return x;
                     case 1:
                         return y;
-                    default: // case 2
+                    case 2:
                         return z;
+                    default:
+                        throw Error("Invalid point index", "");
                 }
             }
 
@@ -65,6 +70,10 @@ namespace Raytracer {
 
             constexpr bool operator==(const Point3D &right);
             constexpr bool operator!=(const Point3D &right);
+
+            //////////////////////////
+
+            double dot(const Point3D &v) const;
 
         protected:
             double x;

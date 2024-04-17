@@ -19,7 +19,6 @@ namespace Raytracer {
             Vector3D &operator=(const Vector3D& vec);
 
             double length(void) const;
-            double dot(const Vector3D &v) const;
             Vector3D cross(const Vector3D &v) const;
             Vector3D normalize(void) const;
 
