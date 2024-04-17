@@ -12,7 +12,7 @@
 namespace Raytracer {
     class Ray {
     public:
-        Ray(Math::Vector3D &origin, Math::Vector3D &direction);
+        Ray(const Math::Vector3D &origin, const Math::Vector3D &direction);
         ~Ray() = default;
 
         Math::Vector3D getOrigin(void) const { return m_origin; }

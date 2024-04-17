@@ -10,7 +10,6 @@
 #include <exception>
 
 namespace Raytracer {
-    namespace Math {
         class Error : public std::exception {
         public:
             Error(const char *message, const char *where)
@@ -33,5 +32,4 @@ namespace Raytracer {
             const char *m_message;
             const char *m_where;
         };
-    }
 }

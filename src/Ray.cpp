@@ -8,7 +8,7 @@
 #include "Ray.hpp"
 
 namespace Raytracer {
-    Ray::Ray(Math::Vector3D &origin, Math::Vector3D &direction)
+    Ray::Ray(const Math::Vector3D &origin, const Math::Vector3D &direction)
     {
         double length = direction.length();
 

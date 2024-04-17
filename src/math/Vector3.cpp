@@ -6,7 +6,7 @@
 */
 
 #include "Math/Vector3D.hpp"
-#include "Math/Error.hpp"
+#include "Error.hpp"
 #include <cmath>
 
 namespace Raytracer {
