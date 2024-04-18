@@ -12,6 +12,7 @@
 #include <string>
 
 #include "Color.hpp"
+#include "Pixels.hpp"
 
 namespace Raytracer {
     class WriteFile {
@@ -29,6 +30,6 @@ namespace Raytracer {
             JPG,
             PNG
         };
-        static void writeImage(WriteType type, std::vector<Color> buffer, size_t width, size_t height);
+        static void writeImage(WriteType type, std::vector<Color> buffer, const Dimension &dimension);
     };
 } // namespace Raytracer

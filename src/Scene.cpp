@@ -48,21 +48,25 @@ namespace Raytracer {
         return true;
     }
 
+    Camera &Scene::getCurrentCamera(void) const
+    {
+        if (m_cameras.size() == 0)
+            throw Error("There is no camera available", "Scene::getCurrentCamera");
+        return *(m_cameras.at(m_curCamIndex).get());
+    }
+
     // https://stackoverflow.com/questions/28896001/read-write-to-ppm-image-file-c
     // https://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-generating-camera-rays/generating-camera-rays.html
     std::vector<Color> Scene::render(void)
     {
-        Camera *camera = getCurrentCamera();
-        if (camera == nullptr)
-            throw Error("No camera added to scene", "Scene::render");
+        Camera &camera = getCurrentCamera();
+        Dimension dimension = camera.getDimension();
 
-        pixels_t dimension = camera->getDimension();
-
-        std::vector<Color> buffer(dimension.height * dimension.width);
+        std::vector<Color> buffer(dimension.getHeight() * dimension.getWidth());
         size_t curPosBuffer = 0;
 
-        double scale = std::tan(Math::deg2rad(camera->getFov() * 0.5));
-        double imageAspectRatio = dimension.width / (double)dimension.height;
+        double scale = std::tan(Math::deg2rad(camera.getFov() * 0.5));
+        double imageAspectRatio = dimension.getWidthD() / dimension.getHeightD();
 
         // temp
         addPrimitive(std::make_unique<Sphere>(1.));
@@ -72,12 +76,12 @@ namespace Raytracer {
 
         addLight(std::make_unique<Light>(Math::Vector3D(1, 0, -1), Color(255U, 255U, 255U)));
 
-        for (size_t y = 0; y < dimension.height; y++) {
-            for (size_t x = 0; x < dimension.width; x++) {
-                double rayX = (2 * (x + 0.5) / (double)dimension.width - 1) * imageAspectRatio * scale;
-                double rayY = (1 - 2 * (y + 0.5) / (double)dimension.height) * scale;
+        for (size_t y = 0; y < dimension.getHeight(); y++) {
+            for (size_t x = 0; x < dimension.getWidth(); x++) {
+                double rayX = (2 * (x + 0.5) / dimension.getWidthD() - 1) * imageAspectRatio * scale;
+                double rayY = (1 - 2 * (y + 0.5) / dimension.getHeightD()) * scale;
                 Math::Vector3D dir = Math::Vector3D(rayX, rayY, -1).normalize();
-                buffer[curPosBuffer++] = castRay(Ray(camera->getPos(), dir));
+                buffer[curPosBuffer++] = castRay(Ray(camera.getPos(), dir));
             }
         }
         return buffer;

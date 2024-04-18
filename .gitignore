@@ -13,7 +13,6 @@ unit-tests
 *.zip
 *.bin
 
-.vscode
 .DS_Store
 
 scores

@@ -15,16 +15,16 @@
 
 namespace Raytracer {
     void WriteFile::writeImage(WriteType type, std::vector<Color> buffer,
-        size_t width, size_t height)
+        const Dimension &dimension)
     {
         std::ofstream ofs("./out.ppm", std::ios::out | std::ios::binary);
         sf::Image bernard;
-        const size_t imgSize = height * width;
+        const size_t imgSize = dimension.getSize();
 
         if (type == PNG)
             bernard.saveToFile("./out");
         ofs << "P6\n"
-            << width << " " << height << "\n255\n";
+            << dimension.getWidth() << " " << dimension.getHeight() << "\n255\n";
         for (size_t i = 0; i < imgSize; i++) {
             char r = (char)(Color::PercentToRGB(buffer[i][0]));
             char g = (char)(Color::PercentToRGB(buffer[i][1]));

@@ -9,8 +9,8 @@
 
 namespace Raytracer {
     Ray::Ray(const Math::Vector3D &origin, const Math::Vector3D &direction)
-    : m_origin(origin)
-    , m_direction(direction)
+        : m_origin(origin)
+        , m_direction(direction)
     {
     }
 
