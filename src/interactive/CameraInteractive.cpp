@@ -81,6 +81,8 @@ namespace Raytracer {
     /* Todo : implement quaternion for giving the correct mouse movement */
     void CameraInteractive::handleMouse(const sf::Event &event, const sf::Window &window)
     {
+        static double sensivity = 0.03;
+
         if (m_camera == nullptr)
             return;
         auto mousePos = Math::Vector3D(event.mouseButton.button, event.mouseButton.x);
@@ -89,8 +91,10 @@ namespace Raytracer {
 
         if (delta.getX() == 0 && delta.getY() == 0)
             return;
-        std::cout << "x: " << delta.getX() << " y: " << delta.getY() << std::endl;
-        // Math::Angle3D angle(delta.getX(), delta.getY(), 0);
+        auto angle = m_camera->getAngle();
+        angle.setYaw(angle.getYaw() + delta.getX() * sensivity);
+        angle.setPitch(std::clamp(angle.getPitch() + delta.getY() * sensivity, -90., 90.));
+        m_camera->setAngle(angle);
         resetPosMouse(window);
     }
 } // namespace Raytracer

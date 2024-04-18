@@ -72,7 +72,7 @@ namespace Raytracer {
             for (size_t x = 0; x < dimension.getWidth(); x++) {
                 double rayX = (2 * (x + 0.5) / dimension.getWidthD() - 1) * imageAspectRatio * scale;
                 double rayY = (1 - 2 * (y + 0.5) / dimension.getHeightD()) * scale;
-                Math::Vector3D dir = Math::Vector3D(rayX, rayY, -1).normalize();
+                Math::Vector3D dir = Math::Vector3D(rayX, rayY, -1).normalize().rotate(camera.getAngle());
                 buffer[curPosBuffer++] = castRay(Ray(camera.getPos(), dir));
             }
         }

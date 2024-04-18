@@ -10,6 +10,7 @@
 #include <cstdint>
 
 #include "Error.hpp"
+#include "Angle3D.hpp"
 
 namespace Raytracer {
     namespace Math {
@@ -81,11 +82,13 @@ namespace Raytracer {
             double length(void) const;
             Vector3D cross(const Vector3D &v) const;
             Vector3D normalize(void) const;
+            Vector3D rotate(const Angle3D &angle);
 
             //////////////////////////
 
             static double gDist(const Vector3D &left, const Vector3D &right);
             static double gDot(const Vector3D &left, const Vector3D &right);
+            static Vector3D gRotate(const Vector3D &left, const Angle3D &right);
 
             // interpolation for camera movements
             static Vector3D gLerp(const Vector3D &left, const Vector3D &right, double t);

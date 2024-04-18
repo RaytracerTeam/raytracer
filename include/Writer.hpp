@@ -17,14 +17,6 @@
 namespace Raytracer {
     class WriteFile {
     public:
-        struct PPMObject {
-            std::string magicNum;
-            size_t width;
-            size_t height;
-            size_t maxColVal;
-            char *m_Ptr;
-        };
-
         enum WriteType {
             PPM,
             JPG,

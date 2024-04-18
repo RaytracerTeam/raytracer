@@ -6,7 +6,9 @@
 */
 
 #include "Error.hpp"
+#include "Math/Utils.hpp"
 #include "Math/Vector3D.hpp"
+
 #include <cmath>
 
 namespace Raytracer {
@@ -56,6 +58,13 @@ namespace Raytracer {
                 (z * v.x) - (x * v.z),
                 (x * v.y) - (y * v.x));
         }
+
+        Vector3D Vector3D::rotate(const Math::Angle3D &angle)
+        {
+            return gRotate(*this, angle);
+        }
+
+        //////////////////////////
 
         Vector3D &Vector3D::operator+=(const Vector3D &right)
         {
@@ -187,6 +196,18 @@ namespace Raytracer {
         double Vector3D::gDot(const Vector3D &left, const Vector3D &right)
         {
             return left.x * right.x + left.y * right.y + left.z * right.z;
+        }
+
+        Vector3D Vector3D::gRotate(const Vector3D &v, const Math::Angle3D &angle)
+        {
+            double yawRads = Math::deg2rad(angle.getYaw());
+            double pitchRads = Math::deg2rad(angle.getPitch());
+
+            double y = (v.y * std::cos(pitchRads) - v.z * std::sin(pitchRads));
+            double z = (v.y * std::sin(pitchRads) + v.z * std::cos(pitchRads));
+            double x = (v.x * std::cos(yawRads) + z * std::sin(yawRads));
+            z = (-v.x * std::sin(yawRads) + z * std::cos(yawRads));
+            return Vector3D(x, y, z);
         }
 
         Vector3D Vector3D::gLerp(const Vector3D &left, const Vector3D &right, double t)

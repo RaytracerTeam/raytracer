@@ -7,8 +7,6 @@
 
 #pragma once
 
-#include "Vector3D.hpp"
-
 namespace Raytracer {
     namespace Math {
         class Angle3D {
@@ -21,7 +19,7 @@ namespace Raytracer {
             double getPitch(void) const { return m_pitch; }
             double getRoll(void) const { return m_roll; }
 
-            void setYam(double a) { m_yaw = a; }
+            void setYaw(double a) { m_yaw = a; }
             void setPitch(double a) { m_pitch = a; }
             void setRoll(double a) { m_roll = a; }
         private:
