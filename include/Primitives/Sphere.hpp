@@ -15,7 +15,7 @@ namespace Raytracer {
         Sphere(double radius) : m_radius(radius) {};
         ~Sphere() = default;
 
-        bool hit(const Ray &ray, RayHit &rayhit) override;
+        RayHit hit(const Ray &ray) override;
     private:
         double m_radius;
     };

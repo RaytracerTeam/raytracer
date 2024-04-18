@@ -19,15 +19,16 @@ namespace Raytracer {
     {
         std::ofstream ofs("./out.ppm", std::ios::out | std::ios::binary);
         sf::Image bernard;
+        const size_t imgSize = height * width;
 
         if (type == PNG)
             bernard.saveToFile("./out");
         ofs << "P6\n"
             << width << " " << height << "\n255\n";
-        for (size_t i = 0; i < height * width; i++) {
-            char r = (char)(255 * std::clamp(0, 1, (int)(buffer[i][1])));
-            char g = (char)(255 * std::clamp(0, 1, (int)(buffer[i][2])));
-            char b = (char)(255 * std::clamp(0, 1, (int)(buffer[i][3])));
+        for (size_t i = 0; i < imgSize; i++) {
+            char r = (char)(Color::PercentToRGB(buffer[i][0]));
+            char g = (char)(Color::PercentToRGB(buffer[i][1]));
+            char b = (char)(Color::PercentToRGB(buffer[i][2]));
             ofs << r << g << b;
         }
     }

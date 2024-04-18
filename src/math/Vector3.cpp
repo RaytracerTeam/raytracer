@@ -129,6 +129,15 @@ namespace Raytracer {
             return vec;
         }
 
+        Vector3D Vector3D::operator-() const
+        {
+            Vector3D vec = *this;
+            vec.x = -vec.x;
+            vec.y = -vec.y;
+            vec.z = -vec.z;
+            return vec;
+        }
+
         Vector3D Vector3D::operator*(const Vector3D &right) const
         {
             Vector3D vec = *this;

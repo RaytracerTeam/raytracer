@@ -9,6 +9,8 @@
 
 #include "Math/Vector3D.hpp"
 
+#include <limits>
+
 namespace Raytracer {
     class Ray {
     public:
@@ -29,14 +31,16 @@ namespace Raytracer {
 
             RayHit(double distance, Math::Vector3D hitPt, Math::Vector3D normal);
             RayHit(const RayHit &rhit);
-            RayHit &operator=(const RayHit &vec);
+            RayHit &operator=(const RayHit &ray);
 
+            bool isHit(void) const { return m_hit; }
             double getDistance(void) const { return m_distance; }
             Math::Vector3D getHitPoint(void) const { return m_hitPt; }
             Math::Vector3D getNormal(void) const { return m_normal; }
 
         private:
-            double m_distance = 0.;
+            bool m_hit = false;
+            double m_distance = std::numeric_limits<double>::infinity();
             Math::Vector3D m_hitPt;
             Math::Vector3D m_normal;
     };

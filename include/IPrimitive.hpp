@@ -17,6 +17,10 @@ namespace Raytracer {
         public:
             virtual void setOrigin(const Math::Vector3D &v) = 0;
             virtual void setAngle(const Math::Angle3D &v) = 0;
-            virtual bool hit(const Ray &ray, RayHit &rayhit) = 0;
+
+            // virtual void setSolidColor(const Math::Angle3D &v) = 0;
+
+            // virtual Color getColor(const RayHit &rayhit) = 0;
+            virtual RayHit hit(const Ray &ray) = 0;
     };
 }

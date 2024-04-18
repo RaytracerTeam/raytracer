@@ -14,6 +14,7 @@
 
 // temp
 #include "Primitives/Sphere.hpp"
+#include <iostream>
 
 namespace Raytracer {
     void Scene::addPrimitive(std::unique_ptr<IPrimitive> obj)
@@ -68,7 +69,7 @@ namespace Raytracer {
         auto val = Math::Vector3D(-10, -1.2, -18);
         m_primitives.front()->setOrigin(val);
 
-        addLight(std::make_unique<Light>(Math::Vector3D(1, 0, -1), Color(255, 255, 255, 255)));
+        addLight(std::make_unique<Light>(Math::Vector3D(1, 0, -1), Color(255, 255, 255)));
 
         for (size_t y = 0; y < dimension.height; y++) {
             for (size_t x = 0; x < dimension.width; x++) {
@@ -84,20 +85,22 @@ namespace Raytracer {
     Color Scene::castRay(const Ray &ray)
     {
         for (auto &prim : m_primitives) {
-            RayHit rayhit;
-            if (prim->hit(ray, rayhit)) {
+            RayHit rayhit = prim->hit(ray);
+            if (rayhit.isHit()) {
                 for (auto &light : m_lights) {
                     double val = std::max(
-                        rayhit.getNormal().dot(light->getOrigin()),
+                        rayhit.getNormal().dot(-light->getOrigin()),
                         0.);
 
                     // temp, but average this each lights
                     // purple shading
-                    return Color(255, val * 50, val * 0, val * 200);
+                    if (val == 0)
+                        return Color();
+                    return Color(val * Color::RGBToPercent(204), 0, val * Color::RGBToPercent(204));
                 }
             }
             // return { 255, 200, 0, 50 }; // unreachable
         }
-        return { 255, 0, 0, 0 };
+        return { 0, 0, 0 };
     }
 } // namespace Raytracer
