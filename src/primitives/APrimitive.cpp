@@ -5,7 +5,7 @@
 ** APrimitive.cpp
 */
 
-#include "APrimitive.hpp"
+#include "Primitives/APrimitive.hpp"
 
 namespace Raytracer {
     void APrimitive::setSolidColor(const Color &c)

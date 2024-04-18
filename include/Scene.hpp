@@ -13,7 +13,7 @@
 
 #include "Camera.hpp"
 #include "Color.hpp"
-#include "IPrimitive.hpp"
+#include "Primitives/IPrimitive.hpp"
 #include "Light.hpp"
 
 namespace Raytracer {

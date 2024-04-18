@@ -12,10 +12,6 @@
 #include <algorithm>
 #include <cmath>
 
-// temp
-#include "Primitives/Sphere.hpp"
-#include <iostream>
-
 namespace Raytracer {
     void Scene::addPrimitive(std::unique_ptr<IPrimitive> obj)
     {
@@ -84,18 +80,11 @@ namespace Raytracer {
         for (auto &prim : m_primitives) {
             RayHit rayhit = prim->hit(ray);
             if (rayhit.isHit()) {
-                for (auto &light : m_lights) {
-                    double val = std::max(
-                        rayhit.getNormal().dot(-light->getOrigin()),
-                        0.);
-                    if (val == 0)
-                        return Color(0., 0, 0);
-                    auto primColor = prim->getColor(rayhit);
-                    return Color(
-                        val * primColor.getR(),
-                        val * primColor.getG(),
-                        val * primColor.getB());
-                }
+                auto primColor = prim->getColor(rayhit);
+                return Color(
+                    primColor.getR(),
+                    primColor.getG(),
+                    primColor.getB());
             }
         }
         return Color(0., 0, 0);

@@ -9,8 +9,6 @@
 #include "Math/Vector3D.hpp"
 #include <cmath>
 
-#include <iostream>
-
 namespace Raytracer {
     RayHit Sphere::hit(const Ray &ray)
     {
