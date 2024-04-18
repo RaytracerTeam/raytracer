@@ -15,12 +15,9 @@
 namespace Raytracer {
     class Color {
     public:
-        Color(double r = 0, double g = 0, double b = 0)
-            : m_r(std::clamp(0., 1., r))
-            , m_g(std::clamp(0., 1., g))
-            , m_b(std::clamp(0., 1., b))
-        {
-        }
+        Color() = default;
+        Color(double r, double g, double b);
+        Color(unsigned int r, unsigned int g, unsigned int b);
         ~Color() = default;
 
         double operator[](uint8_t i) const;

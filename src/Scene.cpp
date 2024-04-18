@@ -68,8 +68,9 @@ namespace Raytracer {
         addPrimitive(std::make_unique<Sphere>(1.));
         auto val = Math::Vector3D(-10, -1.2, -18);
         m_primitives.front()->setOrigin(val);
+        m_primitives.front()->setSolidColor(Color(200U, 0U, 200U));
 
-        addLight(std::make_unique<Light>(Math::Vector3D(1, 0, -1), Color(255, 255, 255)));
+        addLight(std::make_unique<Light>(Math::Vector3D(1, 0, -1), Color(255U, 255U, 255U)));
 
         for (size_t y = 0; y < dimension.height; y++) {
             for (size_t x = 0; x < dimension.width; x++) {
@@ -91,16 +92,16 @@ namespace Raytracer {
                     double val = std::max(
                         rayhit.getNormal().dot(-light->getOrigin()),
                         0.);
-
-                    // temp, but average this each lights
-                    // purple shading
                     if (val == 0)
-                        return Color();
-                    return Color(val * Color::RGBToPercent(204), 0, val * Color::RGBToPercent(204));
+                        return Color(0., 0, 0);
+                    auto primColor = prim->getColor(rayhit);
+                    return Color(
+                        val * primColor.getR(),
+                        val * primColor.getG(),
+                        val * primColor.getB());
                 }
             }
-            // return { 255, 200, 0, 50 }; // unreachable
         }
-        return { 0, 0, 0 };
+        return Color(0., 0, 0);
     }
 } // namespace Raytracer

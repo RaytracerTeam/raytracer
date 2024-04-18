@@ -8,6 +8,20 @@
 #include "Color.hpp"
 
 namespace Raytracer {
+    Color::Color(double r = 0., double g = 0., double b = 0.)
+        : m_r(std::clamp(0., 1., r))
+        , m_g(std::clamp(0., 1., g))
+        , m_b(std::clamp(0., 1., b))
+    {
+    }
+
+    Color::Color(unsigned int r = 0, unsigned int g = 0, unsigned int b = 0)
+        : m_r(RGBToPercent(r))
+        , m_g(RGBToPercent(g))
+        , m_b(RGBToPercent(b))
+    {
+    }
+
     double Color::operator[](uint8_t i) const
     {
         switch (i) {
