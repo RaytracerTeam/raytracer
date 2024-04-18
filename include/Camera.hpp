@@ -19,8 +19,9 @@ namespace Raytracer {
         Camera(Math::Vector3D pos, Math::Angle3D angle, Dimension &dimension, double fov);
         Camera(Dimension &dimension, double fov);
         ~Camera() = default;
+        Camera &operator=(const Camera &ray);
 
-        Dimension getDimension(void) const { return m_dimension; }
+        Dimension &getDimension(void) const { return m_dimension; }
         double getFov(void) const { return m_fov; }
         Math::Angle3D getAngle(void) const { return m_angle; }
         Math::Vector3D getPos(void) const { return m_pos; }

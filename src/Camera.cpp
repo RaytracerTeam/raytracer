@@ -22,4 +22,13 @@ namespace Raytracer {
     {
     }
 
+    Camera &Camera::operator=(const Camera &camera)
+    {
+        m_pos = camera.m_pos;
+        m_angle = camera.m_angle;
+        m_dimension = camera.m_dimension;
+        m_fov = camera.m_fov;
+        return *this;
+    }
+
 } // namespace Raytracer

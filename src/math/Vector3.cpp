@@ -57,7 +57,7 @@ namespace Raytracer {
                 (x * v.y) - (y * v.x));
         }
 
-        constexpr Vector3D &Vector3D::operator+=(const Vector3D &right)
+        Vector3D &Vector3D::operator+=(const Vector3D &right)
         {
             x += right.x;
             y += right.y;
@@ -66,7 +66,7 @@ namespace Raytracer {
             return *this;
         }
 
-        constexpr Vector3D &Vector3D::operator-=(const Vector3D &right)
+        Vector3D &Vector3D::operator-=(const Vector3D &right)
         {
             x -= right.x;
             y -= right.y;
@@ -75,7 +75,7 @@ namespace Raytracer {
             return *this;
         }
 
-        constexpr Vector3D &Vector3D::operator*=(double scalar)
+        Vector3D &Vector3D::operator*=(double scalar)
         {
             x *= scalar;
             y *= scalar;
@@ -84,7 +84,7 @@ namespace Raytracer {
             return *this;
         }
 
-        constexpr Vector3D &Vector3D::operator*=(const Vector3D &right)
+        Vector3D &Vector3D::operator*=(const Vector3D &right)
         {
             x *= right.x;
             y *= right.y;
@@ -93,7 +93,7 @@ namespace Raytracer {
             return *this;
         }
 
-        constexpr Vector3D &Vector3D::operator/=(double scalar)
+        Vector3D &Vector3D::operator/=(double scalar)
         {
             if (scalar == 0)
                 throw Error("Cannot divide by 0", "Math::Vector3D");
@@ -104,7 +104,7 @@ namespace Raytracer {
             return *this;
         }
 
-        constexpr Vector3D &Vector3D::operator/=(const Vector3D &right)
+        Vector3D &Vector3D::operator/=(const Vector3D &right)
         {
             if (right.x == 0 || right.y == 0 || right.z == 0)
                 throw Error("Cannot divide by 0", "Math::Vector3D");
@@ -166,12 +166,12 @@ namespace Raytracer {
             return vec;
         }
 
-        constexpr bool Vector3D::operator==(const Vector3D &right)
+        bool Vector3D::operator==(const Vector3D &right)
         {
             return (x == right.x) && (y == right.y) && (z == right.z);
         }
 
-        constexpr bool Vector3D::operator!=(const Vector3D &right)
+        bool Vector3D::operator!=(const Vector3D &right)
         {
             return !(*this == right);
         }

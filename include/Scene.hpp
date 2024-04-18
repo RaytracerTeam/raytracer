@@ -31,7 +31,7 @@ namespace Raytracer {
         bool setCameraIndex(size_t index);
         bool setCameraIndexRelative(int64_t offset);
 
-        Camera &getCurrentCamera(void) const;
+        Camera *getCurrentCamera(void) const;
     private:
         Color castRay(const Ray &ray);
 

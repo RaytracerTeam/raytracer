@@ -8,6 +8,7 @@
 #pragma once
 
 #include "Scene.hpp"
+#include "Interactive/CameraInteractive.hpp"
 
 #include <SFML/Graphics.hpp>
 
@@ -19,10 +20,7 @@ namespace Raytracer {
 
         void loop(void);
 
-        void setScene(Scene *scene)
-        {
-            m_scene = scene;
-        }
+        void setScene(Scene *scene);
 
         static inline sf::Color RColorToSFColor(const Color &color)
         {
@@ -33,6 +31,8 @@ namespace Raytracer {
         }
 
     private:
+        void updateDimension(unsigned int width, unsigned int height);
+
         std::unique_ptr<sf::Uint8> RColorToPixelBuffer(const std::vector<Raytracer::Color> &vectorRes);
         void setRColorToImg(const std::vector<Raytracer::Color> &vectorRes);
         void handleEvents(void);
@@ -40,6 +40,7 @@ namespace Raytracer {
         /////////////////////////////////
 
         Scene *m_scene = nullptr;
+        CameraInteractive m_interacCam;
 
         Dimension &m_dimension;
         sf::RenderWindow m_window;

@@ -7,10 +7,13 @@
 
 #include "Raytracer.hpp"
 #include "Scene.hpp"
-#include "SceneInteractive.hpp"
+#include "Interactive/SceneInteractive.hpp"
 #include "Writer.hpp"
 
 #include <string.h>
+
+// temp
+#include "Primitives/Sphere.hpp"
 
 namespace Raytracer {
     static int interactive(Scene *scene, Dimension &screnDim, const double fov)
@@ -19,6 +22,16 @@ namespace Raytracer {
             screnDim,
             "Raytracer");
         scene->addCamera(std::make_unique<Camera>(screnDim, fov));
+
+        // temp
+        auto sphere = std::make_unique<Sphere>(1.);
+        auto val = Math::Vector3D(-1, -1.2, -18);
+        sphere->setOrigin(val);
+        sphere->setSolidColor(Color(200U, 0U, 200U));
+        scene->addPrimitive(std::move(sphere));
+
+        scene->addLight(std::make_unique<Light>(Math::Vector3D(1, 0, -1), Color(255U, 255U, 255U)));
+        //
 
         interact->setScene(scene);
         interact->loop();

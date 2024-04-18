@@ -57,12 +57,12 @@ namespace Raytracer {
 
             //////////////////////////
 
-            constexpr Vector3D &operator+=(const Vector3D &right);
-            constexpr Vector3D &operator-=(const Vector3D &right);
-            constexpr Vector3D &operator*=(double scalar);
-            constexpr Vector3D &operator*=(const Vector3D &right);
-            constexpr Vector3D &operator/=(double scalar);
-            constexpr Vector3D &operator/=(const Vector3D &right);
+            Vector3D &operator+=(const Vector3D &right);
+            Vector3D &operator-=(const Vector3D &right);
+            Vector3D &operator*=(double scalar);
+            Vector3D &operator*=(const Vector3D &right);
+            Vector3D &operator/=(double scalar);
+            Vector3D &operator/=(const Vector3D &right);
 
             Vector3D operator+(const Vector3D &right) const;
             Vector3D operator-() const;
@@ -72,8 +72,8 @@ namespace Raytracer {
             Vector3D operator/(double scalar) const;
             Vector3D operator/(const Vector3D &right) const;
 
-            constexpr bool operator==(const Vector3D &right);
-            constexpr bool operator!=(const Vector3D &right);
+            bool operator==(const Vector3D &right);
+            bool operator!=(const Vector3D &right);
 
             //////////////////////////
 
