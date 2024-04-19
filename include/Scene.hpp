@@ -31,11 +31,12 @@ namespace Raytracer {
         bool setCameraIndex(size_t index);
         bool setCameraIndexRelative(int64_t offset);
 
-        Camera *getCurrentCamera(void) const;
+        Camera &getCurrentCamera(void) const;
+        void updatePrimitives(void);
     private:
-        Color castRay(const Ray &ray);
+        Color castRay(const Ray &ray) const;
 
-        std::list<std::unique_ptr<IPrimitive>> m_primitives;
+        std::vector<std::unique_ptr<IPrimitive>> m_primitives;
         std::vector<std::unique_ptr<Camera>> m_cameras;
         std::vector<std::unique_ptr<Light>> m_lights;
         size_t m_curCamIndex = 0;

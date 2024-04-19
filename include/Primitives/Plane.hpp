@@ -19,6 +19,7 @@ namespace Raytracer {
             Z
         };
         Plane() = default;
+        Plane(double pos, const Axis &axis);
         ~Plane() = default;
 
         RayHit hit(const Ray &ray) override;

@@ -22,12 +22,14 @@ namespace Raytracer {
             TEXTURE
         };
         public:
-            virtual void setOrigin(const Math::Vector3D &v) override {
+            void setOrigin(const Math::Vector3D &v) override {
                 m_origin = v;
             }
-            virtual void setAngle(const Math::Angle3D &a) override {
+            void setAngle(const Math::Angle3D &a) override {
                 m_angle = a;
             }
+            Math::Vector3D getOrigin(void) const override { return m_origin; }
+            Math::Angle3D getAngle(void) const override { return m_angle; }
 
             void setSolidColor(const Color &c) override;
             void setCodeColor(Color (*colorCode)(const RayHit &));

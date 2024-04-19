@@ -8,7 +8,6 @@
 #pragma once
 
 #include <cstdint>
-#include <algorithm>
 
 #include "Error.hpp"
 

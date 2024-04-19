@@ -7,6 +7,8 @@
 
 #include "Color.hpp"
 
+#include <algorithm>
+
 namespace Raytracer {
     Color::Color(double r = 0., double g = 0., double b = 0.)
         : m_r(std::clamp(0., 1., r))

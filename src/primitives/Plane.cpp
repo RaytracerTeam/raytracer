@@ -11,6 +11,22 @@
 #include <cmath>
 
 namespace Raytracer {
+    Plane::Plane(double pos, const Axis &axis) : m_axis(axis)
+    {
+        auto inf = std::numeric_limits<double>::infinity();;
+        switch (m_axis) {
+            case X:
+                setOrigin(Math::Vector3D(pos, inf, inf));
+                break;
+            case Y:
+                setOrigin(Math::Vector3D(inf, pos, inf));
+                break;
+            default:
+                setOrigin(Math::Vector3D(inf, inf, pos));
+                break;
+        }
+    }
+
     static double calculateT(double rayOrigin, double origin, double rayDir)
     {
         return -(rayOrigin - origin) / rayDir;

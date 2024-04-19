@@ -44,18 +44,18 @@ namespace Raytracer {
         return true;
     }
 
-    Camera *Scene::getCurrentCamera(void) const
+    Camera &Scene::getCurrentCamera(void) const
     {
         if (m_cameras.size() == 0)
             throw Error("There is no camera available", "Scene::getCurrentCamera");
-        return m_cameras.at(m_curCamIndex).get();
+        return *m_cameras.at(m_curCamIndex).get();
     }
 
     // https://stackoverflow.com/questions/28896001/read-write-to-ppm-image-file-c
     // https://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-generating-camera-rays/generating-camera-rays.html
     std::vector<Color> Scene::render(void)
     {
-        Camera &camera = *getCurrentCamera();
+        Camera &camera = getCurrentCamera();
         Dimension dimension = camera.getDimension();
 
         std::vector<Color> buffer(dimension.getHeight() * dimension.getWidth());
@@ -75,7 +75,20 @@ namespace Raytracer {
         return buffer;
     }
 
-    Color Scene::castRay(const Ray &ray)
+    /* call this whenever the camera updates */
+    void Scene::updatePrimitives(void)
+    {
+        auto cameraPos = getCurrentCamera().getPos();
+
+        std::sort(
+            begin(m_primitives),
+            end(m_primitives),
+            [cameraPos](const std::unique_ptr<IPrimitive> &lhs, const std::unique_ptr<IPrimitive> &rhs) {
+                return Math::Vector3D::gDist(cameraPos, lhs->getOrigin()) < Math::Vector3D::gDist(cameraPos, rhs->getOrigin());
+            });
+    }
+
+    Color Scene::castRay(const Ray &ray) const
     {
         for (auto &prim : m_primitives) {
             RayHit rayhit = prim->hit(ray);
