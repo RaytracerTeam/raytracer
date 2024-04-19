@@ -62,4 +62,51 @@ namespace Raytracer {
         return value * 255;
     }
 
+    ////////////
+
+    Color &Color::operator+=(const Color &right)
+    {
+        m_r += right.m_r;
+        m_g += right.m_g;
+        m_b += right.m_b;
+        return *this;
+    }
+
+    Color &Color::operator*=(const Color &right)
+    {
+        m_r *= right.m_r;
+        m_g *= right.m_g;
+        m_b *= right.m_b;
+        return *this;
+    }
+
+    Color Color::operator+(const Color &right) const
+    {
+        Color color = *this;
+        color += right;
+        return color;
+    }
+
+    Color Color::operator*(const Color &right) const
+    {
+        Color color = *this;
+        color *= right;
+        return color;
+    }
+
+    Color &Color::operator*=(double scalar)
+    {
+        m_r *= scalar;
+        m_g *= scalar;
+        m_b *= scalar;
+        return *this;
+    }
+
+    Color Color::operator*(double scalar) const
+    {
+        Color color = *this;
+        color *= scalar;
+        return color;
+    }
+
 } // namespace Raytracer

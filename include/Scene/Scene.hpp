@@ -11,10 +11,11 @@
 #include <memory>
 #include <vector>
 
-#include "Scene/Camera.hpp"
 #include "Color.hpp"
-#include "Scene/Interfaces/IPrimitive.hpp"
+#include "Scene/Camera.hpp"
 #include "Scene/Interfaces/ILight.hpp"
+#include "Scene/Interfaces/IPrimitive.hpp"
+#include "Scene/SceneLightning.hpp"
 
 namespace Raytracer {
     class Scene {
@@ -33,12 +34,15 @@ namespace Raytracer {
 
         Camera &getCurrentCamera(void) const;
         void updatePrimitives(void);
+
     private:
         Color castRay(const Ray &ray) const;
 
         std::vector<std::unique_ptr<IPrimitive>> m_primitives;
         std::vector<std::unique_ptr<Camera>> m_cameras;
-        std::vector<std::unique_ptr<ILight>> m_lights;
         size_t m_curCamIndex = 0;
+
+        SceneLightning m_lightSystem;
+        size_t m_maxRayBounces = 5; // todo : set in config
     };
 }

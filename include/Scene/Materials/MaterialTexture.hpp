@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "IMaterial.hpp"
+#include "AMaterial.hpp"
 
 #include <memory>
 #include <string>
@@ -15,12 +15,12 @@
 #include <SFML/Graphics/Texture.hpp>
 
 namespace Raytracer {
-    class MaterialTexture : public IMaterial {
+    class MaterialTexture : public AMaterial {
     public:
         MaterialTexture(const std::string &pathname);
         ~MaterialTexture() = default;
 
-        Color getColor(const RayHit &rayhit) override;
+        Color getColor(const RayHit &rayhit) const override;
     private:
         std::unique_ptr<sf::Texture> m_texture;
     };

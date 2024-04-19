@@ -26,6 +26,17 @@ namespace Raytracer {
 
         static double RGBToPercent(uint8_t value);
         static uint8_t PercentToRGB(double value);
+
+        ////////////
+
+        Color &operator+=(const Color &right);
+        Color &operator*=(const Color &right);
+        Color &operator*=(double scalar);
+
+        Color operator+(const Color &right) const;
+        Color operator*(const Color &right) const;
+        Color operator*(double scalar) const;
+
     private:
         double m_r;
         double m_g;

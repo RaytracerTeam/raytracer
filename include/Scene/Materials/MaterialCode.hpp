@@ -7,17 +7,17 @@
 
 #pragma once
 
-#include "IMaterial.hpp"
+#include "AMaterial.hpp"
 
 namespace Raytracer {
-    class MaterialCode : public IMaterial {
+    class MaterialCode : public AMaterial {
     public:
-        MaterialCode(const Color (&colorCode)(const RayHit &));
+        MaterialCode(Color (&colorCode)(const RayHit &));
         ~MaterialCode() = default;
 
-        Color getColor(const RayHit &rayhit) override;
+        Color getColor(const RayHit &rayhit) const override;
 
     private:
-        Color (&m_colorCode)(const RayHit &);
+        Color (*m_colorCode)(const RayHit &);
     };
 } // namespace Raytracer

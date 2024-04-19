@@ -25,7 +25,7 @@ namespace Raytracer {
 
     void Scene::addLight(std::unique_ptr<ILight> obj)
     {
-        m_lights.push_back(std::move(obj));
+        m_lightSystem.addLight(std::move(obj));
     }
 
     bool Scene::setCameraIndex(size_t index)

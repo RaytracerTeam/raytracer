@@ -8,6 +8,7 @@
 #pragma once
 
 #include "Color.hpp"
+#include "Scene/SceneLightning.hpp"
 #include "Scene/Ray.hpp"
 
 namespace Raytracer {
@@ -19,6 +20,7 @@ namespace Raytracer {
 
     class IMaterial {
     public:
-        virtual Color getColor(const RayHit &rayhit) = 0;
+        virtual Color getColor(const RayHit &rayhit) const = 0;
+        virtual Color getSpecular(const ILight *light, const RayHit &rayhit) const = 0;
     };
 } // namespace Material
