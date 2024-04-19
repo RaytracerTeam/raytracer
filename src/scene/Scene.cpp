@@ -23,7 +23,7 @@ namespace Raytracer {
         m_cameras.push_back(std::move(obj));
     }
 
-    void Scene::addLight(std::unique_ptr<Light> obj)
+    void Scene::addLight(std::unique_ptr<ILight> obj)
     {
         m_lights.push_back(std::move(obj));
     }
@@ -91,14 +91,15 @@ namespace Raytracer {
     Color Scene::castRay(const Ray &ray) const
     {
         for (auto &prim : m_primitives) {
-            RayHit rayhit = prim->hit(ray);
-            if (rayhit.isHit()) {
-                auto primColor = prim->getColor(rayhit);
-                return Color(
-                    primColor.getR(),
-                    primColor.getG(),
-                    primColor.getB());
-            }
+            std::optional<RayHit> rayhit = prim->hit(ray);
+            if (rayhit == std::nullopt)
+                continue;
+
+            auto primColor = prim->getColor(rayhit.value());
+            return Color(
+                primColor.getR(),
+                primColor.getG(),
+                primColor.getB());
         }
         return Color(0., 0, 0);
     }

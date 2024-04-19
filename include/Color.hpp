@@ -9,8 +9,6 @@
 
 #include <cstdint>
 
-#include "Error.hpp"
-
 namespace Raytracer {
     class Color {
     public:

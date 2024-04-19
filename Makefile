@@ -7,8 +7,10 @@
 
 CORESRC	=	$(wildcard ./src/*.cpp) \
 			$(wildcard ./src/math/*.cpp) \
-			$(wildcard ./src/primitives/*.cpp) \
 			$(wildcard ./src/scene/*.cpp) \
+			$(wildcard ./src/scene/primitives/*.cpp) \
+			$(wildcard ./src/scene/materials/*.cpp) \
+			$(wildcard ./src/scene/lights/*.cpp) \
 			$(wildcard ./src/scene/interactive/*.cpp)
 
 SRC	=	./src/main/main.cpp \

@@ -13,8 +13,8 @@
 
 #include "Scene/Camera.hpp"
 #include "Color.hpp"
-#include "Primitives/IPrimitive.hpp"
-#include "Scene/Light.hpp"
+#include "Scene/Interfaces/IPrimitive.hpp"
+#include "Scene/Interfaces/ILight.hpp"
 
 namespace Raytracer {
     class Scene {
@@ -24,7 +24,7 @@ namespace Raytracer {
 
         void addPrimitive(std::unique_ptr<IPrimitive> obj);
         void addCamera(std::unique_ptr<Camera> obj);
-        void addLight(std::unique_ptr<Light> obj);
+        void addLight(std::unique_ptr<ILight> obj);
 
         std::vector<Color> render(void);
 
@@ -38,7 +38,7 @@ namespace Raytracer {
 
         std::vector<std::unique_ptr<IPrimitive>> m_primitives;
         std::vector<std::unique_ptr<Camera>> m_cameras;
-        std::vector<std::unique_ptr<Light>> m_lights;
+        std::vector<std::unique_ptr<ILight>> m_lights;
         size_t m_curCamIndex = 0;
     };
 }

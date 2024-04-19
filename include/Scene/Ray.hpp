@@ -33,13 +33,11 @@ namespace Raytracer {
             RayHit(const RayHit &rhit);
             RayHit &operator=(const RayHit &ray);
 
-            bool isHit(void) const { return m_hit; }
             double getDistance(void) const { return m_distance; }
             Math::Vector3D getHitPoint(void) const { return m_hitPt; }
             Math::Vector3D getNormal(void) const { return m_normal; }
 
         private:
-            bool m_hit = false;
             double m_distance = std::numeric_limits<double>::infinity();
             Math::Vector3D m_hitPt;
             Math::Vector3D m_normal;

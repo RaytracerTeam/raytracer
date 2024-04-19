@@ -5,7 +5,7 @@
 ** Cylinder.cpp
 */
 
-#include "Primitives/Cylinder.hpp"
+#include "Scene/Primitives/Cylinder.hpp"
 #include "Math/Vector3D.hpp"
 #include <cmath>
 
@@ -22,14 +22,10 @@ namespace Raytracer {
         return RayHit(distance, hitPt, normal);
     }
 
-    RayHit Cylinder::hit(const Ray &ray)
+    std::optional<RayHit> Cylinder::hit(const Ray &ray) const
     {
         Math::Vector3D dstOrigin = ray.getOrigin() - m_origin;
         Math::Vector3D rayDir = ray.getDirection();
-
-        // double a = std::pow(rayDir.getX(), 2.) * std::pow(rayDir.getZ(), 2.);
-        // double b = 2 * (rayDir.getX() * dstOrigin.getX() + rayDir.getZ() * dstOrigin.getZ());
-        // double c = std::pow(dstOrigin.getX(), 2.) * std::pow(dstOrigin.getZ(), 2.) - std::pow(m_radius, 2.);
 
         double a = (rayDir.getX() * rayDir.getX()) + (rayDir.getZ() * rayDir.getZ());
         double b = 2 * (rayDir.getX() * (rayDir.getX()) + rayDir.getZ() * (dstOrigin.getZ()));
@@ -37,10 +33,10 @@ namespace Raytracer {
         double delta = std::pow(b, 2.) - 4 * a * c;
 
         if (delta <= 0.001) // hit nothing
-            return RayHit();
+            return std::nullopt;
 
         double t0 = (-b - std::sqrt(delta)) / (2 * a);
-        if (t0 > 0) {
+        if (t0 > 0.001) {
             Math::Vector3D hitPt = ray.getOrigin() + ray.getDirection() * t0;
             if (std::isinf(m_height))
                 return getNormal(t0, hitPt, m_origin);
@@ -50,11 +46,11 @@ namespace Raytracer {
         }
 
         double t1 = (-b + std::sqrt(delta)) / (2 * a);
-        if (t1 > 0) {
+        if (t1 > 0.001) {
             Math::Vector3D hitPt = ray.getOrigin() + ray.getDirection() * t1;
             if ((hitPt.getY() >= m_origin.getY() && hitPt.getY() <= m_origin.getY() + m_height))
                 return getNormal(t1, hitPt, m_origin);
         }
-        return RayHit();
+        return std::nullopt;
     }
 } // namespace Raytracer

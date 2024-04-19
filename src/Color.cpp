@@ -7,6 +7,7 @@
 
 #include "Color.hpp"
 
+#include "Error.hpp"
 #include <algorithm>
 
 namespace Raytracer {

@@ -18,15 +18,16 @@ namespace Raytracer {
             Y,
             Z
         };
-        Plane() = default;
-        Plane(double pos, const Axis &axis);
+        Plane(const Math::Vector3D &origin, std::unique_ptr<IMaterial> &material) : APrimitive(origin, material) {}
+        Plane(const Math::Vector3D &origin, std::unique_ptr<IMaterial> &material, double pos, const Axis &axis);
         ~Plane() = default;
 
-        RayHit hit(const Ray &ray) override;
+        std::optional<RayHit> hit(const Ray &ray) const override;
 
         void setAxis(const Axis &axis) { m_axis = axis; }
+
     private:
-        Math::Vector3D getNormal(void);
+        Math::Vector3D getNormal(void) const;
         Axis m_axis = Z;
     };
 } // namespace Raytracer

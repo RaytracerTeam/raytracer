@@ -12,10 +12,15 @@
 namespace Raytracer {
     class Sphere : public APrimitive {
     public:
-        Sphere(double radius) : m_radius(radius) {};
+        Sphere(const Math::Vector3D &origin, std::unique_ptr<IMaterial> &material, double radius)
+            : APrimitive(origin, material)
+            , m_radius(radius)
+        {
+        }
         ~Sphere() = default;
 
-        RayHit hit(const Ray &ray) override;
+        std::optional<RayHit> hit(const Ray &ray) const override;
+
     private:
         double m_radius;
     };

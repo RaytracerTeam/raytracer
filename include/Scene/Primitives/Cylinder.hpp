@@ -12,12 +12,15 @@
 namespace Raytracer {
     class Cylinder : public APrimitive {
     public:
-        Cylinder(double radius, double height)
-            : m_radius(radius)
-            , m_height(height) {};
+        Cylinder(const Math::Vector3D &origin, std::unique_ptr<IMaterial> &material, double radius, double height)
+            : APrimitive(origin, material)
+            , m_radius(radius)
+            , m_height(height)
+        {
+        }
         ~Cylinder() = default;
 
-        RayHit hit(const Ray &ray) override;
+        std::optional<RayHit> hit(const Ray &ray) const override;
 
     private:
         double m_radius;
