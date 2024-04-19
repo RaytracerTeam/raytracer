@@ -40,17 +40,21 @@ namespace Raytracer {
             return RayHit();
 
         double t0 = (-b - std::sqrt(delta)) / (2 * a);
-        Math::Vector3D hitPt = ray.getOrigin() + ray.getDirection() * t0;
-        if (std::isinf(m_height))
-            return getNormal(t0, hitPt, m_origin);
+        if (t0 > 0) {
+            Math::Vector3D hitPt = ray.getOrigin() + ray.getDirection() * t0;
+            if (std::isinf(m_height))
+                return getNormal(t0, hitPt, m_origin);
 
-        if (hitPt.getY() >= m_origin.getY() && hitPt.getY() <= m_origin.getY() + m_height)
-            return getNormal(t0, hitPt, m_origin);
+            if (hitPt.getY() >= m_origin.getY() && hitPt.getY() <= m_origin.getY() + m_height)
+                return getNormal(t0, hitPt, m_origin);
+        }
 
         double t1 = (-b + std::sqrt(delta)) / (2 * a);
-        hitPt = ray.getOrigin() + ray.getDirection() * t1;
-        if ((hitPt.getY() >= m_origin.getY() && hitPt.getY() <= m_origin.getY() + m_height))
-            return getNormal(t1, hitPt, m_origin);
+        if (t1 > 0) {
+            Math::Vector3D hitPt = ray.getOrigin() + ray.getDirection() * t1;
+            if ((hitPt.getY() >= m_origin.getY() && hitPt.getY() <= m_origin.getY() + m_height))
+                return getNormal(t1, hitPt, m_origin);
+        }
         return RayHit();
     }
 } // namespace Raytracer

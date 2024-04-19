@@ -22,8 +22,12 @@ namespace Raytracer {
 
         if (delta <= 0.001) // hit nothing
             return RayHit();
+
         // doesn't care about 2nd result, need the nearest
         double distance = (-b - std::sqrt(delta)) / (2 * a);
+        if (distance <= 0.001)
+            return RayHit();
+
         Math::Vector3D hitPt = ray.getOrigin() + ray.getDirection() * distance;
         return RayHit(distance, hitPt, (hitPt - m_origin).normalize());
     }
