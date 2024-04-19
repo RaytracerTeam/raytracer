@@ -5,7 +5,7 @@
 ** CameraInteractive.cpp
 */
 
-#include "Interactive/CameraInteractive.hpp"
+#include "Scene/Interactive/CameraInteractive.hpp"
 
 #include <cmath>
 

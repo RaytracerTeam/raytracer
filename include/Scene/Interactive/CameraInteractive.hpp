@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "Camera.hpp"
+#include "Scene/Camera.hpp"
 
 #include <SFML/Graphics.hpp>
 

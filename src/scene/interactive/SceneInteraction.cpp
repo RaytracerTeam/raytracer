@@ -5,8 +5,8 @@
 ** SceneInteraction.cpp
 */
 
-#include "Interactive/CameraInteractive.hpp"
-#include "Interactive/SceneInteractive.hpp"
+#include "Scene/Interactive/CameraInteractive.hpp"
+#include "Scene/Interactive/SceneInteractive.hpp"
 
 // temp : add fps
 // #include <cmath>

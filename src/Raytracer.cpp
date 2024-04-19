@@ -6,8 +6,8 @@
 */
 
 #include "Raytracer.hpp"
-#include "Scene.hpp"
-#include "Interactive/SceneInteractive.hpp"
+#include "Scene/Scene.hpp"
+#include "Scene/Interactive/SceneInteractive.hpp"
 #include "Writer.hpp"
 
 #include <string.h>
@@ -35,6 +35,12 @@ namespace Raytracer {
         sphere2->setOrigin(Math::Vector3D(1, 1, -10));
         sphere2->setSolidColor(Color(200U, 150U, 0U));
         scene->addPrimitive(std::move(sphere2));
+
+        // auto cyl = std::make_unique<Cylinder>(1., std::numeric_limits<double>::infinity());
+        auto cyl = std::make_unique<Cylinder>(1., 1.);
+        cyl->setOrigin(Math::Vector3D(-2, 0, -10));
+        cyl->setSolidColor(Color(0U, 150U, 200U));
+        scene->addPrimitive(std::move(cyl));
 
         auto plane = std::make_unique<Plane>(-4, Plane::Y);
         plane->setSolidColor(Color(200U, 0U, 0U));

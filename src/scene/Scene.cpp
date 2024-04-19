@@ -5,7 +5,7 @@
 ** Scene.cpp
 */
 
-#include "Scene.hpp"
+#include "Scene/Scene.hpp"
 #include "Error.hpp"
 #include "Math/Utils.hpp"
 

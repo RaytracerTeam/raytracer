@@ -10,7 +10,7 @@
 #include "Math/Vector3D.hpp"
 #include "Math/Angle3D.hpp"
 
-#include "Ray.hpp"
+#include "Scene/Ray.hpp"
 #include "Color.hpp"
 
 namespace Raytracer {

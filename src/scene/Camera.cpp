@@ -5,7 +5,7 @@
 ** Camera.cpp
 */
 
-#include "Camera.hpp"
+#include "Scene/Camera.hpp"
 
 namespace Raytracer {
     Camera::Camera(Math::Vector3D pos, Math::Angle3D angle, Dimension &dimension, double fov)

@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include "Scene.hpp"
-#include "Interactive/CameraInteractive.hpp"
+#include "Scene/Scene.hpp"
+#include "Scene/Interactive/CameraInteractive.hpp"
 
 #include <SFML/Graphics.hpp>
 

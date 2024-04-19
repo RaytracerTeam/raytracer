@@ -11,10 +11,10 @@
 #include <memory>
 #include <vector>
 
-#include "Camera.hpp"
+#include "Scene/Camera.hpp"
 #include "Color.hpp"
 #include "Primitives/IPrimitive.hpp"
-#include "Light.hpp"
+#include "Scene/Light.hpp"
 
 namespace Raytracer {
     class Scene {

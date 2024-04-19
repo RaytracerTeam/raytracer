@@ -5,7 +5,7 @@
 ** Light.cpp
 */
 
-#include "Light.hpp"
+#include "Scene/Light.hpp"
 
 namespace Raytracer {
     Light::Light(const Math::Vector3D &origin, const Color &color)
