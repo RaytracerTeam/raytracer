@@ -26,9 +26,9 @@ TESTCOV +=	$(TESTSRC:.cpp=.gcda)
 NAME	=	raytracer
 TESTNAME	=	unit-tests
 
-CFLAGS	=	-Iinclude -std=c++20 -Wall -Wextra
-DBGFLAGS	=	-g3
-TESTFLAGS	=	-g3 --coverage -fprofile-arcs -ftest-coverage
+CFLAGS	=	-O2 -Iinclude -std=c++20 -Wall -Wextra
+DBGFLAGS	=	-g3 -O0
+TESTFLAGS	=	-g3 -O0 --coverage -fprofile-arcs -ftest-coverage
 
 LDFLAGS	=	-lconfig++ -lsfml-graphics -lsfml-window -lsfml-system
 TESTSFLAGS = $(LDFLAGS) -lcriterion

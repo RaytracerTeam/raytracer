@@ -15,6 +15,7 @@
 // temp
 #include "Primitives/Sphere.hpp"
 #include "Primitives/Plane.hpp"
+#include "Primitives/Cylinder.hpp"
 
 namespace Raytracer {
     static int interactive(Scene *scene, Dimension &screnDim, const double fov)
@@ -30,11 +31,22 @@ namespace Raytracer {
         sphere->setSolidColor(Color(200U, 0U, 200U));
         scene->addPrimitive(std::move(sphere));
 
+        auto sphere2 = std::make_unique<Sphere>(3.);
+        sphere2->setOrigin(Math::Vector3D(1, 1, -10));
+        sphere2->setSolidColor(Color(200U, 150U, 0U));
+        scene->addPrimitive(std::move(sphere2));
+
         auto plane = std::make_unique<Plane>();
         plane->setOrigin(Math::Vector3D(0, -4, 0));
         plane->setAxis(Plane::Y);
         plane->setSolidColor(Color(200U, 0U, 0U));
         scene->addPrimitive(std::move(plane));
+
+        // auto cyl = std::make_unique<Cylinder>(1., std::numeric_limits<double>::infinity());
+        // // auto cyl = std::make_unique<Cylinder>(1., 1.);
+        // cyl->setOrigin(Math::Vector3D(-2, 0, -10));
+        // cyl->setSolidColor(Color(200U, 150U, 0U));
+        // scene->addPrimitive(std::move(cyl));
 
         scene->addLight(std::make_unique<Light>(Math::Vector3D(1, 0, -1), Color(255U, 255U, 255U)));
         //

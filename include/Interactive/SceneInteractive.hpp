@@ -33,7 +33,7 @@ namespace Raytracer {
     private:
         void updateDimension(unsigned int width, unsigned int height);
 
-        std::unique_ptr<sf::Uint8> RColorToPixelBuffer(const std::vector<Raytracer::Color> &vectorRes);
+        std::unique_ptr<sf::Uint8[]> RColorToPixelBuffer(const std::vector<Raytracer::Color> &vectorRes);
         void setRColorToImg(const std::vector<Raytracer::Color> &vectorRes);
         void handleEvents(void);
 

@@ -9,8 +9,14 @@
 
 namespace Raytracer {
     namespace Math {
-        double deg2rad(double deg) {
+        double deg2rad(double deg)
+        {
             return deg * M_PI / 180.;
+        }
+
+        double rad2deg(double rad)
+        {
+            return rad * 180. / M_PI;
         }
     } // namespace Math
 

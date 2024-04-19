@@ -29,7 +29,7 @@ namespace Raytracer {
             case Y:
                 t = calculateT(rayOrigin.getY(), m_origin.getY(), rayDir.getY());
                 break;
-            case Z:
+            default:
                 t = calculateT(rayOrigin.getZ(), m_origin.getZ(), rayDir.getZ());
                 break;
         }

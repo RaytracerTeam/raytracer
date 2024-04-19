@@ -59,9 +59,14 @@ namespace Raytracer {
                 (x * v.y) - (y * v.x));
         }
 
-        Vector3D Vector3D::rotate(const Math::Angle3D &angle)
+        Vector3D Vector3D::rotate(const Angle3D &angle)
         {
             return gRotate(*this, angle);
+        }
+
+        double Vector3D::angle(const Vector3D &right)
+        {
+            return gAngle(*this, right);
         }
 
         //////////////////////////
@@ -208,6 +213,12 @@ namespace Raytracer {
             double x = (v.x * std::cos(yawRads) + z * std::sin(yawRads));
             z = (-v.x * std::sin(yawRads) + z * std::cos(yawRads));
             return Vector3D(x, y, z);
+        }
+
+        double Vector3D::gAngle(const Vector3D &left, const Vector3D &right)
+        {
+            double cosAngle = left.dot(right) / (left.length() * right.length());
+            return rad2deg(std::acos(cosAngle));
         }
 
         Vector3D Vector3D::gLerp(const Vector3D &left, const Vector3D &right, double t)

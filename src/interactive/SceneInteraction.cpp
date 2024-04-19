@@ -81,7 +81,7 @@ namespace Raytracer {
 
     ///////////////////////////
 
-    std::unique_ptr<sf::Uint8> SceneInteractive::RColorToPixelBuffer(const std::vector<Raytracer::Color> &vectorRes)
+    std::unique_ptr<sf::Uint8[]> SceneInteractive::RColorToPixelBuffer(const std::vector<Raytracer::Color> &vectorRes)
     {
         sf::Uint8 *pixels = new sf::Uint8[m_dimension.getSize() * 4];
         for (size_t i = 0; const auto &value : vectorRes) {
@@ -90,7 +90,7 @@ namespace Raytracer {
             pixels[i++] = Color::PercentToRGB(value.getB());
             pixels[i++] = 255;
         }
-        return std::unique_ptr<sf::Uint8>(pixels);
+        return std::unique_ptr<sf::Uint8[]>(pixels);
     }
 
 } // namespace Raytracer

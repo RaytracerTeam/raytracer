@@ -20,11 +20,11 @@ namespace Raytracer {
         double c = dstOrigin.dot(dstOrigin) - std::pow(m_radius, 2.);
         double delta = std::pow(b, 2.) - 4 * a * c;
 
-        if (delta >= 0) { // doesn't care about 2nd result, need the nearest
-            double distance = (-b - std::sqrt(delta)) / (2 * a);
-            Math::Vector3D hitPt = ray.getOrigin() + ray.getDirection() * distance;
-            return RayHit(distance, hitPt, (hitPt - m_origin).normalize());
-        }
-        return RayHit(); // hit nothing
+        if (delta <= 0.001) // hit nothing
+            return RayHit();
+        // doesn't care about 2nd result, need the nearest
+        double distance = (-b - std::sqrt(delta)) / (2 * a);
+        Math::Vector3D hitPt = ray.getOrigin() + ray.getDirection() * distance;
+        return RayHit(distance, hitPt, (hitPt - m_origin).normalize());
     }
 } // namespace Raytracer

@@ -12,6 +12,7 @@
 namespace Raytracer {
     namespace Math {
         double deg2rad(double deg);
+        double rad2deg(double rad);
     } // namespace Math
 
 } // namespace Raytracer
