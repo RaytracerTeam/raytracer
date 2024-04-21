@@ -43,6 +43,6 @@ namespace Raytracer {
         size_t m_curCamIndex = 0;
 
         SceneLightning m_lightSystem;
-        size_t m_maxRayBounces = 5; // todo : set in config
+        // size_t m_maxRayBounces = 5; // todo : set in config
     };
 }

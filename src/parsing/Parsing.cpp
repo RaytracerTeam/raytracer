@@ -18,7 +18,7 @@
 
 namespace Raytracer {
     namespace Parsing {
-        void parse(Scene &scene, const Dimension &dim, const std::string &pathname)
+        void parse(Scene &scene, const Dimension &dim, const std::string &)
         {
             // TEMP
             scene.addCamera(std::make_unique<Camera>(dim, 51.82));

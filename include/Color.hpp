@@ -38,8 +38,8 @@ namespace Raytracer {
         Color operator*(double scalar) const;
 
     private:
-        double m_r;
-        double m_g;
-        double m_b;
+        double m_r = 0;
+        double m_g = 0;
+        double m_b = 0;
     };
 } // namespace Raytracer

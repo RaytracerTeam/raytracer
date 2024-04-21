@@ -9,16 +9,17 @@
 
 #include "Error.hpp"
 #include <algorithm>
+#include "Math/Algorithm.hpp"
 
 namespace Raytracer {
-    Color::Color(double r = 0., double g = 0., double b = 0.)
-        : m_r(std::clamp(0., 1., r))
-        , m_g(std::clamp(0., 1., g))
-        , m_b(std::clamp(0., 1., b))
+    Color::Color(double r, double g, double b)
+        : m_r(Math::Algorithm::clampD(r, 0., 1.))
+        , m_g(Math::Algorithm::clampD(g, 0., 1.))
+        , m_b(Math::Algorithm::clampD(b, 0., 1.))
     {
     }
 
-    Color::Color(unsigned int r = 0, unsigned int g = 0, unsigned int b = 0)
+    Color::Color(unsigned int r, unsigned int g, unsigned int b)
         : m_r(RGBToPercent(r))
         , m_g(RGBToPercent(g))
         , m_b(RGBToPercent(b))

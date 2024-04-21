@@ -17,25 +17,36 @@ CORESRC	=	$(wildcard ./src/*.cpp) \
 SRC	=	./src/main/main.cpp \
 		$(CORESRC)
 
-TESTSRC	= 	$(wildcard ./tests/*.cpp) \
+TESTSRC	=	$(wildcard ./tests/*.cpp) \
 			$(CORESRC)
 
-CC = g++
-OBJ	=	$(SRC:.cpp=.o)
+CC		=	g++
+OBJ		=	$(SRC:.cpp=.o)
 TESTOBJ	=	$(TESTSRC:.cpp=.o)
 
-TESTCOV =	$(TESTSRC:.cpp=.gcno)
-TESTCOV +=	$(TESTSRC:.cpp=.gcda)
+TESTCOV	=	$(TESTSRC:.cpp=.gcno)
+TESTCOV	+=	$(TESTSRC:.cpp=.gcda)
 
-NAME	=	raytracer
+NAME		=	raytracer
 TESTNAME	=	unit-tests
 
-CFLAGS	=	-O2 -Iinclude -std=c++20 -Wall -Wextra
+CFLAGS		=	-O2 -Iinclude -std=c++20 -Wall -Wextra
 DBGFLAGS	=	-g3 -O0
 TESTFLAGS	=	-g3 -O0 --coverage -fprofile-arcs -ftest-coverage
 
-LDFLAGS	=	-lconfig++ -lsfml-graphics -lsfml-window -lsfml-system
-TESTSFLAGS = $(LDFLAGS) -lcriterion
+LDFLAGS		=	-lconfig++ -lsfml-graphics -lsfml-window -lsfml-system
+TESTSFLAGS	=	$(LDFLAGS) -lcriterion
+
+MACBREWSFML		= 	/opt/homebrew/Cellar/sfml/2.6.1
+MACBREWCONFIG	=	/opt/homebrew/Cellar/libconfig/1.7.3
+MACSFMLINCLUDE	=	-I$(MACBREWSFML)/include -I$(MACBREWCONFIG)/include
+MACSFMLLIB		=	-L$(MACBREWSFML)/lib -L$(MACBREWCONFIG)/lib
+
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Darwin)
+	CFLAGS += $(MACSFMLINCLUDE)
+	LDFLAGS += $(MACSFMLLIB)
+endif
 
 all: $(NAME)
 dbg: CFLAGS += $(DBGFLAGS)
@@ -48,10 +59,10 @@ tests_compile: $(TESTNAME)
 %.o: %.cpp
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(NAME):	 $(OBJ)
+$(NAME): $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(LDFLAGS)
 
-$(TESTNAME):	$(TESTOBJ)
+$(TESTNAME): $(TESTOBJ)
 	$(CC) $(CFLAGS) $(TESTFLAGS) $(TESTOBJ) -o $(TESTNAME) $(TESTSFLAGS)
 
 tests_run: tests_compile
@@ -70,7 +81,12 @@ fclean: clean
 	rm -f $(NAME)
 	rm -f $(TESTNAME)
 
-re:     fclean all
-redbg:     fclean dbg
+re:
+	@$(MAKE) fclean
+	@$(MAKE) all
+
+redbg:
+	@$(MAKE) fclean
+	@$(MAKE) dbg
 
 .PHONY: all dbg tests_run tests_cov tests_compile clean fclean re redbg

@@ -16,3 +16,5 @@ unit-tests
 .DS_Store
 
 scores
+
+.vscode/c_cpp_properties.json

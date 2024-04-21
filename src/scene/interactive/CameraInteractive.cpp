@@ -6,6 +6,7 @@
 */
 
 #include "Scene/Interactive/CameraInteractive.hpp"
+#include "Math/Algorithm.hpp"
 
 #include <cmath>
 
@@ -16,6 +17,7 @@ namespace Raytracer {
     bool CameraInteractive::updatePos(sf::Keyboard::Key code)
     {
         auto camPos = m_camera->getPos();
+        auto camAngle = m_camera->getAngle();
 
         switch (code) {
         case sf::Keyboard::Up:
@@ -41,6 +43,22 @@ namespace Raytracer {
         case sf::Keyboard::PageDown:
         case sf::Keyboard::E:
             camPos += Math::Vector3D(0, -1, 0);
+            break;
+        case sf::Keyboard::U:
+            camAngle.setPitch(Math::Algorithm::clampD(camAngle.getPitch() + 1, -90., 90.));
+            m_camera->setAngle(camAngle);
+            break;
+        case sf::Keyboard::J:
+            camAngle.setPitch(Math::Algorithm::clampD(camAngle.getPitch() - 1, -90., 90.));
+            m_camera->setAngle(camAngle);
+            break;
+        case sf::Keyboard::H:
+            camAngle.setYaw(camAngle.getYaw() + 1);
+            m_camera->setAngle(camAngle);
+            break;
+        case sf::Keyboard::K:
+            camAngle.setYaw(camAngle.getYaw() - 1);
+            m_camera->setAngle(camAngle);
             break;
         default:
             return false;
@@ -93,7 +111,7 @@ namespace Raytracer {
             return;
         auto angle = m_camera->getAngle();
         angle.setYaw(angle.getYaw() + delta.getX() * sensivity);
-        angle.setPitch(std::clamp(angle.getPitch() + delta.getY() * sensivity, -90., 90.));
+        angle.setPitch(Math::Algorithm::clampD(angle.getPitch() + delta.getY() * sensivity, -90., 90.));
         m_camera->setAngle(angle);
         resetPosMouse(window);
     }
