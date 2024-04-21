@@ -67,9 +67,9 @@ namespace Raytracer {
 
     Color &Color::operator+=(const Color &right)
     {
-        m_r += right.m_r;
-        m_g += right.m_g;
-        m_b += right.m_b;
+        m_r = Math::Algorithm::clampD(m_r + right.m_r, 0., 1.);
+        m_g = Math::Algorithm::clampD(m_g + right.m_g, 0., 1.);
+        m_b = Math::Algorithm::clampD(m_b + right.m_b, 0., 1.);
         return *this;
     }
 
@@ -107,6 +107,21 @@ namespace Raytracer {
     {
         Color color = *this;
         color *= scalar;
+        return color;
+    }
+
+    Color &Color::operator*=(const Math::Vector3D &v)
+    {
+        m_r *= v.getX();
+        m_g *= v.getY();
+        m_b *= v.getZ();
+        return *this;
+    }
+
+    Color Color::operator*(const Math::Vector3D &v) const
+    {
+        Color color = *this;
+        color *= v;
         return color;
     }
 

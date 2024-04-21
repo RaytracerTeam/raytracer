@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include "Math/Vector3D.hpp"
+
 #include <cstdint>
 
 namespace Raytracer {
@@ -31,9 +33,11 @@ namespace Raytracer {
 
         Color &operator+=(const Color &right);
         Color &operator*=(const Color &right);
+        Color &operator*=(const Math::Vector3D &right);
         Color &operator*=(double scalar);
 
         Color operator+(const Color &right) const;
+        Color operator*(const Math::Vector3D &right) const;
         Color operator*(const Color &right) const;
         Color operator*(double scalar) const;
 

@@ -7,6 +7,7 @@
 
 #include "Scene/Scene.hpp"
 #include "Error.hpp"
+#include "Math/Algorithm.hpp"
 #include "Math/Utils.hpp"
 
 #include <algorithm>
@@ -90,18 +91,51 @@ namespace Raytracer {
 
     Color Scene::castRay(const Ray &ray) const
     {
-        for (auto &prim : m_primitives) {
+        for (const auto &prim : m_primitives) {
             std::optional<RayHit> rayhit = prim->hit(ray);
             if (rayhit == std::nullopt)
                 continue;
 
             auto primMaterial = prim->getMaterial();
             auto primColor = primMaterial->getColor(rayhit.value());
+            auto lightColor = castRayColor(ray, rayhit.value());
             return Color(
-                primColor.getR(),
-                primColor.getG(),
-                primColor.getB());
+                       primColor.getR(),
+                       primColor.getG(),
+                       primColor.getB())
+                * lightColor;
         }
         return Color(0., 0, 0);
+    }
+
+    Color Scene::castRayColor(const Ray &ray, const RayHit &primHit) const
+    {
+        Color illumination;
+
+        for (const auto &light : m_lightSystem.getLights()) {
+            auto lightV = light->getOrigin() - primHit.getHitPoint();
+            auto lightDirection = lightV.normalize();
+            Ray lightRay = Ray(primHit.getHitPoint(), lightDirection);
+            bool shadowed = false;
+            for (const auto &prim : m_primitives) {
+                auto lightHit = prim->hit(lightRay);
+                if (lightHit != std::nullopt) {
+                    if (lightHit->getDistance() * lightHit->getDistance() < 0.001)
+                        continue;
+                    if (
+                        Math::Vector3D::gDist(primHit.getHitPoint(), lightHit->getHitPoint())
+                        < Math::Vector3D::gDist(primHit.getHitPoint(), light->getOrigin())) {
+                        shadowed = true;
+                        break;
+                    }
+                }
+            }
+
+            if (shadowed)
+                continue;
+            auto diffuse = Math::Algorithm::clampD(primHit.getNormal().dot(lightDirection), 0., 1.);
+            illumination += light->getColor() * diffuse;
+        }
+        return illumination;
     }
 } // namespace Raytracer
