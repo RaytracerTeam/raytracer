@@ -3,7 +3,8 @@ name: raytracer-push-checker
 on:
   push:
     branches:
-      - "main"
+      - "dev"
+      - "actions"
   pull_request:
     branches:
       - "main"
@@ -26,7 +27,7 @@ jobs:
 
       - name: Installing further dependencies
         run: |
-          dnf -y --refresh install --setopt=tsflags=nodocs --setopt=deltarpm=false libconfig-devel
+          dnf -y --refresh --disablerepo='*' --enablerepo='baseos' libconfig-devel
 
       - name: Checking Makefile.
         run: |
@@ -48,3 +49,21 @@ jobs:
             echo "Make failed."
             exit 1
           fi
+
+  merge_to_main:
+    runs-on: ubuntu-latest
+    needs: check_compilation
+    if: ${{ github.ref == 'refs/heads/dev' && needs.check_compilation.result == 'success' }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Merge to Main
+        run: |
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git merge ${{ github.event.after }}
+          git push origin main
