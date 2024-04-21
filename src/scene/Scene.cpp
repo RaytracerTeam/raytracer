@@ -130,7 +130,7 @@ namespace Raytracer {
                 continue;
             auto diffuse = Math::Algorithm::clampD(rhitPrim.getNormal().dot(lightDirection), 0., 1.);
             auto specular = primMaterial->getSpecular(light.get(), rhitPrim, lightDirection);
-            illumination += (primMaterial->getColor(rhitPrim) + specular) * diffuse;
+            illumination += (primMaterial->getColor(rhitPrim) + specular) * (light->getColor() * diffuse);
         }
         return illumination;
     }
