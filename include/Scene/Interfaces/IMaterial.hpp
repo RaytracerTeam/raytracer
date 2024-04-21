@@ -21,6 +21,6 @@ namespace Raytracer {
     class IMaterial {
     public:
         virtual Color getColor(const RayHit &rayhit) const = 0;
-        virtual Color getSpecular(const ILight *light, const RayHit &rayhit) const = 0;
+        virtual Color getSpecular(const ILight *light, const RayHit &rayhit, const Math::Vector3D &lightVec) const = 0;
     };
 } // namespace Material

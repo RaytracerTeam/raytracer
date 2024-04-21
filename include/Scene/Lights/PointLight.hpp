@@ -20,10 +20,6 @@ namespace Raytracer {
             : ALight(origin, color)
         {
         }
-        PointLight(const Math::Vector3D &origin, const Color &color, double diffuse)
-            : ALight(origin, color, diffuse)
-        {
-        }
         ~PointLight() = default;
 
     protected:

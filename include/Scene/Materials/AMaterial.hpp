@@ -20,7 +20,7 @@ namespace Raytracer {
             void setAlbedo(double albedo) { m_albedo = albedo; }
             void setEmission(double emission) { m_emission = emission; }
 
-            Color getSpecular(const ILight *light, const RayHit &rayhit) const override;
+            Color getSpecular(const ILight *light, const RayHit &rayhit, const Math::Vector3D &lightVec) const override;
         protected:
             AMaterial() = default;
             ~AMaterial() = default;

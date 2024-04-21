@@ -15,12 +15,22 @@ namespace Raytracer {
     Admits we have clear view of light
     https://euler.ac-versailles.fr/IMG/pdf/raytracing.pdf
     */
-    Color AMaterial::getSpecular(const ILight *light, const RayHit &rayhit) const
+           // Math::Vector3D n = rayhit.getNormal();
+        // const Math::Vector3D &l = lightDir;
+        // const Math::Vector3D &u = ray.getDirection();
+        // if (l.dot(n) <= 0.001)
+        //     return Color();
+
+        // Math::Vector3D r = (u - n * (2 * (n.dot(u)))).normalize(); // (n * 2. * (n.dot(l))) - l;
+        // return light->getColor() * (std::pow(l.dot(r), 0.8));
+    Color AMaterial::getSpecular(const ILight *light, const RayHit &rayhit, const Math::Vector3D &lightVec) const
     {
         Math::Vector3D n = rayhit.getNormal();
-        Math::Vector3D l = light->getOrigin();
-        Math::Vector3D r = (n * 2. * (n.dot(l))) - l;
+        const Math::Vector3D &l = lightVec;
+        if (l.dot(n) <= 0.001)
+            return Color();
 
-        return light->getColor() * (std::pow(l.dot(r), light->getDiffuse()));
+        Math::Vector3D r = (n * 2. * (n.dot(l))) - l;
+        return light->getColor() * (std::pow(l.dot(r), 30));
     }
 } // namespace Raytracer

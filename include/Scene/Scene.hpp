@@ -36,7 +36,7 @@ namespace Raytracer {
         void updatePrimitives(void);
 
     private:
-        Color castRayColor(const Ray &ray, const RayHit &primHit) const;
+        Color castRayColor(const Ray &ray, const IPrimitive *primHit, const RayHit &rhitPrim) const;
         Color castRay(const Ray &ray) const;
 
         std::vector<std::unique_ptr<IPrimitive>> m_primitives;

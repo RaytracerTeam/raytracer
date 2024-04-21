@@ -14,9 +14,6 @@ namespace Raytracer {
     class ILight : public ISceneObj {
     public:
         virtual Color getColor(void) const = 0;
-        virtual double getDiffuse(void) const = 0;
-
         virtual void setColor(const Color &color) = 0;
-        virtual void setDiffuse(double diffuse) = 0;
     };
 } // namespace Material

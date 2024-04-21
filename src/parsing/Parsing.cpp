@@ -37,8 +37,8 @@ namespace Raytracer {
             auto plane = std::make_unique<Plane>(-4, std::make_unique<MaterialSolid>(Color(200U, 0, 0)), Plane::Y);
             scene.addPrimitive(std::move(plane));
 
-            scene.addLight(std::make_unique<PointLight>(Math::Vector3D(-1, 0, -1), Color(255U, 255U, 255U), 0.75));
-            scene.addLight(std::make_unique<PointLight>(Math::Vector3D(1, 8, -6), Color(0U, 0U, 200U), 0.9));
+            scene.addLight(std::make_unique<PointLight>(Math::Vector3D(-1, 0, -1), Color(255U, 255U, 255U)));
+            scene.addLight(std::make_unique<PointLight>(Math::Vector3D(3, -1, -6), Color(0U, 0U, 200U)));
         }
     } // namespace Parsing
 
