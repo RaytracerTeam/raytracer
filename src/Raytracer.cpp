@@ -6,8 +6,9 @@
 */
 
 #include "Raytracer.hpp"
-#include "Scene/Scene.hpp"
+#include "Parsing/Parsing.hpp"
 #include "Scene/Interactive/SceneInteractive.hpp"
+#include "Scene/Scene.hpp"
 #include "Writer.hpp"
 
 #include <iostream>
@@ -40,6 +41,7 @@ namespace Raytracer {
 
         try {
             // MAKE PARSING HERE
+            Parsing::parse(*scene, dimension, "");
             // END PARSING
             scene->updatePrimitives();
             if (argc == 2 && strcmp(argv[1], "-i") == 0)

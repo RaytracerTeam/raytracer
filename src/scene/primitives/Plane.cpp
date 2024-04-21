@@ -11,12 +11,11 @@
 #include <cmath>
 
 namespace Raytracer {
-    Plane::Plane(const Math::Vector3D &origin, std::unique_ptr<IMaterial> &material, double pos, const Axis &axis)
-        : APrimitive(origin, material)
+    Plane::Plane(double pos,  std::unique_ptr<IMaterial> material, const Axis &axis)
+        : APrimitive({}, std::move(material))
         , m_axis(axis)
     {
         auto inf = std::numeric_limits<double>::infinity();
-        ;
         switch (m_axis) {
         case X:
             setOrigin(Math::Vector3D(pos, inf, inf));

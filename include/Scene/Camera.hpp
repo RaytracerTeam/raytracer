@@ -16,12 +16,12 @@
 namespace Raytracer {
     class Camera {
     public:
-        Camera(Math::Vector3D pos, Math::Angle3D angle, Dimension &dimension, double fov);
-        Camera(Dimension &dimension, double fov);
+        Camera(Math::Vector3D pos, Math::Angle3D angle, const Dimension &dimension, double fov);
+        Camera(const Dimension &dimension, double fov);
         ~Camera() = default;
         Camera &operator=(const Camera &ray);
 
-        Dimension &getDimension(void) const { return m_dimension; }
+        const Dimension &getDimension(void) const { return m_dimension; }
         double getFov(void) const { return m_fov; }
         Math::Angle3D getAngle(void) const { return m_angle; }
         Math::Vector3D getPos(void) const { return m_pos; }
@@ -33,7 +33,7 @@ namespace Raytracer {
     private:
         Math::Vector3D m_pos;
         Math::Angle3D m_angle;
-        Dimension &m_dimension;
+        Dimension m_dimension;
         double m_fov;
     };
 } // namespace Raytracer

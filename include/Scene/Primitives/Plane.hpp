@@ -18,8 +18,8 @@ namespace Raytracer {
             Y,
             Z
         };
-        Plane(const Math::Vector3D &origin, std::unique_ptr<IMaterial> &material) : APrimitive(origin, material) {}
-        Plane(const Math::Vector3D &origin, std::unique_ptr<IMaterial> &material, double pos, const Axis &axis);
+        Plane(const Math::Vector3D &origin,  std::unique_ptr<IMaterial> material) : APrimitive(origin, std::move(material)) {}
+        Plane(double pos,  std::unique_ptr<IMaterial> material, const Axis &axis);
         ~Plane() = default;
 
         std::optional<RayHit> hit(const Ray &ray) const override;

@@ -36,6 +36,7 @@ namespace Raytracer {
         m_dimension.setHeight(height);
         m_texture.create(m_dimension.getWidth(), m_dimension.getHeight());
         m_img.create(m_dimension.getWidth(), m_dimension.getHeight());
+        m_scene->getCurrentCamera().setDimension(m_dimension);
     }
 
     void SceneInteractive::handleEvents(void)
@@ -44,7 +45,7 @@ namespace Raytracer {
 
         while (m_window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)
-                m_window.close();
+                return m_window.close();
             if (event.type == sf::Event::Resized) {
                 sf::FloatRect visibleArea(0.f, 0.f, event.size.width, event.size.height);
 

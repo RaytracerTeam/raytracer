@@ -95,7 +95,8 @@ namespace Raytracer {
             if (rayhit == std::nullopt)
                 continue;
 
-            auto primColor = prim->getColor(rayhit.value());
+            auto primMaterial = prim->getMaterial();
+            auto primColor = primMaterial->getColor(rayhit.value());
             return Color(
                 primColor.getR(),
                 primColor.getG(),

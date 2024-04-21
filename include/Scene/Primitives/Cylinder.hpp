@@ -12,8 +12,8 @@
 namespace Raytracer {
     class Cylinder : public APrimitive {
     public:
-        Cylinder(const Math::Vector3D &origin, std::unique_ptr<IMaterial> &material, double radius, double height)
-            : APrimitive(origin, material)
+        Cylinder(const Math::Vector3D &origin,  std::unique_ptr<IMaterial> material, double radius, double height)
+            : APrimitive(origin, std::move(material))
             , m_radius(radius)
             , m_height(height)
         {

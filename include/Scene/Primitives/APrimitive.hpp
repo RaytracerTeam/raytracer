@@ -28,10 +28,9 @@ namespace Raytracer {
 
         const Math::Vector3D &getOrigin(void) const override { return m_origin; }
         const Math::Matrix44 &getTMatrix(void) const override { return m_mat; }
-        Color getColor(const RayHit &rayhit) const override { return m_material->getColor(rayhit); }
-
+        IMaterial *getMaterial(void) const { return m_material.get(); };
     protected:
-        APrimitive(const Math::Vector3D &origin, std::unique_ptr<IMaterial> &material)
+        APrimitive(const Math::Vector3D &origin,  std::unique_ptr<IMaterial> material)
             : m_origin(origin)
             , m_material(std::move(material)) {};
         ~APrimitive() = default;

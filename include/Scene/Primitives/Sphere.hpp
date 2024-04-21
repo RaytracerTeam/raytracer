@@ -12,8 +12,8 @@
 namespace Raytracer {
     class Sphere : public APrimitive {
     public:
-        Sphere(const Math::Vector3D &origin, std::unique_ptr<IMaterial> &material, double radius)
-            : APrimitive(origin, material)
+        Sphere(const Math::Vector3D &origin,  std::unique_ptr<IMaterial> material, double radius)
+            : APrimitive(origin, std::move(material))
             , m_radius(radius)
         {
         }
