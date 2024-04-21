@@ -15,4 +15,3 @@ namespace Raytracer
         };
     }
 } // namespace Raytracer
-

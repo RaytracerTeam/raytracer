@@ -22,6 +22,7 @@ TESTSRC	=	$(wildcard ./tests/*.cpp) \
 
 CC		=	g++
 OBJ		=	$(SRC:.cpp=.o)
+DEPS	=	$(SRC:.cpp=.d)
 TESTOBJ	=	$(TESTSRC:.cpp=.o)
 
 TESTCOV	=	$(TESTSRC:.cpp=.gcno)
@@ -33,6 +34,7 @@ TESTNAME	=	unit-tests
 CFLAGS		=	-O2 -Iinclude -std=c++20 -Wall -Wextra
 DBGFLAGS	=	-g3 -O0
 TESTFLAGS	=	-g3 -O0 --coverage -fprofile-arcs -ftest-coverage
+DEPSFLAGS	=	-MMD -MP
 
 LDFLAGS		=	-lconfig++ -lsfml-graphics -lsfml-window -lsfml-system
 TESTSFLAGS	=	$(LDFLAGS) -lcriterion
@@ -56,8 +58,10 @@ dbgs: $(NAME)
 tests_compile: CFLAGS += -g3 --coverage
 tests_compile: $(TESTNAME)
 
+-include $(DEPS)
+
 %.o: %.cpp
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(DEPSFLAGS) -c $< -o $@
 
 $(NAME): $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(LDFLAGS)
@@ -74,6 +78,7 @@ tests_cov: tests_compile
 
 clean:
 	rm -f $(OBJ)
+	rm -f $(DEPS)
 	rm -f $(TESTOBJ)
 	rm -f $(TESTCOV)
 
