@@ -27,7 +27,7 @@ jobs:
 
       - name: Installing further dependencies
         run: |
-          dnf -y --refresh --disablerepo='*' --enablerepo='baseos' libconfig-devel
+          dnf -y --refresh --disablerepo='*' --enablerepo='baseos' install libconfig-devel
 
       - name: Checking Makefile.
         run: |
