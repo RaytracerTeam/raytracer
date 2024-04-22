@@ -68,5 +68,5 @@ jobs:
         run: |
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
-          git merge ${{ github.event.after }}
+          git merge dev
           git push origin main
