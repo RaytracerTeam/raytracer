@@ -29,6 +29,8 @@ jobs:
         run: |
           curl --output conf.rpm https://rpmfind.net/linux/fedora/linux/releases/38/Everything/x86_64/os/Packages/l/libconfig-1.7.3-5.fc38.x86_64.rpm
           rpm -ivh conf.rpm
+          curl --output conf.rpm https://rpmfind.net/linux/fedora/linux/releases/38/Everything/x86_64/os/Packages/l/libconfig-devel-1.7.3-5.fc38.x86_64.rpm
+          rpm -ivh conf.rpm
 
       - name: Checking Makefile.
         run: |
