@@ -22,27 +22,27 @@ namespace Raytracer {
         switch (code) {
         case sf::Keyboard::Up:
         case sf::Keyboard::Z:
-            camPos += Math::Vector3D(0, 0, -1);
+            camPos += Math::Vector3D(0, 0, -1).rotate(camAngle);
             break;
         case sf::Keyboard::Down:
         case sf::Keyboard::S:
-            camPos += Math::Vector3D(0, 0, 1);
+            camPos += Math::Vector3D(0, 0, 1).rotate(camAngle);
             break;
         case sf::Keyboard::Left:
         case sf::Keyboard::Q:
-            camPos += Math::Vector3D(-1, 0, 0);
+            camPos += Math::Vector3D(-1, 0, 0).rotate(camAngle);
             break;
         case sf::Keyboard::Right:
         case sf::Keyboard::D:
-            camPos += Math::Vector3D(1, 0, 0);
+            camPos += Math::Vector3D(1, 0, 0).rotate(camAngle);
             break;
         case sf::Keyboard::PageUp:
         case sf::Keyboard::A:
-            camPos += Math::Vector3D(0, 1, 0);
+            camPos += Math::Vector3D(0, 1, 0).rotate(camAngle);
             break;
         case sf::Keyboard::PageDown:
         case sf::Keyboard::E:
-            camPos += Math::Vector3D(0, -1, 0);
+            camPos += Math::Vector3D(0, -1, 0).rotate(camAngle);
             break;
         case sf::Keyboard::U:
             camAngle.setPitch(Math::Algorithm::clampD(camAngle.getPitch() + 1, -90., 90.));

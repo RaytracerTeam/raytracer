@@ -34,11 +34,11 @@ namespace Raytracer {
             // auto cyl = std::make_unique<Cylinder>(Math::Vector3D(-2, 0, -10), std::make_unique<MaterialSolid>(Color(0U, 150U, 200U)), 1., 1.);
             // scene.addPrimitive(std::move(cyl));
 
-            auto plane = std::make_unique<Plane>(-4, std::make_unique<MaterialSolid>(Color(200U, 0, 0)), Plane::Y);
+            auto plane = std::make_unique<Plane>(-4, std::make_unique<MaterialSolid>(Color(200U, 0, 20U)), Plane::Y);
             scene.addPrimitive(std::move(plane));
 
             scene.addLight(std::make_unique<PointLight>(Math::Vector3D(-1, 0, -1), Color(255U, 255U, 255U)));
-            scene.addLight(std::make_unique<PointLight>(Math::Vector3D(3, -1, -6), Color(0U, 0U, 200U)));
+            scene.addLight(std::make_unique<PointLight>(Math::Vector3D(-1, 8, -6), Color(0U, 0U, 200U)));
         }
     } // namespace Parsing
 
