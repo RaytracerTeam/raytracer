@@ -27,7 +27,7 @@ jobs:
 
       - name: Installing further dependencies
         run: |
-          curl --output conf.rpm https://rpmfind.net/linux/fedora/linux/releases/39/Everything/x86_64/os/Packages/l/libconfig-1.7.3-6.fc39.x86_64.rpm
+          curl --output conf.rpm https://rpmfind.net/linux/fedora/linux/releases/38/Everything/x86_64/os/Packages/l/libconfig-1.7.3-5.fc38.x86_64.rpm
           rpm -ivh conf.rpm
 
       - name: Checking Makefile.
