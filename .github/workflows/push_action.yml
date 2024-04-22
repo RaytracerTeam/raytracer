@@ -27,7 +27,8 @@ jobs:
 
       - name: Installing further dependencies
         run: |
-          dnf -y --refresh --disablerepo='*' --enablerepo='baseos' install libconfig-devel
+          curl --output conf.rpm https://rpmfind.net/linux/fedora/linux/releases/39/Everything/x86_64/os/Packages/l/libconfig-1.7.3-6.fc39.x86_64.rpm
+          rpm -ivh conf.rpm
 
       - name: Checking Makefile.
         run: |
