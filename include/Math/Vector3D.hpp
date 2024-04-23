@@ -8,6 +8,7 @@
 #pragma once
 
 #include <cstdint>
+#include <iostream>
 
 #include "Error.hpp"
 #include "Angle3D.hpp"
@@ -100,8 +101,8 @@ namespace Raytracer {
             double y;
             double z;
         };
+
     } // namespace Math
-
-    
-
 } // namespace Raytracer
+
+std::ostream &operator<<(std::ostream &os, const Raytracer::Math::Vector3D &v);

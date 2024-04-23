@@ -20,7 +20,8 @@ int main(void)
     for (auto &camera : cameras) {
         camera.lookup("resolution").lookupValue("width", width);
         camera.lookupValue("fieldOfView", fov);
-        std::cout << fov << std::endl;
+        float fieldOfView = camera.lookup("fieldOfView");
+        std::cout << fov << " other fov : " << fieldOfView << std::endl;
         std::cout << width << std::endl;
     }
 

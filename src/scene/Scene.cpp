@@ -52,6 +52,11 @@ namespace Raytracer {
         return *m_cameras.at(m_curCamIndex).get();
     }
 
+    size_t Scene::getCameraCount(void) const
+    {
+        return m_cameras.size();
+    }
+
     // https://stackoverflow.com/questions/28896001/read-write-to-ppm-image-file-c
     // https://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-generating-camera-rays/generating-camera-rays.html
     std::vector<Color> Scene::render(void)

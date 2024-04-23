@@ -8,6 +8,7 @@
 CORESRC	=	$(wildcard ./src/*.cpp) \
 			$(wildcard ./src/math/*.cpp) \
 			$(wildcard ./src/parsing/*.cpp) \
+			$(wildcard ./src/parsing/primitives/*.cpp) \
 			$(wildcard ./src/scene/*.cpp) \
 			$(wildcard ./src/scene/primitives/*.cpp) \
 			$(wildcard ./src/scene/materials/*.cpp) \

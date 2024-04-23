@@ -229,3 +229,9 @@ namespace Raytracer {
     } // namespace Math
 
 } // namespace Raytracer
+
+std::ostream &operator<<(std::ostream &os, const Raytracer::Math::Vector3D &v)
+{
+    os << "Vector3D(" << v.getX() << ", " << v.getY() << ", " << v.getZ() << ")";
+    return os;
+}

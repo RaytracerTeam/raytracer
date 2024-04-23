@@ -16,6 +16,7 @@
 namespace Raytracer {
     class Camera {
     public:
+        Camera();
         Camera(Math::Vector3D pos, Math::Angle3D angle, const Dimension &dimension, double fov);
         Camera(const Dimension &dimension, double fov);
         ~Camera() = default;

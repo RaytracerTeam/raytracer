@@ -26,27 +26,28 @@ namespace Raytracer {
         return 0;
     }
 
-    static int imageOutput(Scene *scene, Dimension &screnDim)
+    static int imageOutput(Scene *scene)
     {
         auto res = scene->render();
+        const Dimension &dim = scene->getCurrentCamera().getDimension();
 
-        WriteFile::writeImage(WriteFile::PPM, res, screnDim);
+        WriteFile::writeImage(WriteFile::PPM, res, dim);
         return 0;
     }
 
     int raytracer(int argc, char **argv)
     {
         std::unique_ptr<Scene> scene = std::make_unique<Scene>();
-        Dimension dimension(640, 480); // todo: make it in the scene file, if not set, set thesevalues
+        Dimension windowDimensions(640, 480); // todo: make it in the scene file, if not set, set thesevalues
 
         try {
-            // MAKE PARSING HERE
-            Parsing::parse(*scene, dimension, "");
-            // END PARSING
+            std::vector<std::string_view> inputFiles;
+            bool interactiveMode = Parsing::parseArgv(argc, argv, inputFiles);
+            Parsing::parse(*scene, windowDimensions, inputFiles);
             scene->updatePrimitives();
-            if (argc == 2 && strcmp(argv[1], "-i") == 0)
-                return interactive(scene.get(), dimension);
-            return imageOutput(scene.get(), dimension);
+            if (interactiveMode)
+                return interactive(scene.get(), windowDimensions);
+            return imageOutput(scene.get());
         } catch (Error &error) {
             std::cerr << "Error : " << error.what() << ". (" << error.where() << ")" << std::endl;
             return EXIT_FAILURE_EPITECH;
