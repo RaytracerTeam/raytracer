@@ -8,6 +8,14 @@
 #include "Scene/Camera.hpp"
 
 namespace Raytracer {
+    Camera::Camera()
+        : m_pos(Math::Vector3D(0, 0, 0))
+        , m_angle(Math::Angle3D(0, 0, 0))
+        , m_dimension(Dimension(600, 400))
+        , m_fov(51.82)
+    {
+    }
+
     Camera::Camera(Math::Vector3D pos, Math::Angle3D angle, const Dimension &dimension, double fov)
         : m_pos(pos)
         , m_angle(angle)

@@ -16,30 +16,40 @@
 
 #include "Scene/Lights/PointLight.hpp"
 
+#include <iostream>
+
 namespace Raytracer {
     namespace Parsing {
-        void parse(Scene &scene, const Dimension &dim, const std::string &)
+        bool parseArgv(int argc, char **argv, std::vector<std::string_view> &inputFiles)
         {
-            // TEMP
-            scene.addCamera(std::make_unique<Camera>(dim, 51.82));
+            bool interactiveMode = false;
+            const std::vector<std::string_view> args(argv + 1, argv + argc);
 
-            // temp
-            auto sphere = std::make_unique<Sphere>(Math::Vector3D(-1, 1, -18), std::make_unique<MaterialSolid>(Color(200U, 0U, 200U)), 1.);
-            scene.addPrimitive(std::move(sphere));
+            for (const auto& arg : args) {
+                if (arg == "-i" || arg == "--interactive") {
+                    interactiveMode = true;
+                    continue;
+                }
+                if (!std::filesystem::exists(arg)) {
+                    throw std::runtime_error(std::string("raytracer: ") + std::string(arg) + ": No such file or directory");
+                }
+                inputFiles.push_back(arg);
+            }
 
-            auto sphere2 = std::make_unique<Sphere>(Math::Vector3D(-1, 1, -10), std::make_unique<MaterialSolid>(Color(200U, 150U, 0U)), 3.);
-            scene.addPrimitive(std::move(sphere2));
-
-            // auto cyl = std::make_unique<Cylinder>(1., std::numeric_limits<double>::infinity());
-            // auto cyl = std::make_unique<Cylinder>(Math::Vector3D(-2, 0, -10), std::make_unique<MaterialSolid>(Color(0U, 150U, 200U)), 1., 1.);
-            // scene.addPrimitive(std::move(cyl));
-
-            auto plane = std::make_unique<Plane>(-4, std::make_unique<MaterialSolid>(Color(200U, 0, 20U)), Plane::Y);
-            scene.addPrimitive(std::move(plane));
-
-            scene.addLight(std::make_unique<PointLight>(Math::Vector3D(-1, 0, -1), Color(255U, 255U, 255U)));
-            scene.addLight(std::make_unique<PointLight>(Math::Vector3D(-1, 8, -6), Color(0U, 0U, 200U)));
+            return interactiveMode;
+        }
+        void parse(Scene &scene, const std::vector<std::string_view> &inputFiles)
+        {
+            for (const auto& file : inputFiles) {
+                std::cout << "Parsing file: " << file << std::endl;
+                libconfig::Config cfg;
+                cfg.readFile(file.data());
+                parseCameras(cfg, scene);
+                parsePrimitives(cfg, scene);
+                parseLights(cfg, scene);
+            }
+            if (scene.getCameraCount() == 0)
+                scene.addCamera(std::make_unique<Camera>());
         }
     } // namespace Parsing
-
 } // namespace Raytracer

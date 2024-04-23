@@ -33,6 +33,7 @@ namespace Raytracer {
         bool setCameraIndexRelative(int64_t offset);
 
         Camera &getCurrentCamera(void) const;
+        size_t getCameraCount(void) const;
         void updatePrimitives(void);
 
     private:

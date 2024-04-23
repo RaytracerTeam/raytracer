@@ -18,46 +18,50 @@ namespace Raytracer {
     {
         auto camPos = m_camera->getPos();
         auto camAngle = m_camera->getAngle();
+        auto movementCamAngle = camAngle;
+        movementCamAngle.setPitch(0);
 
         switch (code) {
         case sf::Keyboard::Up:
         case sf::Keyboard::Z:
-            camPos += Math::Vector3D(0, 0, -1).rotate(camAngle);
+            camPos += Math::Vector3D(0, 0, -1).rotate(movementCamAngle);
             break;
         case sf::Keyboard::Down:
         case sf::Keyboard::S:
-            camPos += Math::Vector3D(0, 0, 1).rotate(camAngle);
+            camPos += Math::Vector3D(0, 0, 1).rotate(movementCamAngle);
             break;
         case sf::Keyboard::Left:
         case sf::Keyboard::Q:
-            camPos += Math::Vector3D(-1, 0, 0).rotate(camAngle);
+            camPos += Math::Vector3D(-1, 0, 0).rotate(movementCamAngle);
             break;
         case sf::Keyboard::Right:
         case sf::Keyboard::D:
-            camPos += Math::Vector3D(1, 0, 0).rotate(camAngle);
+            camPos += Math::Vector3D(1, 0, 0).rotate(movementCamAngle);
             break;
+        case sf::Keyboard::Space:
         case sf::Keyboard::PageUp:
         case sf::Keyboard::A:
-            camPos += Math::Vector3D(0, 1, 0).rotate(camAngle);
+            camPos += Math::Vector3D(0, 1, 0);
             break;
+        case sf::Keyboard::LShift:
         case sf::Keyboard::PageDown:
         case sf::Keyboard::E:
-            camPos += Math::Vector3D(0, -1, 0).rotate(camAngle);
+            camPos += Math::Vector3D(0, -1, 0);
             break;
         case sf::Keyboard::U:
-            camAngle.setPitch(Math::Algorithm::clampD(camAngle.getPitch() + 1, -90., 90.));
+            camAngle.setPitch(Math::Algorithm::clampD(camAngle.getPitch() + 10, -90., 90.));
             m_camera->setAngle(camAngle);
             break;
         case sf::Keyboard::J:
-            camAngle.setPitch(Math::Algorithm::clampD(camAngle.getPitch() - 1, -90., 90.));
+            camAngle.setPitch(Math::Algorithm::clampD(camAngle.getPitch() - 10, -90., 90.));
             m_camera->setAngle(camAngle);
             break;
         case sf::Keyboard::H:
-            camAngle.setYaw(camAngle.getYaw() + 1);
+            camAngle.setYaw(camAngle.getYaw() + 10);
             m_camera->setAngle(camAngle);
             break;
         case sf::Keyboard::K:
-            camAngle.setYaw(camAngle.getYaw() - 1);
+            camAngle.setYaw(camAngle.getYaw() - 10);
             m_camera->setAngle(camAngle);
             break;
         default:
