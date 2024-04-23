@@ -15,7 +15,7 @@
 namespace Raytracer {
     namespace Parsing {
         bool parseArgv(int argc, char **argv, std::vector<std::string_view> &inputFiles); // return true if interactive mode
-        void parse(Scene &scene, const Dimension &dim, const std::vector<std::string_view> &inputFiles);
+        void parse(Scene &scene, const std::vector<std::string_view> &inputFiles);
 
         void parseCameras(const libconfig::Config &config, Scene &scene);
         void parsePrimitives(const libconfig::Config &config, Scene &scene);

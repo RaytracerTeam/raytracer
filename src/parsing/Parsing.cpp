@@ -38,7 +38,7 @@ namespace Raytracer {
 
             return interactiveMode;
         }
-        void parse(Scene &scene, const Dimension &dim, const std::vector<std::string_view> &inputFiles)
+        void parse(Scene &scene, const std::vector<std::string_view> &inputFiles)
         {
             for (const auto& file : inputFiles) {
                 std::cout << "Parsing file: " << file << std::endl;
