@@ -10,6 +10,9 @@
 #include "Scene/Scene.hpp"
 #include "Scene/Interactive/CameraInteractive.hpp"
 
+#include "imgui.h"
+#include "imgui-SFML.h"
+
 #include <SFML/Graphics.hpp>
 
 namespace Raytracer {
@@ -19,7 +22,7 @@ namespace Raytracer {
     class SceneInteractive {
     public:
         SceneInteractive(Dimension &dimension, const std::string &title);
-        ~SceneInteractive() = default;
+        ~SceneInteractive();
 
         void loop(void);
 
@@ -54,6 +57,9 @@ namespace Raytracer {
         sf::RenderWindow m_window;
         sf::Image m_img;
         sf::Texture m_texture;
+
+        // ImGui
+        sf::Clock m_deltaClock;
 
         std::vector<std::pair<sf::Keyboard::Key, bool>> m_actions;
         float m_movementSpeed = DEFAULT_MOVEMENT_SPEED;

@@ -29,6 +29,11 @@ namespace Raytracer {
         m_img.create(m_dimension.getWidth(), m_dimension.getHeight());
         m_window.setFramerateLimit(24);
         setupActions();
+        ImGui::SFML::Init(m_window);
+    }
+    SceneInteractive::~SceneInteractive()
+    {
+        ImGui::SFML::Shutdown();
     }
 
     void SceneInteractive::updateDimension(unsigned int width, unsigned int height)
@@ -46,6 +51,8 @@ namespace Raytracer {
         bool newEvent = false;
 
         while (m_window.pollEvent(event)) {
+            ImGui::SFML::ProcessEvent(event);
+
             if (event.type == sf::Event::Closed)
                 return m_window.close();
             if (event.type == sf::Event::Resized) {
@@ -75,6 +82,11 @@ namespace Raytracer {
     {
         while (m_window.isOpen()) {
             handleEvents();
+            ImGui::SFML::Update(m_window, m_deltaClock.restart());
+
+            ImGui::Begin("Hello, world!");
+            ImGui::Button("Look at this pretty button");
+            ImGui::End();
 
             auto pixels = RColorToPixelBuffer(m_scene->render());
             m_img.create(m_dimension.getWidth(), m_dimension.getHeightD(), pixels.get());
@@ -82,6 +94,7 @@ namespace Raytracer {
             m_texture.update(m_img);
             m_window.clear();
             m_window.draw(sf::Sprite(m_texture));
+            ImGui::SFML::Render(m_window);
             m_window.display();
         }
     }
