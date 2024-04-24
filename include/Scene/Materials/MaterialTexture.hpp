@@ -12,7 +12,7 @@
 #include <memory>
 #include <string>
 
-#include <SFML/Graphics/Texture.hpp>
+#include <SFML/Graphics/Image.hpp>
 
 namespace Raytracer {
     class MaterialTexture : public AMaterial {
@@ -21,7 +21,12 @@ namespace Raytracer {
         ~MaterialTexture() = default;
 
         Color getColor(const RayHit &rayhit) const override;
+        Color getColor(double u, double v) const;
+
+        void setTexture(const std::string &pathname);
+        const std::string &getTexture(void) const { return m_pathname; }
     private:
-        std::unique_ptr<sf::Texture> m_texture;
+        std::unique_ptr<sf::Image> m_image;
+        std::string m_pathname;
     };
 } // namespace Raytracer

@@ -43,7 +43,11 @@ namespace Raytracer {
             for (const auto& file : inputFiles) {
                 std::cout << "Parsing file: " << file << std::endl;
                 libconfig::Config cfg;
-                cfg.readFile(file.data());
+                try {
+                    cfg.readFile(file.data());
+                } catch (libconfig::ParseException &e) {
+                    throw Error(e.getError(), "Parsing::parse");
+                }
                 parseCameras(cfg, scene);
                 parsePrimitives(cfg, scene);
                 parseLights(cfg, scene);

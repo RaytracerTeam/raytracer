@@ -16,6 +16,7 @@
 #include "Scene/Interfaces/ILight.hpp"
 #include "Scene/Interfaces/IPrimitive.hpp"
 #include "Scene/SceneLightning.hpp"
+#include "Skybox.hpp"
 
 namespace Raytracer {
     class Scene {
@@ -45,6 +46,9 @@ namespace Raytracer {
         size_t m_curCamIndex = 0;
 
         SceneLightning m_lightSystem;
+
+        // temp
+        Skybox m_skybox = Skybox(std::make_unique<MaterialTexture>("assets/skybox_house.jpg"), SPHERE);
         // size_t m_maxRayBounces = 5; // todo : set in config
     };
 }

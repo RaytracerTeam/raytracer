@@ -8,7 +8,6 @@
 #pragma once
 
 #include "Scene/Interfaces/IMaterial.hpp"
-#include "Scene/Scene.hpp"
 
 
 namespace Raytracer {

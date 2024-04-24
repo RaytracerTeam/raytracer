@@ -103,7 +103,7 @@ namespace Raytracer {
 
             return castRayColor(ray, prim.get(), rayhit.value());
         }
-        return Color(0., 0, 0);
+        return m_skybox.getAmbientColor(ray);
     }
 
     Color Scene::castRayColor(const Ray &, const IPrimitive *primHit, const RayHit &rhitPrim) const

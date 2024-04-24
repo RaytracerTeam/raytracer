@@ -9,6 +9,9 @@
 *.png
 *.jpg
 
+!assets/*.png
+!assets/*.jpg
+
 raytracer
 unit-tests
 *.zip
