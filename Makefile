@@ -13,7 +13,8 @@ CORESRC	=	$(wildcard ./src/*.cpp) \
 			$(wildcard ./src/scene/primitives/*.cpp) \
 			$(wildcard ./src/scene/materials/*.cpp) \
 			$(wildcard ./src/scene/lights/*.cpp) \
-			$(wildcard ./src/scene/interactive/*.cpp)
+			$(wildcard ./src/scene/interactive/*.cpp) \
+			$(wildcard ./imgui/*.cpp) \
 
 SRC	=	./src/main/main.cpp \
 		$(CORESRC)
@@ -32,18 +33,20 @@ TESTCOV	+=	$(TESTSRC:.cpp=.gcda)
 NAME		=	raytracer
 TESTNAME	=	unit-tests
 
-CFLAGS		=	-O2 -Iinclude -std=c++20 -Wall -Wextra
+CFLAGS		=	-O2 -Iinclude -Iimgui -std=c++20 -Wall -Wextra
 DBGFLAGS	=	-g3 -O0
 TESTFLAGS	=	-g3 -O0 --coverage -fprofile-arcs -ftest-coverage
 DEPSFLAGS	=	-MMD -MP
 
-LDFLAGS		=	-lconfig++ -lsfml-graphics -lsfml-window -lsfml-system
+LDFLAGS		=	-lconfig++ -lsfml-graphics -lsfml-window -lsfml-system -lGLEW -lglfw -framework OpenGL
 TESTSFLAGS	=	$(LDFLAGS) -lcriterion
 
 MACBREWSFML		= 	/opt/homebrew/Cellar/sfml/2.6.1
 MACBREWCONFIG	=	/opt/homebrew/Cellar/libconfig/1.7.3
-MACSFMLINCLUDE	=	-I$(MACBREWSFML)/include -I$(MACBREWCONFIG)/include
-MACSFMLLIB		=	-L$(MACBREWSFML)/lib -L$(MACBREWCONFIG)/lib
+MACBREWGLFW		=	/opt/homebrew/Cellar/glfw/3.4
+MACBREWGLEW		=	/opt/homebrew/Cellar/glew/2.2.0_1
+MACSFMLINCLUDE	=	-I$(MACBREWSFML)/include -I$(MACBREWCONFIG)/include -I$(MACBREWGLFW)/include -I$(MACBREWGLEW)/include
+MACSFMLLIB		=	-L$(MACBREWSFML)/lib -L$(MACBREWCONFIG)/lib -L$(MACBREWGLFW)/lib -L$(MACBREWGLEW)/lib
 
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Darwin)
