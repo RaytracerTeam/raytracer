@@ -80,12 +80,15 @@ namespace Raytracer {
 
     void SceneInteractive::loop(void)
     {
+        float fps;
         while (m_window.isOpen()) {
             handleEvents();
             ImGui::SFML::Update(m_window, m_deltaClock.restart());
 
             ImGui::Begin("Hello, world!");
             ImGui::Button("Look at this pretty button");
+            ImGui::InputFloat3("Position", &fps);
+            ImGui::Button(std::string("FPS: " + std::to_string(fps)).c_str());
             ImGui::End();
 
             auto pixels = RColorToPixelBuffer(m_scene->render());
