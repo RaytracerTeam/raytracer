@@ -44,9 +44,12 @@ namespace Raytracer {
         if (m_texture.get() == nullptr || m_methodAmbientColor == nullptr)
             return Color();
 
+        /* -0.2 on  to get more below to the top */
+        const double upCorrect = -0.2;
+
         auto d = ray.getDirection();
         float u = (0.5 + std::atan2(d.getZ(), d.getX()) / (2 * M_PI));
-        float v = (0.5 - std::asin(d.getY()) / M_PI);
+        float v = (0.5 - std::asin(d.getY() + upCorrect) / M_PI);
         return m_texture->getColor(u, v);
     }
 
