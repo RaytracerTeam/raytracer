@@ -76,6 +76,7 @@ namespace Raytracer
         auto camAngle = camera->getAngle();
         auto movementCamAngle = camAngle;
         movementCamAngle.setPitch(0);
+        m_needRendering = true;
 
         if (m_actions[SceneAction::MOVE_FORWARD].second) {
             camPos += Math::Vector3D(0, 0, -m_movementSpeed).rotate(movementCamAngle);

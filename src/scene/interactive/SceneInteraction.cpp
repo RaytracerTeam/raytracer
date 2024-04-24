@@ -20,6 +20,11 @@
 // std::cout << "fps =" << std::floor(fps) << std::endl; // flooring it will make the frame rate a rounded number
 // previousTime = currentTime;
 
+// Temp
+#include "Scene/Primitives/Sphere.hpp"
+#include "Scene/Materials/MaterialSolid.hpp"
+
+
 namespace Raytracer {
     SceneInteractive::SceneInteractive(Dimension &dimension, const std::string &title)
         : m_dimension(dimension)
@@ -48,7 +53,6 @@ namespace Raytracer {
     void SceneInteractive::handleEvents(void)
     {
         sf::Event event;
-        bool newEvent = false;
 
         while (m_window.pollEvent(event)) {
             ImGui::SFML::ProcessEvent(event);
@@ -60,16 +64,28 @@ namespace Raytracer {
 
                 updateDimension(event.size.width, event.size.height);
                 m_window.setView(sf::View(visibleArea));
+                m_needRendering = true;
             }
             if (m_interacCam.handleInput(event, m_window, m_actions)) {
-                newEvent = true;
+                m_newEvent = true;
             }
             if (m_interacCam.isActiveMouse())
                 m_interacCam.handleMouse(event, m_window);
         }
         applyActions();
-        if (newEvent)
-            m_scene->updatePrimitives(); // todo : unoptimized
+    }
+
+    void SceneInteractive::handleImGui(float *spherePos, float *sphereColor)
+    {
+        ImGui::SFML::Update(m_window, m_deltaClock.restart());
+
+        ImGui::Begin("What a nice tool, Thank you Mister Pommier");
+        ImGui::Button("Look at this pretty button");
+        if (ImGui::SliderFloat3("Position", spherePos, -10, 10) ||
+            ImGui::ColorPicker3("Color", sphereColor)) {
+            m_needRendering = true;
+        }
+        ImGui::End();
     }
 
     void SceneInteractive::setScene(Scene *scene)
@@ -80,19 +96,27 @@ namespace Raytracer {
 
     void SceneInteractive::loop(void)
     {
-        float fps;
+        float spherePos[3];
+        float sphereColor[3] = {1, 0, 0};
         while (m_window.isOpen()) {
             handleEvents();
-            ImGui::SFML::Update(m_window, m_deltaClock.restart());
+            handleImGui(spherePos, sphereColor);
 
-            ImGui::Begin("Hello, world!");
-            ImGui::Button("Look at this pretty button");
-            ImGui::InputFloat3("Position", &fps);
-            ImGui::Button(std::string("FPS: " + std::to_string(fps)).c_str());
-            ImGui::End();
+            Sphere *sphere = dynamic_cast<Sphere *>(m_scene->getPrimitives()[0].get());
+            if (sphere) {
+                sphere->setOrigin(Math::Vector3D(spherePos));
+                sphere->setMaterial(std::make_unique<MaterialSolid>(Color(sphereColor)));
+            }
 
-            auto pixels = RColorToPixelBuffer(m_scene->render());
-            m_img.create(m_dimension.getWidth(), m_dimension.getHeightD(), pixels.get());
+            if (m_newEvent) {
+                m_newEvent = false;
+                m_scene->updatePrimitives(); // todo : unoptimized
+            }
+            if (m_needRendering) {
+                m_needRendering = false;
+                m_lastRender = RColorToPixelBuffer(m_scene->render());
+            }
+            m_img.create(m_dimension.getWidth(), m_dimension.getHeightD(), m_lastRender.get());
 
             m_texture.update(m_img);
             m_window.clear();

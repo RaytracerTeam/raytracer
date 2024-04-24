@@ -47,6 +47,7 @@ namespace Raytracer {
         std::unique_ptr<sf::Uint8[]> RColorToPixelBuffer(const std::vector<Raytracer::Color> &vectorRes);
         void setRColorToImg(const std::vector<Raytracer::Color> &vectorRes);
         void handleEvents(void);
+        void handleImGui(float *spherePos, float *sphereColor);
 
         /////////////////////////////////
 
@@ -61,7 +62,13 @@ namespace Raytracer {
         // ImGui
         sf::Clock m_deltaClock;
 
+        // Storing the result of the render
+        std::__1::unique_ptr<sf::Uint8 []> m_lastRender;
+
+        // Actions
         std::vector<std::pair<sf::Keyboard::Key, bool>> m_actions;
+        bool m_newEvent = true;
+        bool m_needRendering = true;
         float m_movementSpeed = DEFAULT_MOVEMENT_SPEED;
         float m_rotationSpeed = DEFAULT_ROTATION_SPEED;
     };

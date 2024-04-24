@@ -17,6 +17,7 @@ namespace Raytracer {
         Color() = default;
         Color(double r, double g, double b);
         Color(unsigned int r, unsigned int g, unsigned int b);
+        Color(float *vals);
         ~Color() = default;
 
         double operator[](uint8_t i) const;

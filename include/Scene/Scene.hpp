@@ -34,6 +34,7 @@ namespace Raytracer {
 
         Camera &getCurrentCamera(void) const;
         size_t getCameraCount(void) const;
+        std::vector<std::unique_ptr<IPrimitive>> &getPrimitives(void) { return m_primitives; }
         void updatePrimitives(void);
 
     private:

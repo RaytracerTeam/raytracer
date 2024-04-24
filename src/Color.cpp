@@ -26,6 +26,18 @@ namespace Raytracer {
     {
     }
 
+    Color::Color(float *vals)
+    {
+        if (!vals)
+            return;
+        if (vals[0])
+            m_r = vals[0];
+        if (vals[1])
+            m_g = vals[1];
+        if (vals[2])
+            m_b = vals[2];
+    }
+
     double Color::operator[](uint8_t i) const
     {
         switch (i) {
