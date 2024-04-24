@@ -31,6 +31,11 @@ namespace Raytracer {
         }
 
     private:
+        void setupActions(void);
+        void parseConfigFile(const std::string &filename);
+        void updatePos(SceneAction action);
+        void applyActions(void);
+
         void updateDimension(unsigned int width, unsigned int height);
 
         std::unique_ptr<sf::Uint8[]> RColorToPixelBuffer(const std::vector<Raytracer::Color> &vectorRes);
@@ -46,5 +51,7 @@ namespace Raytracer {
         sf::RenderWindow m_window;
         sf::Image m_img;
         sf::Texture m_texture;
+
+        std::vector<std::pair<sf::Keyboard::Key, bool>> m_actions;
     };
 } // namespace Raytracer

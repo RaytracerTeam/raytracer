@@ -42,6 +42,7 @@ namespace Raytracer {
     void SceneInteractive::handleEvents(void)
     {
         sf::Event event;
+        bool newEvent = false;
 
         while (m_window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)
@@ -53,12 +54,14 @@ namespace Raytracer {
                 m_window.setView(sf::View(visibleArea));
             }
             if (m_interacCam.handleInput(event, m_window)) {
-                m_scene->updatePrimitives(); // todo : unoptimized
-                return;
+                newEvent = true;
             }
             if (m_interacCam.isActiveMouse())
                 m_interacCam.handleMouse(event, m_window);
         }
+        applyActions();
+        if (newEvent)
+            m_scene->updatePrimitives(); // todo : unoptimized
     }
 
     void SceneInteractive::setScene(Scene *scene)
