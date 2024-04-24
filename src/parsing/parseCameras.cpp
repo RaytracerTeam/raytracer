@@ -25,6 +25,7 @@ void Raytracer::Parsing::parseCameras(const libconfig::Config &config, Scene &sc
         }
         if (cameraSetting.exists("position")) {
             camera.setPos(getSettingPosition(cameraSetting));
+            camera.setDefaultPos(getSettingPosition(cameraSetting));
         }
         if (cameraSetting.exists("rotation")) {
             camera.setAngle(getSettingRotation(cameraSetting));

@@ -6,6 +6,7 @@
 */
 
 #include "Scene/Interactive/SceneInteractive.hpp"
+#include "Math/Algorithm.hpp"
 
 #include <iostream>
 #include <libconfig.h++>
@@ -24,15 +25,9 @@ namespace Raytracer
         m_actions.push_back(std::make_pair(sf::Keyboard::J, false));        // ROTATE_DOWN
         m_actions.push_back(std::make_pair(sf::Keyboard::H, false));        // ROTATE_LEFT
         m_actions.push_back(std::make_pair(sf::Keyboard::K, false));        // ROTATE_RIGHT
+        m_actions.push_back(std::make_pair(sf::Keyboard::LControl, false)); // SPRINT
+        m_actions.push_back(std::make_pair(sf::Keyboard::Return, false));   // RESET
         parseConfigFile("config/keys.cfg");
-        // for (auto &action : m_actions) {
-        //     std::cout << "Key: " << action.first << std::endl;
-        // }
-        // std::cout << "W " << sf::Keyboard::W <<
-        //     " A " << sf::Keyboard::A <<
-        //     " S " << sf::Keyboard::S <<
-        //     " D " << sf::Keyboard::D <<
-        //     std::endl;
     }
     void SceneInteractive::parseConfigFile(const std::string &filename)
     {
@@ -60,6 +55,10 @@ namespace Raytracer
                 sfKey = sf::Keyboard::Key::Space;
             else if (keyCode == "LSHIFT")
                 sfKey = sf::Keyboard::Key::LShift;
+            else if (keyCode == "LCTRL")
+                sfKey = sf::Keyboard::Key::LControl;
+            else if (keyCode == "ENTER")
+                sfKey = sf::Keyboard::Key::Return;
             else if (keyCode >= "A" && keyCode <= "Z")
                 sfKey = (sf::Keyboard::Key)(sf::Keyboard::A + keyCode[0] - 'A');
             else {
@@ -72,74 +71,64 @@ namespace Raytracer
 
     void SceneInteractive::updatePos(SceneAction action)
     {
-        (void)action;
-        return;
-    }
-    // {
-    //     auto camPos = m_camera->getPos();
-    //     auto camAngle = m_camera->getAngle();
-    //     auto movementCamAngle = camAngle;
-    //     movementCamAngle.setPitch(0);
+        Camera *camera = m_interacCam.getCamera();
+        auto camPos = camera->getPos();
+        auto camAngle = camera->getAngle();
+        auto movementCamAngle = camAngle;
+        movementCamAngle.setPitch(0);
 
-    //     switch (action) {
-    //     case sf::Keyboard::Up:
-    //     case sf::Keyboard::Z:
-    //         camPos += Math::Vector3D(0, 0, -1).rotate(movementCamAngle);
-    //         break;
-    //     case sf::Keyboard::Down:
-    //     case sf::Keyboard::S:
-    //         camPos += Math::Vector3D(0, 0, 1).rotate(movementCamAngle);
-    //         break;
-    //     case sf::Keyboard::Left:
-    //     case sf::Keyboard::Q:
-    //         camPos += Math::Vector3D(-1, 0, 0).rotate(movementCamAngle);
-    //         break;
-    //     case sf::Keyboard::Right:
-    //     case sf::Keyboard::D:
-    //         camPos += Math::Vector3D(1, 0, 0).rotate(movementCamAngle);
-    //         break;
-    //     case sf::Keyboard::Space:
-    //     case sf::Keyboard::PageUp:
-    //     case sf::Keyboard::A:
-    //         camPos += Math::Vector3D(0, 1, 0);
-    //         break;
-    //     case sf::Keyboard::LShift:
-    //     case sf::Keyboard::PageDown:
-    //     case sf::Keyboard::E:
-    //         camPos += Math::Vector3D(0, -1, 0);
-    //         break;
-    //     case sf::Keyboard::U:
-    //         camAngle.setPitch(Math::Algorithm::clampD(camAngle.getPitch() + 10, -90., 90.));
-    //         m_camera->setAngle(camAngle);
-    //         break;
-    //     case sf::Keyboard::J:
-    //         camAngle.setPitch(Math::Algorithm::clampD(camAngle.getPitch() - 10, -90., 90.));
-    //         m_camera->setAngle(camAngle);
-    //         break;
-    //     case sf::Keyboard::H:
-    //         camAngle.setYaw(camAngle.getYaw() + 10);
-    //         m_camera->setAngle(camAngle);
-    //         break;
-    //     case sf::Keyboard::K:
-    //         camAngle.setYaw(camAngle.getYaw() - 10);
-    //         m_camera->setAngle(camAngle);
-    //         break;
-    //     default:
-    //         throw std::runtime_error("Invalid action");
-    //     }
-    //     m_camera->setPos(camPos);
-    // }
+        if (m_actions[SceneAction::MOVE_FORWARD].second) {
+            camPos += Math::Vector3D(0, 0, -m_movementSpeed).rotate(movementCamAngle);
+        }
+        if (m_actions[SceneAction::MOVE_BACKWARD].second) {
+            camPos += Math::Vector3D(0, 0, m_movementSpeed).rotate(movementCamAngle);
+        }
+        if (m_actions[SceneAction::MOVE_LEFT].second) {
+            camPos += Math::Vector3D(-m_movementSpeed, 0, 0).rotate(movementCamAngle);
+        }
+        if (m_actions[SceneAction::MOVE_RIGHT].second) {
+            camPos += Math::Vector3D(m_movementSpeed, 0, 0).rotate(movementCamAngle);
+        }
+        if (m_actions[SceneAction::MOVE_UP].second) {
+            camPos += Math::Vector3D(0, m_movementSpeed, 0);
+        }
+        if (m_actions[SceneAction::MOVE_DOWN].second) {
+            camPos += Math::Vector3D(0, -m_movementSpeed, 0);
+        }
+        if (m_actions[SceneAction::ROTATE_UP].second) {
+            camAngle.setPitch(Math::Algorithm::clampD(camAngle.getPitch() + m_rotationSpeed, -90., 90.));
+            camera->setAngle(camAngle);
+        }
+        if (m_actions[SceneAction::ROTATE_DOWN].second) {
+            camAngle.setPitch(Math::Algorithm::clampD(camAngle.getPitch() - m_rotationSpeed, -90., 90.));
+            camera->setAngle(camAngle);
+        }
+        if (m_actions[SceneAction::ROTATE_LEFT].second) {
+            camAngle.setYaw(camAngle.getYaw() + m_rotationSpeed);
+            camera->setAngle(camAngle);
+        }
+        if (m_actions[SceneAction::ROTATE_RIGHT].second) {
+            camAngle.setYaw(camAngle.getYaw() - m_rotationSpeed);
+            camera->setAngle(camAngle);
+        }
+        if (m_actions[SceneAction::SPRINT].second) {
+            m_movementSpeed = DEFAULT_MOVEMENT_SPEED * 4;
+        } else {
+            m_movementSpeed = DEFAULT_MOVEMENT_SPEED;
+        }
+        camera->setPos(camPos);
+        if (m_actions[SceneAction::RESET].second) {
+            camera->resetPos();
+        }
+    }
 
     void SceneInteractive::applyActions(void)
     {
         int i = 0;
         for (auto &action : m_actions) {
-            if (action.second) {
-                std::cout << "Action: " << i << " " << action.first << std::endl;
+            if (action.second)
                 updatePos((SceneAction)i);
-            }
             i++;
         }
     }
-
 } // namespace Raytracer

@@ -25,6 +25,8 @@ namespace Raytracer {
             m_camera = camera;
         }
 
+        Camera *getCamera(void) const { return m_camera; }
+
         bool handleInput(const sf::Event &event, sf::Window &window, std::vector<std::pair<sf::Keyboard::Key, bool>> &actions);
         void handleMouse(const sf::Event &event, const sf::Window &window);
 

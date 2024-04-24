@@ -28,6 +28,7 @@ namespace Raytracer {
         m_texture.create(m_dimension.getWidth(), m_dimension.getHeight());
         m_img.create(m_dimension.getWidth(), m_dimension.getHeight());
         m_window.setFramerateLimit(24);
+        setupActions();
     }
 
     void SceneInteractive::updateDimension(unsigned int width, unsigned int height)
@@ -53,7 +54,7 @@ namespace Raytracer {
                 updateDimension(event.size.width, event.size.height);
                 m_window.setView(sf::View(visibleArea));
             }
-            if (m_interacCam.handleInput(event, m_window)) {
+            if (m_interacCam.handleInput(event, m_window, m_actions)) {
                 newEvent = true;
             }
             if (m_interacCam.isActiveMouse())

@@ -20,10 +20,7 @@ namespace Raytracer
         ROTATE_DOWN,
         ROTATE_LEFT,
         ROTATE_RIGHT,
-        // ROTATE_CLOCKWISE,
-        // ROTATE_COUNTERCLOCKWISE,
-        // ZOOM_IN,
-        // ZOOM_OUT,
-        // RESET
+        SPRINT,
+        RESET
     };
 } // namespace Raytracer

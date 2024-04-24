@@ -13,6 +13,9 @@
 #include <SFML/Graphics.hpp>
 
 namespace Raytracer {
+    #define DEFAULT_MOVEMENT_SPEED 0.3f
+    #define DEFAULT_ROTATION_SPEED 3
+
     class SceneInteractive {
     public:
         SceneInteractive(Dimension &dimension, const std::string &title);
@@ -53,5 +56,7 @@ namespace Raytracer {
         sf::Texture m_texture;
 
         std::vector<std::pair<sf::Keyboard::Key, bool>> m_actions;
+        float m_movementSpeed = DEFAULT_MOVEMENT_SPEED;
+        float m_rotationSpeed = DEFAULT_ROTATION_SPEED;
     };
 } // namespace Raytracer
