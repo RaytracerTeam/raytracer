@@ -29,6 +29,8 @@ namespace Raytracer {
         m_img.create(m_dimension.getWidth(), m_dimension.getHeight());
         m_window.setFramerateLimit(24);
         setupActions();
+        // m_window.setMouseCursorVisible(false);
+        // sf::Mouse::setPosition(sf::Vector2i(m_dimension.getWidth() / 2, m_dimension.getHeight() / 2), m_window);
     }
 
     void SceneInteractive::updateDimension(unsigned int width, unsigned int height)
@@ -59,6 +61,9 @@ namespace Raytracer {
             }
             if (m_interacCam.isActiveMouse())
                 m_interacCam.handleMouse(event, m_window);
+            // if (event.type == sf::Event::MouseMoved) {
+            //     std::cout << "Mouse x: " << event.mouseMove.x << " y: " << event.mouseMove.y << std::endl;
+            // }
         }
         applyActions();
         if (newEvent)
