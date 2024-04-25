@@ -63,7 +63,7 @@ namespace Raytracer {
         sf::Clock m_deltaClock;
 
         // Storing the result of the render
-        std::__1::unique_ptr<sf::Uint8 []> m_lastRender;
+        std::unique_ptr<sf::Uint8 []> m_lastRender;
 
         // Actions
         std::vector<std::pair<sf::Keyboard::Key, bool>> m_actions;
