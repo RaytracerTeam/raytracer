@@ -137,4 +137,9 @@ namespace Raytracer {
         return color;
     }
 
+    std::ostream &operator<<(std::ostream &os, const Color &color)
+    {
+        os << "Color(" << color.getR() << ", " << color.getG() << ", " << color.getB() << ")";
+        return os;
+    }
 } // namespace Raytracer

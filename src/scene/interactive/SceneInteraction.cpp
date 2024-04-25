@@ -104,7 +104,7 @@ namespace Raytracer {
 
     void SceneInteractive::loop(void)
     {
-        float spherePos[3];
+        float spherePos[3] = {0, 0, 0};
         float sphereColor[3] = {1, 0, 0};
         while (m_window.isOpen()) {
             handleEvents();
@@ -112,6 +112,7 @@ namespace Raytracer {
 
             Sphere *sphere = dynamic_cast<Sphere *>(m_scene->getPrimitives()[0].get());
             if (sphere) {
+                std::cout << "Sphere found " << sphere << std::endl;
                 sphere->setOrigin(Math::Vector3D(spherePos));
                 sphere->setMaterial(std::make_unique<MaterialSolid>(Color(sphereColor)));
             }

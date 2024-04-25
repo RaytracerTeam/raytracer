@@ -119,7 +119,7 @@ namespace Raytracer
         }
         camera->setPos(camPos);
         if (m_actions[SceneAction::RESET].second) {
-            camera->resetPos();
+            camera->reset();
         }
     }
 

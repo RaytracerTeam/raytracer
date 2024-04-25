@@ -48,3 +48,5 @@ namespace Raytracer {
         double m_b = 0;
     };
 } // namespace Raytracer
+
+std::ostream &operator<<(std::ostream &os, const Raytracer::Color &color);
