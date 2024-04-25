@@ -14,7 +14,8 @@ CORESRC	=	$(wildcard ./src/*.cpp) \
 			$(wildcard ./src/scene/materials/*.cpp) \
 			$(wildcard ./src/scene/lights/*.cpp) \
 			$(wildcard ./src/scene/interactive/*.cpp) \
-			$(wildcard ./imgui/*.cpp) \
+
+IMGUISRC	=	$(wildcard ./imgui/*.cpp)
 
 SRC	=	./src/main/main.cpp \
 		$(CORESRC)
@@ -25,6 +26,7 @@ TESTSRC	=	$(wildcard ./tests/*.cpp) \
 CC		=	g++
 OBJ		=	$(SRC:.cpp=.o)
 DEPS	=	$(SRC:.cpp=.d)
+IMGUIOBJ=	$(IMGUISRC:.cpp=.o)
 TESTOBJ	=	$(TESTSRC:.cpp=.o)
 
 TESTCOV	=	$(TESTSRC:.cpp=.gcno)
@@ -33,12 +35,13 @@ TESTCOV	+=	$(TESTSRC:.cpp=.gcda)
 NAME		=	raytracer
 TESTNAME	=	unit-tests
 
-CFLAGS		=	-O2 -Iinclude -Iimgui -std=c++20 -Wall -Wextra
+CFLAGS		=	-O2 -Iinclude -std=c++20 -Wall -Wextra
 DBGFLAGS	=	-g3 -O0
 TESTFLAGS	=	-g3 -O0 --coverage -fprofile-arcs -ftest-coverage
 DEPSFLAGS	=	-MMD -MP
 
-LDFLAGS		=	-lconfig++ -lsfml-graphics -lsfml-window -lsfml-system -lGLEW -lglfw -framework OpenGL
+LDFLAGS		=	-lconfig++ -lsfml-graphics -lsfml-window -lsfml-system
+LDBONUSFLAGS=	-lGLEW -lglfw -framework OpenGL
 TESTSFLAGS	=	$(LDFLAGS) -lcriterion
 
 MACBREWSFML		= 	/opt/homebrew/Cellar/sfml/2.6.1
@@ -55,6 +58,13 @@ ifeq ($(UNAME_S),Darwin)
 endif
 
 all: $(NAME)
+
+bonus: $(IMGUIOBJ)
+bonus: OBJ += $(IMGUIOBJ)
+bonus: LDFLAGS += $(LDBONUSFLAGS)
+bonus: CFLAGS += -DBONUS -Iimgui
+bonus: $(NAME)
+
 dbg: CFLAGS += $(DBGFLAGS)
 dbg: $(NAME)
 dbgs: CFLAGS += $(DBGFLAGS) -fsanitize=address

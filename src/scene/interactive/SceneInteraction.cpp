@@ -34,11 +34,15 @@ namespace Raytracer {
         m_img.create(m_dimension.getWidth(), m_dimension.getHeight());
         m_window.setFramerateLimit(24);
         setupActions();
-        ImGui::SFML::Init(m_window);
+        #ifdef BONUS
+            ImGui::SFML::Init(m_window);
+        #endif
     }
     SceneInteractive::~SceneInteractive()
     {
-        ImGui::SFML::Shutdown();
+        #ifdef BONUS
+            ImGui::SFML::Shutdown();
+        #endif
     }
 
     void SceneInteractive::updateDimension(unsigned int width, unsigned int height)
@@ -55,7 +59,9 @@ namespace Raytracer {
         sf::Event event;
 
         while (m_window.pollEvent(event)) {
-            ImGui::SFML::ProcessEvent(event);
+            #ifdef BONUS
+                ImGui::SFML::ProcessEvent(event);
+            #endif
 
             if (event.type == sf::Event::Closed)
                 return m_window.close();
@@ -77,15 +83,17 @@ namespace Raytracer {
 
     void SceneInteractive::handleImGui(float *spherePos, float *sphereColor)
     {
-        ImGui::SFML::Update(m_window, m_deltaClock.restart());
+        #ifdef BONUS
+            ImGui::SFML::Update(m_window, m_deltaClock.restart());
 
-        ImGui::Begin("What a nice tool, Thank you Mister Pommier");
-        ImGui::Button("Look at this pretty button");
-        if (ImGui::SliderFloat3("Position", spherePos, -10, 10) ||
-            ImGui::ColorPicker3("Color", sphereColor)) {
-            m_needRendering = true;
-        }
-        ImGui::End();
+            ImGui::Begin("What a nice tool, Thank you Mister Pommier");
+            ImGui::Button("Look at this pretty button");
+            if (ImGui::SliderFloat3("Position", spherePos, -10, 10) ||
+                ImGui::ColorPicker3("Color", sphereColor)) {
+                m_needRendering = true;
+            }
+            ImGui::End();
+        #endif
     }
 
     void SceneInteractive::setScene(Scene *scene)
@@ -121,7 +129,9 @@ namespace Raytracer {
             m_texture.update(m_img);
             m_window.clear();
             m_window.draw(sf::Sprite(m_texture));
-            ImGui::SFML::Render(m_window);
+            #ifdef BONUS
+                ImGui::SFML::Render(m_window);
+            #endif
             m_window.display();
         }
     }

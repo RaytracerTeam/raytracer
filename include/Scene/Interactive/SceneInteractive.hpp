@@ -10,8 +10,10 @@
 #include "Scene/Scene.hpp"
 #include "Scene/Interactive/CameraInteractive.hpp"
 
-#include "imgui.h"
-#include "imgui-SFML.h"
+#ifdef BONUS
+    #include "imgui.h"
+    #include "imgui-SFML.h"
+#endif
 
 #include <SFML/Graphics.hpp>
 
