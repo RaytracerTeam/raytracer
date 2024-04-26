@@ -36,9 +36,11 @@ namespace Raytracer {
         std::unique_ptr<sf::Uint8[]> RColorToPixelBuffer(const std::vector<Raytracer::Color> &vectorRes);
         void setRColorToImg(const std::vector<Raytracer::Color> &vectorRes);
         void handleEvents(void);
+        void displayFramerate(void);
 
         /////////////////////////////////
 
+        // TODO utiliser shared ptr
         Scene *m_scene = nullptr;
         CameraInteractive m_interacCam;
 
@@ -46,5 +48,9 @@ namespace Raytracer {
         sf::RenderWindow m_window;
         sf::Image m_img;
         sf::Texture m_texture;
+
+        sf::Clock m_clock;
+        sf::Time m_currentTime;
+        sf::Time m_previousTime;
     };
 } // namespace Raytracer

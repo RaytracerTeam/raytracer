@@ -24,6 +24,7 @@ namespace Raytracer {
     SceneInteractive::SceneInteractive(Dimension &dimension, const std::string &title)
         : m_dimension(dimension)
         , m_window(sf::VideoMode(dimension.getWidth(), dimension.getHeight()), title)
+        , m_previousTime(m_clock.getElapsedTime())
     {
         m_texture.create(m_dimension.getWidth(), m_dimension.getHeight());
         m_img.create(m_dimension.getWidth(), m_dimension.getHeight());
@@ -79,7 +80,17 @@ namespace Raytracer {
             m_window.clear();
             m_window.draw(sf::Sprite(m_texture));
             m_window.display();
+
+            displayFramerate();
         }
+    }
+
+    void SceneInteractive::displayFramerate(void)
+    {
+        m_currentTime = m_clock.getElapsedTime();
+        auto fps = 1.0f / (m_currentTime.asSeconds() - m_previousTime.asSeconds());
+        std::cout << "FPS: " << (int)fps << "\033[K" << "\r" << std::flush;
+        m_previousTime = m_currentTime;
     }
 
     ///////////////////////////
