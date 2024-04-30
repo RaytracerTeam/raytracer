@@ -8,7 +8,7 @@
 #pragma once
 
 #include "Color.hpp"
-#include "Scene/SceneLightning.hpp"
+#include "Scene/Interfaces/ILight.hpp"
 #include "Scene/Ray.hpp"
 
 namespace Raytracer {

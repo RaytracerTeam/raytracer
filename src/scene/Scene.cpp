@@ -14,6 +14,12 @@
 #include <cmath>
 
 namespace Raytracer {
+    /* todo : direction should be in parsing*/
+    Scene::Scene()
+        : m_lightSystem({ -1, 1, -1 }, { 200U, 200, 200 })
+    {
+    }
+
     void Scene::addPrimitive(std::unique_ptr<IPrimitive> obj)
     {
         m_primitives.push_back(std::move(obj));
@@ -24,7 +30,7 @@ namespace Raytracer {
         m_cameras.push_back(std::move(obj));
     }
 
-    void Scene::addLight(std::unique_ptr<ILight> obj)
+    void Scene::addLight(std::unique_ptr<PointLight> obj)
     {
         m_lightSystem.addLight(std::move(obj));
     }
@@ -101,15 +107,26 @@ namespace Raytracer {
             if (rayhit == std::nullopt)
                 continue;
 
-            return castRayColor(ray, prim.get(), rayhit.value());
+            return castRayColor(prim.get(), rayhit.value());
         }
         return m_skybox.getAmbientColor(ray);
     }
 
-    Color Scene::castRayColor(const Ray &, const IPrimitive *primHit, const RayHit &rhitPrim) const
+    Color Scene::castRayColor(const IPrimitive *primHit, const RayHit &rhitPrim) const
     {
         Color illumination;
         IMaterial *primMaterial = primHit->getMaterial();
+        auto &dirLight = m_lightSystem.getDirectionLight();
+
+        for (const auto &prim : m_primitives) {
+            if (primHit == prim.get())
+                continue;
+            auto lightHit = prim->hit(Ray(rhitPrim.getHitPoint(), (dirLight.getDirection())));
+            if (lightHit != std::nullopt)
+                continue;
+            auto dirLightDiffuse = Math::Algorithm::clampD(rhitPrim.getNormal().dot(dirLight.getDirection()), 0., 1.);
+            illumination += primMaterial->getColor(rhitPrim) * (dirLight.getColor() * dirLightDiffuse * dirLight.getIntensity());
+        }
 
         for (const auto &light : m_lightSystem.getLights()) {
             auto lightVec = light->getOrigin() - rhitPrim.getHitPoint();
@@ -118,6 +135,8 @@ namespace Raytracer {
             bool shadowed = false;
 
             for (const auto &prim : m_primitives) {
+                if (primHit == prim.get())
+                    continue;
                 auto lightHit = prim->hit(lightRay);
                 if (lightHit != std::nullopt) {
                     if (lightHit->getDistance() * lightHit->getDistance() < 0.001)
@@ -135,7 +154,7 @@ namespace Raytracer {
                 continue;
             auto diffuse = Math::Algorithm::clampD(rhitPrim.getNormal().dot(lightDirection), 0., 1.);
             auto specular = primMaterial->getSpecular(light.get(), rhitPrim, lightDirection);
-            illumination += (primMaterial->getColor(rhitPrim) + specular) * (light->getColor() * diffuse);
+            illumination += (primMaterial->getColor(rhitPrim) + specular) * (light->getColor() * diffuse * light->getIntensity());
         }
         return illumination;
     }

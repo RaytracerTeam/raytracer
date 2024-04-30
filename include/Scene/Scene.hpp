@@ -21,12 +21,12 @@
 namespace Raytracer {
     class Scene {
     public:
-        Scene() = default;
+        Scene();
         ~Scene() = default;
 
         void addPrimitive(std::unique_ptr<IPrimitive> obj);
         void addCamera(std::unique_ptr<Camera> obj);
-        void addLight(std::unique_ptr<ILight> obj);
+        void addLight(std::unique_ptr<PointLight> obj);
 
         std::vector<Color> render(void);
 
@@ -38,7 +38,7 @@ namespace Raytracer {
         void updatePrimitives(void);
 
     private:
-        Color castRayColor(const Ray &ray, const IPrimitive *primHit, const RayHit &rhitPrim) const;
+        Color castRayColor(const IPrimitive *primHit, const RayHit &rhitPrim) const;
         Color castRay(const Ray &ray) const;
 
         std::vector<std::unique_ptr<IPrimitive>> m_primitives;
@@ -47,8 +47,7 @@ namespace Raytracer {
 
         SceneLightning m_lightSystem;
 
-        // temp
-        Skybox m_skybox = Skybox(std::make_unique<MaterialTexture>("assets/skybox_house.jpg"), SPHERE);
-        // size_t m_maxRayBounces = 5; // todo : set in config
+        Skybox m_skybox = Skybox(std::make_unique<MaterialTexture>("assets/skybox_sky.jpg"), SPHERE);
+        size_t m_maxRayBounces = 5; // todo : set in config
     };
 }
