@@ -28,7 +28,10 @@ namespace Raytracer {
                 if (lightSetting.exists("color")) {
                     lightColor = getSettingColor(lightSetting);
                 }
-                scene.addLight(std::make_unique<PointLight>(lightPos, lightColor));
+                std::unique_ptr<PointLight> light = std::make_unique<PointLight>(lightPos, lightColor);
+                if (lightSetting.exists("diffuse"))
+                    light->setDiffuse(lightSetting.lookup("diffuse"));
+                scene.addLight(std::move(light));
             }
         }
     } // namespace Parsing

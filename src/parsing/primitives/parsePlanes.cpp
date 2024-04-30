@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2024
 ** Raytracer
 ** File description:
-** parsePlane
+** parsePlanes
 */
 
 #include "Parsing/Parsing.hpp"
@@ -10,7 +10,7 @@
 #include "Scene/Materials/MaterialSolid.hpp"
 #include "Scene/Primitives/Plane.hpp"
 
-void Raytracer::Parsing::parsePlane(const libconfig::Setting &primitiveSetting, Scene &scene)
+void Raytracer::Parsing::parsePlanes(const libconfig::Setting &primitiveSetting, Scene &scene)
 {
     if (!primitiveSetting.exists("planes"))
         return;

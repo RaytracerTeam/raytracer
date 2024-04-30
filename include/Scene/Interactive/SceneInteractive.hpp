@@ -12,6 +12,8 @@
 
 #include "Scene/Primitives/Plane.hpp"
 #include "Scene/Primitives/Sphere.hpp"
+#include "Scene/Primitives/Cylinder.hpp"
+#include "Scene/Primitives/Cone.hpp"
 
 #ifdef BONUS
     #include "imgui.h"
@@ -60,6 +62,7 @@ namespace Raytracer {
         void handleImGui();
         void editSphere(Sphere *sphere);
         void editPlane(Plane *plane);
+        void editCylinder(Cylinder *cylinder);
 
         /////////////////////////////////
 

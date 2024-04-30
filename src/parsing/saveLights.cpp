@@ -26,9 +26,9 @@ namespace Raytracer
                 lightPos.add("z", libconfig::Setting::TypeFloat) = pointLight->getOrigin().getZ();
 
                 libconfig::Setting &lightColor = lightSetting.add("color", libconfig::Setting::TypeGroup);
-                lightColor.add("r", libconfig::Setting::TypeInt) = (int)pointLight->getColor().getR() * 255;
-                lightColor.add("g", libconfig::Setting::TypeInt) = (int)pointLight->getColor().getG() * 255;
-                lightColor.add("b", libconfig::Setting::TypeInt) = (int)pointLight->getColor().getB() * 255;
+                lightColor.add("r", libconfig::Setting::TypeInt) = (int)(pointLight->getColor().getR() * 255);
+                lightColor.add("g", libconfig::Setting::TypeInt) = (int)(pointLight->getColor().getG() * 255);
+                lightColor.add("b", libconfig::Setting::TypeInt) = (int)(pointLight->getColor().getB() * 255);
             }
         }
     }

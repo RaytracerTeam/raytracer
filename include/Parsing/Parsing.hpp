@@ -14,6 +14,8 @@
 
 #include "Scene/Primitives/Sphere.hpp"
 #include "Scene/Primitives/Plane.hpp"
+#include "Scene/Primitives/Cylinder.hpp"
+#include "Scene/Primitives/Cone.hpp"
 
 namespace Raytracer {
     namespace Parsing {
@@ -22,8 +24,13 @@ namespace Raytracer {
 
         void parseCameras(const libconfig::Config &config, Scene &scene);
         void parsePrimitives(const libconfig::Config &config, Scene &scene);
-        void parseSphere(const libconfig::Setting &primitiveSetting, Scene &scene);
-        void parsePlane(const libconfig::Setting &primitiveSetting, Scene &scene);
+        void parseSpheres(const libconfig::Setting &primitiveSetting, Scene &scene);
+        void parsePlanes(const libconfig::Setting &primitiveSetting, Scene &scene);
+        void parseCylinders(const libconfig::Setting &primitiveSetting, Scene &scene);
+        void parseCones(const libconfig::Setting &primitiveSetting, Scene &scene);
+        // void parseToruses(const libconfig::Setting &primitiveSetting, Scene &scene);
+        // void parseTriangles(const libconfig::Setting &primitiveSetting, Scene &scene);
+
         void parseLights(const libconfig::Config &config, Scene &scene);
 
         void saveScene(const Scene &scene, const std::string &outputFile);
@@ -31,6 +38,10 @@ namespace Raytracer {
         void saveLights(const Scene &scene, libconfig::Setting &root);
         void savePrimitives(const Scene &scene, libconfig::Setting &root);
         void saveSphere(const Scene &scene, libconfig::Setting &sphereList, Sphere *sphere);
+        void saveCylinder(const Scene &scene, libconfig::Setting &list, Cylinder *cylinder);
+        // void saveCone(const Scene &scene, libconfig::Setting &list, Cone *cone);
+        // void saveTorus(const Scene &scene, libconfig::Setting &list, Torus *torus);
+        // void saveTriangle(const Scene &scene, libconfig::Setting &list, Triangle *triangle);
         void savePlane(const Scene &scene, libconfig::Setting &planeList, Plane *plane);
 
         Math::Vector3D getSettingPosition(const libconfig::Setting &setting);

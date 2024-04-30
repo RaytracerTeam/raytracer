@@ -19,6 +19,7 @@ namespace Raytracer
     {
         #ifdef BONUS
         ImGui::SFML::Update(m_window, m_deltaClock.restart());
+        // todoMAIN remove this comments
         // ImGui::ShowDemoWindow();
         // return;
 
@@ -107,6 +108,9 @@ namespace Raytracer
             break;
         case PrimitiveType::PLANE:
             editPlane(static_cast<Plane *>(m_scene->getPrimitives()[selected].get()));
+            break;
+        case PrimitiveType::CYLINDER:
+            editCylinder(static_cast<Cylinder *>(m_scene->getPrimitives()[selected].get()));
             break;
         default:
             break;

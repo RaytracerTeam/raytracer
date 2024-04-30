@@ -10,7 +10,7 @@
 #include "Scene/Materials/MaterialSolid.hpp"
 #include "Scene/Primitives/Sphere.hpp"
 
-void Raytracer::Parsing::parseSphere(const libconfig::Setting &primitiveSetting, Scene &scene)
+void Raytracer::Parsing::parseSpheres(const libconfig::Setting &primitiveSetting, Scene &scene)
 {
     if (!primitiveSetting.exists("spheres"))
         return;
@@ -23,9 +23,14 @@ void Raytracer::Parsing::parseSphere(const libconfig::Setting &primitiveSetting,
         if (sphereConfig.exists("color")) {
             materialSolid.setColor(getSettingColor(sphereConfig));
         }
+        float sphereRadius = 1;
+        if (sphereConfig.exists("radius")) {
+            sphereRadius = sphereConfig.lookup("radius");
+        }
+
         auto sphere = std::make_unique<Sphere>(spherePos,
             std::make_unique<MaterialSolid>(materialSolid),
-            sphereConfig.lookup("radius"));
+            sphereRadius);
         scene.addPrimitive(std::move(sphere));
     }
 }

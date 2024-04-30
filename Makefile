@@ -56,8 +56,9 @@ IMGUIFLAGS	=	-DBONUS -Ibonus/imgui
 
 UNAME_S := $(shell uname -s)
 
+# todoMAIN: REMOVE IMGUIFLAGS FOR MACOS, ONLY USEFUL FOR CODING (remove greyed out code in ifdef BONUS)
 ifeq ($(UNAME_S),Darwin)
-	CFLAGS += $(MACSFMLINCLUDE) -DMACOSTONIO
+	CFLAGS += $(MACSFMLINCLUDE) -DMACOSTONIO $(IMGUIFLAGS)
 	LDFLAGS += $(MACSFMLLIB)
 endif
 
