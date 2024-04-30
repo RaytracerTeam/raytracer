@@ -15,6 +15,7 @@ namespace Raytracer
         libconfig::Setting &sphereList = primitivesSetting.add("spheres", libconfig::Setting::TypeList);
         libconfig::Setting &planeList = primitivesSetting.add("planes", libconfig::Setting::TypeList);
         libconfig::Setting &cylinderList = primitivesSetting.add("cylinders", libconfig::Setting::TypeList);
+        libconfig::Setting &coneList = primitivesSetting.add("cones", libconfig::Setting::TypeList);
         for (auto &primitive : scene.getPrimitives()) {
             switch (primitive->getType())
             {
@@ -26,6 +27,9 @@ namespace Raytracer
                 break;
             case PrimitiveType::CYLINDER:
                 saveCylinder(scene, cylinderList, static_cast<Cylinder *>(primitive.get()));
+                break;
+            case PrimitiveType::CONE:
+                saveCone(scene, coneList, static_cast<Cone *>(primitive.get()));
                 break;
             default:
                 break;

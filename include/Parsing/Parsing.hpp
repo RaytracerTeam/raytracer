@@ -42,13 +42,16 @@ namespace Raytracer {
         void parseCameras(const libconfig::Config &config, Scene &scene);
         void parseLights(const libconfig::Config &config, Scene &scene);
 
+        void savePos(libconfig::Setting &setting, APrimitive *primitive);
+        void saveColor(libconfig::Setting &setting, APrimitive *primitive);
+
         void saveScene(const Scene &scene, const std::string &outputFile);
         void saveCameras(const Scene &scene, libconfig::Setting &root);
         void saveLights(const Scene &scene, libconfig::Setting &root);
         void savePrimitives(const Scene &scene, libconfig::Setting &root);
         void saveSphere(const Scene &scene, libconfig::Setting &sphereList, Sphere *sphere);
         void saveCylinder(const Scene &scene, libconfig::Setting &list, Cylinder *cylinder);
-        // void saveCone(const Scene &scene, libconfig::Setting &list, Cone *cone);
+        void saveCone(const Scene &scene, libconfig::Setting &list, Cone *cone);
         // void saveTorus(const Scene &scene, libconfig::Setting &list, Torus *torus);
         // void saveTriangle(const Scene &scene, libconfig::Setting &list, Triangle *triangle);
         void savePlane(const Scene &scene, libconfig::Setting &planeList, Plane *plane);

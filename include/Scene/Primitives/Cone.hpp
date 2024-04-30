@@ -20,8 +20,17 @@ namespace Raytracer {
         }
         ~Cone() = default;
 
+        PrimitiveType getType(void) const override { return PrimitiveType::CONE; };
+        const std::string getTypeString(void) const override { return "Cones"; };
+
         std::optional<RayHit> hit(const Ray &ray) const override;
         RayHit getNormal(double distance, const Math::Vector3D &hitPt, const Math::Vector3D &origin) const;
+
+        float getRadius() const { return m_radius; }
+        float getHeight() const { return m_height; }
+
+        void setRadius(float radius) { m_radius = radius; }
+        void setHeight(float height) { m_height = height; }
 
     private:
         double m_radius;

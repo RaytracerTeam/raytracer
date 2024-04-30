@@ -24,12 +24,6 @@ namespace Raytracer
         Plane::Axis axis = plane->getAxis();
         planePos = plane->getPos();
 
-        libconfig::Setting &planeColor = planeSetting.add("color", libconfig::Setting::TypeGroup);
-        MaterialSolid *material = dynamic_cast<MaterialSolid *>(plane->getMaterial());
-        if (material) {
-            planeColor.add("r", libconfig::Setting::TypeInt) = (int)material->getColor().getR() * 255;
-            planeColor.add("g", libconfig::Setting::TypeInt) = (int)material->getColor().getG() * 255;
-            planeColor.add("b", libconfig::Setting::TypeInt) = (int)material->getColor().getB() * 255;
-        }
+        saveColor(planeSetting, plane);
     }
 } // namespace Raytracer

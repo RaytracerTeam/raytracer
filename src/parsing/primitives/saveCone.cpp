@@ -2,29 +2,27 @@
 ** EPITECH PROJECT, 2024
 ** Raytracer
 ** File description:
-** saveCylinder
+** saveCone
 */
 
 #include "Parsing/Parsing.hpp"
 
-#include "Scene/Primitives/Cylinder.hpp"
-
-#include "Scene/Materials/MaterialSolid.hpp"
+#include "Scene/Primitives/Cone.hpp"
 
 namespace Raytracer
 {
-    void Parsing::saveCylinder(const Scene &scene, libconfig::Setting &list, Cylinder *cylinder)
+    void Parsing::saveCone(const Scene &scene, libconfig::Setting &list, Cone *cone)
     {
         libconfig::Setting &setting = list.add(libconfig::Setting::TypeGroup);
 
-        savePos(setting, cylinder);
+        savePos(setting, cone);
 
         libconfig::Setting &radius = setting.add("radius", libconfig::Setting::TypeFloat);
-        radius = cylinder->getRadius();
+        radius = cone->getRadius();
 
         libconfig::Setting &height = setting.add("height", libconfig::Setting::TypeFloat);
-        height = cylinder->getHeight();
+        height = cone->getHeight();
 
-        saveColor(setting, cylinder);
+        saveColor(setting, cone);
     }
 } // namespace Raytracer
