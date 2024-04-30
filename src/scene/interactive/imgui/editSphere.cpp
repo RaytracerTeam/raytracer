@@ -15,6 +15,7 @@ namespace Raytracer
 {
     void SceneInteractive::editSphere(Sphere *sphere)
     {
+        #ifdef BONUS
         float spherePos[3] = {(float)sphere->getOrigin().getX(),
             (float)sphere->getOrigin().getY(), (float)sphere->getOrigin().getZ()};
         Color sphereColor = ((MaterialSolid *)sphere->getMaterial())->getColor();
@@ -38,6 +39,7 @@ namespace Raytracer
             ((MaterialSolid *)sphere->getMaterial())->setColor(newColor);
             m_needRendering = true;
         }
+        #endif
     }
 } // namespace Raytracer
 

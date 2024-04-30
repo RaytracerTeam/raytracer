@@ -17,9 +17,7 @@ namespace Raytracer
 {
     void SceneInteractive::handleImGui()
     {
-        #ifndef BONUS
-            return;
-        #endif
+        #ifdef BONUS
         ImGui::SFML::Update(m_window, m_deltaClock.restart());
         // ImGui::ShowDemoWindow();
         // return;
@@ -116,5 +114,6 @@ namespace Raytracer
 
         ImGui::End();
         ImGui::PopStyleVar();
+        #endif
     }
 } // namespace Raytracer

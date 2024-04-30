@@ -15,6 +15,7 @@ namespace Raytracer
 {
     void SceneInteractive::editPlane(Plane *plane)
     {
+        #ifdef BONUS
         float planePos = plane->getPos();
         Color planeColor = ((MaterialSolid *)plane->getMaterial())->getColor();
         float planeColorGui[3] = {(float)planeColor.getR(),
@@ -31,6 +32,7 @@ namespace Raytracer
             ((MaterialSolid *)plane->getMaterial())->setColor(newColor);
             m_needRendering = true;
         }
+        #endif
     }
 } // namespace Raytracer
 
