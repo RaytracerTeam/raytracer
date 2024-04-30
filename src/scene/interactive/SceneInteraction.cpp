@@ -20,23 +20,28 @@
 // std::cout << "fps =" << std::floor(fps) << std::endl; // flooring it will make the frame rate a rounded number
 // previousTime = currentTime;
 
-// Temp
-#include "Scene/Primitives/Sphere.hpp"
-#include "Scene/Materials/MaterialSolid.hpp"
-
 
 namespace Raytracer {
     SceneInteractive::SceneInteractive(Dimension &dimension, const std::string &title)
         : m_dimension(dimension)
         , m_window(sf::VideoMode(dimension.getWidth(), dimension.getHeight()), title)
     {
+        m_fileBuf[0] = '\0';
+        m_dimension = Dimension(700, 500);
+        #ifdef BONUS
+            #ifdef MACOSTONIO
+                m_window.setSize(sf::Vector2u(1440, 850));
+            #else
+                m_window.setSize(sf::Vector2u(sf::VideoMode::getDesktopMode().width,
+                    sf::VideoMode::getDesktopMode().height));
+            #endif
+            m_window.setPosition(sf::Vector2i(0, 0));
+            ImGui::SFML::Init(m_window);
+        #endif
         m_texture.create(m_dimension.getWidth(), m_dimension.getHeight());
         m_img.create(m_dimension.getWidth(), m_dimension.getHeight());
         m_window.setFramerateLimit(24);
         setupActions();
-        #ifdef BONUS
-            ImGui::SFML::Init(m_window);
-        #endif
     }
     SceneInteractive::~SceneInteractive()
     {
@@ -67,33 +72,19 @@ namespace Raytracer {
                 return m_window.close();
             if (event.type == sf::Event::Resized) {
                 sf::FloatRect visibleArea(0.f, 0.f, event.size.width, event.size.height);
-
-                updateDimension(event.size.width, event.size.height);
+                #ifndef BONUS
+                    updateDimension(event.size.width, event.size.height);
+                #endif
                 m_window.setView(sf::View(visibleArea));
                 m_needRendering = true;
             }
-            if (m_interacCam.handleInput(event, m_window, m_actions)) {
+            if (!m_isWriting && m_interacCam.handleInput(event, m_window, m_actions)) {
                 m_newEvent = true;
             }
-            if (m_interacCam.isActiveMouse())
+            if (!m_isWriting && m_interacCam.isActiveMouse())
                 m_interacCam.handleMouse(event, m_window);
         }
         applyActions();
-    }
-
-    void SceneInteractive::handleImGui(float *spherePos, float *sphereColor)
-    {
-        #ifdef BONUS
-            ImGui::SFML::Update(m_window, m_deltaClock.restart());
-
-            ImGui::Begin("What a nice tool, Thank you Mister Pommier");
-            ImGui::Button("Look at this pretty button");
-            if (ImGui::SliderFloat3("Position", spherePos, -10, 10) ||
-                ImGui::ColorPicker3("Color", sphereColor)) {
-                m_needRendering = true;
-            }
-            ImGui::End();
-        #endif
     }
 
     void SceneInteractive::setScene(Scene *scene)
@@ -106,16 +97,11 @@ namespace Raytracer {
     {
         float spherePos[3] = {0, 0, 0};
         float sphereColor[3] = {1, 0, 0};
+        m_scene->getCurrentCamera().setDimension(m_dimension);
+
         while (m_window.isOpen()) {
             handleEvents();
-            handleImGui(spherePos, sphereColor);
-
-            Sphere *sphere = dynamic_cast<Sphere *>(m_scene->getPrimitives()[0].get());
-            if (sphere) {
-                std::cout << "Sphere found " << sphere << std::endl;
-                sphere->setOrigin(Math::Vector3D(spherePos));
-                sphere->setMaterial(std::make_unique<MaterialSolid>(Color(sphereColor)));
-            }
+            handleImGui();
 
             if (m_newEvent) {
                 m_newEvent = false;
@@ -125,11 +111,13 @@ namespace Raytracer {
                 m_needRendering = false;
                 m_lastRender = RColorToPixelBuffer(m_scene->render());
             }
-            m_img.create(m_dimension.getWidth(), m_dimension.getHeightD(), m_lastRender.get());
+            m_img.create(m_dimension.getWidth(), m_dimension.getHeight(), m_lastRender.get());
 
             m_texture.update(m_img);
             m_window.clear();
-            m_window.draw(sf::Sprite(m_texture));
+            #ifndef BONUS
+                m_window.draw(sf::Sprite(m_texture));
+            #endif
             #ifdef BONUS
                 ImGui::SFML::Render(m_window);
             #endif

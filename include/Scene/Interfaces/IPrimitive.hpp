@@ -15,10 +15,22 @@
 #include <optional>
 
 namespace Raytracer {
+    enum class PrimitiveType {
+        SPHERE,
+        PLANE,
+        TRIANGLE,
+        CUBE,
+        CYLINDER,
+        CONE,
+        NONE
+    };
     class IPrimitive : public ISceneObj {
     public:
         virtual void setMaterial(std::unique_ptr<IMaterial> material) = 0;
         virtual IMaterial *getMaterial(void) const = 0;
+
+        virtual PrimitiveType getType(void) const = 0;
+        virtual const std::string getTypeString(void) const = 0;
 
         virtual std::optional<RayHit> hit(const Ray &ray) const = 0;
     };

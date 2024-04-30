@@ -29,6 +29,17 @@ namespace Raytracer {
         const Math::Vector3D &getOrigin(void) const override { return m_origin; }
         const Math::Matrix44 &getTMatrix(void) const override { return m_mat; }
         IMaterial *getMaterial(void) const override { return m_material.get(); };
+        PrimitiveType getType(void) const override { return PrimitiveType::NONE; };
+        const std::string getTypeString(void) const override {
+            switch (getType()) {
+                case PrimitiveType::SPHERE:
+                    return "Sphere";
+                case PrimitiveType::PLANE:
+                    return "Plane";
+                default:
+                    return "Unknown type";
+            }
+         };
     protected:
         APrimitive(const Math::Vector3D &origin,  std::unique_ptr<IMaterial> material)
             : m_origin(origin)

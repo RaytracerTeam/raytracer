@@ -21,6 +21,9 @@ namespace Raytracer
         ROTATE_LEFT,
         ROTATE_RIGHT,
         SPRINT,
+        EXIT,
+        QUICK_SAVE,
+        SAVE_AND_EXIT,
         RESET
     };
 } // namespace Raytracer

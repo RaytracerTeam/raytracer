@@ -10,6 +10,9 @@
 #include "Scene/Scene.hpp"
 #include "Scene/Interactive/CameraInteractive.hpp"
 
+#include "Scene/Primitives/Plane.hpp"
+#include "Scene/Primitives/Sphere.hpp"
+
 #ifdef BONUS
     #include "imgui.h"
     #include "imgui-SFML.h"
@@ -20,6 +23,8 @@
 namespace Raytracer {
     #define DEFAULT_MOVEMENT_SPEED 0.3f
     #define DEFAULT_ROTATION_SPEED 3
+    #define SCREEN_RATIO 16.0f / 9.0f
+    #define FILE_BUF_SIZE 20
 
     class SceneInteractive {
     public:
@@ -41,7 +46,7 @@ namespace Raytracer {
     private:
         void setupActions(void);
         void parseConfigFile(const std::string &filename);
-        void updatePos(SceneAction action);
+        void applyAction(SceneAction action);
         void applyActions(void);
 
         void updateDimension(unsigned int width, unsigned int height);
@@ -49,7 +54,11 @@ namespace Raytracer {
         std::unique_ptr<sf::Uint8[]> RColorToPixelBuffer(const std::vector<Raytracer::Color> &vectorRes);
         void setRColorToImg(const std::vector<Raytracer::Color> &vectorRes);
         void handleEvents(void);
-        void handleImGui(float *spherePos, float *sphereColor);
+
+        // ImGui
+        void handleImGui();
+        void editSphere(Sphere *sphere);
+        void editPlane(Plane *plane);
 
         /////////////////////////////////
 
@@ -63,6 +72,9 @@ namespace Raytracer {
 
         // ImGui
         sf::Clock m_deltaClock;
+        int m_renderResolution = 400;
+        char m_fileBuf[FILE_BUF_SIZE];
+        bool m_isWriting = false;
 
         // Storing the result of the render
         std::unique_ptr<sf::Uint8 []> m_lastRender;

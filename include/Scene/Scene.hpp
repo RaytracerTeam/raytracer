@@ -33,8 +33,11 @@ namespace Raytracer {
         bool setCameraIndexRelative(int64_t offset);
 
         Camera &getCurrentCamera(void) const;
+        const std::vector<std::unique_ptr<Camera>> &getCameras(void) const { return m_cameras; }
         size_t getCameraCount(void) const;
         std::vector<std::unique_ptr<IPrimitive>> &getPrimitives(void) { return m_primitives; }
+        const std::vector<std::unique_ptr<IPrimitive>> &getPrimitives(void) const { return m_primitives; }
+        const std::vector<std::unique_ptr<ILight>> &getLights(void) const { return m_lightSystem.getLights(); }
         void updatePrimitives(void);
 
     private:

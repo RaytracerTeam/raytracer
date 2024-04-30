@@ -14,8 +14,9 @@ CORESRC	=	$(wildcard ./src/*.cpp) \
 			$(wildcard ./src/scene/materials/*.cpp) \
 			$(wildcard ./src/scene/lights/*.cpp) \
 			$(wildcard ./src/scene/interactive/*.cpp) \
+			$(wildcard ./src/scene/interactive/imgui/*.cpp) \
 
-IMGUISRC	=	$(wildcard ./imgui/*.cpp)
+IMGUISRC	=	$(wildcard ./bonus/imgui/*.cpp)
 
 SRC	=	./src/main/main.cpp \
 		$(CORESRC)
@@ -51,9 +52,13 @@ MACBREWGLEW		=	/opt/homebrew/Cellar/glew/2.2.0_1
 MACSFMLINCLUDE	=	-I$(MACBREWSFML)/include -I$(MACBREWCONFIG)/include -I$(MACBREWGLFW)/include -I$(MACBREWGLEW)/include
 MACSFMLLIB		=	-L$(MACBREWSFML)/lib -L$(MACBREWCONFIG)/lib -L$(MACBREWGLFW)/lib -L$(MACBREWGLEW)/lib
 
+IMGUIFLAGS	=	-DBONUS -Ibonus/imgui
+
 UNAME_S := $(shell uname -s)
+
+# todo: REMOVE IMGUIFLAGS FOR MACOS, ONLY USEFUL FOR CODING (remove greyed out code in ifdef BONUS)
 ifeq ($(UNAME_S),Darwin)
-	CFLAGS += $(MACSFMLINCLUDE)
+	CFLAGS += $(MACSFMLINCLUDE) -DMACOSTONIO $(IMGUIFLAGS)
 	LDFLAGS += $(MACSFMLLIB)
 endif
 
@@ -62,7 +67,7 @@ all: $(NAME)
 bonus: $(IMGUIOBJ)
 bonus: OBJ += $(IMGUIOBJ)
 bonus: LDFLAGS += $(LDBONUSFLAGS)
-bonus: CFLAGS += -DBONUS -Iimgui
+bonus: CFLAGS += $(IMGUIFLAGS)
 bonus: $(NAME)
 
 dbg: CFLAGS += $(DBGFLAGS)

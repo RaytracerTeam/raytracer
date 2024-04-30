@@ -7,6 +7,7 @@
 
 #include "Scene/Interactive/SceneInteractive.hpp"
 #include "Math/Algorithm.hpp"
+#include "Parsing/Parsing.hpp"
 
 #include <iostream>
 #include <libconfig.h++>
@@ -26,6 +27,9 @@ namespace Raytracer
         m_actions.push_back(std::make_pair(sf::Keyboard::H, false));        // ROTATE_LEFT
         m_actions.push_back(std::make_pair(sf::Keyboard::K, false));        // ROTATE_RIGHT
         m_actions.push_back(std::make_pair(sf::Keyboard::LControl, false)); // SPRINT
+        m_actions.push_back(std::make_pair(sf::Keyboard::Escape, false));   // EXIT
+        m_actions.push_back(std::make_pair(sf::Keyboard::C, false));        // QUICK_SAVE
+        m_actions.push_back(std::make_pair(sf::Keyboard::X, false));        // SAVE_AND_QUIT
         m_actions.push_back(std::make_pair(sf::Keyboard::Return, false));   // RESET
         parseConfigFile("config/keys.cfg");
     }
@@ -59,6 +63,8 @@ namespace Raytracer
                 sfKey = sf::Keyboard::Key::LControl;
             else if (keyCode == "ENTER")
                 sfKey = sf::Keyboard::Key::Return;
+            else if (keyCode == "ESCAPE")
+                sfKey = sf::Keyboard::Key::Escape;
             else if (keyCode >= "A" && keyCode <= "Z")
                 sfKey = (sf::Keyboard::Key)(sf::Keyboard::A + keyCode[0] - 'A');
             else {
@@ -69,7 +75,7 @@ namespace Raytracer
         }
     }
 
-    void SceneInteractive::updatePos(SceneAction action)
+    void SceneInteractive::applyAction(SceneAction action)
     {
         Camera *camera = m_interacCam.getCamera();
         auto camPos = camera->getPos();
@@ -121,6 +127,16 @@ namespace Raytracer
         if (m_actions[SceneAction::RESET].second) {
             camera->reset();
         }
+        if (m_actions[SceneAction::EXIT].second) {
+            m_window.close();
+        }
+        if (m_actions[SceneAction::QUICK_SAVE].second) {
+            Parsing::saveScene(*m_scene, "scenes/quick_save.cfg");
+        }
+        if (m_actions[SceneAction::SAVE_AND_EXIT].second) {
+            Parsing::saveScene(*m_scene, "scenes/quick_save.cfg");
+            m_window.close();
+        }
     }
 
     void SceneInteractive::applyActions(void)
@@ -128,7 +144,7 @@ namespace Raytracer
         int i = 0;
         for (auto &action : m_actions) {
             if (action.second)
-                updatePos((SceneAction)i);
+                applyAction((SceneAction)i);
             i++;
         }
     }

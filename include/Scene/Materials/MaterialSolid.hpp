@@ -16,6 +16,7 @@ namespace Raytracer {
         ~MaterialSolid() = default;
 
         Color getColor(const RayHit &rayhit) const override;
+        Color getColor() const { return m_color; };
         void setColor(const Color &color) { m_color = color; }
 
     private:
