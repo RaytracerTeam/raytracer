@@ -20,11 +20,6 @@ void Raytracer::Parsing::parsePlanes(const libconfig::Setting &primitiveSetting,
             planePos = planeConfig.lookup("position");
         }
 
-        MaterialSolid materialSolid(Color(200U, 0U, 200U));
-        if (planeConfig.exists("color")) {
-            materialSolid.setColor(getSettingColor(planeConfig));
-        }
-
         Plane::Axis axis = Plane::Y;
         if (planeConfig.exists("axis")) {
             std::string axisStr = planeConfig.lookup("axis");
@@ -36,7 +31,7 @@ void Raytracer::Parsing::parsePlanes(const libconfig::Setting &primitiveSetting,
                 axis = Plane::Z;
         }
         auto plane = std::make_unique<Plane>(planePos,
-            std::make_unique<MaterialSolid>(materialSolid),
+            std::make_unique<MaterialSolid>(parseColor(planeConfig)),
             axis);
         scene.addPrimitive(std::move(plane));
     }

@@ -18,8 +18,8 @@ CORESRC	=	$(wildcard ./src/*.cpp) \
 
 IMGUISRC	=	$(wildcard ./bonus/imgui/*.cpp)
 
-SRC	=	./src/main/main.cpp \
-		$(CORESRC)
+SRC		=	./src/main/main.cpp \
+			$(CORESRC)
 
 TESTSRC	=	$(wildcard ./tests/*.cpp) \
 			$(CORESRC)
@@ -83,7 +83,7 @@ tests_compile: $(TESTNAME)
 	$(CC) $(CFLAGS) $(DEPSFLAGS) -c $< -o $@
 
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(LDFLAGS)
+	$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(LDFLAGS) -p
 
 $(TESTNAME): $(TESTOBJ)
 	$(CC) $(CFLAGS) $(TESTFLAGS) $(TESTOBJ) -o $(TESTNAME) $(TESTSFLAGS)

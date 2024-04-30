@@ -12,6 +12,8 @@
 #include <libconfig.h++>
 #include "Scene/Scene.hpp"
 
+#include "Scene/Materials/MaterialSolid.hpp"
+
 #include "Scene/Primitives/Sphere.hpp"
 #include "Scene/Primitives/Plane.hpp"
 #include "Scene/Primitives/Cylinder.hpp"
@@ -22,7 +24,12 @@ namespace Raytracer {
         bool parseArgv(int argc, char **argv, std::vector<std::string_view> &inputFiles); // return true if interactive mode
         void parse(Scene &scene, const std::vector<std::string_view> &inputFiles);
 
-        void parseCameras(const libconfig::Config &config, Scene &scene);
+        Math::Vector3D parsePosition(const libconfig::Setting &setting);
+        Math::Angle3D parseRotation(const libconfig::Setting &setting);
+        MaterialSolid parseColor(const libconfig::Setting &setting);
+        float parseHeight(const libconfig::Setting &setting);
+        float parseRadius(const libconfig::Setting &setting);
+
         void parsePrimitives(const libconfig::Config &config, Scene &scene);
         void parseSpheres(const libconfig::Setting &primitiveSetting, Scene &scene);
         void parsePlanes(const libconfig::Setting &primitiveSetting, Scene &scene);
@@ -31,6 +38,8 @@ namespace Raytracer {
         // void parseToruses(const libconfig::Setting &primitiveSetting, Scene &scene);
         // void parseTriangles(const libconfig::Setting &primitiveSetting, Scene &scene);
 
+
+        void parseCameras(const libconfig::Config &config, Scene &scene);
         void parseLights(const libconfig::Config &config, Scene &scene);
 
         void saveScene(const Scene &scene, const std::string &outputFile);

@@ -126,7 +126,7 @@ namespace Raytracer {
             #endif
             m_window.display();
 
-            displayFramerate();
+            // displayFramerate();
         }
     }
 
