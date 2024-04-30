@@ -52,19 +52,38 @@ namespace Raytracer
         }
 
         // Render Resolution
+        ImGui::SetNextItemWidth(300);
         if (ImGui::SliderInt("Dimension", &m_renderResolution, 10, 4000)) {
             updateDimension(m_renderResolution * SCREEN_RATIO, m_renderResolution);
             m_needRendering = true;
         }
 
+        ImGui::SameLine();
+
+        // FOV
+        ImGui::SetNextItemWidth(300);
+        Camera &currentCamera = m_scene->getCurrentCamera();
+        float fov = currentCamera.getFov();
+        if (ImGui::SliderFloat("FOV", &fov, 1, 179)) {
+            currentCamera.setFov(fov);
+            m_needRendering = true;
+        }
+
+        if (m_showFps)
+        {
+            ImGui::SameLine();
+            ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
+        }
+
         static int selected = 0;
         // Primitive Selection
-        ImGui::BeginChild("left pane", ImVec2(150, 50),
+        ImGui::BeginChild("left pane", ImVec2(150, 300),
             ImGuiChildFlags_Border | ImGuiChildFlags_ResizeX);
         int i = 0;
         for (auto &prim : m_scene->getPrimitives())
         {
-            std::string name = std::to_string(i) + " " + prim->getTypeString();
+            std::string name = std::to_string(i) + " id" +
+                std::to_string(prim->getID()) + " " + prim->getTypeString();
 
             if (ImGui::Selectable(name.c_str(), selected == i))
                 selected = i;

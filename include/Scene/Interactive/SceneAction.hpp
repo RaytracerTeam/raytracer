@@ -24,6 +24,7 @@ namespace Raytracer
         EXIT,
         QUICK_SAVE,
         SAVE_AND_EXIT,
+        SHOW_FPS,
         RESET
     };
 } // namespace Raytracer

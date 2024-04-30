@@ -31,6 +31,8 @@ namespace Raytracer {
 
         virtual PrimitiveType getType(void) const = 0;
         virtual const std::string getTypeString(void) const = 0;
+        virtual int getID(void) const = 0;
+        virtual void setID(int id) = 0;
 
         virtual std::optional<RayHit> hit(const Ray &ray) const = 0;
     };

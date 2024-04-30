@@ -32,20 +32,20 @@ namespace Raytracer {
         PrimitiveType getType(void) const override { return PrimitiveType::NONE; };
         const std::string getTypeString(void) const override {
             switch (getType()) {
-                case PrimitiveType::SPHERE:
-                    return "Sphere";
-                case PrimitiveType::PLANE:
-                    return "Plane";
-                default:
-                    return "Unknown type";
+                case PrimitiveType::SPHERE: return "Sphere";
+                case PrimitiveType::PLANE: return "Plane";
+                default: return "Unknown type";
             }
          };
+        int getID(void) const override { return m_id; }
+        void setID(int id) override { m_id = id; }
     protected:
         APrimitive(const Math::Vector3D &origin,  std::unique_ptr<IMaterial> material)
             : m_origin(origin)
             , m_material(std::move(material)) {};
         ~APrimitive() = default;
 
+        int m_id = -1;
         Math::Vector3D m_origin;
         Math::Matrix44 m_mat;
         std::unique_ptr<IMaterial> m_material;

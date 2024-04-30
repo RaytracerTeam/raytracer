@@ -75,6 +75,7 @@ namespace Raytracer {
         int m_renderResolution = 400;
         char m_fileBuf[FILE_BUF_SIZE];
         bool m_isWriting = false;
+        bool m_showFps = false;
 
         // Storing the result of the render
         std::unique_ptr<sf::Uint8 []> m_lastRender;

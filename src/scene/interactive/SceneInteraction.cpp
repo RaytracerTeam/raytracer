@@ -95,9 +95,11 @@ namespace Raytracer {
 
     void SceneInteractive::loop(void)
     {
-        float spherePos[3] = {0, 0, 0};
-        float sphereColor[3] = {1, 0, 0};
         m_scene->getCurrentCamera().setDimension(m_dimension);
+        int i = 0;
+        for (const auto &primitive : m_scene->getPrimitives()) {
+            primitive->setID(++i);
+        }
 
         while (m_window.isOpen()) {
             handleEvents();

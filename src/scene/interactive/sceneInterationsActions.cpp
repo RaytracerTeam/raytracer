@@ -30,6 +30,7 @@ namespace Raytracer
         m_actions.push_back(std::make_pair(sf::Keyboard::Escape, false));   // EXIT
         m_actions.push_back(std::make_pair(sf::Keyboard::C, false));        // QUICK_SAVE
         m_actions.push_back(std::make_pair(sf::Keyboard::X, false));        // SAVE_AND_QUIT
+        m_actions.push_back(std::make_pair(sf::Keyboard::F, false));        // SHOW_FPS
         m_actions.push_back(std::make_pair(sf::Keyboard::Return, false));   // RESET
         parseConfigFile("config/keys.cfg");
     }
@@ -65,10 +66,12 @@ namespace Raytracer
                 sfKey = sf::Keyboard::Key::Return;
             else if (keyCode == "ESCAPE")
                 sfKey = sf::Keyboard::Key::Escape;
+            else if (keyCode == "F3")
+                sfKey = sf::Keyboard::Key::F3;
             else if (keyCode >= "A" && keyCode <= "Z")
                 sfKey = (sf::Keyboard::Key)(sf::Keyboard::A + keyCode[0] - 'A');
             else {
-                std::cerr << "Invalid key name: " << keyCode << std::endl;
+                throw std::invalid_argument("Invalid key name: " + keyCode);
                 continue;
             }
             m_actions[i].first = sfKey;
@@ -136,6 +139,9 @@ namespace Raytracer
         if (m_actions[SceneAction::SAVE_AND_EXIT].second) {
             Parsing::saveScene(*m_scene, "scenes/quick_save.cfg");
             m_window.close();
+        }
+        if (m_actions[SceneAction::SHOW_FPS].second) {
+            m_showFps = !m_showFps;
         }
     }
 
