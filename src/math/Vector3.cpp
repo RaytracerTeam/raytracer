@@ -27,6 +27,18 @@ namespace Raytracer {
             z = vec.z;
         }
 
+        Vector3D::Vector3D(float *vals)
+        {
+            if (!vals)
+                return;
+            if (vals[0])
+                x = vals[0];
+            if (vals[1])
+                y = vals[1];
+            if (vals[2])
+                z = vals[2];
+        }
+
         Vector3D &Vector3D::operator=(const Vector3D &vec)
         {
             x = vec.x;

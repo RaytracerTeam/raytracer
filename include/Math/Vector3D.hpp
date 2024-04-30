@@ -19,6 +19,7 @@ namespace Raytracer {
         public:
             Vector3D(double valX = 0, double valY = 0, double valZ = 0);
             Vector3D(const Vector3D &right);
+            Vector3D(float *vals);
             ~Vector3D() = default;
             Vector3D &operator=(const Vector3D &vec);
 

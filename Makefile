@@ -13,7 +13,10 @@ CORESRC	=	$(wildcard ./src/*.cpp) \
 			$(wildcard ./src/scene/primitives/*.cpp) \
 			$(wildcard ./src/scene/materials/*.cpp) \
 			$(wildcard ./src/scene/lights/*.cpp) \
-			$(wildcard ./src/scene/interactive/*.cpp)
+			$(wildcard ./src/scene/interactive/*.cpp) \
+			$(wildcard ./src/scene/interactive/imgui/*.cpp) \
+
+IMGUISRC	=	$(wildcard ./bonus/imgui/*.cpp)
 
 SRC	=	./src/main/main.cpp \
 		$(CORESRC)
@@ -24,6 +27,7 @@ TESTSRC	=	$(wildcard ./tests/*.cpp) \
 CC		=	g++
 OBJ		=	$(SRC:.cpp=.o)
 DEPS	=	$(SRC:.cpp=.d)
+IMGUIOBJ=	$(IMGUISRC:.cpp=.o)
 TESTOBJ	=	$(TESTSRC:.cpp=.o)
 
 TESTCOV	=	$(TESTSRC:.cpp=.gcno)
@@ -38,20 +42,33 @@ TESTFLAGS	=	-g3 -O0 --coverage -fprofile-arcs -ftest-coverage
 DEPSFLAGS	=	-MMD -MP
 
 LDFLAGS		=	-lconfig++ -lsfml-graphics -lsfml-window -lsfml-system
+LDBONUSFLAGS=	-lGLEW -lglfw -framework OpenGL
 TESTSFLAGS	=	$(LDFLAGS) -lcriterion
 
 MACBREWSFML		= 	/opt/homebrew/Cellar/sfml/2.6.1
 MACBREWCONFIG	=	/opt/homebrew/Cellar/libconfig/1.7.3
-MACSFMLINCLUDE	=	-I$(MACBREWSFML)/include -I$(MACBREWCONFIG)/include
-MACSFMLLIB		=	-L$(MACBREWSFML)/lib -L$(MACBREWCONFIG)/lib
+MACBREWGLFW		=	/opt/homebrew/Cellar/glfw/3.4
+MACBREWGLEW		=	/opt/homebrew/Cellar/glew/2.2.0_1
+MACSFMLINCLUDE	=	-I$(MACBREWSFML)/include -I$(MACBREWCONFIG)/include -I$(MACBREWGLFW)/include -I$(MACBREWGLEW)/include
+MACSFMLLIB		=	-L$(MACBREWSFML)/lib -L$(MACBREWCONFIG)/lib -L$(MACBREWGLFW)/lib -L$(MACBREWGLEW)/lib
+
+IMGUIFLAGS	=	-DBONUS -Ibonus/imgui
 
 UNAME_S := $(shell uname -s)
+
 ifeq ($(UNAME_S),Darwin)
-	CFLAGS += $(MACSFMLINCLUDE)
+	CFLAGS += $(MACSFMLINCLUDE) -DMACOSTONIO
 	LDFLAGS += $(MACSFMLLIB)
 endif
 
 all: $(NAME)
+
+bonus: $(IMGUIOBJ)
+bonus: OBJ += $(IMGUIOBJ)
+bonus: LDFLAGS += $(LDBONUSFLAGS)
+bonus: CFLAGS += $(IMGUIFLAGS)
+bonus: $(NAME)
+
 dbg: CFLAGS += $(DBGFLAGS)
 dbg: $(NAME)
 dbgs: CFLAGS += $(DBGFLAGS) -fsanitize=address

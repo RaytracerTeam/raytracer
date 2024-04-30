@@ -21,18 +21,25 @@ namespace Raytracer {
         Camera(const Dimension &dimension, double fov);
         ~Camera() = default;
         Camera &operator=(const Camera &ray);
+        void reset(void) { m_pos = m_defaultPos; m_angle = m_defaultAngle; }
 
         const Dimension &getDimension(void) const { return m_dimension; }
         double getFov(void) const { return m_fov; }
         Math::Angle3D getAngle(void) const { return m_angle; }
         Math::Vector3D getPos(void) const { return m_pos; }
+        Math::Vector3D getDefaultPos(void) const { return m_defaultPos; }
+        Math::Angle3D getDefaultAngle(void) const { return m_defaultAngle; }
 
         void setDimension(const Dimension &a) { m_dimension = a; }
         void setFov(const double &a) { m_fov = a; }
         void setAngle(const Math::Angle3D &a) { m_angle = a; }
+        void setDefaultAngle(const Math::Angle3D &a) { m_defaultAngle = a; }
         void setPos(const Math::Vector3D &a) { m_pos = a; }
+        void setDefaultPos(const Math::Vector3D &a) { m_defaultPos = a; }
     private:
+        Math::Vector3D m_defaultPos;
         Math::Vector3D m_pos;
+        Math::Angle3D m_defaultAngle;
         Math::Angle3D m_angle;
         Dimension m_dimension;
         double m_fov;

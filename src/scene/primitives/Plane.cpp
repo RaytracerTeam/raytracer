@@ -11,8 +11,17 @@
 #include <cmath>
 
 namespace Raytracer {
+    Plane::Plane(const Math::Vector3D &origin,  std::unique_ptr<IMaterial> material) : APrimitive(origin, std::move(material)) {
+        switch (m_axis) {
+        case X: m_pos = origin.getX(); break;
+        case Y: m_pos = origin.getY(); break;
+        case Z: m_pos = origin.getZ(); break;
+        default: break;
+        }
+    }
     Plane::Plane(double pos,  std::unique_ptr<IMaterial> material, const Axis &axis)
         : APrimitive({}, std::move(material))
+        , m_pos(pos)
         , m_axis(axis)
     {
         auto inf = std::numeric_limits<double>::infinity();
@@ -65,6 +74,18 @@ namespace Raytracer {
             return Math::Vector3D(0, 1, 0);
         default:
             return Math::Vector3D(0, 0, 1);
+        }
+    }
+
+    std::string Plane::getAxisString(void) const
+    {
+        switch (m_axis) {
+        case X:
+            return "X";
+        case Y:
+            return "Y";
+        default:
+            return "Z";
         }
     }
 } // namespace Raytracer

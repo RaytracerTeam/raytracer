@@ -20,15 +20,35 @@
 // std::cout << "fps =" << std::floor(fps) << std::endl; // flooring it will make the frame rate a rounded number
 // previousTime = currentTime;
 
+
 namespace Raytracer {
     SceneInteractive::SceneInteractive(Dimension &dimension, const std::string &title)
         : m_dimension(dimension)
         , m_window(sf::VideoMode(dimension.getWidth(), dimension.getHeight()), title)
         , m_previousTime(m_clock.getElapsedTime())
     {
+        m_fileBuf[0] = '\0';
+        m_dimension = Dimension(700, 500);
+        #ifdef BONUS
+            #ifdef MACOSTONIO
+                m_window.setSize(sf::Vector2u(1440, 850));
+            #else
+                m_window.setSize(sf::Vector2u(sf::VideoMode::getDesktopMode().width,
+                    sf::VideoMode::getDesktopMode().height));
+            #endif
+            m_window.setPosition(sf::Vector2i(0, 0));
+            ImGui::SFML::Init(m_window);
+        #endif
         m_texture.create(m_dimension.getWidth(), m_dimension.getHeight());
         m_img.create(m_dimension.getWidth(), m_dimension.getHeight());
         m_window.setFramerateLimit(24);
+        setupActions();
+    }
+    SceneInteractive::~SceneInteractive()
+    {
+        #ifdef BONUS
+            ImGui::SFML::Shutdown();
+        #endif
     }
 
     void SceneInteractive::updateDimension(unsigned int width, unsigned int height)
@@ -45,21 +65,27 @@ namespace Raytracer {
         sf::Event event;
 
         while (m_window.pollEvent(event)) {
+            #ifdef BONUS
+                ImGui::SFML::ProcessEvent(event);
+            #endif
+
             if (event.type == sf::Event::Closed)
                 return m_window.close();
             if (event.type == sf::Event::Resized) {
                 sf::FloatRect visibleArea(0.f, 0.f, event.size.width, event.size.height);
-
-                updateDimension(event.size.width, event.size.height);
+                #ifndef BONUS
+                    updateDimension(event.size.width, event.size.height);
+                #endif
                 m_window.setView(sf::View(visibleArea));
+                m_needRendering = true;
             }
-            if (m_interacCam.handleInput(event, m_window)) {
-                m_scene->updatePrimitives(); // todo : unoptimized
-                return;
+            if (!m_isWriting && m_interacCam.handleInput(event, m_window, m_actions)) {
+                m_newEvent = true;
             }
-            if (m_interacCam.isActiveMouse())
+            if (!m_isWriting && m_interacCam.isActiveMouse())
                 m_interacCam.handleMouse(event, m_window);
         }
+        applyActions();
     }
 
     void SceneInteractive::setScene(Scene *scene)
@@ -70,15 +96,34 @@ namespace Raytracer {
 
     void SceneInteractive::loop(void)
     {
+        m_scene->getCurrentCamera().setDimension(m_dimension);
+        int i = 0;
+        for (const auto &primitive : m_scene->getPrimitives()) {
+            primitive->setID(++i);
+        }
+
         while (m_window.isOpen()) {
             handleEvents();
+            handleImGui();
 
-            auto pixels = RColorToPixelBuffer(m_scene->render());
-            m_img.create(m_dimension.getWidth(), m_dimension.getHeightD(), pixels.get());
+            if (m_newEvent) {
+                m_newEvent = false;
+                m_scene->updatePrimitives(); // todo : unoptimized
+            }
+            if (m_needRendering) {
+                m_needRendering = false;
+                m_lastRender = RColorToPixelBuffer(m_scene->render());
+            }
+            m_img.create(m_dimension.getWidth(), m_dimension.getHeight(), m_lastRender.get());
 
             m_texture.update(m_img);
             m_window.clear();
-            m_window.draw(sf::Sprite(m_texture));
+            #ifndef BONUS
+                m_window.draw(sf::Sprite(m_texture));
+            #endif
+            #ifdef BONUS
+                ImGui::SFML::Render(m_window);
+            #endif
             m_window.display();
 
             displayFramerate();
