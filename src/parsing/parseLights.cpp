@@ -25,7 +25,7 @@ namespace Raytracer {
                 Color lightColor(255U, 255U, 255U);
                 if (lightSetting.exists("color"))
                     lightColor = getSettingColor(lightSetting);
-                double radius = 0.05;
+                double radius = 1.;
                 if (lightSetting.exists("radius"))
                     radius = lightSetting.lookup("radius");
                 double intensity = 1.;

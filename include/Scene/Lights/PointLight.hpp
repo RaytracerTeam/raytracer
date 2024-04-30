@@ -16,6 +16,9 @@ namespace Raytracer {
         PointLight(const Math::Vector3D &origin, double radius, const Color &color, double intensity);
         ~PointLight() = default;
 
+        double getRadius(void) const { return m_sphere.getRadius(); }
+        void setRadius(double radius) { m_sphere.setRadius(radius); }
+
         std::optional<RayHit> hit(const Ray &ray) const override;
 
     protected:

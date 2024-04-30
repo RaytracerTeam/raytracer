@@ -19,6 +19,8 @@ namespace Raytracer {
         }
         ~Sphere() = default;
 
+        double getRadius(void) const { return m_radius; }
+        void setRadius(double radius) { m_radius = radius; }
         std::optional<RayHit> hit(const Ray &ray) const override;
 
     private:
