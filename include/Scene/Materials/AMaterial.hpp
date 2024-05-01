@@ -22,7 +22,7 @@ namespace Raytracer {
             void setFuzzFactor(double fuzz) override { m_fuzz = fuzz; }
 
             Color getSpecular(const ILight *light, const RayHit &rayhit, const Math::Vector3D &lightVec) const override;
-            std::optional<Ray> getScatteredRay(const Ray &rayIn, const RayHit &rayHit) const override;
+            virtual std::optional<Ray> getScatteredRay(const Ray &rayIn, const RayHit &rayHit) const override;
         protected:
             AMaterial() = default;
             ~AMaterial() = default;

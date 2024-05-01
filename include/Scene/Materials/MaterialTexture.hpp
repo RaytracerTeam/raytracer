@@ -20,12 +20,12 @@ namespace Raytracer {
         MaterialTexture(const std::string &pathname);
         ~MaterialTexture() = default;
 
-        Color getColor(const RayHit &rayhit) const override;
-        Color getColor(double u, double v) const;
+        virtual Color getColor(const RayHit &rayhit) const override;
+        virtual Color getColor(double u, double v) const;
 
         void setTexture(const std::string &pathname);
         const std::string &getTexture(void) const { return m_pathname; }
-    private:
+    protected:
         std::unique_ptr<sf::Image> m_image;
         std::string m_pathname;
     };
