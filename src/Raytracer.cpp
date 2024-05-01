@@ -38,7 +38,7 @@ namespace Raytracer {
     int raytracer(int argc, char **argv)
     {
         std::unique_ptr<Scene> scene = std::make_unique<Scene>();
-        Dimension windowDimensions(640, 480); // todo: make it in the scene file, if not set, set thesevalues
+        Dimension windowDimensions(640, 480);
 
         try {
             std::vector<std::string_view> inputFiles;

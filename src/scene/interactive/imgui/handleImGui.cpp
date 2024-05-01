@@ -19,9 +19,6 @@ namespace Raytracer
     {
         #ifdef BONUS
         ImGui::SFML::Update(m_window, m_deltaClock.restart());
-        // todoMAIN remove this comments
-        // ImGui::ShowDemoWindow();
-        // return;
 
         ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f));
         ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
