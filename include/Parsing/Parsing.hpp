@@ -29,6 +29,7 @@ namespace Raytracer {
         MaterialSolid parseColor(const libconfig::Setting &setting);
         float parseHeight(const libconfig::Setting &setting);
         float parseRadius(const libconfig::Setting &setting);
+        float parseDistance(const libconfig::Setting &setting);
 
         void parsePrimitives(const libconfig::Config &config, Scene &scene);
         void parseSpheres(const libconfig::Setting &primitiveSetting, Scene &scene);

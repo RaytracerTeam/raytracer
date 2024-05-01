@@ -61,21 +61,24 @@ namespace Raytracer {
             }
             return rotation;
         }
+        float parseFloat(const libconfig::Setting &setting, const std::string &key, float defaultValue = 0.0f)
+        {
+            if (setting.exists(key.c_str())) {
+                defaultValue = setting.lookup(key.c_str());
+            }
+            return defaultValue;
+        }
         float parseRadius(const libconfig::Setting &setting)
         {
-            float radius = 1;
-            if (setting.exists("radius")) {
-                radius = setting.lookup("radius");
-            }
-            return radius;
+            parseFloat(setting, "radius", 1);
         }
         float parseHeight(const libconfig::Setting &setting)
         {
-            float height = 2;
-            if (setting.exists("height")) {
-                height = setting.lookup("height");
-            }
-            return height;
+            parseFloat(setting, "height", 2);
+        }
+        float parseDistance(const libconfig::Setting &setting)
+        {
+            parseFloat(setting, "distance", 0.5);
         }
     } // namespace Parsing
 } // namespace Raytracer
