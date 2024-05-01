@@ -22,6 +22,7 @@ namespace Raytracer {
             Vector3D(float *vals);
             ~Vector3D() = default;
             Vector3D &operator=(const Vector3D &vec);
+            operator float *();
 
             double operator[](uint8_t i) const
             {
@@ -101,6 +102,7 @@ namespace Raytracer {
             double x;
             double y;
             double z;
+            float m_vals[3];
         };
 
     } // namespace Math

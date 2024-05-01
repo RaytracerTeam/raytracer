@@ -19,9 +19,6 @@ namespace Raytracer
     {
         #ifdef BONUS
         ImGui::SFML::Update(m_window, m_deltaClock.restart());
-        // todoMAIN remove this comments
-        // ImGui::ShowDemoWindow();
-        // return;
 
         ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f));
         ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
@@ -68,10 +65,29 @@ namespace Raytracer
             m_needRendering = true;
         }
 
+        ImGui::SameLine();
+        ImGui::Checkbox("Show FPS", &m_showFps);
         if (m_showFps)
         {
             ImGui::SameLine();
+            ImGui::BeginChild("Debug Infos", ImVec2(250, 30), ImGuiChildFlags_Border);
+            // FPS
             ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
+            // Camera Pos
+            float *pos = currentCamera.getPos();
+            if (ImGui::InputFloat3("Pos", pos, "%.2f", ImGuiInputTextFlags_EnterReturnsTrue)) {
+                // currentCamera.setPos(pos);
+                m_needRendering = true;
+            }
+            // Camera Angle
+            float *angle = currentCamera.getAngle();
+            if (ImGui::InputFloat3("Angle", angle, "%.2f", ImGuiInputTextFlags_EnterReturnsTrue)) {
+                // currentCamera.setAngle(angle);
+                m_needRendering = true;
+            }
+
+            ImGui::EndChild();
+
         }
 
         static int selected = 0;
@@ -100,21 +116,7 @@ namespace Raytracer
             imageHeight),
             sf::Color::White, sf::Color::Cyan);
 
-        // Modify Primitive
-        switch (m_scene->getPrimitives()[selected]->getType())
-        {
-        case PrimitiveType::SPHERE:
-            editSphere(static_cast<Sphere *>(m_scene->getPrimitives()[selected].get()));
-            break;
-        case PrimitiveType::PLANE:
-            editPlane(static_cast<Plane *>(m_scene->getPrimitives()[selected].get()));
-            break;
-        case PrimitiveType::CYLINDER:
-            editCylinder(static_cast<Cylinder *>(m_scene->getPrimitives()[selected].get()));
-            break;
-        default:
-            break;
-        }
+        editPrimitives(selected);
 
         ImGui::End();
         ImGui::PopStyleVar();

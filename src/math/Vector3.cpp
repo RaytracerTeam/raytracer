@@ -47,6 +47,14 @@ namespace Raytracer {
             return *this;
         }
 
+        Vector3D::operator float *()
+        {
+            m_vals[0] = x;
+            m_vals[1] = y;
+            m_vals[2] = z;
+            return m_vals;
+        }
+
         double Vector3D::dot(const Vector3D &v) const
         {
             return x * v.x + y * v.y + z * v.z;
@@ -237,9 +245,7 @@ namespace Raytracer {
         {
             return left + (right - left) * t;
         }
-
     } // namespace Math
-
 } // namespace Raytracer
 
 std::ostream &operator<<(std::ostream &os, const Raytracer::Math::Vector3D &v)
