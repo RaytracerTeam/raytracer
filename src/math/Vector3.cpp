@@ -226,6 +226,11 @@ namespace Raytracer {
             return left + (right - left) * t;
         }
 
+        Math::Vector3D Vector3D::gReflect(const Math::Vector3D &left, const Math::Vector3D &right)
+        {
+            return left - (right * 2 * left.dot(right));
+        }
+
     } // namespace Math
 
 } // namespace Raytracer

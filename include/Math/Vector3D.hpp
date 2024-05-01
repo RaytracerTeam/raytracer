@@ -93,6 +93,9 @@ namespace Raytracer {
             static Vector3D gRotate(const Vector3D &left, const Angle3D &right);
             static double gAngle(const Vector3D &left, const Vector3D &right);
 
+            // Raytracing
+            static Vector3D gReflect(const Vector3D &v, const Vector3D &n);
+
             // interpolation for camera movements
             static Vector3D gLerp(const Vector3D &left, const Vector3D &right, double t);
 

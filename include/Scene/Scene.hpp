@@ -38,10 +38,10 @@ namespace Raytracer {
         void updatePrimitives(void);
 
     private:
-        Color castRayColor(const IPrimitive *primHit, const RayHit &rhitPrim) const;
+        Color castRayColor(const Ray &ray, const IPrimitive *primHit, const RayHit &rhitPrim) const;
         Color castRay(const Ray &ray) const;
         double shadowPenombra(const Ray &lightRay, const IPrimitive *primHit, const PointLight &pointLight) const;
-        bool hit(const Ray &ray, const std::optional<RayHit> &rayHit, const Math::Vector3D &objOrigin, const Math::Vector3D &objTarget) const;
+        bool hit(const std::optional<RayHit> &rayHit, const Math::Vector3D &objOrigin, const Math::Vector3D &objTarget) const;
 
         std::vector<std::unique_ptr<IPrimitive>> m_primitives;
         std::vector<std::unique_ptr<Camera>> m_cameras;
@@ -51,6 +51,6 @@ namespace Raytracer {
 
         Skybox m_skybox = Skybox(std::make_unique<MaterialTexture>("assets/skybox_sky.jpg"), SPHERE);
         size_t m_maxRayBounces = 5; // todo : set in config
-        double m_maxDropShadowsRay = 10; // todo : set in config
+        double m_maxDropShadowsRay = 1; // todo : set in config
     };
 }
