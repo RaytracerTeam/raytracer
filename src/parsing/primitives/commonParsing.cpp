@@ -70,15 +70,15 @@ namespace Raytracer {
         }
         float parseRadius(const libconfig::Setting &setting)
         {
-            parseFloat(setting, "radius", 1);
+            return parseFloat(setting, "radius", 1);
         }
         float parseHeight(const libconfig::Setting &setting)
         {
-            parseFloat(setting, "height", 2);
+            return parseFloat(setting, "height", 2);
         }
         float parseDistance(const libconfig::Setting &setting)
         {
-            parseFloat(setting, "distance", 0.5);
+            return parseFloat(setting, "distance", 0.5);
         }
     } // namespace Parsing
 } // namespace Raytracer

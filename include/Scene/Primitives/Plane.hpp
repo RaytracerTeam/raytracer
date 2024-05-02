@@ -37,7 +37,7 @@ namespace Raytracer {
         void setAxis(const Axis &axis) { m_axis = axis; }
     private:
         Math::Vector3D getNormal(void) const;
-        Axis m_axis = Z;
         float m_pos = 0;
+        Axis m_axis = Z;
     };
 } // namespace Raytracer

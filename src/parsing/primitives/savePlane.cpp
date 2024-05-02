@@ -13,7 +13,7 @@
 
 namespace Raytracer
 {
-    void Parsing::savePlane(const Scene &scene, libconfig::Setting &planeList, Plane *plane)
+    void Parsing::savePlane(libconfig::Setting &planeList, Plane *plane)
     {
         libconfig::Setting &planeSetting = planeList.add(libconfig::Setting::TypeGroup);
 

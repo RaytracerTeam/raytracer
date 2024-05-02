@@ -13,7 +13,7 @@
 
 namespace Raytracer
 {
-    void Parsing::saveSphere(const Scene &scene, libconfig::Setting &sphereList, Sphere *sphere)
+    void Parsing::saveSphere(libconfig::Setting &sphereList, Sphere *sphere)
     {
         libconfig::Setting &sphereSetting = sphereList.add(libconfig::Setting::TypeGroup);
 

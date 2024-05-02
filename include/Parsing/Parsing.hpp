@@ -50,12 +50,12 @@ namespace Raytracer {
         void saveCameras(const Scene &scene, libconfig::Setting &root);
         void saveLights(const Scene &scene, libconfig::Setting &root);
         void savePrimitives(const Scene &scene, libconfig::Setting &root);
-        void saveSphere(const Scene &scene, libconfig::Setting &sphereList, Sphere *sphere);
-        void saveCylinder(const Scene &scene, libconfig::Setting &list, Cylinder *cylinder);
-        void saveCone(const Scene &scene, libconfig::Setting &list, Cone *cone);
+        void saveSphere(libconfig::Setting &sphereList, Sphere *sphere);
+        void saveCylinder(libconfig::Setting &list, Cylinder *cylinder);
+        void saveCone(libconfig::Setting &list, Cone *cone);
         // void saveTorus(const Scene &scene, libconfig::Setting &list, Torus *torus);
         // void saveTriangle(const Scene &scene, libconfig::Setting &list, Triangle *triangle);
-        void savePlane(const Scene &scene, libconfig::Setting &planeList, Plane *plane);
+        void savePlane(libconfig::Setting &planeList, Plane *plane);
 
         Math::Vector3D getSettingPosition(const libconfig::Setting &setting);
         Math::Angle3D getSettingRotation(const libconfig::Setting &setting);

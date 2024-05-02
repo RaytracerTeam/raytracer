@@ -15,6 +15,7 @@ namespace Raytracer
 {
     void SceneInteractive::editCone(Cone *cone)
     {
+        (void)cone;
         #ifdef BONUS
         float pos[3] = {(float)cone->getOrigin().getX(),
                         (float)cone->getOrigin().getY(),

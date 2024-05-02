@@ -15,6 +15,7 @@ namespace Raytracer
 {
     void SceneInteractive::editCylinder(Cylinder *cylinder)
     {
+        (void)cylinder;
         #ifdef BONUS
         float pos[3] = {(float)cylinder->getOrigin().getX(),
                         (float)cylinder->getOrigin().getY(),

@@ -20,16 +20,16 @@ namespace Raytracer
             switch (primitive->getType())
             {
             case PrimitiveType::SPHERE:
-                saveSphere(scene, sphereList, static_cast<Sphere *>(primitive.get()));
+                saveSphere(sphereList, static_cast<Sphere *>(primitive.get()));
                 break;
             case PrimitiveType::PLANE:
-                savePlane(scene, planeList, static_cast<Plane *>(primitive.get()));
+                savePlane(planeList, static_cast<Plane *>(primitive.get()));
                 break;
             case PrimitiveType::CYLINDER:
-                saveCylinder(scene, cylinderList, static_cast<Cylinder *>(primitive.get()));
+                saveCylinder(cylinderList, static_cast<Cylinder *>(primitive.get()));
                 break;
             case PrimitiveType::CONE:
-                saveCone(scene, coneList, static_cast<Cone *>(primitive.get()));
+                saveCone(coneList, static_cast<Cone *>(primitive.get()));
                 break;
             default:
                 break;

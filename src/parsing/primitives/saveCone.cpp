@@ -11,7 +11,7 @@
 
 namespace Raytracer
 {
-    void Parsing::saveCone(const Scene &scene, libconfig::Setting &list, Cone *cone)
+    void Parsing::saveCone(libconfig::Setting &list, Cone *cone)
     {
         libconfig::Setting &setting = list.add(libconfig::Setting::TypeGroup);
 

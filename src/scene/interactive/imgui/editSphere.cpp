@@ -15,6 +15,7 @@ namespace Raytracer
 {
     void SceneInteractive::editSphere(Sphere *sphere)
     {
+        (void)sphere;
         #ifdef BONUS
         float spherePos[3] = {(float)sphere->getOrigin().getX(),
                               (float)sphere->getOrigin().getY(),

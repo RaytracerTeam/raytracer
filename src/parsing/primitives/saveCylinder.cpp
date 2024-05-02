@@ -13,7 +13,7 @@
 
 namespace Raytracer
 {
-    void Parsing::saveCylinder(const Scene &scene, libconfig::Setting &list, Cylinder *cylinder)
+    void Parsing::saveCylinder(libconfig::Setting &list, Cylinder *cylinder)
     {
         libconfig::Setting &setting = list.add(libconfig::Setting::TypeGroup);
 
