@@ -49,7 +49,7 @@ namespace Raytracer {
 
         SceneLightning m_lightSystem;
 
-        Skybox m_skybox = Skybox(std::make_unique<MaterialTexture>("assets/skybox_sky.jpg"), SPHERE);
+        Skybox m_skybox = Skybox(std::make_unique<MaterialTexture>("assets/skybox_xp.jpg"), SPHERE);
         size_t m_maxRayBounces = 5; // todo : set in config
         double m_maxDropShadowsRay = 1; // todo : set in config
     };
