@@ -16,8 +16,8 @@ namespace Raytracer {
         Color getColor(void) const override { return m_color; }
         void setColor(const Color &color) override { m_color = color; }
 
-        virtual double getIntensity(void) const { return m_intensity; }
-        virtual void setIntensity(double intensity){ m_intensity = intensity; }
+        double getIntensity(void) const override { return m_intensity; }
+        void setIntensity(double intensity) override { m_intensity = intensity; }
 
     protected:
         ALight(const Color &color = {255U, 255U, 255U}, double intensity = 1.)

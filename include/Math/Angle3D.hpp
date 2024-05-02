@@ -14,6 +14,7 @@ namespace Raytracer {
             Angle3D(double x = 0, double y = 0, double z = 0);
             ~Angle3D() = default;
             // Angle3D &operator=(const Angle3D &angle);
+            operator float *();
 
             double getYaw(void) const { return m_yaw; }
             double getPitch(void) const { return m_pitch; }
@@ -26,6 +27,7 @@ namespace Raytracer {
             double m_yaw = 0; /* x axis */
             double m_pitch = 0; /* y axis */
             double m_roll = 0; /* z axis */
+            float m_vals[3];
         };
     } // namespace Math
 

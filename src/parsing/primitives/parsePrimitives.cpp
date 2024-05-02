@@ -17,8 +17,10 @@ namespace Raytracer {
 
             const libconfig::Setting &primitiveSetting = config.lookup("primitives");
 
-            parseSphere(primitiveSetting, scene);
-            parsePlane(primitiveSetting, scene);
+            parseSpheres(primitiveSetting, scene);
+            parsePlanes(primitiveSetting, scene);
+            parseCylinders(primitiveSetting, scene);
+            parseCones(primitiveSetting, scene);
         }
     } // namespace Parsing
 } // namespace Raytracer

@@ -17,6 +17,14 @@ namespace Raytracer {
             m_roll = valZ;
         }
 
+        Angle3D::operator float *()
+        {
+            m_vals[0] = m_yaw;
+            m_vals[1] = m_pitch;
+            m_vals[2] = m_roll;
+            return m_vals;
+        }
+
     } // namespace Math
 
 } // namespace Raytracer

@@ -12,66 +12,24 @@
 
 // temp
 #include <iostream>
+#include <libconfig.h++>
 
 namespace Raytracer {
-    bool CameraInteractive::updatePos(sf::Keyboard::Key code)
+    bool CameraInteractive::applyKeyToActions(std::vector<std::pair<sf::Keyboard::Key, bool>> &actions, sf::Keyboard::Key key, bool isPressed)
     {
-        auto camPos = m_camera->getPos();
-        auto camAngle = m_camera->getAngle();
-        auto movementCamAngle = camAngle;
-        movementCamAngle.setPitch(0);
-
-        switch (code) {
-        case sf::Keyboard::Up:
-        case sf::Keyboard::Z:
-            camPos += Math::Vector3D(0, 0, -1).rotate(movementCamAngle);
-            break;
-        case sf::Keyboard::Down:
-        case sf::Keyboard::S:
-            camPos += Math::Vector3D(0, 0, 1).rotate(movementCamAngle);
-            break;
-        case sf::Keyboard::Left:
-        case sf::Keyboard::Q:
-            camPos += Math::Vector3D(-1, 0, 0).rotate(movementCamAngle);
-            break;
-        case sf::Keyboard::Right:
-        case sf::Keyboard::D:
-            camPos += Math::Vector3D(1, 0, 0).rotate(movementCamAngle);
-            break;
-        case sf::Keyboard::Space:
-        case sf::Keyboard::PageUp:
-        case sf::Keyboard::A:
-            camPos += Math::Vector3D(0, 1, 0);
-            break;
-        case sf::Keyboard::LShift:
-        case sf::Keyboard::PageDown:
-        case sf::Keyboard::E:
-            camPos += Math::Vector3D(0, -1, 0);
-            break;
-        case sf::Keyboard::U:
-            camAngle.setPitch(Math::Algorithm::clampD(camAngle.getPitch() + 10, -90., 90.));
-            m_camera->setAngle(camAngle);
-            break;
-        case sf::Keyboard::J:
-            camAngle.setPitch(Math::Algorithm::clampD(camAngle.getPitch() - 10, -90., 90.));
-            m_camera->setAngle(camAngle);
-            break;
-        case sf::Keyboard::H:
-            camAngle.setYaw(camAngle.getYaw() + 10);
-            m_camera->setAngle(camAngle);
-            break;
-        case sf::Keyboard::K:
-            camAngle.setYaw(camAngle.getYaw() - 10);
-            m_camera->setAngle(camAngle);
-            break;
-        default:
+        if (m_camera == nullptr)
             return false;
+
+        for (auto &action : actions) {
+            if (action.first == key) {
+                action.second = isPressed;
+                return true;
+            }
         }
-        m_camera->setPos(camPos);
-        return true;
+        return false;
     }
 
-    bool CameraInteractive::handleInput(const sf::Event &event, sf::Window &window)
+    bool CameraInteractive::handleInput(const sf::Event &event, sf::Window &window, std::vector<std::pair<sf::Keyboard::Key, bool>> &actions)
     {
         if (m_camera == nullptr)
             return false;
@@ -92,8 +50,10 @@ namespace Raytracer {
                 return true;
             }
             break;
+        case sf::Event::KeyReleased:
+            return applyKeyToActions(actions, event.key.code, false);
         case sf::Event::KeyPressed:
-            return updatePos(event.key.code);
+            return applyKeyToActions(actions, event.key.code, true);
         default:
             return false;
         }

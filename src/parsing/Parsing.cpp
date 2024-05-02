@@ -41,7 +41,6 @@ namespace Raytracer {
         void parse(Scene &scene, const std::vector<std::string_view> &inputFiles)
         {
             for (const auto& file : inputFiles) {
-                std::cout << "Parsing file: " << file << std::endl;
                 libconfig::Config cfg;
                 try {
                     cfg.readFile(file.data());

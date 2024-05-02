@@ -15,12 +15,15 @@ namespace Raytracer {
         Sphere(const Math::Vector3D &origin,  std::unique_ptr<IMaterial> material, double radius)
             : APrimitive(origin, std::move(material))
             , m_radius(radius)
-        {
-        }
+        {}
         ~Sphere() = default;
+
+        PrimitiveType getType(void) const override { return PrimitiveType::SPHERE; };
+        const std::string getTypeString(void) const override { return "Sphere"; };
 
         double getRadius(void) const { return m_radius; }
         void setRadius(double radius) { m_radius = radius; }
+
         std::optional<RayHit> hit(const Ray &ray) const override;
 
     private:

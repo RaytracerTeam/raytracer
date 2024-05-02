@@ -18,16 +18,26 @@ namespace Raytracer {
             Y,
             Z
         };
-        Plane(const Math::Vector3D &origin,  std::unique_ptr<IMaterial> material) : APrimitive(origin, std::move(material)) {}
-        Plane(double pos,  std::unique_ptr<IMaterial> material, const Axis &axis);
+        Plane(const Math::Vector3D &origin,  std::unique_ptr<IMaterial> material);
+        Plane(double pos, std::unique_ptr<IMaterial> material, const Axis &axis);
         ~Plane() = default;
+
+        PrimitiveType getType(void) const override { return PrimitiveType::PLANE; };
+        const std::string getTypeString(void) const override { return "Plane"; };
+        
+        float getPos(void) const { return m_pos; }
+        void setPos(float pos) { m_pos = pos; setOrigin(Math::Vector3D(pos, pos, pos)); }
+        // todo Either add switch to keep infinity or remove infinity
 
         std::optional<RayHit> hit(const Ray &ray) const override;
 
-        void setAxis(const Axis &axis) { m_axis = axis; }
+        Axis getAxis(void) const { return m_axis; }
+        std::string getAxisString(void) const;
 
+        void setAxis(const Axis &axis) { m_axis = axis; }
     private:
         Math::Vector3D getNormal(void) const;
         Axis m_axis = Z;
+        float m_pos = 0;
     };
 } // namespace Raytracer

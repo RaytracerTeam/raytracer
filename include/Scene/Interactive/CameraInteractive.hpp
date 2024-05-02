@@ -8,6 +8,7 @@
 #pragma once
 
 #include "Scene/Camera.hpp"
+#include "Scene/Interactive/SceneAction.hpp"
 
 #include <SFML/Graphics.hpp>
 
@@ -16,8 +17,7 @@ namespace Raytracer {
     class CameraInteractive {
     public:
         CameraInteractive() = default;
-        CameraInteractive(Camera *camera)
-            : m_camera(camera) {};
+        CameraInteractive(Camera *camera) : m_camera(camera) {};
         ~CameraInteractive() = default;
 
         void setCamera(Camera *camera)
@@ -25,18 +25,21 @@ namespace Raytracer {
             m_camera = camera;
         }
 
-        bool handleInput(const sf::Event &event, sf::Window &window);
+        Camera *getCamera(void) const { return m_camera; }
+
+        bool handleInput(const sf::Event &event, sf::Window &window, std::vector<std::pair<sf::Keyboard::Key, bool>> &actions);
         void handleMouse(const sf::Event &event, const sf::Window &window);
 
         bool isActiveMouse(void) const { return m_mouseStillPressed; }
 
     private:
-        bool updatePos(sf::Keyboard::Key code);
         static inline void resetPosMouse(const sf::Window &window)
         {
             sf::Mouse::setPosition(sf::Vector2i(window.getSize().x / 2, window.getSize().y / 2), window);
         }
-
+        void updatePos(SceneAction action);
+        bool applyKeyToActions(std::vector<std::pair<sf::Keyboard::Key, bool>> &actions, sf::Keyboard::Key key, bool isPressed);
+        void applyActions(void);
         //////////////
 
         Camera *m_camera = nullptr;
