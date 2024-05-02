@@ -13,14 +13,14 @@ namespace Raytracer
 {
     namespace Parsing
     {
-        void Parsing::savePos(libconfig::Setting &setting, APrimitive *primitive)
+        void savePos(libconfig::Setting &setting, APrimitive *primitive)
         {
             libconfig::Setting &pos = setting.add("position", libconfig::Setting::TypeGroup);
             pos.add("x", libconfig::Setting::TypeFloat) = primitive->getOrigin().getX();
             pos.add("y", libconfig::Setting::TypeFloat) = primitive->getOrigin().getY();
             pos.add("z", libconfig::Setting::TypeFloat) = primitive->getOrigin().getZ();
         }
-        void Parsing::saveColor(libconfig::Setting &setting, APrimitive *primitive)
+        void saveColor(libconfig::Setting &setting, APrimitive *primitive)
         {
             // todo Only works with MaterialSolid
             libconfig::Setting &color = setting.add("color", libconfig::Setting::TypeGroup);
