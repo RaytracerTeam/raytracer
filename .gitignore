@@ -28,3 +28,5 @@ test.cpp
 imgui.ini
 todo
 screenshots
+
+scenes/quick_save.cfg
