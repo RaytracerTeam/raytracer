@@ -78,7 +78,7 @@ namespace Raytracer
         }
     }
 
-    void SceneInteractive::applyAction(SceneAction action)
+    void SceneInteractive::applyActions(void)
     {
         Camera *camera = m_interacCam.getCamera();
         auto camPos = camera->getPos();
@@ -142,16 +142,6 @@ namespace Raytracer
         }
         if (m_actions[SceneAction::SHOW_FPS].second) {
             m_showFps = !m_showFps;
-        }
-    }
-
-    void SceneInteractive::applyActions(void)
-    {
-        int i = 0;
-        for (auto &action : m_actions) {
-            if (action.second)
-                applyAction((SceneAction)i);
-            i++;
         }
     }
 } // namespace Raytracer

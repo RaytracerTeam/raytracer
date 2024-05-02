@@ -48,7 +48,6 @@ namespace Raytracer {
     private:
         void setupActions(void);
         void parseConfigFile(const std::string &filename);
-        void applyAction(SceneAction action);
         void applyActions(void);
 
         void updateDimension(unsigned int width, unsigned int height);
@@ -80,7 +79,7 @@ namespace Raytracer {
         sf::Clock m_clock;
         sf::Time m_currentTime;
         sf::Time m_previousTime;
-    
+
         // ImGui
         sf::Clock m_deltaClock;
         int m_renderResolution = 400;
