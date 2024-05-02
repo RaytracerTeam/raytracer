@@ -63,7 +63,7 @@ ifeq ($(UNAME_S),Darwin)
 	CFLAGS += $(MACSFMLINCLUDE) -DMACOSTONIO
 	LDFLAGS += $(MACSFMLLIB)
 else
-	LDFLAGS += -lGL
+	LDBONUSFLAGS += -lGL
 endif
 
 all: $(NAME)
