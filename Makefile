@@ -44,7 +44,7 @@ TESTFLAGS	=	-g3 -O0 --coverage -fprofile-arcs -ftest-coverage
 DEPSFLAGS	=	-MMD -MP
 
 LDFLAGS		=	-lconfig++ -lsfml-graphics -lsfml-window -lsfml-system
-LDBONUSFLAGS=	-lGLEW -lglfw -framework OpenGL
+LDBONUSFLAGS=	-lGLEW -lglfw
 TESTSFLAGS	=	$(LDFLAGS) -lcriterion
 
 MACBREWSFML		= 	/opt/homebrew/Cellar/sfml/2.6.1
@@ -59,8 +59,11 @@ IMGUIFLAGS	=	-DBONUS -Ibonus/imgui
 UNAME_S := $(shell uname -s)
 
 ifeq ($(UNAME_S),Darwin)
+	LDBONUSFLAGS += -framework OpenGL
 	CFLAGS += $(MACSFMLINCLUDE) -DMACOSTONIO
 	LDFLAGS += $(MACSFMLLIB)
+else
+	LDFLAGS += -lGL
 endif
 
 all: $(NAME)

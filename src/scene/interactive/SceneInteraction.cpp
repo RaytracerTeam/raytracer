@@ -37,7 +37,8 @@ namespace Raytracer {
                     sf::VideoMode::getDesktopMode().height));
             #endif
             m_window.setPosition(sf::Vector2i(0, 0));
-            ImGui::SFML::Init(m_window);
+            if (!ImGui::SFML::Init(m_window))
+                throw std::runtime_error("Failed to initialize ImGui");
         #endif
         m_texture.create(m_dimension.getWidth(), m_dimension.getHeight());
         m_img.create(m_dimension.getWidth(), m_dimension.getHeight());
