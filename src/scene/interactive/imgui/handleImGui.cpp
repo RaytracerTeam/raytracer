@@ -87,7 +87,6 @@ namespace Raytracer
             }
 
             ImGui::EndChild();
-
         }
 
         static int selected = 0;
