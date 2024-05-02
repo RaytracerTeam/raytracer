@@ -16,16 +16,17 @@
 #include "Scene/Interfaces/ILight.hpp"
 #include "Scene/Interfaces/IPrimitive.hpp"
 #include "Scene/SceneLightning.hpp"
+#include "Skybox.hpp"
 
 namespace Raytracer {
     class Scene {
     public:
-        Scene() = default;
+        Scene();
         ~Scene() = default;
 
         void addPrimitive(std::unique_ptr<IPrimitive> obj);
         void addCamera(std::unique_ptr<Camera> obj);
-        void addLight(std::unique_ptr<ILight> obj);
+        void addLight(std::unique_ptr<PointLight> obj);
 
         std::vector<Color> render(void);
 
@@ -37,18 +38,23 @@ namespace Raytracer {
         size_t getCameraCount(void) const;
         std::vector<std::unique_ptr<IPrimitive>> &getPrimitives(void) { return m_primitives; }
         const std::vector<std::unique_ptr<IPrimitive>> &getPrimitives(void) const { return m_primitives; }
-        const std::vector<std::unique_ptr<ILight>> &getLights(void) const { return m_lightSystem.getLights(); }
+        const std::vector<std::unique_ptr<PointLight>> &getLights(void) const { return m_lightSystem.getLights(); }
         void updatePrimitives(void);
 
     private:
         Color castRayColor(const Ray &ray, const IPrimitive *primHit, const RayHit &rhitPrim) const;
         Color castRay(const Ray &ray) const;
+        double shadowPenombra(const Ray &lightRay, const IPrimitive *primHit, const PointLight &pointLight) const;
+        bool hit(const std::optional<RayHit> &rayHit, const Math::Vector3D &objOrigin, const Math::Vector3D &objTarget) const;
 
         std::vector<std::unique_ptr<IPrimitive>> m_primitives;
         std::vector<std::unique_ptr<Camera>> m_cameras;
         size_t m_curCamIndex = 0;
 
         SceneLightning m_lightSystem;
-        // size_t m_maxRayBounces = 5; // todo : set in config
+
+        Skybox m_skybox = Skybox(std::make_unique<MaterialTexture>("assets/skybox_xp.jpg"), SPHERE);
+        size_t m_maxRayBounces = 5; // todo : set in config
+        double m_maxDropShadowsRay = 1; // todo : set in config
     };
 }

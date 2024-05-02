@@ -14,6 +14,12 @@
 #include <cmath>
 
 namespace Raytracer {
+    /* todo : direction should be in parsing*/
+    Scene::Scene()
+        : m_lightSystem({ -1, 1, -1 }, { 200U, 200, 200 })
+    {
+    }
+
     void Scene::addPrimitive(std::unique_ptr<IPrimitive> obj)
     {
         m_primitives.push_back(std::move(obj));
@@ -24,7 +30,7 @@ namespace Raytracer {
         m_cameras.push_back(std::move(obj));
     }
 
-    void Scene::addLight(std::unique_ptr<ILight> obj)
+    void Scene::addLight(std::unique_ptr<PointLight> obj)
     {
         m_lightSystem.addLight(std::move(obj));
     }
@@ -103,40 +109,108 @@ namespace Raytracer {
 
             return castRayColor(ray, prim.get(), rayhit.value());
         }
-        return Color(0., 0, 0);
+        return m_skybox.getAmbientColor(ray);
     }
 
-    Color Scene::castRayColor(const Ray &, const IPrimitive *primHit, const RayHit &rhitPrim) const
+    double Scene::shadowPenombra(const Ray &lightRay, const IPrimitive *primHit, const PointLight &pointLight) const
     {
-        Color illumination;
-        IMaterial *primMaterial = primHit->getMaterial();
+        double nbShadowRays = 0;
+        double radius = pointLight.getRadius();
+        const double offset = 1 / m_maxDropShadowsRay;
 
+        for (double i = -0.5; i <= 0.5; i += offset) {
+            double val = i * radius;
+            auto ray = Ray(lightRay.getOrigin(), (lightRay.getDirection() + val));
+            bool shadowed = false;
+
+            for (const auto &prim : m_primitives) {
+                if (primHit == prim.get())
+                    continue;
+                auto shadowHit = prim->hit(ray);
+                if (shadowHit != std::nullopt) {
+                    if (shadowHit->getDistance() * shadowHit->getDistance() < 0.001)
+                        continue;
+                    if (
+                        Math::Vector3D::gDist(ray.getOrigin(), shadowHit->getHitPoint())
+                        >= Math::Vector3D::gDist(ray.getOrigin(), pointLight.getOrigin()))
+                        continue;
+                    shadowed = true;
+                    break;
+                }
+            }
+            if (!shadowed && pointLight.hit(ray) != std::nullopt)
+                nbShadowRays++;
+        }
+        return nbShadowRays / m_maxDropShadowsRay;
+    }
+
+    bool Scene::hit(const std::optional<RayHit> &rayHit, const Math::Vector3D &objOrigin, const Math::Vector3D &objTarget) const
+    {
+        if (rayHit == std::nullopt)
+            return false;
+        if (rayHit->getDistance() * rayHit->getDistance() < 0.001)
+            return false;
+        if ( // even if the ray touches something, that doesn't mean it's before the light.
+            Math::Vector3D::gDist(objOrigin, rayHit->getHitPoint())
+            < Math::Vector3D::gDist(objOrigin, objTarget))
+            return true;
+        return false;
+    }
+
+    Color Scene::castRayColor(const Ray &ray, const IPrimitive *primHit, const RayHit &rhitPrim) const
+    {
+        Color color;
+        IMaterial *primMaterial = primHit->getMaterial();
+        auto &dirLight = m_lightSystem.getDirectionLight();
+
+        // Reflections
+        Color primColor = primMaterial->getColor(rhitPrim);
+        if (primMaterial->getAlbedo() > 0) {
+            if (ray.getDepth() < m_maxRayBounces) {
+                auto rayScattered = primMaterial->getScatteredRay(ray, rhitPrim);
+                if (rayScattered != std::nullopt)
+                    primColor *= castRay(*rayScattered) * primMaterial->getAlbedo();
+            }
+        }
+
+        // Directional light
+        for (const auto &prim : m_primitives) {
+            auto ray = Ray(rhitPrim.getHitPoint(), (dirLight.getDirection()));
+            if (primHit == prim.get())
+                continue;
+            auto lightHit = prim->hit(ray);
+            if (lightHit != std::nullopt)
+                continue;
+            auto dirLightDiffuse = Math::Algorithm::clampD(rhitPrim.getNormal().dot(dirLight.getDirection()), 0., 1.);
+            color += primColor * (dirLight.getColor() * dirLightDiffuse * dirLight.getIntensity());
+        }
+
+        // Point lights
         for (const auto &light : m_lightSystem.getLights()) {
             auto lightVec = light->getOrigin() - rhitPrim.getHitPoint();
             auto lightDirection = lightVec.normalize();
             Ray lightRay = Ray(rhitPrim.getHitPoint(), lightDirection);
-            bool shadowed = false;
+            double penombraFactor = 1.;
 
             for (const auto &prim : m_primitives) {
+                if (primHit == prim.get())
+                    continue;
                 auto lightHit = prim->hit(lightRay);
                 if (lightHit != std::nullopt) {
-                    if (lightHit->getDistance() * lightHit->getDistance() < 0.001)
-                        continue;
-                    if (
-                        Math::Vector3D::gDist(rhitPrim.getHitPoint(), lightHit->getHitPoint())
-                        < Math::Vector3D::gDist(rhitPrim.getHitPoint(), light->getOrigin())) {
-                        shadowed = true;
+                    if (hit(lightHit, rhitPrim.getHitPoint(), light->getOrigin())) {
+                        if (m_maxDropShadowsRay > 1)
+                            penombraFactor = shadowPenombra(lightRay, primHit, *light);
+                        else
+                            penombraFactor = 0;
                         break;
                     }
                 }
             }
 
-            if (shadowed)
-                continue;
             auto diffuse = Math::Algorithm::clampD(rhitPrim.getNormal().dot(lightDirection), 0., 1.);
             auto specular = primMaterial->getSpecular(light.get(), rhitPrim, lightDirection);
-            illumination += (primMaterial->getColor(rhitPrim) + specular) * (light->getColor() * diffuse);
+            color += (primColor + specular) * (light->getColor() * diffuse * penombraFactor * light->getIntensity());
         }
-        return illumination;
+        return color;
     }
 } // namespace Raytracer

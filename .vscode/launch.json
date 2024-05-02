@@ -47,7 +47,8 @@
             "request": "launch",
             "program": "${workspaceFolder}/raytracer",
             "args": [
-                "-i"
+                "-i",
+                "./scenes/old_parsing.cfg"
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

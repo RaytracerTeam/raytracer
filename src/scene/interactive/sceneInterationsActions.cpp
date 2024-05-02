@@ -30,7 +30,7 @@ namespace Raytracer
         m_actions.push_back(std::make_pair(sf::Keyboard::Escape, false));   // EXIT
         m_actions.push_back(std::make_pair(sf::Keyboard::C, false));        // QUICK_SAVE
         m_actions.push_back(std::make_pair(sf::Keyboard::X, false));        // SAVE_AND_QUIT
-        m_actions.push_back(std::make_pair(sf::Keyboard::F, false));        // SHOW_FPS
+        m_actions.push_back(std::make_pair(sf::Keyboard::F3, false));       // SHOW_FPS
         m_actions.push_back(std::make_pair(sf::Keyboard::Return, false));   // RESET
         parseConfigFile("config/keys.cfg");
     }

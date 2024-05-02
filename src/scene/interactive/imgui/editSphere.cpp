@@ -17,7 +17,8 @@ namespace Raytracer
     {
         #ifdef BONUS
         float spherePos[3] = {(float)sphere->getOrigin().getX(),
-            (float)sphere->getOrigin().getY(), (float)sphere->getOrigin().getZ()};
+                              (float)sphere->getOrigin().getY(),
+                              (float)sphere->getOrigin().getZ()};
         Color sphereColor = ((MaterialSolid *)sphere->getMaterial())->getColor();
         float sphereColorGui[3] = {(float)sphereColor.getR(),
             (float)sphereColor.getG(), (float)sphereColor.getB()};
@@ -27,7 +28,7 @@ namespace Raytracer
             sphere->setRadius(sphereRadius);
             m_needRendering = true;
         }
-        
+
         if (ImGui::SliderFloat3("Position", spherePos, -60, 60
             // , "%.3f", ImGuiSliderFlags_Logarithmic
             )) {

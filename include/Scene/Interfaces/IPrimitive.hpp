@@ -9,6 +9,7 @@
 
 #include "IMaterial.hpp"
 #include "ISceneObj.hpp"
+#include "IShape.hpp"
 #include "Scene/Ray.hpp"
 
 #include <memory>
@@ -24,7 +25,7 @@ namespace Raytracer {
         CONE,
         NONE
     };
-    class IPrimitive : public ISceneObj {
+    class IPrimitive : public IShape {
     public:
         virtual void setMaterial(std::unique_ptr<IMaterial> material) = 0;
         virtual IMaterial *getMaterial(void) const = 0;

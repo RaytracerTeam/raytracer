@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2024
 ** B-OOP-400-LYN-4-1-raytracer-thomas.pommier
 ** File description:
-** /!\ When the color is determined by a function.
+** MaterialCode.hpp
 */
 
 #pragma once
@@ -11,13 +11,10 @@
 
 namespace Raytracer {
     class MaterialCode : public AMaterial {
-    public:
-        MaterialCode(Color (&colorCode)(const RayHit &));
+    protected:
+        MaterialCode(size_t factor);
         ~MaterialCode() = default;
 
-        Color getColor(const RayHit &rayhit) const override;
-
-    private:
-        Color (*m_colorCode)(const RayHit &);
+        size_t m_factor;
     };
 } // namespace Raytracer

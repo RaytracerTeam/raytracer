@@ -7,16 +7,16 @@
 
 #pragma once
 
-#include "ISceneObj.hpp"
 #include "Color.hpp"
+#include "ISceneObj.hpp"
 
 namespace Raytracer {
-    class ILight : public ISceneObj {
+    class ILight {
     public:
         virtual Color getColor(void) const = 0;
-        virtual float getDiffuse(void) const = 0;
+        virtual double getIntensity(void) const = 0;
 
         virtual void setColor(const Color &color) = 0;
-        virtual void setDiffuse(float diffuse) = 0;
+        virtual void setIntensity(double intensity) = 0;
     };
 } // namespace Material

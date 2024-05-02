@@ -9,6 +9,9 @@
 *.png
 *.jpg
 
+!assets/*.png
+!assets/*.jpg
+
 raytracer
 unit-tests
 *.zip
@@ -24,3 +27,4 @@ test.cpp
 
 imgui.ini
 todo
+screenshots

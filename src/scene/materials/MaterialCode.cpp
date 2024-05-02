@@ -7,16 +7,8 @@
 
 #include "Scene/Materials/MaterialCode.hpp"
 
-#include <cmath>
-
 namespace Raytracer {
-    MaterialCode::MaterialCode(Color (&colorCode)(const RayHit &))
+    MaterialCode::MaterialCode(size_t factor) : m_factor(factor)
     {
-        m_colorCode = colorCode;
-    }
-
-    Color MaterialCode::getColor(const RayHit &rayhit) const
-    {
-        return m_colorCode(rayhit);
     }
 } // namespace Raytracer

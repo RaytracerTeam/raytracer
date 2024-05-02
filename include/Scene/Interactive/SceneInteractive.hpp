@@ -60,9 +60,11 @@ namespace Raytracer {
 
         // ImGui
         void handleImGui();
+        void editPrimitives(int selected);
         void editSphere(Sphere *sphere);
         void editPlane(Plane *plane);
         void editCylinder(Cylinder *cylinder);
+        void editCone(Cone *cone);
 
         /////////////////////////////////
 

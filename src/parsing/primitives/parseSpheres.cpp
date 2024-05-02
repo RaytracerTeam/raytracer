@@ -18,6 +18,10 @@ void Raytracer::Parsing::parseSpheres(const libconfig::Setting &primitiveSetting
         auto sphere = std::make_unique<Sphere>(parsePosition(config),
             std::make_unique<MaterialSolid>(parseColor(config)),
             parseRadius(config));
+        // temp
+        auto mat = sphere->getMaterial();
+        mat->setAlbedo(0.9);
+        mat->setFuzzFactor(0.3);
         scene.addPrimitive(std::move(sphere));
     }
 }

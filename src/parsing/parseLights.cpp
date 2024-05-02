@@ -10,8 +10,7 @@
 #include "Scene/Lights/PointLight.hpp"
 
 namespace Raytracer {
-    namespace Parsing
-    {
+    namespace Parsing {
         void parseLights(const libconfig::Config &config, Scene &scene)
         {
             if (!config.exists("lights"))
@@ -21,17 +20,18 @@ namespace Raytracer {
 
             for (const auto &lightSetting : lightsSetting.lookup("pointLights")) {
                 Math::Vector3D lightPos(0, 0, 0);
-                if (lightSetting.exists("position")) {
+                if (lightSetting.exists("position"))
                     lightPos = getSettingPosition(lightSetting);
-                }
                 Color lightColor(255U, 255U, 255U);
-                if (lightSetting.exists("color")) {
+                if (lightSetting.exists("color"))
                     lightColor = getSettingColor(lightSetting);
-                }
-                std::unique_ptr<PointLight> light = std::make_unique<PointLight>(lightPos, lightColor);
-                if (lightSetting.exists("diffuse"))
-                    light->setDiffuse(lightSetting.lookup("diffuse"));
-                scene.addLight(std::move(light));
+                double radius = 1.;
+                if (lightSetting.exists("radius"))
+                    radius = lightSetting.lookup("radius");
+                double intensity = 1.;
+                if (lightSetting.exists("intensity"))
+                    intensity = lightSetting.lookup("intensity");
+                scene.addLight(std::make_unique<PointLight>(lightPos, radius, lightColor, intensity));
             }
         }
     } // namespace Parsing

@@ -12,19 +12,29 @@
 namespace Raytracer {
     MaterialTexture::MaterialTexture(const std::string &pathname)
     {
-        std::unique_ptr<sf::Texture> texture = std::make_unique<sf::Texture>();
-        sf::Image image;
+        m_image = std::make_unique<sf::Image>();
+        setTexture(pathname);
+    }
 
-        if (image.loadFromFile(pathname))
-            throw Error("Texture can't be loaded", "APrimitive::setTexture");
-
-        texture->loadFromImage(image);
-        m_texture = std::move(texture);
+    void MaterialTexture::setTexture(const std::string &pathname)
+    {
+        if (!m_image->loadFromFile(pathname))
+            throw Error("Texture can't be loaded", "MaterialTexture::setTexture");
+        m_pathname = pathname;
     }
 
     /* todo : implement */
     Color MaterialTexture::getColor(const RayHit &) const
     {
         return Color(255U, 0, 0);
+    }
+
+    Color MaterialTexture::getColor(double u, double v) const
+    {
+        auto size = m_image->getSize();
+        auto x = u * size.x;
+        auto y = v * size.y;
+        sf::Color color = m_image->getPixel(x, y);
+        return Color((unsigned int)color.r, color.g, color.b);
     }
 } // namespace Raytracer

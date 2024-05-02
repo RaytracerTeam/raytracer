@@ -12,6 +12,8 @@ CORESRC	=	$(wildcard ./src/*.cpp) \
 			$(wildcard ./src/scene/*.cpp) \
 			$(wildcard ./src/scene/primitives/*.cpp) \
 			$(wildcard ./src/scene/materials/*.cpp) \
+			$(wildcard ./src/scene/materials/code/*.cpp) \
+			$(wildcard ./src/scene/materials/texture/*.cpp) \
 			$(wildcard ./src/scene/lights/*.cpp) \
 			$(wildcard ./src/scene/interactive/*.cpp) \
 			$(wildcard ./src/scene/interactive/imgui/*.cpp) \
@@ -82,7 +84,7 @@ tests_compile: $(TESTNAME)
 	$(CC) $(CFLAGS) $(DEPSFLAGS) -c $< -o $@
 
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(LDFLAGS) -p
+	$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(LDFLAGS)
 
 $(TESTNAME): $(TESTOBJ)
 	$(CC) $(CFLAGS) $(TESTFLAGS) $(TESTOBJ) -o $(TESTNAME) $(TESTSFLAGS)

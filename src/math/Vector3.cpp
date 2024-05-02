@@ -47,6 +47,14 @@ namespace Raytracer {
             return *this;
         }
 
+        Vector3D::operator float *()
+        {
+            m_vals[0] = x;
+            m_vals[1] = y;
+            m_vals[2] = z;
+            return m_vals;
+        }
+
         double Vector3D::dot(const Vector3D &v) const
         {
             return x * v.x + y * v.y + z * v.z;
@@ -148,6 +156,15 @@ namespace Raytracer {
             return vec;
         }
 
+        Vector3D Vector3D::operator+(double num) const
+        {
+            Vector3D vec = *this;
+            vec.x += num;
+            vec.y += num;
+            vec.z += num;
+            return vec;
+        }
+
         Vector3D Vector3D::operator-(const Vector3D &right) const
         {
             Vector3D vec = *this;
@@ -238,8 +255,11 @@ namespace Raytracer {
             return left + (right - left) * t;
         }
 
+        Math::Vector3D Vector3D::gReflect(const Math::Vector3D &left, const Math::Vector3D &right)
+        {
+            return left - (right * 2 * left.dot(right));
+        }
     } // namespace Math
-
 } // namespace Raytracer
 
 std::ostream &operator<<(std::ostream &os, const Raytracer::Math::Vector3D &v)
