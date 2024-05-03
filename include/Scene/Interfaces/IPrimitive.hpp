@@ -10,6 +10,7 @@
 #include "IMaterial.hpp"
 #include "ISceneObj.hpp"
 #include "IShape.hpp"
+#include "Optimisation/BoundingBox.hpp"
 #include "Scene/Ray.hpp"
 
 #include <memory>
@@ -24,12 +25,6 @@ namespace Raytracer {
         CYLINDER,
         CONE,
         NONE
-    };
-
-    class BoundingBox {
-        public:
-            Math::Vector3D min;
-            Math::Vector3D max;
     };
 
     class IPrimitive : public IShape {

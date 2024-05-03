@@ -33,40 +33,6 @@ namespace Raytracer {
             }
         }
 
-        static bool rayIntersectsBoundingBox(const Ray &ray, const BoundingBox &box)
-        {
-            double tmin = (box.min.getX() - ray.getOrigin().getX()) / ray.getDirection().getX();
-            double tmax = (box.max.getX() - ray.getOrigin().getX()) / ray.getDirection().getX();
-
-            if (tmin > tmax)
-                std::swap(tmin, tmax);
-
-            double tymin = (box.min.getY() - ray.getOrigin().getY()) / ray.getDirection().getY();
-            double tymax = (box.max.getY() - ray.getOrigin().getY()) / ray.getDirection().getY();
-
-            if (tymin > tymax)
-                std::swap(tymin, tymax);
-
-            if ((tmin > tymax) || (tymin > tmax))
-                return false;
-
-            if (tymin > tmin)
-                tmin = tymin;
-            if (tymax < tmax)
-                tmax = tymax;
-
-            double tzmin = (box.min.getZ() - ray.getOrigin().getZ()) / ray.getDirection().getZ();
-            double tzmax = (box.max.getZ() - ray.getOrigin().getZ()) / ray.getDirection().getZ();
-
-            if (tzmin > tzmax)
-                std::swap(tzmin, tzmax);
-
-            if ((tmin > tzmax) || (tzmin > tmax))
-                return false;
-
-            return true;
-        }
-
         static BoundingBox getBoundBox(std::vector<const IPrimitive *> &primitives)
         {
             Math::Vector3D overallMin;
@@ -127,7 +93,7 @@ namespace Raytracer {
 
         std::optional<std::pair<RayHit, const IPrimitive *>> readBVH(const Ray &ray, const Node &node)
         {
-            if (!rayIntersectsBoundingBox(ray, node.box))
+            if (!node.box.intersect(ray))
                 return std::nullopt;
 
             if (node.primitives == nullptr) {
