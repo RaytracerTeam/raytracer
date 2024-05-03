@@ -61,7 +61,8 @@ namespace Raytracer {
         void handleImGui(void);
         void guiMenuBar(void);
         void guiTopBar(Camera &currentCamera);
-        void editPrimitives(int selected);
+        void guiObjectSelection(int leftPaneWidth, int imageHeight);
+        void editPrimitives(void);
         void editSphere(Sphere *sphere);
         void editPlane(Plane *plane);
         void editCylinder(Cylinder *cylinder);
@@ -91,6 +92,7 @@ namespace Raytracer {
         char m_cfgSceneBuf[FILE_BUF_SIZE] = "scenes/";
         bool m_isWriting = false;
         bool m_showFps = false;
+        int m_selectedObject = 0;
 
         // Storing the result of the render
         std::unique_ptr<sf::Uint8 []> m_lastRender;

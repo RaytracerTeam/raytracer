@@ -9,8 +9,10 @@
 
 namespace Raytracer
 {
-    void SceneInteractive::editPrimitives(int selected)
+    void SceneInteractive::editPrimitives(void)
     {
+        int selected = m_selectedObject - 1;
+
         switch (m_scene->getPrimitives()[selected]->getType())
         {
         case PrimitiveType::SPHERE:

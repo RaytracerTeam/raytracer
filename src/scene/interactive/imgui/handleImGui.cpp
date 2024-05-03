@@ -42,54 +42,8 @@ namespace Raytracer
             ImGuiChildFlags_Border);
 
         static int selected = 0;
-        //* -- Primitive Selection --
-        if (ImGui::BeginTabBar("Primitive Selection")) {
-            if (ImGui::BeginTabItem("Primitives")) {
-                ImGui::BeginChild("primitive selection", ImVec2(leftPaneWidth, imageHeight / 2 - 20),
-                    ImGuiChildFlags_Border);
-                if (ImGui::Selectable("Add Primitive", selected == 0))
-                {
-                    // m_scene->addPrimitive(std::make_unique<Sphere>(
-                    //     Math::Vector3D(0, 0, 0), 1, std::make_unique<MaterialSolid>()));
-                    selected = 0;
-                }
-                int i = 0;
-                for (auto &prim : m_scene->getPrimitives())
-                {
-                    std::string name = std::to_string(i) + " id" +
-                        std::to_string(prim->getID()) + " " + prim->getTypeString();
-
-                    if (ImGui::Selectable(name.c_str(), selected == i + 1))
-                        selected = i + 1;
-                    i++;
-                }
-                ImGui::EndChild();
-                ImGui::EndTabItem();
-            }
-            if (ImGui::BeginTabItem("Lights")) {
-                // ImGui::BeginChild("light selection", ImVec2(leftPaneWidth, imageHeight / 2 - 30),
-                //     ImGuiChildFlags_Border);
-                // int i = 0;
-                // if (ImGui::Selectable("Add Light", selected == i))
-                // {
-                //     m_scene->addLight(std::make_unique<PointLight>(
-                //         Math::Vector3D(0, 0, 0), 1, Color(255, 255, 255)));
-                //     selected = i;
-                // }
-                // for (auto &light : m_scene->getLights())
-                // {
-                //     std::string name = std::to_string(i) + " id" +
-                //         std::to_string(light->getID()) + " " + light->getTypeString();
-
-                //     if (ImGui::Selectable(name.c_str(), selected == i))
-                //         selected = i;
-                //     i++;
-                // }
-                // ImGui::EndChild();
-                ImGui::EndTabItem();
-            }
-            ImGui::EndTabBar();
-        }
+        //* -- Object Selection --
+        guiObjectSelection(leftPaneWidth, imageHeight);
 
         //* -- Debug Infos --
         ImGui::BeginChild("Debug Infos", ImVec2(leftPaneWidth, imageHeight / 2 - 30),
@@ -130,7 +84,7 @@ namespace Raytracer
             (void) selected;
             // addPrimitive();
         else
-            editPrimitives(selected - 1);
+            editPrimitives();
 
         ImGui::End();
         ImGui::PopStyleVar();
