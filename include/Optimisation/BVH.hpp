@@ -34,13 +34,13 @@ namespace Raytracer {
 
         std::unique_ptr<Node> createBVH(size_t nPrims,
             std::vector<const IPrimitive *> &primitives,
-            double (*seperateFunc)(Axis, std::vector<const IPrimitive *> &primitives));
+            double (*seperateFunc)(double (Math::Vector3D::*biggestAxisM)() const, std::vector<const IPrimitive *> &primitives));
         std::optional<std::pair<RayHit, const IPrimitive *>> readBVH(const Ray &ray, const Node &node);
 
         // Algorithms
 
-        double axisAligned(Axis axis, std::vector<const IPrimitive *> &primitives);
-        double surfaceAreaHeuristic(Axis axis, std::vector<const IPrimitive *> &primitives);
+        double axisAligned(double (Math::Vector3D::*biggestAxisM)() const, std::vector<const IPrimitive *> &primitives);
+        double surfaceAreaHeuristic(double (Math::Vector3D::*biggestAxisM)() const, std::vector<const IPrimitive *> &primitives);
 
     } // namespace BVH
 } // namespace Raytracer

@@ -87,12 +87,14 @@ namespace Raytracer {
         return buffer;
     }
 
-    /* call this whenever the camera updates */
+    /* call this whenever the object move posititon */
     void Scene::updatePrimitives(void)
     {
-        auto cameraPos = getCurrentCamera().getPos();
+        m_readonlyPrimitives = std::vector<const IPrimitive *>();
+        m_readonlyPrimitives.reserve(m_primitives.size());
+        for (const auto &prim : m_primitives)
+            m_readonlyPrimitives.push_back(static_cast<const IPrimitive *>(prim.get()));
 
-        // todo : set nprims to pasing & seperateFunc
         m_bvhTree = BVH::createBVH(5, m_readonlyPrimitives, BVH::axisAligned);
     }
 

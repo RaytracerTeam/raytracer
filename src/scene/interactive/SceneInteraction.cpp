@@ -111,7 +111,8 @@ namespace Raytracer {
 
             if (m_newEvent) {
                 m_newEvent = false;
-                m_scene->updatePrimitives();
+                // todo : make this behavior diffretn : when an object transforms
+                // m_scene->updatePrimitives();
             }
             if (m_needRendering) {
                 m_needRendering = false;

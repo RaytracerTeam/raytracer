@@ -108,14 +108,15 @@ namespace Raytracer {
         // nPrims should never be zero.
         std::unique_ptr<Node> createBVH(size_t nPrims,
             std::vector<const IPrimitive *> &primitives,
-            double (*seperateFunc)(Axis, std::vector<const IPrimitive *> &primitives))
+            double (*seperateFunc)(double (Math::Vector3D::*biggestAxisM)() const, std::vector<const IPrimitive *> &primitives))
         {
             auto node = std::make_unique<Node>(getBoundBox(primitives));
 
             if (primitives.size() > nPrims) {
                 Axis biggestAxis = getBiggestAxis(node->box);
-                double sepThreshold = seperateFunc(biggestAxis, primitives);
-                auto res = getSubdivision(sepThreshold, getBiggestAxisMethod(biggestAxis), primitives);
+                auto biggestAxisM = getBiggestAxisMethod(biggestAxis);
+                double sepThreshold = seperateFunc(biggestAxisM, primitives);
+                auto res = getSubdivision(sepThreshold, biggestAxisM, primitives);
                 node->left = createBVH(nPrims, res.first, seperateFunc);
                 node->right = createBVH(nPrims, res.second, seperateFunc);
                 return node;
@@ -126,33 +127,35 @@ namespace Raytracer {
 
         std::optional<std::pair<RayHit, const IPrimitive *>> readBVH(const Ray &ray, const Node &node)
         {
-            if (rayIntersectsBoundingBox(ray, node.box)) {
-                if (node.primitives == nullptr) {
-                    auto resLeft = readBVH(ray, *node.left);
-                    if (resLeft != std::nullopt)
-                        return resLeft;
-                    return readBVH(ray, *node.right);
-                }
+            if (!rayIntersectsBoundingBox(ray, node.box))
+                return std::nullopt;
 
-                std::vector<std::pair<RayHit, const IPrimitive *>> hitResults;
-                bool hasHit = false;
-                for (const auto &prim : *node.primitives) {
-                    auto hitResult = prim->hit(ray);
-                    hitResults.push_back(std::pair<RayHit, const IPrimitive *>(*hitResult, prim));
-                    if (hitResult != std::nullopt && !hasHit)
-                        hasHit = true;
-                }
-                if (!hasHit)
-                    return std::nullopt;
-                std::sort(
-                    begin(hitResults),
-                    end(hitResults),
-                    [](const std::pair<RayHit, const IPrimitive *> &lhs, const std::pair<RayHit, const IPrimitive *> &rhs) {
-                        return lhs.first.getDistance() < rhs.first.getDistance();
-                    });
-                return hitResults.front();
+            if (node.primitives == nullptr) {
+                auto resLeft = readBVH(ray, *node.left);
+                if (resLeft != std::nullopt)
+                    return resLeft;
+                return readBVH(ray, *node.right);
             }
-            return std::nullopt;
+
+            std::vector<std::pair<RayHit, const IPrimitive *>> hitResults;
+            bool hasHit = false;
+            auto vec = *node.primitives;
+            for (const auto &prim : vec) {
+                auto hitResult = prim->hit(ray);
+                hitResults.push_back(std::pair<RayHit, const IPrimitive *>(*hitResult, prim));
+                if (hitResult != std::nullopt && !hasHit)
+                    hasHit = true;
+            }
+
+            if (!hasHit)
+                return std::nullopt;
+            std::sort(
+                begin(hitResults),
+                end(hitResults),
+                [](const std::pair<RayHit, const IPrimitive *> &lhs, const std::pair<RayHit, const IPrimitive *> &rhs) {
+                    return lhs.first.getDistance() < rhs.first.getDistance();
+                });
+            return hitResults.front();
         }
     }
 }
