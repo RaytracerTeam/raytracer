@@ -122,9 +122,9 @@ namespace Raytracer
             camera->setAngle(camAngle);
         }
         if (m_actions[SceneAction::SPRINT].second) {
-            m_movementSpeed = DEFAULT_MOVEMENT_SPEED * 4;
+            m_movementSpeed = m_defaultMovementSpeed * 4;
         } else {
-            m_movementSpeed = DEFAULT_MOVEMENT_SPEED;
+            m_movementSpeed = m_defaultMovementSpeed;
         }
         camera->setPos(camPos);
         if (m_actions[SceneAction::RESET].second) {

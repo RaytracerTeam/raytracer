@@ -17,6 +17,7 @@ CORESRC	=	$(wildcard ./src/*.cpp) \
 			$(wildcard ./src/scene/lights/*.cpp) \
 			$(wildcard ./src/scene/interactive/*.cpp) \
 			$(wildcard ./src/scene/interactive/imgui/*.cpp) \
+			$(wildcard ./src/scene/interactive/imgui/primitives/*.cpp) \
 
 IMGUISRC	=	$(wildcard ./bonus/imgui/*.cpp)
 

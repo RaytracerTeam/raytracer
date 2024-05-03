@@ -24,7 +24,7 @@ namespace Raytracer
         float colorGui[3] = {(float)color.getR(),
             (float)color.getG(), (float)color.getB()};
         float radius = cylinder->getRadius();
-        if (ImGui::SliderFloat("Radius", &radius, 0, 40, "%.3f",
+        if (ImGui::SliderFloat("Radius", &radius, 0.020, 60, "%.3f",
             ImGuiSliderFlags_Logarithmic)) {
             cylinder->setRadius(radius);
             m_needRendering = true;

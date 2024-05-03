@@ -34,6 +34,7 @@ namespace Raytracer {
         bool setCameraIndex(size_t index);
         bool setCameraIndexRelative(int64_t offset);
         void setSkyboxPath(const std::string &path);
+        void setRenderLights(bool renderLights) { m_renderLights = renderLights; }
 
         Camera &getCurrentCamera(void) const;
         const std::vector<std::unique_ptr<Camera>> &getCameras(void) const { return m_cameras; }
@@ -41,6 +42,8 @@ namespace Raytracer {
         std::vector<std::unique_ptr<IPrimitive>> &getPrimitives(void) { return m_primitives; }
         const std::vector<std::unique_ptr<IPrimitive>> &getPrimitives(void) const { return m_primitives; }
         const std::vector<std::unique_ptr<PointLight>> &getLights(void) const { return m_lightSystem.getLights(); }
+        bool getRenderLights(void) const { return m_renderLights; }
+
         void updatePrimitives(void);
 
     private:
@@ -58,5 +61,7 @@ namespace Raytracer {
         Skybox m_skybox = Skybox(std::make_unique<MaterialTexture>(DEFAULT_SKYBOX), SPHERE);
         size_t m_maxRayBounces = 5; // todo : set in config
         double m_maxDropShadowsRay = 1; // todo : set in config
+
+        bool m_renderLights = false;
     };
 }

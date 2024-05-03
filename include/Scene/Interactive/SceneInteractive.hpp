@@ -58,7 +58,9 @@ namespace Raytracer {
         void displayFramerate(void);
 
         // ImGui
-        void handleImGui();
+        void handleImGui(void);
+        void guiMenuBar(void);
+        void guiTopBar(Camera &currentCamera);
         void editPrimitives(int selected);
         void editSphere(Sphere *sphere);
         void editPlane(Plane *plane);
@@ -69,6 +71,7 @@ namespace Raytracer {
 
         // TODO utiliser shared ptr
         Scene *m_scene = nullptr;
+        std::unique_ptr<Scene> m_newScene;
         CameraInteractive m_interacCam;
 
         Dimension &m_dimension;
@@ -97,6 +100,7 @@ namespace Raytracer {
         bool m_newEvent = true;
         bool m_needRendering = true;
         float m_movementSpeed = DEFAULT_MOVEMENT_SPEED;
+        float m_defaultMovementSpeed = DEFAULT_MOVEMENT_SPEED;
         float m_rotationSpeed = DEFAULT_ROTATION_SPEED;
     };
 } // namespace Raytracer

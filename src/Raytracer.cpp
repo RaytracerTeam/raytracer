@@ -43,6 +43,9 @@ namespace Raytracer {
         try {
             std::vector<std::string_view> inputFiles;
             bool interactiveMode = Parsing::parseArgv(argc, argv, inputFiles);
+            if (interactiveMode)
+                (void)interactiveMode;
+
             Parsing::parse(*scene, inputFiles);
             scene->updatePrimitives();
             if (interactiveMode)

@@ -24,7 +24,7 @@ namespace Raytracer
         float sphereColorGui[3] = {(float)sphereColor.getR(),
             (float)sphereColor.getG(), (float)sphereColor.getB()};
         float sphereRadius = sphere->getRadius();
-        if (ImGui::SliderFloat("Radius", &sphereRadius, 0, 40, "%.3f",
+        if (ImGui::SliderFloat("Radius", &sphereRadius, 0.020, 40, "%.3f",
             ImGuiSliderFlags_Logarithmic)) {
             sphere->setRadius(sphereRadius);
             m_needRendering = true;

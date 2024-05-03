@@ -7,8 +7,6 @@
 
 #include "Scene/Interactive/SceneInteractive.hpp"
 
-#include "Parsing/Parsing.hpp"
-
 #include "Scene/Primitives/Sphere.hpp"
 #include "Scene/Primitives/Plane.hpp"
 #include "Scene/Materials/MaterialSolid.hpp"
@@ -24,125 +22,115 @@ namespace Raytracer
         ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
         ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
 
+        int imageHeight = ImGui::GetIO().DisplaySize.y - 170;
+        int imageWidth = imageHeight * SCREEN_RATIO;
+        int leftPaneWidth = ImGui::GetIO().DisplaySize.x - imageWidth - 30;
+
         // Start of the window
         ImGui::Begin("What a nice tool, Thank you Mister Pommier", nullptr,
             ImGuiWindowFlags_NoResize | ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDecoration);
 
-        // Save scene to .cfg
-        m_isWriting = false;
-        if (ImGui::BeginMenuBar())
-        {
-            if (ImGui::BeginMenu("Save as ..."))
-            {
-                m_isWriting = true;
-                std::string hint("custom_scene.cfg");
-                if (ImGui::InputTextWithHint(" File name (press ENTER to save)",
-                    hint.c_str(), m_fileBuf, FILE_BUF_SIZE,
-                    ImGuiInputTextFlags_EnterReturnsTrue))
-                {
-                    Parsing::saveScene(*m_scene, m_fileBuf);
-                    ImGui::CloseCurrentPopup();
-                }
-                ImGui::EndMenu();
-            }
-            if (ImGui::BeginMenu("Skybox path"))
-            {
-                m_isWriting = true;
-                if (ImGui::InputTextWithHint(" Path to sphere image (press ENTER to save)",
-                    "assets/skyboxes/sky.jpg", m_skyboxPathBuf, FILE_BUF_SIZE,
-                    ImGuiInputTextFlags_EnterReturnsTrue))
-                {
-                    if (std::filesystem::exists(m_skyboxPathBuf))
-                        m_scene->setSkyboxPath(m_skyboxPathBuf);
-                    ImGui::CloseCurrentPopup();
-                }
-                ImGui::EndMenu();
-            }
-            if (ImGui::BeginMenu("Load scene"))
-            {
-                m_isWriting = true;
-                if (ImGui::InputTextWithHint(" File name (press ENTER to load)",
-                    "scenes/custom_scene.cfg", m_fileBuf, FILE_BUF_SIZE,
-                    ImGuiInputTextFlags_EnterReturnsTrue))
-                {
-                    // setScene(Parsing::loadScene(m_fileBuf));
-                    m_needRendering = true;
-                    ImGui::CloseCurrentPopup();
-                }
-                ImGui::EndMenu();
-            }
-            ImGui::EndMenuBar();
-        }
+        //* -- Menu Bar --
+        guiMenuBar();
 
-        // Render Resolution
-        ImGui::SetNextItemWidth(300);
-        if (ImGui::SliderInt("Dimension", &m_renderResolution, 10, 4000)) {
-            updateDimension(m_renderResolution * SCREEN_RATIO, m_renderResolution);
-            m_needRendering = true;
-        }
-
-        ImGui::SameLine();
-
-        // FOV
-        ImGui::SetNextItemWidth(300);
+        //* -- Top Bar --
         Camera &currentCamera = m_scene->getCurrentCamera();
-        float fov = currentCamera.getFov();
-        if (ImGui::SliderFloat("FOV", &fov, 1, 179)) {
-            currentCamera.setFov(fov);
-            m_needRendering = true;
-        }
+        guiTopBar(currentCamera);
 
-        ImGui::SameLine();
-        ImGui::Checkbox("Show FPS", &m_showFps);
-        if (m_showFps)
-        {
-            ImGui::SameLine();
-            ImGui::BeginChild("Debug Infos", ImVec2(250, 30), ImGuiChildFlags_Border);
-            // FPS
-            ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
-            // Camera Pos
-            float *pos = currentCamera.getPos();
-            if (ImGui::InputFloat3("Pos", pos, "%.2f", ImGuiInputTextFlags_EnterReturnsTrue)) {
-                // currentCamera.setPos(pos);
-                m_needRendering = true;
-            }
-            // Camera Angle
-            float *angle = currentCamera.getAngle();
-            if (ImGui::InputFloat3("Angle", angle, "%.2f", ImGuiInputTextFlags_EnterReturnsTrue)) {
-                // currentCamera.setAngle(angle);
-                m_needRendering = true;
-            }
-
-            ImGui::EndChild();
-        }
+        // Left Pane
+        ImGui::BeginChild("left pane", ImVec2(leftPaneWidth, imageHeight),
+            ImGuiChildFlags_Border);
 
         static int selected = 0;
-        // Primitive Selection
-        ImGui::BeginChild("left pane", ImVec2(150, 300),
-            ImGuiChildFlags_Border | ImGuiChildFlags_ResizeX);
-        int i = 0;
-        for (auto &prim : m_scene->getPrimitives())
-        {
-            std::string name = std::to_string(i) + " id" +
-                std::to_string(prim->getID()) + " " + prim->getTypeString();
+        //* -- Primitive Selection --
+        if (ImGui::BeginTabBar("Primitive Selection")) {
+            if (ImGui::BeginTabItem("Primitives")) {
+                ImGui::BeginChild("primitive selection", ImVec2(leftPaneWidth, imageHeight / 2 - 20),
+                    ImGuiChildFlags_Border);
+                if (ImGui::Selectable("Add Primitive", selected == 0))
+                {
+                    // m_scene->addPrimitive(std::make_unique<Sphere>(
+                    //     Math::Vector3D(0, 0, 0), 1, std::make_unique<MaterialSolid>()));
+                    selected = 0;
+                }
+                int i = 0;
+                for (auto &prim : m_scene->getPrimitives())
+                {
+                    std::string name = std::to_string(i) + " id" +
+                        std::to_string(prim->getID()) + " " + prim->getTypeString();
 
-            if (ImGui::Selectable(name.c_str(), selected == i))
-                selected = i;
-            i++;
+                    if (ImGui::Selectable(name.c_str(), selected == i + 1))
+                        selected = i + 1;
+                    i++;
+                }
+                ImGui::EndChild();
+                ImGui::EndTabItem();
+            }
+            if (ImGui::BeginTabItem("Lights")) {
+                // ImGui::BeginChild("light selection", ImVec2(leftPaneWidth, imageHeight / 2 - 30),
+                //     ImGuiChildFlags_Border);
+                // int i = 0;
+                // if (ImGui::Selectable("Add Light", selected == i))
+                // {
+                //     m_scene->addLight(std::make_unique<PointLight>(
+                //         Math::Vector3D(0, 0, 0), 1, Color(255, 255, 255)));
+                //     selected = i;
+                // }
+                // for (auto &light : m_scene->getLights())
+                // {
+                //     std::string name = std::to_string(i) + " id" +
+                //         std::to_string(light->getID()) + " " + light->getTypeString();
+
+                //     if (ImGui::Selectable(name.c_str(), selected == i))
+                //         selected = i;
+                //     i++;
+                // }
+                // ImGui::EndChild();
+                ImGui::EndTabItem();
+            }
+            ImGui::EndTabBar();
         }
+
+        //* -- Debug Infos --
+        ImGui::BeginChild("Debug Infos", ImVec2(leftPaneWidth, imageHeight / 2 - 30),
+            ImGuiChildFlags_Border);
+        // FPS
+        ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
+        // Camera Pos
+        float *pos = currentCamera.getPos();
+        if (ImGui::InputFloat3("Pos", pos, "%.2f", ImGuiInputTextFlags_EnterReturnsTrue)) {
+            // currentCamera.setPos(pos);
+            m_needRendering = true;
+        }
+        // Camera Angle
+        float *angle = currentCamera.getAngle();
+        if (ImGui::InputFloat3("Angle", angle, "%.2f", ImGuiInputTextFlags_EnterReturnsTrue)) {
+            // currentCamera.setAngle(angle);
+            m_needRendering = true;
+        }
+        bool renderLights = m_scene->getRenderLights();
+        if (ImGui::Checkbox("Render Lights", &renderLights))
+            m_needRendering = true;
+        m_scene->setRenderLights(renderLights);
+
+        ImGui::EndChild();
+
         ImGui::EndChild();
 
         ImGui::SameLine();
 
-        // Image Render
-        int imageHeight = ImGui::GetIO().DisplaySize.y - 150;
-        int imageWidth = imageHeight * SCREEN_RATIO;
+        //* -- Image Render --
         ImGui::Image(m_texture, sf::Vector2f(
             imageWidth,
             imageHeight),
             sf::Color::White, sf::Color::Cyan);
 
-        editPrimitives(selected);
+        //* -- Edit Primitives --
+        if (selected == 0)
+            (void) selected;
+            // addPrimitive();
+        else
+            editPrimitives(selected - 1);
 
         ImGui::End();
         ImGui::PopStyleVar();

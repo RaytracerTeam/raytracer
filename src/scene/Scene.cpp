@@ -102,6 +102,16 @@ namespace Raytracer {
 
     Color Scene::castRay(const Ray &ray) const
     {
+        if (m_renderLights) {
+            for (const auto &light : m_lightSystem.getLights()) {
+                std::optional<RayHit> rayhit = light->hit(ray);
+                if (rayhit == std::nullopt)
+                    continue;
+
+                return light->getColor();
+
+            }
+        }
         for (const auto &prim : m_primitives) {
             std::optional<RayHit> rayhit = prim->hit(ray);
             if (rayhit == std::nullopt)
@@ -208,8 +218,10 @@ namespace Raytracer {
             }
 
             auto diffuse = Math::Algorithm::clampD(rhitPrim.getNormal().dot(lightDirection), 0., 1.);
-            auto specular = primMaterial->getSpecular(light.get(), rhitPrim, lightDirection);
-            color += (primColor + specular) * (light->getColor() * diffuse * penombraFactor * light->getIntensity());
+            if (primMaterial->hasPhong()) {
+                primColor += primMaterial->getSpecular(light.get(), rhitPrim, lightDirection);
+            }
+            color += primColor * (light->getColor() * diffuse * penombraFactor * light->getIntensity());
         }
         return color;
     }
