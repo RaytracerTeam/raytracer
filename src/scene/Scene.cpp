@@ -92,24 +92,16 @@ namespace Raytracer {
     {
         auto cameraPos = getCurrentCamera().getPos();
 
-        std::sort(
-            begin(m_primitives),
-            end(m_primitives),
-            [cameraPos](const std::unique_ptr<IPrimitive> &lhs, const std::unique_ptr<IPrimitive> &rhs) {
-                return Math::Vector3D::gDist(cameraPos, lhs->getOrigin()) < Math::Vector3D::gDist(cameraPos, rhs->getOrigin());
-            });
+        // todo : set nprims to pasing & seperateFunc
+        m_bvhTree = BVH::createBVH(5, m_readonlyPrimitives, BVH::axisAligned);
     }
 
     Color Scene::castRay(const Ray &ray) const
     {
-        for (const auto &prim : m_primitives) {
-            std::optional<RayHit> rayhit = prim->hit(ray);
-            if (rayhit == std::nullopt)
-                continue;
-
-            return castRayColor(ray, prim.get(), rayhit.value());
-        }
-        return m_skybox.getAmbientColor(ray);
+        auto result = BVH::readBVH(ray, *m_bvhTree);
+        if (result == std::nullopt)
+            return m_skybox.getAmbientColor(ray);
+        return castRayColor(ray, result->second, result->first);
     }
 
     double Scene::shadowPenombra(const Ray &lightRay, const IPrimitive *primHit, const PointLight &pointLight) const

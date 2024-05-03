@@ -17,6 +17,7 @@
 #include "Scene/Interfaces/IPrimitive.hpp"
 #include "Scene/SceneLightning.hpp"
 #include "Skybox.hpp"
+#include "Optimisation/BVH.hpp"
 
 namespace Raytracer {
     #define DEFAULT_SKYBOX "assets/skyboxes/sky.jpg"
@@ -50,6 +51,10 @@ namespace Raytracer {
         bool hit(const std::optional<RayHit> &rayHit, const Math::Vector3D &objOrigin, const Math::Vector3D &objTarget) const;
 
         std::vector<std::unique_ptr<IPrimitive>> m_primitives;
+        // useful to copy the vector around.
+        std::vector<const IPrimitive *> m_readonlyPrimitives;
+        std::unique_ptr<BVH::Node> m_bvhTree;
+
         std::vector<std::unique_ptr<Camera>> m_cameras;
         size_t m_curCamIndex = 0;
 

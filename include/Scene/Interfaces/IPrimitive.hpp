@@ -25,10 +25,19 @@ namespace Raytracer {
         CONE,
         NONE
     };
+
+    class BoundingBox {
+        public:
+            Math::Vector3D min;
+            Math::Vector3D max;
+    };
+
     class IPrimitive : public IShape {
     public:
         virtual void setMaterial(std::unique_ptr<IMaterial> material) = 0;
         virtual IMaterial *getMaterial(void) const = 0;
+
+        virtual BoundingBox getBoundingBox(void) const = 0;
 
         virtual PrimitiveType getType(void) const = 0;
         virtual const std::string getTypeString(void) const = 0;
