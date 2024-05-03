@@ -19,6 +19,7 @@
 #include "Skybox.hpp"
 
 namespace Raytracer {
+    #define DEFAULT_SKYBOX "assets/skyboxes/sky.jpg"
     class Scene {
     public:
         Scene();
@@ -32,6 +33,7 @@ namespace Raytracer {
 
         bool setCameraIndex(size_t index);
         bool setCameraIndexRelative(int64_t offset);
+        void setSkyboxPath(const std::string &path);
 
         Camera &getCurrentCamera(void) const;
         const std::vector<std::unique_ptr<Camera>> &getCameras(void) const { return m_cameras; }
@@ -53,7 +55,7 @@ namespace Raytracer {
 
         SceneLightning m_lightSystem;
 
-        Skybox m_skybox = Skybox(std::make_unique<MaterialTexture>("assets/skybox_xp.jpg"), SPHERE);
+        Skybox m_skybox = Skybox(std::make_unique<MaterialTexture>(DEFAULT_SKYBOX), SPHERE);
         size_t m_maxRayBounces = 5; // todo : set in config
         double m_maxDropShadowsRay = 1; // todo : set in config
     };

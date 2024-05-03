@@ -21,7 +21,7 @@ namespace Raytracer {
         ~Cone() = default;
 
         PrimitiveType getType(void) const override { return PrimitiveType::CONE; };
-        const std::string getTypeString(void) const override { return "Cones"; };
+        const std::string getTypeString(void) const override { return "Cone"; };
 
         std::optional<RayHit> hit(const Ray &ray) const override;
         RayHit getNormal(double distance, const Math::Vector3D &hitPt, const Math::Vector3D &origin) const;

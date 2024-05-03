@@ -26,7 +26,7 @@ namespace Raytracer {
     #define DEFAULT_MOVEMENT_SPEED 0.3f
     #define DEFAULT_ROTATION_SPEED 3
     #define SCREEN_RATIO 16.0f / 9.0f
-    #define FILE_BUF_SIZE 20
+    #define FILE_BUF_SIZE 40
 
     class SceneInteractive {
     public:
@@ -83,7 +83,9 @@ namespace Raytracer {
         // ImGui
         sf::Clock m_deltaClock;
         int m_renderResolution = 400;
-        char m_fileBuf[FILE_BUF_SIZE];
+        char m_fileBuf[FILE_BUF_SIZE] = "scenes/";
+        char m_skyboxPathBuf[FILE_BUF_SIZE] = DEFAULT_SKYBOX;
+        char m_cfgSceneBuf[FILE_BUF_SIZE] = "scenes/";
         bool m_isWriting = false;
         bool m_showFps = false;
 

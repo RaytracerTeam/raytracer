@@ -47,7 +47,7 @@ namespace Raytracer {
 
         complex Algorithm::cbrt(complex a, int n)
         {
-            const double TWOPI = 2.0 * M_PIl;
+            const double TWOPI = 2.0 * M_PI;
 
             double rho = pow(abs(a), 1.0 / 3.0);
             double theta = ((TWOPI * n) + arg(a)) / 3.0;

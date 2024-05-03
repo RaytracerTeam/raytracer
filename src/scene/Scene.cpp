@@ -14,7 +14,7 @@
 #include <cmath>
 
 namespace Raytracer {
-    /* todo : direction should be in parsing*/
+    // todo : direction should be in parsing
     Scene::Scene()
         : m_lightSystem({ -1, 1, -1 }, { 200U, 200, 200 })
     {
@@ -212,5 +212,9 @@ namespace Raytracer {
             color += (primColor + specular) * (light->getColor() * diffuse * penombraFactor * light->getIntensity());
         }
         return color;
+    }
+    void Scene::setSkyboxPath(const std::string &path)
+    {
+        m_skybox.setMaterialTexture(std::make_unique<MaterialTexture>(path));
     }
 } // namespace Raytracer

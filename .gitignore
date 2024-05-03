@@ -10,7 +10,7 @@
 *.jpg
 
 !assets/*.png
-!assets/*.jpg
+!assets/skyboxes/*.jpg
 
 raytracer
 unit-tests
@@ -27,6 +27,8 @@ test.cpp
 
 imgui.ini
 todo
-screenshots
+screenshots/*.png
 
+assets/skyboxes/local/*.jpg
 scenes/quick_save.cfg
+config/keys.cfg
