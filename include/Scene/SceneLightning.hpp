@@ -28,6 +28,13 @@ namespace Raytracer {
             m_lights.push_back(std::move(obj));
         }
 
+        void removeLight(size_t index)
+        {
+            if (index >= m_lights.size())
+                return;
+            m_lights.erase(m_lights.begin() + index);
+        }
+
         const DirectionalLight &getDirectionLight(void) const { return m_dirLight; }
         void setDirectionLight(const DirectionalLight &direction) { m_dirLight = direction; }
 

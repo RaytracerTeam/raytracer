@@ -229,4 +229,23 @@ namespace Raytracer {
     {
         m_skybox.setMaterialTexture(std::make_unique<MaterialTexture>(path));
     }
+
+    void Scene::removePrimitive(size_t index)
+    {
+        if (index >= m_primitives.size())
+            return;
+        m_primitives.erase(m_primitives.begin() + index);
+    }
+    void Scene::removeLight(size_t index)
+    {
+        m_lightSystem.removeLight(index);
+    }
+    void Scene::removeCamera(size_t index)
+    {
+        if (index >= m_cameras.size())
+            return;
+        m_cameras.erase(m_cameras.begin() + index);
+        if (m_cameras.size() == 0)
+            m_cameras.push_back(std::make_unique<Camera>());
+    }
 } // namespace Raytracer

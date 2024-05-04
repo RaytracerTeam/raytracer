@@ -268,12 +268,7 @@ namespace Raytracer
         case SceneReleaseActions::TOGGLE_FULLSCREEN:
             break;
         case SceneReleaseActions::REMOVE_OBJECT:
-            if (m_objectSelection == ObjectSelection::PRIMITIVE) {
-                if (m_selectedObject > 0) {
-                    // m_scene->removePrimitive(m_selectedObject);
-                    m_selectedObject = 0;
-                }
-            }
+            removeSelectedObject();
             break;
         default:
             break;

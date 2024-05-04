@@ -73,6 +73,7 @@ namespace Raytracer {
         void guiMenuBar(void);
         void guiTopBar(Camera &currentCamera);
         void guiObjectSelection(int leftPaneWidth, int imageHeight);
+        void removeSelectedObject(void);
         void editPrimitives(void);
         void editSphere(Sphere *sphere);
         void editPlane(Plane *plane);
@@ -81,9 +82,7 @@ namespace Raytracer {
 
         /////////////////////////////////
 
-        // TODO utiliser shared ptr
-        std::unique_ptr<Scene> m_scene = nullptr;
-        std::unique_ptr<Scene> m_newScene;
+        std::unique_ptr<Scene> m_scene;
         CameraInteractive m_interacCam;
 
         Dimension &m_dimension;
