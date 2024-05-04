@@ -10,7 +10,7 @@
 #include "Scene/Materials/MaterialSolid.hpp"
 #include "Scene/Primitives/Sphere.hpp"
 
-void Raytracer::Parsing::parseSpheres(const libconfig::Setting &primitiveSetting, Scene &scene)
+void Raytracer::Parsing::parseSpheres(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene)
 {
     if (!primitiveSetting.exists("spheres"))
         return;
@@ -22,6 +22,6 @@ void Raytracer::Parsing::parseSpheres(const libconfig::Setting &primitiveSetting
         auto mat = sphere->getMaterial();
         mat->setAlbedo(0.9);
         mat->setFuzzFactor(0.3);
-        scene.addPrimitive(std::move(sphere));
+        scene->addPrimitive(std::move(sphere));
     }
 }

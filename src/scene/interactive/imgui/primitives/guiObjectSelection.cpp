@@ -62,6 +62,20 @@ namespace Raytracer
                 ImGui::EndChild();
                 ImGui::EndTabItem();
             }
+            if (ImGui::BeginTabItem("Cameras")) {
+                m_objectSelection = ObjectSelection::CAMERA;
+                ImGui::BeginChild("camera selection", ImVec2(leftPaneWidth, imageHeight / 2 - 20),
+                    ImGuiChildFlags_Border);
+                if (ImGui::Selectable("Add Camera", m_selectedObject == 0))
+                {
+                //     m_scene->addLight(std::make_unique<PointLight>(
+                //         Math::Vector3D(0, 0, 0), 1, Color(255, 255, 255)));
+                    m_selectedObject = 0;
+                }
+                ImGui::EndChild();
+
+                ImGui::EndTabItem();
+            }
             ImGui::EndTabBar();
         }
     }

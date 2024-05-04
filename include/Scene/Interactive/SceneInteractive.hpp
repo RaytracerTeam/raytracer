@@ -26,21 +26,24 @@ namespace Raytracer {
     #define DEFAULT_MOVEMENT_SPEED 0.3f
     #define DEFAULT_ROTATION_SPEED 3
     #define SCREEN_RATIO 16.0f / 9.0f
+    #define DEFAULT_CAMERA_RESOLUTION 240
     #define FILE_BUF_SIZE 40
 
     enum class ObjectSelection {
         PRIMITIVE,
-        LIGHT
+        LIGHT,
+        CAMERA
     };
 
     class SceneInteractive {
     public:
-        SceneInteractive(Dimension &dimension, const std::string &title);
+        SceneInteractive(Dimension &dimension, const std::string &title,
+            const std::vector<std::string_view> &inputFiles);
         ~SceneInteractive();
 
         void loop(void);
 
-        void setScene(Scene *scene);
+        void setScene(const std::string &filename);
 
         static inline sf::Color RColorToSFColor(const Color &color)
         {
@@ -52,6 +55,7 @@ namespace Raytracer {
 
     private:
         void setupActions(void);
+        void resetActions(void);
         void parseConfigFile(const std::string &filename);
         void applyActions(void);
         void applyKeyReleasedActions(sf::Keyboard::Key key);
@@ -62,7 +66,7 @@ namespace Raytracer {
         std::unique_ptr<sf::Uint8[]> RColorToPixelBuffer(const std::vector<Raytracer::Color> &vectorRes);
         void setRColorToImg(const std::vector<Raytracer::Color> &vectorRes);
         void handleEvents(void);
-        void displayFramerate(void);
+        float getFramerate(void);
 
         // ImGui
         void handleImGui(void);
@@ -78,7 +82,7 @@ namespace Raytracer {
         /////////////////////////////////
 
         // TODO utiliser shared ptr
-        Scene *m_scene = nullptr;
+        std::unique_ptr<Scene> m_scene = nullptr;
         std::unique_ptr<Scene> m_newScene;
         CameraInteractive m_interacCam;
 
@@ -93,12 +97,13 @@ namespace Raytracer {
 
         // ImGui
         sf::Clock m_deltaClock;
-        int m_renderResolution = 400;
+        int m_renderResolution;
         char m_fileBuf[FILE_BUF_SIZE] = "scenes/";
         char m_skyboxPathBuf[FILE_BUF_SIZE] = DEFAULT_SKYBOX;
         char m_cfgSceneBuf[FILE_BUF_SIZE] = "scenes/";
         bool m_isWriting = false;
-        bool m_showFps = false;
+        bool m_showDebug = false;
+        bool m_addToCurrentScene = false;
         int m_selectedObject = 0;
         ObjectSelection m_objectSelection = ObjectSelection::PRIMITIVE;
 

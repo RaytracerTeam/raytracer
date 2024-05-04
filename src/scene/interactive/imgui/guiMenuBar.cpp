@@ -50,10 +50,15 @@ namespace Raytracer
                     "scenes/custom_scene.cfg", m_fileBuf, FILE_BUF_SIZE,
                     ImGuiInputTextFlags_EnterReturnsTrue))
                 {
-                    // setScene(Parsing::loadScene(m_fileBuf));
-                    m_needRendering = true;
+                    if (std::filesystem::exists(m_fileBuf))
+                    {
+                        setScene(m_fileBuf);
+                        m_needRendering = true;
+                    }
                     ImGui::CloseCurrentPopup();
                 }
+                ImGui::SameLine(0, 20),
+                ImGui::Checkbox("Add to current scene", &m_addToCurrentScene);
                 ImGui::EndMenu();
             }
             ImGui::EndMenuBar();

@@ -14,6 +14,13 @@
 
 namespace Raytracer
 {
+    void SceneInteractive::resetActions(void)
+    {
+        for (auto &action : m_actions) {
+            action.second = false;
+        }
+    }
+
     void SceneInteractive::setupActions(void)
     {
         m_actions.push_back(std::make_pair(sf::Keyboard::Up, false));       // MOVE_FORWARD
@@ -32,7 +39,7 @@ namespace Raytracer
         m_releaseActions.push_back(sf::Keyboard::Escape);          // EXIT
         m_releaseActions.push_back(sf::Keyboard::C);               // QUICK_SAVE
         m_releaseActions.push_back(sf::Keyboard::X);               // SAVE_AND_QUIT
-        m_releaseActions.push_back(sf::Keyboard::F3);              // SHOW_FPS
+        m_releaseActions.push_back(sf::Keyboard::F3);              // SHOW_DEBUG
         m_releaseActions.push_back(sf::Keyboard::F2);              // SCREENSHOT
         m_releaseActions.push_back(sf::Keyboard::Backspace);       // REMOVE_OBJECT
         m_releaseActions.push_back(sf::Keyboard::F11);             // TOGGLE_FULLSCREEN
@@ -40,7 +47,7 @@ namespace Raytracer
         parseConfigFile("config/keys.cfg");
     }
 
-    sf::Keyboard::Key getSFMLKey(const std::string &keyCode)
+    static sf::Keyboard::Key getSFMLKey(const std::string &keyCode)
     {
         if (keyCode == "UP")
                 return sf::Keyboard::Key::Up;
@@ -73,11 +80,11 @@ namespace Raytracer
             else if (keyCode >= "A" && keyCode <= "Z")
                 return (sf::Keyboard::Key)(sf::Keyboard::A + keyCode[0] - 'A');
             else {
-                throw std::invalid_argument("Invalid key name: " + keyCode);
+                throw std::invalid_argument("keys.cfg: Invalid key name: " + keyCode);
             }
     }
 
-    SceneAction getSceneActionIndex(std::string action)
+    static SceneAction getSceneActionIndex(std::string action)
     {
         std::transform(action.begin(), action.end(), action.begin(), ::toupper);
         if (action == "MOVE_FORWARD")
@@ -105,10 +112,10 @@ namespace Raytracer
         else if (action == "SPRINT")
             return SceneAction::SPRINT;
         else
-            throw std::invalid_argument("Invalid action name: " + action);
+            throw std::invalid_argument("keys.cfg: Invalid action name: " + action);
     }
 
-    SceneReleaseActions getSceneReleaseActionIndex(std::string action)
+    static SceneReleaseActions getSceneReleaseActionIndex(std::string action)
     {
         std::transform(action.begin(), action.end(), action.begin(), ::toupper);
         if (action == "EXIT")
@@ -117,8 +124,8 @@ namespace Raytracer
             return SceneReleaseActions::QUICK_SAVE;
         else if (action == "SAVE_AND_EXIT")
             return SceneReleaseActions::SAVE_AND_EXIT;
-        else if (action == "SHOW_FPS")
-            return SceneReleaseActions::SHOW_FPS;
+        else if (action == "SHOW_DEBUG")
+            return SceneReleaseActions::SHOW_DEBUG;
         else if (action == "SCREENSHOT")
             return SceneReleaseActions::SCREENSHOT;
         else if (action == "REMOVE_OBJECT")
@@ -128,7 +135,7 @@ namespace Raytracer
         else if (action == "RESET")
             return SceneReleaseActions::RESET;
         else
-            throw std::invalid_argument("Invalid action name: " + action);
+            throw std::invalid_argument("keys.cfg: Invalid action name: " + action);
     }
 
     void SceneInteractive::parseConfigFile(const std::string &filename)
@@ -166,41 +173,50 @@ namespace Raytracer
         auto camAngle = camera->getAngle();
         auto movementCamAngle = camAngle;
         movementCamAngle.setPitch(0);
-        m_needRendering = true;
 
         if (m_actions[SceneAction::MOVE_FORWARD].second) {
             camPos += Math::Vector3D(0, 0, -m_movementSpeed).rotate(movementCamAngle);
+            m_needRendering = true;
         }
         if (m_actions[SceneAction::MOVE_BACKWARD].second) {
             camPos += Math::Vector3D(0, 0, m_movementSpeed).rotate(movementCamAngle);
+            m_needRendering = true;
         }
         if (m_actions[SceneAction::MOVE_LEFT].second) {
             camPos += Math::Vector3D(-m_movementSpeed, 0, 0).rotate(movementCamAngle);
+            m_needRendering = true;
         }
         if (m_actions[SceneAction::MOVE_RIGHT].second) {
             camPos += Math::Vector3D(m_movementSpeed, 0, 0).rotate(movementCamAngle);
+            m_needRendering = true;
         }
         if (m_actions[SceneAction::MOVE_UP].second) {
             camPos += Math::Vector3D(0, m_movementSpeed, 0);
+            m_needRendering = true;
         }
         if (m_actions[SceneAction::MOVE_DOWN].second) {
             camPos += Math::Vector3D(0, -m_movementSpeed, 0);
+            m_needRendering = true;
         }
         if (m_actions[SceneAction::ROTATE_UP].second) {
             camAngle.setPitch(Math::Algorithm::clampD(camAngle.getPitch() + m_rotationSpeed, -90., 90.));
             camera->setAngle(camAngle);
+            m_needRendering = true;
         }
         if (m_actions[SceneAction::ROTATE_DOWN].second) {
             camAngle.setPitch(Math::Algorithm::clampD(camAngle.getPitch() - m_rotationSpeed, -90., 90.));
             camera->setAngle(camAngle);
+            m_needRendering = true;
         }
         if (m_actions[SceneAction::ROTATE_LEFT].second) {
             camAngle.setYaw(camAngle.getYaw() + m_rotationSpeed);
             camera->setAngle(camAngle);
+            m_needRendering = true;
         }
         if (m_actions[SceneAction::ROTATE_RIGHT].second) {
             camAngle.setYaw(camAngle.getYaw() - m_rotationSpeed);
             camera->setAngle(camAngle);
+            m_needRendering = true;
         }
         m_useMouse = m_actions[SceneAction::USE_MOUSE].second;
         if (m_actions[SceneAction::SPRINT].second) {
@@ -246,8 +262,8 @@ namespace Raytracer
             Parsing::saveScene(*m_scene, "scenes/quick_save.cfg");
             m_window.close();
             break;
-        case SceneReleaseActions::SHOW_FPS:
-            m_showFps = !m_showFps;
+        case SceneReleaseActions::SHOW_DEBUG:
+            m_showDebug = !m_showDebug;
             break;
         case SceneReleaseActions::TOGGLE_FULLSCREEN:
             break;

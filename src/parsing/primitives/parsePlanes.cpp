@@ -10,7 +10,7 @@
 #include "Scene/Materials/MaterialSolid.hpp"
 #include "Scene/Primitives/Plane.hpp"
 
-void Raytracer::Parsing::parsePlanes(const libconfig::Setting &primitiveSetting, Scene &scene)
+void Raytracer::Parsing::parsePlanes(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene)
 {
     if (!primitiveSetting.exists("planes"))
         return;
@@ -33,6 +33,6 @@ void Raytracer::Parsing::parsePlanes(const libconfig::Setting &primitiveSetting,
         auto plane = std::make_unique<Plane>(planePos,
             std::make_unique<MaterialSolid>(parseColor(planeConfig)),
             axis);
-        scene.addPrimitive(std::move(plane));
+        scene->addPrimitive(std::move(plane));
     }
 }

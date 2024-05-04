@@ -10,7 +10,7 @@
 namespace Raytracer {
     namespace Parsing
     {
-        void parsePrimitives(const libconfig::Config &config, Scene &scene)
+        void parsePrimitives(const libconfig::Config &config, std::unique_ptr<Scene> &scene)
         {
             if (!config.exists("primitives"))
                 return;

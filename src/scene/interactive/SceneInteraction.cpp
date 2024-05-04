@@ -20,15 +20,21 @@
 // std::cout << "fps =" << std::floor(fps) << std::endl; // flooring it will make the frame rate a rounded number
 // previousTime = currentTime;
 
+#include "Parsing/Parsing.hpp"
 
 namespace Raytracer {
-    SceneInteractive::SceneInteractive(Dimension &dimension, const std::string &title)
+    SceneInteractive::SceneInteractive(Dimension &dimension, const std::string &title,
+        const std::vector<std::string_view> &inputFiles)
         : m_dimension(dimension)
         , m_window(sf::VideoMode(dimension.getWidth(), dimension.getHeight()), title)
         , m_previousTime(m_clock.getElapsedTime())
     {
-        m_fileBuf[0] = '\0';
-        m_dimension = Dimension(700, 500);
+        m_scene = std::make_unique<Scene>();
+        Parsing::parse(m_scene, inputFiles);
+        m_interacCam.setCamera(&m_scene->getCurrentCamera());
+
+        m_dimension = Dimension(DEFAULT_CAMERA_RESOLUTION * SCREEN_RATIO, DEFAULT_CAMERA_RESOLUTION);
+        m_renderResolution = m_dimension.getHeight();
         #ifdef BONUS
             #ifdef MACOSTONIO
                 m_window.setSize(sf::Vector2u(1440, 850));
@@ -42,7 +48,7 @@ namespace Raytracer {
         #endif
         m_texture.create(m_dimension.getWidth(), m_dimension.getHeight());
         m_img.create(m_dimension.getWidth(), m_dimension.getHeight());
-        m_window.setFramerateLimit(24);
+        m_window.setFramerateLimit(60);
         setupActions();
     }
     SceneInteractive::~SceneInteractive()
@@ -65,6 +71,8 @@ namespace Raytracer {
     {
         sf::Event event;
 
+        if (m_isWriting)
+            resetActions();
         while (m_window.pollEvent(event)) {
             #ifdef BONUS
                 ImGui::SFML::ProcessEvent(event);
@@ -91,10 +99,12 @@ namespace Raytracer {
         applyActions();
     }
 
-    void SceneInteractive::setScene(Scene *scene)
+    void SceneInteractive::setScene(const std::string &filename)
     {
-        m_scene = scene;
-        m_interacCam.setCamera(&scene->getCurrentCamera());
+        if (!m_addToCurrentScene)
+            m_scene = std::make_unique<Scene>();
+        Parsing::parse(m_scene, {filename});
+        m_interacCam.setCamera(&m_scene->getCurrentCamera());
     }
 
     void SceneInteractive::loop(void)
@@ -128,17 +138,15 @@ namespace Raytracer {
                 ImGui::SFML::Render(m_window);
             #endif
             m_window.display();
-
-            // displayFramerate();
         }
     }
 
-    void SceneInteractive::displayFramerate(void)
+    float SceneInteractive::getFramerate(void)
     {
         m_currentTime = m_clock.getElapsedTime();
         auto fps = 1.0f / (m_currentTime.asSeconds() - m_previousTime.asSeconds());
-        std::cout << "FPS: " << (int)fps << "\033[K" << "\r" << std::flush;
         m_previousTime = m_currentTime;
+        return fps;
     }
 
     ///////////////////////////

@@ -11,7 +11,7 @@
 
 namespace Raytracer {
     namespace Parsing {
-        void parseLights(const libconfig::Config &config, Scene &scene)
+        void parseLights(const libconfig::Config &config, std::unique_ptr<Scene> &scene)
         {
             if (!config.exists("lights"))
                 return;
@@ -31,7 +31,7 @@ namespace Raytracer {
                 double intensity = 1.;
                 if (lightSetting.exists("intensity"))
                     intensity = lightSetting.lookup("intensity");
-                scene.addLight(std::make_unique<PointLight>(lightPos, radius, lightColor, intensity));
+                scene->addLight(std::make_unique<PointLight>(lightPos, radius, lightColor, intensity));
             }
         }
     } // namespace Parsing

@@ -22,7 +22,7 @@
 namespace Raytracer {
     namespace Parsing {
         bool parseArgv(int argc, char **argv, std::vector<std::string_view> &inputFiles); // return true if interactive mode
-        void parse(Scene &scene, const std::vector<std::string_view> &inputFiles);
+        void parse(std::unique_ptr<Scene> &scene, const std::vector<std::string_view> &inputFiles);
 
         Math::Vector3D parsePosition(const libconfig::Setting &setting);
         Math::Angle3D parseRotation(const libconfig::Setting &setting);
@@ -31,17 +31,17 @@ namespace Raytracer {
         float parseRadius(const libconfig::Setting &setting);
         float parseDistance(const libconfig::Setting &setting);
 
-        void parsePrimitives(const libconfig::Config &config, Scene &scene);
-        void parseSpheres(const libconfig::Setting &primitiveSetting, Scene &scene);
-        void parsePlanes(const libconfig::Setting &primitiveSetting, Scene &scene);
-        void parseCylinders(const libconfig::Setting &primitiveSetting, Scene &scene);
-        void parseCones(const libconfig::Setting &primitiveSetting, Scene &scene);
-        // void parseToruses(const libconfig::Setting &primitiveSetting, Scene &scene);
-        // void parseTriangles(const libconfig::Setting &primitiveSetting, Scene &scene);
+        void parsePrimitives(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
+        void parseSpheres(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene);
+        void parsePlanes(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene);
+        void parseCylinders(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene);
+        void parseCones(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene);
+        // void parseToruses(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene);
+        // void parseTriangles(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene);
 
 
-        void parseCameras(const libconfig::Config &config, Scene &scene);
-        void parseLights(const libconfig::Config &config, Scene &scene);
+        void parseCameras(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
+        void parseLights(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
 
         void savePos(libconfig::Setting &setting, APrimitive *primitive);
         void saveColor(libconfig::Setting &setting, APrimitive *primitive);

@@ -15,19 +15,21 @@
 #include <string.h>
 
 namespace Raytracer {
-    static int interactive(Scene *scene, Dimension &screnDim)
+    static int interactive(Dimension &screnDim, std::vector<std::string_view> inputFiles)
     {
         std::unique_ptr<SceneInteractive> interact = std::make_unique<SceneInteractive>(
             screnDim,
-            "Raytracer");
-
-        interact->setScene(scene);
+            "Raytracer",
+            inputFiles);
         interact->loop();
         return 0;
     }
 
-    static int imageOutput(Scene *scene)
+    static int imageOutput(std::vector<std::string_view> inputFiles)
     {
+        std::unique_ptr<Scene> scene = std::make_unique<Scene>();
+        Parsing::parse(scene, inputFiles);
+        scene->updatePrimitives();
         auto res = scene->render();
         const Dimension &dim = scene->getCurrentCamera().getDimension();
 
@@ -37,20 +39,15 @@ namespace Raytracer {
 
     int raytracer(int argc, char **argv)
     {
-        std::unique_ptr<Scene> scene = std::make_unique<Scene>();
         Dimension windowDimensions(640, 480);
 
         try {
             std::vector<std::string_view> inputFiles;
             bool interactiveMode = Parsing::parseArgv(argc, argv, inputFiles);
             if (interactiveMode)
-                (void)interactiveMode;
+                return interactive(windowDimensions, inputFiles);
 
-            Parsing::parse(*scene, inputFiles);
-            scene->updatePrimitives();
-            if (interactiveMode)
-                return interactive(scene.get(), windowDimensions);
-            return imageOutput(scene.get());
+            return imageOutput(inputFiles);
         } catch (Error &error) {
             std::cerr << "Error : " << error.what() << ". (" << error.where() << ")" << std::endl;
             return EXIT_FAILURE_EPITECH;

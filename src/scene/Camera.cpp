@@ -13,7 +13,7 @@ namespace Raytracer {
         , m_defaultPos(Math::Vector3D(0, 0, 0))
         , m_angle(Math::Angle3D(0, 0, 0))
         , m_defaultAngle(Math::Angle3D(0, 0, 0))
-        , m_dimension(Dimension(600, 400))
+        , m_dimension(Dimension(640, 360))
         , m_fov(51.82)
     {
     }

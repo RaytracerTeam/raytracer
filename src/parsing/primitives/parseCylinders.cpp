@@ -10,7 +10,7 @@
 #include "Scene/Materials/MaterialSolid.hpp"
 #include "Scene/Primitives/Cylinder.hpp"
 
-void Raytracer::Parsing::parseCylinders(const libconfig::Setting &primitiveSetting, Scene &scene)
+void Raytracer::Parsing::parseCylinders(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene)
 {
     if (!primitiveSetting.exists("cylinders"))
         return;
@@ -19,6 +19,6 @@ void Raytracer::Parsing::parseCylinders(const libconfig::Setting &primitiveSetti
             std::make_unique<MaterialSolid>(parseColor(config)),
             parseRadius(config),
             parseHeight(config));
-        scene.addPrimitive(std::move(cylinder));
+        scene->addPrimitive(std::move(cylinder));
     }
 }

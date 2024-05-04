@@ -11,7 +11,7 @@
 #include "Scene/Materials/MaterialSolid.hpp"
 #include "Scene/Primitives/Torus.hpp"
 
-void Raytracer::Parsing::parseTorus(const libconfig::Setting &primitiveSetting, Scene &scene)
+void Raytracer::Parsing::parseTorus(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene)
 {
     if (!primitiveSetting.exists("cones"))
         return;
@@ -20,7 +20,7 @@ void Raytracer::Parsing::parseTorus(const libconfig::Setting &primitiveSetting, 
             std::make_unique<MaterialSolid>(parseColor(config)),
             parseRadius(config),
             parseDistance(config));
-        scene.addPrimitive(std::move(torus));
+        scene->addPrimitive(std::move(torus));
     }
 }
 */

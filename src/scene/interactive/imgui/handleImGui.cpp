@@ -22,7 +22,7 @@ namespace Raytracer
         ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
         ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
 
-        int imageHeight = ImGui::GetIO().DisplaySize.y - 170;
+        int imageHeight = ImGui::GetIO().DisplaySize.y - 180;
         int imageWidth = imageHeight * SCREEN_RATIO;
         int leftPaneWidth = ImGui::GetIO().DisplaySize.x - imageWidth - 30;
 
@@ -48,7 +48,7 @@ namespace Raytracer
         ImGui::BeginChild("Debug Infos", ImVec2(leftPaneWidth, imageHeight / 2 - 30),
             ImGuiChildFlags_Border);
         // FPS
-        ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
+        ImGui::Text("FPS: %.1f", getFramerate());
         // Camera Pos
         float *pos = currentCamera.getPos();
         if (ImGui::InputFloat3("Pos", pos, "%.2f", ImGuiInputTextFlags_EnterReturnsTrue)) {

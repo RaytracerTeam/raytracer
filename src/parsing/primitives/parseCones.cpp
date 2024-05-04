@@ -10,7 +10,7 @@
 #include "Scene/Materials/MaterialSolid.hpp"
 #include "Scene/Primitives/Cone.hpp"
 
-void Raytracer::Parsing::parseCones(const libconfig::Setting &primitiveSetting, Scene &scene)
+void Raytracer::Parsing::parseCones(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene)
 {
     if (!primitiveSetting.exists("cones"))
         return;
@@ -19,6 +19,6 @@ void Raytracer::Parsing::parseCones(const libconfig::Setting &primitiveSetting, 
             std::make_unique<MaterialSolid>(parseColor(config)),
             parseRadius(config),
             parseHeight(config));
-        scene.addPrimitive(std::move(cone));
+        scene->addPrimitive(std::move(cone));
     }
 }

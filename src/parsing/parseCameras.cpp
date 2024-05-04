@@ -7,7 +7,7 @@
 
 #include "Parsing/Parsing.hpp"
 
-void Raytracer::Parsing::parseCameras(const libconfig::Config &config, Scene &scene)
+void Raytracer::Parsing::parseCameras(const libconfig::Config &config, std::unique_ptr<Scene> &scene)
 {
     if (!config.exists("cameras"))
         return;
@@ -16,9 +16,9 @@ void Raytracer::Parsing::parseCameras(const libconfig::Config &config, Scene &sc
         Camera camera;
         if (cameraSetting.exists("resolution")) {
             auto &resSetting = cameraSetting.lookup("resolution");
-            camera.setDimension(Dimension(
-                (unsigned int)resSetting.lookup("width"),
-                (unsigned int)resSetting.lookup("height")));
+            // camera.setDimension(Dimension(
+            //     (unsigned int)resSetting.lookup("width"),
+            //     (unsigned int)resSetting.lookup("height")));
         }
         if (cameraSetting.exists("fieldOfView")) {
             camera.setFov(cameraSetting.lookup("fieldOfView"));
@@ -31,6 +31,6 @@ void Raytracer::Parsing::parseCameras(const libconfig::Config &config, Scene &sc
             camera.setAngle(getSettingRotation(cameraSetting));
             camera.setDefaultAngle(getSettingRotation(cameraSetting));
         }
-        scene.addCamera(std::make_unique<Camera>(camera));
+        scene->addCamera(std::make_unique<Camera>(camera));
     }
 }

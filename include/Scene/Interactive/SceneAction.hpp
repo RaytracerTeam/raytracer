@@ -28,7 +28,7 @@ namespace Raytracer
         EXIT,
         QUICK_SAVE,
         SAVE_AND_EXIT,
-        SHOW_FPS,
+        SHOW_DEBUG,
         SCREENSHOT,
         REMOVE_OBJECT,
         TOGGLE_FULLSCREEN,
