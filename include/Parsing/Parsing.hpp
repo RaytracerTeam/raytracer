@@ -44,6 +44,7 @@ namespace Raytracer {
         void parseCylinders(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene);
         void parseCones(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene);
         void parseToruses(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene);
+        void parseTanglecubes(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene);
         // void parseTriangles(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene);
 
 
@@ -61,6 +62,7 @@ namespace Raytracer {
         void saveCylinder(libconfig::Setting &list, Cylinder *cylinder);
         void saveCone(libconfig::Setting &list, Cone *cone);
         void saveTorus(libconfig::Setting &list, Torus *torus);
+        void saveTanglecube(libconfig::Setting &list, Tanglecube *tanglecube);
         // void saveTriangle(libconfig::Setting &list, Triangle *triangle);
         void savePlane(libconfig::Setting &planeList, Plane *plane);
 

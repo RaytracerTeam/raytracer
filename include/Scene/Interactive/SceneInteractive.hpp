@@ -93,6 +93,7 @@ namespace Raytracer {
         void editCylinder(Cylinder *cylinder);
         void editCone(Cone *cone);
         void editTorus(Torus *torus);
+        void editTanglecube(Tanglecube *tanglecube);
 
         /////////////////////////////////
 

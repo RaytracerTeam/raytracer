@@ -18,6 +18,9 @@ namespace Raytracer {
         }
         ~Tanglecube() = default;
 
+        PrimitiveType getType(void) const override { return PrimitiveType::TANGLECUBE; };
+        const std::string getTypeString(void) const override { return "TangleCube"; };
+
         std::optional<RayHit> hit(const Ray &ray) const override;
         RayHit getNormal(double distance, const Math::Vector3D &hitPt, const Math::Vector3D &origin) const;
     };

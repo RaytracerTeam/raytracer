@@ -29,6 +29,9 @@ namespace Raytracer
         case PrimitiveType::TORUS:
             editTorus(static_cast<Torus *>(primitive.get()));
             break;
+        case PrimitiveType::TANGLECUBE:
+            editTanglecube(static_cast<Tanglecube *>(primitive.get()));
+            break;
         default:
             break;
         }

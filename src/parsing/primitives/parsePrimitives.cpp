@@ -22,6 +22,7 @@ namespace Raytracer {
             parseCylinders(primitiveSetting, scene);
             parseCones(primitiveSetting, scene);
             parseToruses(primitiveSetting, scene);
+            parseTanglecubes(primitiveSetting, scene);
         }
     } // namespace Parsing
 } // namespace Raytracer

@@ -10,7 +10,7 @@
 #include "Scene/Materials/MaterialSolid.hpp"
 #include "Scene/Lights/PointLight.hpp"
 
-// todo: remove this
+// todo: remove this when real adding primitives is implemented
 #include "Scene/Primitives/Sphere.hpp"
 
 namespace Raytracer

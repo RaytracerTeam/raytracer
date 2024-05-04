@@ -5,7 +5,6 @@
 ** editSphere
 */
 
-
 #include "Scene/Interactive/SceneInteractive.hpp"
 
 #include "Scene/Primitives/Sphere.hpp"
