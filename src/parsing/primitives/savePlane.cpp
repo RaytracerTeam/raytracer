@@ -20,7 +20,7 @@ namespace Raytracer
         libconfig::Setting &planeNormal = planeSetting.add("axis", libconfig::Setting::TypeString);
         planeNormal = plane->getAxisString();
 
-        libconfig::Setting &planePos = planeSetting.add("position", libconfig::Setting::TypeFloat);
+        libconfig::Setting &planePos = planeSetting.add(CFG_POSITION, libconfig::Setting::TypeFloat);
         planePos = plane->getPos();
 
         saveColor(planeSetting, plane);

@@ -23,6 +23,9 @@ namespace Raytracer {
         CUBE,
         CYLINDER,
         CONE,
+        TORUS,
+        TANGLECUBE,
+        MOBIUSSTRIP,
         NONE
     };
     class IPrimitive : public IShape {

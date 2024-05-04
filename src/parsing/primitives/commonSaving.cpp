@@ -15,7 +15,7 @@ namespace Raytracer
     {
         void savePos(libconfig::Setting &setting, APrimitive *primitive)
         {
-            libconfig::Setting &pos = setting.add("position", libconfig::Setting::TypeGroup);
+            libconfig::Setting &pos = setting.add(CFG_POSITION, libconfig::Setting::TypeGroup);
             pos.add("x", libconfig::Setting::TypeFloat) = primitive->getOrigin().getX();
             pos.add("y", libconfig::Setting::TypeFloat) = primitive->getOrigin().getY();
             pos.add("z", libconfig::Setting::TypeFloat) = primitive->getOrigin().getZ();
@@ -23,7 +23,7 @@ namespace Raytracer
         void saveColor(libconfig::Setting &setting, APrimitive *primitive)
         {
             // todo Only works with MaterialSolid
-            libconfig::Setting &color = setting.add("color", libconfig::Setting::TypeGroup);
+            libconfig::Setting &color = setting.add(CFG_COLOR, libconfig::Setting::TypeGroup);
             MaterialSolid *material = dynamic_cast<MaterialSolid *>(primitive->getMaterial());
             if (material) {
                 color.add("r", libconfig::Setting::TypeInt) = (int)(material->getColor().getR() * 255);

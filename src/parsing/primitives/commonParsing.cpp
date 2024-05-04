@@ -40,7 +40,7 @@ namespace Raytracer {
         Math::Vector3D parsePosition(const libconfig::Setting &setting)
         {
             Math::Vector3D pos(0, 0, 0);
-            if (setting.exists("position")) {
+            if (setting.exists(CFG_POSITION)) {
                 pos = getSettingPosition(setting);
             }
             return pos;
@@ -48,7 +48,7 @@ namespace Raytracer {
         MaterialSolid parseColor(const libconfig::Setting &setting)
         {
             MaterialSolid materialSolid(Color(200U, 0U, 200U));
-            if (setting.exists("color")) {
+            if (setting.exists(CFG_COLOR)) {
                 materialSolid.setColor(getSettingColor(setting));
             }
             return materialSolid;
@@ -56,7 +56,7 @@ namespace Raytracer {
         Math::Angle3D parseRotation(const libconfig::Setting &setting)
         {
             Math::Angle3D rotation(0, 0, 0);
-            if (setting.exists("rotation")) {
+            if (setting.exists(CFG_ROTATION)) {
                 rotation = getSettingRotation(setting);
             }
             return rotation;
@@ -70,11 +70,11 @@ namespace Raytracer {
         }
         float parseRadius(const libconfig::Setting &setting)
         {
-            return parseFloat(setting, "radius", 1);
+            return parseFloat(setting, CFG_RADIUS, 1);
         }
         float parseHeight(const libconfig::Setting &setting)
         {
-            return parseFloat(setting, "height", 2);
+            return parseFloat(setting, CFG_HEIGHT, 2);
         }
         float parseDistance(const libconfig::Setting &setting)
         {

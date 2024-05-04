@@ -16,6 +16,7 @@ namespace Raytracer
         libconfig::Setting &planeList = primitivesSetting.add("planes", libconfig::Setting::TypeList);
         libconfig::Setting &cylinderList = primitivesSetting.add("cylinders", libconfig::Setting::TypeList);
         libconfig::Setting &coneList = primitivesSetting.add("cones", libconfig::Setting::TypeList);
+        libconfig::Setting &torusList = primitivesSetting.add("toruses", libconfig::Setting::TypeList);
         for (auto &primitive : scene.getPrimitives()) {
             switch (primitive->getType())
             {
@@ -30,6 +31,9 @@ namespace Raytracer
                 break;
             case PrimitiveType::CONE:
                 saveCone(coneList, static_cast<Cone *>(primitive.get()));
+                break;
+            case PrimitiveType::TORUS:
+                saveTorus(torusList, static_cast<Torus *>(primitive.get()));
                 break;
             default:
                 break;

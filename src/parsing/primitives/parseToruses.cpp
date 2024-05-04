@@ -2,20 +2,19 @@
 ** EPITECH PROJECT, 2024
 ** Raytracer
 ** File description:
-** parseTorus
+** parseToruses
 */
 
-/*
 #include "Parsing/Parsing.hpp"
 
 #include "Scene/Materials/MaterialSolid.hpp"
 #include "Scene/Primitives/Torus.hpp"
 
-void Raytracer::Parsing::parseTorus(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene)
+void Raytracer::Parsing::parseToruses(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene)
 {
-    if (!primitiveSetting.exists("cones"))
+    if (!primitiveSetting.exists("toruses"))
         return;
-    for (const auto &config : primitiveSetting.lookup("cones")) {
+    for (const auto &config : primitiveSetting.lookup("toruses")) {
         auto torus = std::make_unique<Torus>(parsePosition(config),
             std::make_unique<MaterialSolid>(parseColor(config)),
             parseRadius(config),
@@ -23,4 +22,3 @@ void Raytracer::Parsing::parseTorus(const libconfig::Setting &primitiveSetting, 
         scene->addPrimitive(std::move(torus));
     }
 }
-*/

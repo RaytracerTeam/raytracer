@@ -16,8 +16,8 @@ void Raytracer::Parsing::parsePlanes(const libconfig::Setting &primitiveSetting,
         return;
     for (const auto &planeConfig : primitiveSetting.lookup("planes")) {
         float planePos = 0;
-        if (planeConfig.exists("position")) {
-            planePos = planeConfig.lookup("position");
+        if (planeConfig.exists(CFG_POSITION)) {
+            planePos = planeConfig.lookup(CFG_POSITION);
         }
 
         Plane::Axis axis = Plane::Y;

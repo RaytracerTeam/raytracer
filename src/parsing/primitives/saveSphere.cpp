@@ -19,7 +19,7 @@ namespace Raytracer
 
         savePos(sphereSetting, sphere);
 
-        libconfig::Setting &sphereRadius = sphereSetting.add("radius", libconfig::Setting::TypeFloat);
+        libconfig::Setting &sphereRadius = sphereSetting.add(CFG_RADIUS, libconfig::Setting::TypeFloat);
         sphereRadius = sphere->getRadius();
 
         saveColor(sphereSetting, sphere);

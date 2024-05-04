@@ -17,10 +17,10 @@ namespace Raytracer
 
         savePos(setting, cone);
 
-        libconfig::Setting &radius = setting.add("radius", libconfig::Setting::TypeFloat);
+        libconfig::Setting &radius = setting.add(CFG_RADIUS, libconfig::Setting::TypeFloat);
         radius = cone->getRadius();
 
-        libconfig::Setting &height = setting.add("height", libconfig::Setting::TypeFloat);
+        libconfig::Setting &height = setting.add(CFG_HEIGHT, libconfig::Setting::TypeFloat);
         height = cone->getHeight();
 
         saveColor(setting, cone);

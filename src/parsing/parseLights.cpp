@@ -20,14 +20,14 @@ namespace Raytracer {
 
             for (const auto &lightSetting : lightsSetting.lookup("pointLights")) {
                 Math::Vector3D lightPos(0, 0, 0);
-                if (lightSetting.exists("position"))
+                if (lightSetting.exists(CFG_POSITION))
                     lightPos = getSettingPosition(lightSetting);
                 Color lightColor(255U, 255U, 255U);
-                if (lightSetting.exists("color"))
+                if (lightSetting.exists(CFG_COLOR))
                     lightColor = getSettingColor(lightSetting);
                 double radius = DEFAULT_POINTLIGHT_RADIUS;
-                if (lightSetting.exists("radius"))
-                    radius = lightSetting.lookup("radius");
+                if (lightSetting.exists(CFG_RADIUS))
+                    radius = lightSetting.lookup(CFG_RADIUS);
                 double intensity = 1.;
                 if (lightSetting.exists("intensity"))
                     intensity = lightSetting.lookup("intensity");

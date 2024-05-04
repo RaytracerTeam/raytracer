@@ -19,10 +19,10 @@ namespace Raytracer
 
         savePos(setting, cylinder);
 
-        libconfig::Setting &radius = setting.add("radius", libconfig::Setting::TypeFloat);
+        libconfig::Setting &radius = setting.add(CFG_RADIUS, libconfig::Setting::TypeFloat);
         radius = cylinder->getRadius();
 
-        libconfig::Setting &height = setting.add("height", libconfig::Setting::TypeFloat);
+        libconfig::Setting &height = setting.add(CFG_HEIGHT, libconfig::Setting::TypeFloat);
         height = cylinder->getHeight();
 
         saveColor(setting, cylinder);

@@ -10,10 +10,7 @@
 #include "Scene/Scene.hpp"
 #include "Scene/Interactive/CameraInteractive.hpp"
 
-#include "Scene/Primitives/Plane.hpp"
-#include "Scene/Primitives/Sphere.hpp"
-#include "Scene/Primitives/Cylinder.hpp"
-#include "Scene/Primitives/Cone.hpp"
+#include "Scene/Primitives/AllPrimitives.hpp"
 
 #ifdef BONUS
     #include "imgui.h"
@@ -95,6 +92,7 @@ namespace Raytracer {
         void editPlane(Plane *plane);
         void editCylinder(Cylinder *cylinder);
         void editCone(Cone *cone);
+        void editTorus(Torus *torus);
 
         /////////////////////////////////
 
