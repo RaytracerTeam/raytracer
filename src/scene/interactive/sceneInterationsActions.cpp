@@ -138,13 +138,12 @@ namespace Raytracer
 
     void SceneInteractive::parseConfigFile(const std::string &filename)
     {
-        libconfig::Config cfg;
         if (!std::filesystem::exists(filename)) {
             if (!std::filesystem::exists("config/keys_example.cfg"))
                 throw std::invalid_argument("config/keys.cfg doesn't exists and config/keys_example.cfg is not found");
             std::filesystem::copy("config/keys_example.cfg", filename);
-            return;
         }
+        libconfig::Config cfg;
         cfg.readFile(filename.c_str());
         if (!cfg.exists("keys")) {
             std::cerr << "No 'keys' found in config file" << std::endl;
