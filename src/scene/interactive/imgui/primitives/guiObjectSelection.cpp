@@ -54,7 +54,7 @@ namespace Raytracer
                 if (ImGui::Selectable("Add Light", m_selectedObject == 0))
                 {
                     m_scene->addLight(std::make_unique<PointLight>(
-                        Math::Vector3D(0, 0, 0), 1,
+                        Math::Vector3D(0, 0, 0), DEFAULT_POINTLIGHT_RADIUS,
                         Color((unsigned int)255, 255, 255),
                         1.0));
                     m_selectedObject = 0;

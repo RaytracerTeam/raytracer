@@ -11,6 +11,8 @@
 #include "Scene/Primitives/Sphere.hpp"
 
 namespace Raytracer {
+    #define DEFAULT_POINTLIGHT_RADIUS 0.5f
+
     class PointLight : public AShapeLight {
     public:
         PointLight(const Math::Vector3D &origin, double radius, const Color &color, double intensity);
