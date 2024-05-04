@@ -8,8 +8,8 @@
 #include "Color.hpp"
 
 #include "Error.hpp"
-#include <algorithm>
 #include "Math/Algorithm.hpp"
+#include <algorithm>
 
 namespace Raytracer {
     Color::Color(double r, double g, double b)
@@ -115,10 +115,25 @@ namespace Raytracer {
         return *this;
     }
 
+    Color &Color::operator+=(double scalar)
+    {
+        m_r += scalar;
+        m_g += scalar;
+        m_b += scalar;
+        return *this;
+    }
+
     Color Color::operator*(double scalar) const
     {
         Color color = *this;
         color *= scalar;
+        return color;
+    }
+
+    Color Color::operator+(double scalar) const
+    {
+        Color color = *this;
+        color += scalar;
         return color;
     }
 
@@ -137,9 +152,33 @@ namespace Raytracer {
         return color;
     }
 
-    std::ostream &operator<<(std::ostream &os, const Color &color)
+    Color &Color::operator+=(const Math::Vector3D &v)
     {
-        os << "Color(" << color.getR() << ", " << color.getG() << ", " << color.getB() << ")";
-        return os;
+        m_r += v.getX();
+        m_g += v.getY();
+        m_b += v.getZ();
+        return *this;
     }
+
+    Color Color::operator+(const Math::Vector3D &v) const
+    {
+        Color color = *this;
+        color += v;
+        return color;
+    }
+
+    Color::operator float *()
+    {
+        m_vals[0] = m_r;
+        m_vals[1] = m_g;
+        m_vals[2] = m_b;
+        return m_vals;
+    }
+
 } // namespace Raytracer
+
+std::ostream &operator<<(std::ostream &os, const Raytracer::Color &color)
+{
+    os << "Color(" << color.getR() << ", " << color.getG() << ", " << color.getB() << ")";
+    return os;
+}

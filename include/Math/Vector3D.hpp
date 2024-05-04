@@ -22,6 +22,7 @@ namespace Raytracer {
             Vector3D(float *vals);
             ~Vector3D() = default;
             Vector3D &operator=(const Vector3D &vec);
+            operator float *();
 
             double operator[](uint8_t i) const
             {
@@ -68,6 +69,7 @@ namespace Raytracer {
             Vector3D &operator/=(const Vector3D &right);
 
             Vector3D operator+(const Vector3D &right) const;
+            Vector3D operator+(double num) const;
             Vector3D operator-() const;
             Vector3D operator-(const Vector3D &right) const;
             Vector3D operator*(double scalar) const;
@@ -94,6 +96,9 @@ namespace Raytracer {
             static Vector3D gRotate(const Vector3D &left, const Angle3D &right);
             static double gAngle(const Vector3D &left, const Vector3D &right);
 
+            // Raytracing
+            static Vector3D gReflect(const Vector3D &v, const Vector3D &n);
+
             // interpolation for camera movements
             static Vector3D gLerp(const Vector3D &left, const Vector3D &right, double t);
 
@@ -101,6 +106,7 @@ namespace Raytracer {
             double x;
             double y;
             double z;
+            float m_vals[3];
         };
 
     } // namespace Math

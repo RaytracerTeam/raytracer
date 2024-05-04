@@ -16,15 +16,15 @@ namespace Raytracer
             libconfig::Setting &cameraSetting = camerasSetting.add(libconfig::Setting::TypeGroup);
 
             libconfig::Setting &cameraResolution = cameraSetting.add("resolution", libconfig::Setting::TypeGroup);
-            cameraResolution.add("width", libconfig::Setting::TypeInt) = (int)camera.get()->getDimension().getWidth();
-            cameraResolution.add("height", libconfig::Setting::TypeInt) = (int)camera.get()->getDimension().getHeight();
+            cameraResolution.add(CFG_WIDTH, libconfig::Setting::TypeInt) = (int)camera.get()->getDimension().getWidth();
+            cameraResolution.add(CFG_HEIGHT, libconfig::Setting::TypeInt) = (int)camera.get()->getDimension().getHeight();
 
-            libconfig::Setting &cameraPos = cameraSetting.add("position", libconfig::Setting::TypeGroup);
+            libconfig::Setting &cameraPos = cameraSetting.add(CFG_POSITION, libconfig::Setting::TypeGroup);
             cameraPos.add("x", libconfig::Setting::TypeFloat) = camera.get()->getPos().getX();
             cameraPos.add("y", libconfig::Setting::TypeFloat) = camera.get()->getPos().getY();
             cameraPos.add("z", libconfig::Setting::TypeFloat) = camera.get()->getPos().getZ();
 
-            libconfig::Setting &cameraRotation = cameraSetting.add("rotation", libconfig::Setting::TypeGroup);
+            libconfig::Setting &cameraRotation = cameraSetting.add(CFG_ROTATION, libconfig::Setting::TypeGroup);
             cameraRotation.add("yaw", libconfig::Setting::TypeFloat) = camera.get()->getAngle().getYaw();
             cameraRotation.add("pitch", libconfig::Setting::TypeFloat) = camera.get()->getAngle().getPitch();
             cameraRotation.add("roll", libconfig::Setting::TypeFloat) = camera.get()->getAngle().getRoll();

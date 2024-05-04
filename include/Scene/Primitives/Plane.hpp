@@ -23,6 +23,8 @@ namespace Raytracer {
         ~Plane() = default;
 
         PrimitiveType getType(void) const override { return PrimitiveType::PLANE; };
+        const std::string getTypeString(void) const override { return "Plane"; };
+        
         float getPos(void) const { return m_pos; }
         void setPos(float pos) { m_pos = pos; setOrigin(Math::Vector3D(pos, pos, pos)); }
         // todo Either add switch to keep infinity or remove infinity
@@ -35,7 +37,7 @@ namespace Raytracer {
         void setAxis(const Axis &axis) { m_axis = axis; }
     private:
         Math::Vector3D getNormal(void) const;
-        Axis m_axis = Z;
         float m_pos = 0;
+        Axis m_axis = Z;
     };
 } // namespace Raytracer

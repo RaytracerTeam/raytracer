@@ -15,14 +15,6 @@ namespace Raytracer {
     Admits we have clear view of light
     https://euler.ac-versailles.fr/IMG/pdf/raytracing.pdf
     */
-           // Math::Vector3D n = rayhit.getNormal();
-        // const Math::Vector3D &l = lightDir;
-        // const Math::Vector3D &u = ray.getDirection();
-        // if (l.dot(n) <= 0.001)
-        //     return Color();
-
-        // Math::Vector3D r = (u - n * (2 * (n.dot(u)))).normalize(); // (n * 2. * (n.dot(l))) - l;
-        // return light->getColor() * (std::pow(l.dot(r), 0.8));
     Color AMaterial::getSpecular(const ILight *light, const RayHit &rayhit, const Math::Vector3D &lightVec) const
     {
         Math::Vector3D n = rayhit.getNormal();
@@ -32,5 +24,16 @@ namespace Raytracer {
 
         Math::Vector3D r = (n * 2. * (n.dot(l))) - l;
         return light->getColor() * (std::pow(l.dot(r), 30));
+    }
+
+    // todo : add fuzzing that makes reflections go random direction
+    std::optional<Ray> AMaterial::getScatteredRay(const Ray &rayIn, const RayHit &rayHit) const
+    {
+        Math::Vector3D reflected = Math::Vector3D::gReflect(rayIn.getDirection().normalize(), rayHit.getNormal());
+        Ray rayScattered = Ray(rayHit.getHitPoint(), reflected, rayIn.getDepth() + 1);
+
+        if (rayScattered.getDirection().dot(rayHit.getNormal()) <= 0.001)
+            return std::nullopt;
+        return rayScattered;
     }
 } // namespace Raytracer

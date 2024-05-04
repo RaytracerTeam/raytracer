@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2024
 ** Raytracer
 ** File description:
-** parsePlane
+** parsePlanes
 */
 
 #include "Parsing/Parsing.hpp"
@@ -10,19 +10,14 @@
 #include "Scene/Materials/MaterialSolid.hpp"
 #include "Scene/Primitives/Plane.hpp"
 
-void Raytracer::Parsing::parsePlane(const libconfig::Setting &primitiveSetting, Scene &scene)
+void Raytracer::Parsing::parsePlanes(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene)
 {
     if (!primitiveSetting.exists("planes"))
         return;
     for (const auto &planeConfig : primitiveSetting.lookup("planes")) {
         float planePos = 0;
-        if (planeConfig.exists("position")) {
-            planePos = planeConfig.lookup("position");
-        }
-
-        MaterialSolid materialSolid(Color(200U, 0U, 200U));
-        if (planeConfig.exists("color")) {
-            materialSolid.setColor(getSettingColor(planeConfig));
+        if (planeConfig.exists(CFG_POSITION)) {
+            planePos = planeConfig.lookup(CFG_POSITION);
         }
 
         Plane::Axis axis = Plane::Y;
@@ -36,8 +31,8 @@ void Raytracer::Parsing::parsePlane(const libconfig::Setting &primitiveSetting, 
                 axis = Plane::Z;
         }
         auto plane = std::make_unique<Plane>(planePos,
-            std::make_unique<MaterialSolid>(materialSolid),
+            std::make_unique<MaterialSolid>(parseColor(planeConfig)),
             axis);
-        scene.addPrimitive(std::move(plane));
+        scene->addPrimitive(std::move(plane));
     }
 }

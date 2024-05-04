@@ -37,10 +37,10 @@ namespace Raytracer {
         void setPos(const Math::Vector3D &a) { m_pos = a; }
         void setDefaultPos(const Math::Vector3D &a) { m_defaultPos = a; }
     private:
-        Math::Vector3D m_defaultPos;
         Math::Vector3D m_pos;
-        Math::Angle3D m_defaultAngle;
+        Math::Vector3D m_defaultPos;
         Math::Angle3D m_angle;
+        Math::Angle3D m_defaultAngle;
         Dimension m_dimension;
         double m_fov;
     };

@@ -20,10 +20,7 @@ namespace Raytracer {
         CameraInteractive(Camera *camera) : m_camera(camera) {};
         ~CameraInteractive() = default;
 
-        void setCamera(Camera *camera)
-        {
-            m_camera = camera;
-        }
+        void setCamera(Camera *camera) { m_camera = camera; }
 
         Camera *getCamera(void) const { return m_camera; }
 

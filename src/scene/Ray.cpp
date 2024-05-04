@@ -8,9 +8,10 @@
 #include "Scene/Ray.hpp"
 
 namespace Raytracer {
-    Ray::Ray(const Math::Vector3D &origin, const Math::Vector3D &direction)
+    Ray::Ray(const Math::Vector3D &origin, const Math::Vector3D &direction, size_t depth)
         : m_origin(origin)
         , m_direction(direction)
+        , m_depth(depth)
     {
     }
 

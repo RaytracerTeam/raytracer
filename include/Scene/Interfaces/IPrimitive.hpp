@@ -9,6 +9,7 @@
 
 #include "IMaterial.hpp"
 #include "ISceneObj.hpp"
+#include "IShape.hpp"
 #include "Scene/Ray.hpp"
 
 #include <memory>
@@ -22,17 +23,18 @@ namespace Raytracer {
         CUBE,
         CYLINDER,
         CONE,
+        TORUS,
+        TANGLECUBE,
+        MOBIUSSTRIP,
         NONE
     };
-    class IPrimitive : public ISceneObj {
+    class IPrimitive : public IShape {
     public:
         virtual void setMaterial(std::unique_ptr<IMaterial> material) = 0;
         virtual IMaterial *getMaterial(void) const = 0;
 
         virtual PrimitiveType getType(void) const = 0;
         virtual const std::string getTypeString(void) const = 0;
-        virtual int getID(void) const = 0;
-        virtual void setID(int id) = 0;
 
         virtual std::optional<RayHit> hit(const Ray &ray) const = 0;
     };

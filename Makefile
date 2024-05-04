@@ -12,14 +12,17 @@ CORESRC	=	$(wildcard ./src/*.cpp) \
 			$(wildcard ./src/scene/*.cpp) \
 			$(wildcard ./src/scene/primitives/*.cpp) \
 			$(wildcard ./src/scene/materials/*.cpp) \
+			$(wildcard ./src/scene/materials/code/*.cpp) \
+			$(wildcard ./src/scene/materials/texture/*.cpp) \
 			$(wildcard ./src/scene/lights/*.cpp) \
 			$(wildcard ./src/scene/interactive/*.cpp) \
 			$(wildcard ./src/scene/interactive/imgui/*.cpp) \
+			$(wildcard ./src/scene/interactive/imgui/primitives/*.cpp) \
 
 IMGUISRC	=	$(wildcard ./bonus/imgui/*.cpp)
 
-SRC	=	./src/main/main.cpp \
-		$(CORESRC)
+SRC		=	./src/main/main.cpp \
+			$(CORESRC)
 
 TESTSRC	=	$(wildcard ./tests/*.cpp) \
 			$(CORESRC)
@@ -42,23 +45,28 @@ TESTFLAGS	=	-g3 -O0 --coverage -fprofile-arcs -ftest-coverage
 DEPSFLAGS	=	-MMD -MP
 
 LDFLAGS		=	-lconfig++ -lsfml-graphics -lsfml-window -lsfml-system
-LDBONUSFLAGS=	-lGLEW -lglfw -framework OpenGL
+LDBONUSFLAGS=	-lGLEW -lglfw
 TESTSFLAGS	=	$(LDFLAGS) -lcriterion
 
 MACBREWSFML		= 	/opt/homebrew/Cellar/sfml/2.6.1
 MACBREWCONFIG	=	/opt/homebrew/Cellar/libconfig/1.7.3
 MACBREWGLFW		=	/opt/homebrew/Cellar/glfw/3.4
 MACBREWGLEW		=	/opt/homebrew/Cellar/glew/2.2.0_1
-MACSFMLINCLUDE	=	-I$(MACBREWSFML)/include -I$(MACBREWCONFIG)/include -I$(MACBREWGLFW)/include -I$(MACBREWGLEW)/include
-MACSFMLLIB		=	-L$(MACBREWSFML)/lib -L$(MACBREWCONFIG)/lib -L$(MACBREWGLFW)/lib -L$(MACBREWGLEW)/lib
+MACSFMLINCLUDE	=	-I$(MACBREWSFML)/include -I$(MACBREWCONFIG)/include \
+					-I$(MACBREWGLFW)/include -I$(MACBREWGLEW)/include
+MACSFMLLIB		=	-L$(MACBREWSFML)/lib -L$(MACBREWCONFIG)/lib \
+					-L$(MACBREWGLFW)/lib -L$(MACBREWGLEW)/lib
 
 IMGUIFLAGS	=	-DBONUS -Ibonus/imgui
 
 UNAME_S := $(shell uname -s)
 
 ifeq ($(UNAME_S),Darwin)
+	LDBONUSFLAGS += -framework OpenGL
 	CFLAGS += $(MACSFMLINCLUDE) -DMACOSTONIO
 	LDFLAGS += $(MACSFMLLIB)
+else
+	LDBONUSFLAGS += -lGL
 endif
 
 all: $(NAME)

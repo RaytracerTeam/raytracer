@@ -10,15 +10,19 @@
 namespace Raytracer {
     namespace Parsing
     {
-        void parsePrimitives(const libconfig::Config &config, Scene &scene)
+        void parsePrimitives(const libconfig::Config &config, std::unique_ptr<Scene> &scene)
         {
             if (!config.exists("primitives"))
                 return;
 
             const libconfig::Setting &primitiveSetting = config.lookup("primitives");
 
-            parseSphere(primitiveSetting, scene);
-            parsePlane(primitiveSetting, scene);
+            parseSpheres(primitiveSetting, scene);
+            parsePlanes(primitiveSetting, scene);
+            parseCylinders(primitiveSetting, scene);
+            parseCones(primitiveSetting, scene);
+            parseToruses(primitiveSetting, scene);
+            parseTanglecubes(primitiveSetting, scene);
         }
     } // namespace Parsing
 } // namespace Raytracer

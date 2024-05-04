@@ -30,14 +30,20 @@ namespace Raytracer {
         static double RGBToPercent(uint8_t value);
         static uint8_t PercentToRGB(double value);
 
+        operator float *();
+
         ////////////
 
         Color &operator+=(const Color &right);
+        Color &operator+=(const Math::Vector3D &right);
+        Color &operator+=(double scalar);
         Color &operator*=(const Color &right);
         Color &operator*=(const Math::Vector3D &right);
         Color &operator*=(double scalar);
 
         Color operator+(const Color &right) const;
+        Color operator+(const Math::Vector3D &right) const;
+        Color operator+(double scalar) const;
         Color operator*(const Math::Vector3D &right) const;
         Color operator*(const Color &right) const;
         Color operator*(double scalar) const;
@@ -46,6 +52,7 @@ namespace Raytracer {
         double m_r = 0;
         double m_g = 0;
         double m_b = 0;
+        float m_vals[3];
     };
 } // namespace Raytracer
 

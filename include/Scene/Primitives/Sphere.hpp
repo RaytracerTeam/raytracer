@@ -18,9 +18,11 @@ namespace Raytracer {
         {}
         ~Sphere() = default;
 
+        PrimitiveType getType(void) const override { return PrimitiveType::SPHERE; };
+        const std::string getTypeString(void) const override { return "Sphere"; };
+
         double getRadius(void) const { return m_radius; }
         void setRadius(double radius) { m_radius = radius; }
-        PrimitiveType getType(void) const override { return PrimitiveType::SPHERE; };
 
         std::optional<RayHit> hit(const Ray &ray) const override;
 

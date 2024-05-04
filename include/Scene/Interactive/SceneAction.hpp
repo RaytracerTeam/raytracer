@@ -20,11 +20,18 @@ namespace Raytracer
         ROTATE_DOWN,
         ROTATE_LEFT,
         ROTATE_RIGHT,
+        USE_MOUSE,
         SPRINT,
+    };
+
+    enum SceneReleaseActions {
         EXIT,
         QUICK_SAVE,
         SAVE_AND_EXIT,
-        SHOW_FPS,
-        RESET
+        SHOW_DEBUG,
+        SCREENSHOT,
+        REMOVE_OBJECT,
+        TOGGLE_FULLSCREEN,
+        RESET,
     };
 } // namespace Raytracer

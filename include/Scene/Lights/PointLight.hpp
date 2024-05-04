@@ -7,21 +7,25 @@
 
 #pragma once
 
-#include "ALight.hpp"
+#include "AShapeLight.hpp"
+#include "Scene/Primitives/Sphere.hpp"
 
 namespace Raytracer {
-    class PointLight : public ALight {
+    #define DEFAULT_POINTLIGHT_RADIUS 0.5f
+
+    class PointLight : public AShapeLight {
     public:
-        PointLight(const Math::Vector3D &origin)
-            : ALight(origin)
-        {
-        }
-        PointLight(const Math::Vector3D &origin, const Color &color)
-            : ALight(origin, color)
-        {
-        }
+        PointLight(const Math::Vector3D &origin, double radius, const Color &color, double intensity);
         ~PointLight() = default;
 
+        double getRadius(void) const { return m_sphere.getRadius(); }
+        void setRadius(double radius) { m_sphere.setRadius(radius); }
+
+        void setOrigin(const Math::Vector3D &origin) override;
+
+        std::optional<RayHit> hit(const Ray &ray) const override;
+
     protected:
+        Sphere m_sphere;
     };
 } // namespace Raytracer
