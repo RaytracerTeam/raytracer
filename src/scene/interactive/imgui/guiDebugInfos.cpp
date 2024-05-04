@@ -11,6 +11,7 @@ namespace Raytracer
 {
     void SceneInteractive::guiDebugInfos(void)
     {
+        #ifdef BONUS
         Camera *currentCamera = m_interacCam.getCamera();
         if (ImGui::BeginChild("Debug Infos", ImVec2(m_leftPaneWidth, m_imageHeight / 2 - 30),
             ImGuiChildFlags_Border)) {
@@ -36,5 +37,6 @@ namespace Raytracer
             ImGui::EndChild();
         }
         ImGui::EndChild();
+        #endif
     }
 } // namespace Raytracer
