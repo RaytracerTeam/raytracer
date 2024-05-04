@@ -167,9 +167,18 @@ namespace Raytracer {
         return color;
     }
 
-    std::ostream &operator<<(std::ostream &os, const Color &color)
+    Color::operator float *()
     {
-        os << "Color(" << color.getR() << ", " << color.getG() << ", " << color.getB() << ")";
-        return os;
+        m_vals[0] = m_r;
+        m_vals[1] = m_g;
+        m_vals[2] = m_b;
+        return m_vals;
     }
+
 } // namespace Raytracer
+
+std::ostream &operator<<(std::ostream &os, const Raytracer::Color &color)
+{
+    os << "Color(" << color.getR() << ", " << color.getG() << ", " << color.getB() << ")";
+    return os;
+}

@@ -45,29 +45,29 @@ namespace Raytracer
         guiObjectSelection(leftPaneWidth, imageHeight);
 
         //* -- Debug Infos --
-        ImGui::BeginChild("Debug Infos", ImVec2(leftPaneWidth, imageHeight / 2 - 30),
-            ImGuiChildFlags_Border);
-        // FPS
-        ImGui::Text("FPS: %.1f", getFramerate());
-        // Camera Pos
-        float *pos = currentCamera.getPos();
-        if (ImGui::InputFloat3("Pos", pos, "%.2f", ImGuiInputTextFlags_EnterReturnsTrue)) {
-            // currentCamera.setPos(pos);
-            m_needRendering = true;
-        }
-        // Camera Angle
-        float *angle = currentCamera.getAngle();
-        if (ImGui::InputFloat3("Angle", angle, "%.2f", ImGuiInputTextFlags_EnterReturnsTrue)) {
-            // currentCamera.setAngle(angle);
-            m_needRendering = true;
-        }
-        bool renderLights = m_scene->getRenderLights();
-        if (ImGui::Checkbox("Render Lights", &renderLights))
-            m_needRendering = true;
-        m_scene->setRenderLights(renderLights);
+        if (ImGui::BeginChild("Debug Infos", ImVec2(leftPaneWidth, imageHeight / 2 - 30),
+            ImGuiChildFlags_Border)) {
+            // FPS
+            ImGui::Text("FPS: %.1f", getFramerate());
+            // Camera Pos
+            float *pos = currentCamera.getPos();
+            if (ImGui::InputFloat3("Pos", pos, "%.2f", ImGuiInputTextFlags_EnterReturnsTrue)) {
+                // currentCamera.setPos(pos);
+                m_needRendering = true;
+            }
+            // Camera Angle
+            float *angle = currentCamera.getAngle();
+            if (ImGui::InputFloat3("Angle", angle, "%.2f", ImGuiInputTextFlags_EnterReturnsTrue)) {
+                // currentCamera.setAngle(angle);
+                m_needRendering = true;
+            }
+            bool renderLights = m_scene->getRenderLights();
+            if (ImGui::Checkbox("Render Lights", &renderLights))
+                m_needRendering = true;
+            m_scene->setRenderLights(renderLights);
 
-        ImGui::EndChild();
-
+            ImGui::EndChild();
+        }
         ImGui::EndChild();
 
         ImGui::SameLine();
@@ -84,7 +84,7 @@ namespace Raytracer
                 (void) m_selectedObject;
                 // addPrimitive();
             else
-                editPrimitives();
+                guiEditPrimitives();
         } else if (m_objectSelection == ObjectSelection::LIGHT) {
             if (m_selectedObject == 0)
                 (void) m_selectedObject;

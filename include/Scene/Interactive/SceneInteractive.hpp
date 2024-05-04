@@ -74,7 +74,8 @@ namespace Raytracer {
         void guiTopBar(Camera &currentCamera);
         void guiObjectSelection(int leftPaneWidth, int imageHeight);
         void removeSelectedObject(void);
-        void editPrimitives(void);
+        void customEditPrimitives(std::unique_ptr<IPrimitive> &primitive);
+        void guiEditPrimitives(void);
         void editSphere(Sphere *sphere);
         void editPlane(Plane *plane);
         void editCylinder(Cylinder *cylinder);

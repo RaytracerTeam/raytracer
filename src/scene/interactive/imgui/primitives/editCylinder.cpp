@@ -17,12 +17,7 @@ namespace Raytracer
     {
         (void)cylinder;
         #ifdef BONUS
-        float pos[3] = {(float)cylinder->getOrigin().getX(),
-                        (float)cylinder->getOrigin().getY(),
-                        (float)cylinder->getOrigin().getZ()};
-        Color color = ((MaterialSolid *)cylinder->getMaterial())->getColor();
-        float colorGui[3] = {(float)color.getR(),
-            (float)color.getG(), (float)color.getB()};
+        // Radius
         float radius = cylinder->getRadius();
         if (ImGui::SliderFloat("Radius", &radius, 0.020, 60, "%.3f",
             ImGuiSliderFlags_Logarithmic)) {
@@ -30,15 +25,11 @@ namespace Raytracer
             m_needRendering = true;
         }
 
-        if (ImGui::SliderFloat3("Position", pos, -60, 60
-            // , "%.3f", ImGuiSliderFlags_Logarithmic
-            )) {
-            cylinder->setOrigin(Math::Vector3D(pos[0], pos[1], pos[2]));
-            m_needRendering = true;
-        }
-        if (ImGui::ColorEdit3("Color", colorGui)) {
-            Color newColor = Color(colorGui[0], colorGui[1], colorGui[2]);
-            ((MaterialSolid *)cylinder->getMaterial())->setColor(newColor);
+        // Height
+        float height = cylinder->getHeight();
+        if (ImGui::SliderFloat("Height", &height, 0, 40, "%.3f",
+            ImGuiSliderFlags_Logarithmic)) {
+            cylinder->setHeight(height);
             m_needRendering = true;
         }
         #endif

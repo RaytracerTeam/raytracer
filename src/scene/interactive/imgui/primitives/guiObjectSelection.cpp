@@ -12,6 +12,7 @@
 namespace Raytracer
 {
     void SceneInteractive::guiObjectSelection(int leftPaneWidth, int imageHeight) {
+        #ifdef BONUS
         if (ImGui::BeginTabBar("Object Selection")) {
             if (ImGui::BeginTabItem("Primitives")) {
                 m_objectSelection = ObjectSelection::PRIMITIVE;
@@ -78,5 +79,6 @@ namespace Raytracer
             }
             ImGui::EndTabBar();
         }
+        #endif
     }
 } // namespace Raytracer

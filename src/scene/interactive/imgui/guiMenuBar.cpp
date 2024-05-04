@@ -13,6 +13,7 @@ namespace Raytracer
 {
     void SceneInteractive::guiMenuBar(void)
     {
+        #ifdef BONUS
         m_isWriting = false;
         if (ImGui::BeginMenuBar())
         {
@@ -26,19 +27,6 @@ namespace Raytracer
                     ImGuiInputTextFlags_EnterReturnsTrue))
                 {
                     Parsing::saveScene(*m_scene, m_fileBuf);
-                    ImGui::CloseCurrentPopup();
-                }
-                ImGui::EndMenu();
-            }
-            if (ImGui::BeginMenu("Skybox path"))
-            {
-                m_isWriting = true;
-                if (ImGui::InputTextWithHint(" Path to sphere image (press ENTER to save)",
-                    "assets/skyboxes/sky.jpg", m_skyboxPathBuf, FILE_BUF_SIZE,
-                    ImGuiInputTextFlags_EnterReturnsTrue))
-                {
-                    if (std::filesystem::exists(m_skyboxPathBuf))
-                        m_scene->setSkyboxPath(m_skyboxPathBuf);
                     ImGui::CloseCurrentPopup();
                 }
                 ImGui::EndMenu();
@@ -61,7 +49,21 @@ namespace Raytracer
                 ImGui::Checkbox("Add to current scene", &m_addToCurrentScene);
                 ImGui::EndMenu();
             }
+            if (ImGui::BeginMenu("Skybox path"))
+            {
+                m_isWriting = true;
+                if (ImGui::InputTextWithHint(" Path to sphere image (press ENTER to save)",
+                    "assets/skyboxes/sky.jpg", m_skyboxPathBuf, FILE_BUF_SIZE,
+                    ImGuiInputTextFlags_EnterReturnsTrue))
+                {
+                    if (std::filesystem::exists(m_skyboxPathBuf))
+                        m_scene->setSkyboxPath(m_skyboxPathBuf);
+                    ImGui::CloseCurrentPopup();
+                }
+                ImGui::EndMenu();
+            }
             ImGui::EndMenuBar();
         }
+        #endif
     }
 } // namespace Raytracer
