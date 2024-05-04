@@ -52,8 +52,10 @@ MACBREWSFML		= 	/opt/homebrew/Cellar/sfml/2.6.1
 MACBREWCONFIG	=	/opt/homebrew/Cellar/libconfig/1.7.3
 MACBREWGLFW		=	/opt/homebrew/Cellar/glfw/3.4
 MACBREWGLEW		=	/opt/homebrew/Cellar/glew/2.2.0_1
-MACSFMLINCLUDE	=	-I$(MACBREWSFML)/include -I$(MACBREWCONFIG)/include -I$(MACBREWGLFW)/include -I$(MACBREWGLEW)/include
-MACSFMLLIB		=	-L$(MACBREWSFML)/lib -L$(MACBREWCONFIG)/lib -L$(MACBREWGLFW)/lib -L$(MACBREWGLEW)/lib
+MACSFMLINCLUDE	=	-I$(MACBREWSFML)/include -I$(MACBREWCONFIG)/include \
+					-I$(MACBREWGLFW)/include -I$(MACBREWGLEW)/include
+MACSFMLLIB		=	-L$(MACBREWSFML)/lib -L$(MACBREWCONFIG)/lib \
+					-L$(MACBREWGLFW)/lib -L$(MACBREWGLEW)/lib
 
 IMGUIFLAGS	=	-DBONUS -Ibonus/imgui
 
