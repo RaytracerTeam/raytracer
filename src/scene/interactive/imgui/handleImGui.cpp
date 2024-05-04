@@ -41,7 +41,6 @@ namespace Raytracer
         ImGui::BeginChild("left pane", ImVec2(leftPaneWidth, imageHeight),
             ImGuiChildFlags_Border);
 
-        static int selected = 0;
         //* -- Object Selection --
         guiObjectSelection(leftPaneWidth, imageHeight);
 
@@ -80,11 +79,20 @@ namespace Raytracer
             sf::Color::White, sf::Color::Cyan);
 
         //* -- Edit Primitives --
-        if (selected == 0)
-            (void) selected;
-            // addPrimitive();
-        else
-            editPrimitives();
+        if (m_objectSelection == ObjectSelection::PRIMITIVE) {
+            if (m_selectedObject == 0)
+                (void) m_selectedObject;
+                // addPrimitive();
+            else
+                editPrimitives();
+        } else if (m_objectSelection == ObjectSelection::LIGHT) {
+            if (m_selectedObject == 0)
+                (void) m_selectedObject;
+                // addLight();
+            else
+                (void) m_selectedObject;
+                // editLights();
+        }
 
         ImGui::End();
         ImGui::PopStyleVar();

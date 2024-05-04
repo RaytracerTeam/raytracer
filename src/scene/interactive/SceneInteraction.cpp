@@ -80,8 +80,8 @@ namespace Raytracer {
                 m_window.setView(sf::View(visibleArea));
                 m_needRendering = true;
             }
-            if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::F2)
-                m_img.saveToFile(std::string("screenshots/screenshot-") + std::to_string(rand()) + std::string(".png"));
+            if (event.type == sf::Event::KeyReleased)
+                applyKeyReleasedActions(event.key.code);
             if (!m_isWriting && m_interacCam.handleInput(event, m_window, m_actions)) {
                 m_newEvent = true;
             }

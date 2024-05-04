@@ -28,6 +28,11 @@ namespace Raytracer {
     #define SCREEN_RATIO 16.0f / 9.0f
     #define FILE_BUF_SIZE 40
 
+    enum class ObjectSelection {
+        PRIMITIVE,
+        LIGHT
+    };
+
     class SceneInteractive {
     public:
         SceneInteractive(Dimension &dimension, const std::string &title);
@@ -49,6 +54,8 @@ namespace Raytracer {
         void setupActions(void);
         void parseConfigFile(const std::string &filename);
         void applyActions(void);
+        void applyKeyReleasedActions(sf::Keyboard::Key key);
+        void applyKeyReleasedAction(SceneReleaseActions action);
 
         void updateDimension(unsigned int width, unsigned int height);
 
@@ -93,16 +100,19 @@ namespace Raytracer {
         bool m_isWriting = false;
         bool m_showFps = false;
         int m_selectedObject = 0;
+        ObjectSelection m_objectSelection = ObjectSelection::PRIMITIVE;
 
         // Storing the result of the render
         std::unique_ptr<sf::Uint8 []> m_lastRender;
 
         // Actions
         std::vector<std::pair<sf::Keyboard::Key, bool>> m_actions;
+        std::vector<sf::Keyboard::Key> m_releaseActions;
         bool m_newEvent = true;
         bool m_needRendering = true;
         float m_movementSpeed = DEFAULT_MOVEMENT_SPEED;
         float m_defaultMovementSpeed = DEFAULT_MOVEMENT_SPEED;
         float m_rotationSpeed = DEFAULT_ROTATION_SPEED;
+        bool m_useMouse = false;
     };
 } // namespace Raytracer
