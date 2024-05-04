@@ -30,8 +30,8 @@ namespace Raytracer {
     #define FILE_BUF_SIZE 40
 
     // ImGui default slider values
-    #define DEFAULT_POS_MIN -100.0f
-    #define DEFAULT_POS_MAX 100.0f
+    #define DEFAULT_POS_MIN -60.0f
+    #define DEFAULT_POS_MAX 60.0f
     #define DEFAULT_RADIUS_MIN 0.02f
     #define DEFAULT_RADIUS_MAX 40.0f
     #define DEFAULT_HEIGHT_MIN 0.0f

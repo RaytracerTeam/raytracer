@@ -10,6 +10,9 @@
 #include "Scene/Materials/MaterialSolid.hpp"
 #include "Scene/Lights/PointLight.hpp"
 
+// todo: remove this
+#include "Scene/Primitives/Sphere.hpp"
+
 namespace Raytracer
 {
     void SceneInteractive::guiObjectSelection(void) {
@@ -25,11 +28,15 @@ namespace Raytracer
                     m_imageHeight / 2 - 20), ImGuiChildFlags_Border);
                 if (ImGui::Selectable("Add Primitive", m_selectedObject == 0))
                 {
-                    // m_scene->addPrimitive(std::make_unique<Sphere>(
-                    //     Math::Vector3D(0, 0, 0), 1,
-                    //     std::make_unique<MaterialSolid>(
-                    //         Color((unsigned int)255, 255, 255)),
-                    //     1.0));
+                    auto sphere = std::make_unique<Sphere>(
+                        Math::Vector3D(0, 0, 0),
+                        std::make_unique<MaterialSolid>(
+                            Color((unsigned int)255, 255, 255)),
+                        1.0);
+                    sphere->setID(m_scene->getPrimitives().size() + 1);
+                    m_scene->addPrimitive(std::move(sphere));
+                    m_needRendering = true;
+                    m_newEvent = true;
                     m_selectedObject = 0;
                 }
                 int i = 0;
@@ -53,10 +60,12 @@ namespace Raytracer
                     m_imageHeight / 2 - 20), ImGuiChildFlags_Border);
                 if (ImGui::Selectable("Add Light", m_selectedObject == 0))
                 {
-                    m_scene->addLight(std::make_unique<PointLight>(
+                    std::unique_ptr<PointLight> light = std::make_unique<PointLight>(
                         Math::Vector3D(0, 0, 0), DEFAULT_POINTLIGHT_RADIUS,
                         Color((unsigned int)255, 255, 255),
-                        1.0));
+                        1.0);
+                    light->setID(m_scene->getLights().size() + 1);
+                    m_scene->addLight(std::move(light));
                     m_selectedObject = 0;
                 }
                 int i = 0;

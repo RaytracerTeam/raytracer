@@ -117,6 +117,7 @@ namespace Raytracer {
         for (const auto &primitive : m_scene->getPrimitives()) {
             primitive->setID(++i);
         }
+        i = 0;
         for (const auto &light : m_scene->getLights()) {
             light->setID(++i);
         }

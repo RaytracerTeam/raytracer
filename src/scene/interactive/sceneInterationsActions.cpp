@@ -251,8 +251,8 @@ namespace Raytracer
             break;
         }
         case SceneReleaseActions::RESET: {
-            Camera *camera = m_interacCam.getCamera();
-            camera->reset();
+            m_scene->getCurrentCamera().reset();
+            m_needRendering = true;
             break;
         }
         case SceneReleaseActions::EXIT:
