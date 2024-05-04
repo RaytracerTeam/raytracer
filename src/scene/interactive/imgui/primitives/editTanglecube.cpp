@@ -17,7 +17,7 @@ namespace Raytracer
     {
         (void)tanglecube;
         #ifdef BONUS
-        
+
         #endif
     }
 } // namespace Raytracer
