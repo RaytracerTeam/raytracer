@@ -43,7 +43,7 @@ namespace Raytracer
         m_releaseActions.push_back(sf::Keyboard::F2);              // SCREENSHOT
         m_releaseActions.push_back(sf::Keyboard::Backspace);       // REMOVE_OBJECT
         m_releaseActions.push_back(sf::Keyboard::F11);             // TOGGLE_FULLSCREEN
-        m_releaseActions.push_back(sf::Keyboard::Return);          // RESET
+        m_releaseActions.push_back(sf::Keyboard::O);          // RESET
         parseConfigFile("config/keys.cfg");
     }
 
@@ -63,8 +63,6 @@ namespace Raytracer
                 return sf::Keyboard::Key::LShift;
             else if (keyCode == "LCTRL")
                 return sf::Keyboard::Key::LControl;
-            else if (keyCode == "ENTER" || keyCode == "RETURN")
-                return sf::Keyboard::Key::Return;
             else if (keyCode == "ESCAPE")
                 return sf::Keyboard::Key::Escape;
             else if (keyCode == "F2")

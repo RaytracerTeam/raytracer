@@ -18,8 +18,8 @@ namespace Raytracer
         (void)sphere;
         #ifdef BONUS
         float sphereRadius = sphere->getRadius();
-        if (ImGui::SliderFloat("Radius", &sphereRadius, 0.020, 40, "%.3f",
-            ImGuiSliderFlags_Logarithmic)) {
+        if (ImGui::SliderFloat("Radius", &sphereRadius, DEFAULT_RADIUS_MIN,
+        DEFAULT_RADIUS_MAX, "%.3f", ImGuiSliderFlags_Logarithmic)) {
             sphere->setRadius(sphereRadius);
             m_needRendering = true;
         }

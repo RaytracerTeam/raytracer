@@ -18,5 +18,8 @@ namespace Raytracer {
     class IShape : public ISceneObj {
     public:
         virtual std::optional<RayHit> hit(const Ray &ray) const = 0;
+
+        virtual int getID(void) const = 0;
+        virtual void setID(int id) = 0;
     };
 }

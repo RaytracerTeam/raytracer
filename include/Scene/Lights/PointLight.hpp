@@ -19,6 +19,8 @@ namespace Raytracer {
         double getRadius(void) const { return m_sphere.getRadius(); }
         void setRadius(double radius) { m_sphere.setRadius(radius); }
 
+        void setOrigin(const Math::Vector3D &origin) override;
+
         std::optional<RayHit> hit(const Ray &ray) const override;
 
     protected:

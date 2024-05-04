@@ -9,5 +9,5 @@
 
 namespace Raytracer
 {
-    
+
 } // namespace Raytracer

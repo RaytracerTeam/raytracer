@@ -48,7 +48,7 @@ namespace Raytracer
                 // Color
                 ImGui::SetNextItemWidth(200);
                 float *color = ((MaterialSolid *)primitive->getMaterial())->getColor();
-                if (ImGui::ColorEdit3("Color", color)) {
+                if (ImGui::ColorEdit3("Color", color, ImGuiColorEditFlags_PickerHueWheel)) {
                     Color newColor = Color(color);
                     ((MaterialSolid *)primitive->getMaterial())->setColor(newColor);
                     m_needRendering = true;
@@ -58,8 +58,8 @@ namespace Raytracer
                 float pos[3] = {(float)primitive->getOrigin().getX(),
                         (float)primitive->getOrigin().getY(),
                         (float)primitive->getOrigin().getZ()};
-                if (ImGui::SliderFloat3("Position", pos, -60, 60
-                    )) {
+                if (ImGui::SliderFloat3("Position", pos, DEFAULT_POS_MIN,
+                DEFAULT_POS_MAX)) {
                     primitive->setOrigin(Math::Vector3D(pos[0], pos[1], pos[2]));
                     m_needRendering = true;
                 }

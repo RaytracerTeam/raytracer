@@ -19,16 +19,16 @@ namespace Raytracer
         #ifdef BONUS
         // Radius
         float radius = cylinder->getRadius();
-        if (ImGui::SliderFloat("Radius", &radius, 0.020, 60, "%.3f",
-            ImGuiSliderFlags_Logarithmic)) {
+        if (ImGui::SliderFloat("Radius", &radius, DEFAULT_RADIUS_MIN,
+        DEFAULT_RADIUS_MAX, "%.3f", ImGuiSliderFlags_Logarithmic)) {
             cylinder->setRadius(radius);
             m_needRendering = true;
         }
 
         // Height
         float height = cylinder->getHeight();
-        if (ImGui::SliderFloat("Height", &height, 0, 40, "%.3f",
-            ImGuiSliderFlags_Logarithmic)) {
+        if (ImGui::SliderFloat("Height", &height, DEFAULT_RADIUS_MIN,
+        DEFAULT_RADIUS_MAX, "%.3f", ImGuiSliderFlags_Logarithmic)) {
             cylinder->setHeight(height);
             m_needRendering = true;
         }

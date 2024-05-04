@@ -29,12 +29,9 @@ namespace Raytracer {
         , m_window(sf::VideoMode(dimension.getWidth(), dimension.getHeight()), title)
         , m_previousTime(m_clock.getElapsedTime())
     {
-        m_scene = std::make_unique<Scene>();
-        Parsing::parse(m_scene, inputFiles);
-        m_interacCam.setCamera(&m_scene->getCurrentCamera());
+        setScenes(inputFiles);
 
-        m_dimension = Dimension(DEFAULT_CAMERA_RESOLUTION * SCREEN_RATIO, DEFAULT_CAMERA_RESOLUTION);
-        m_renderResolution = m_dimension.getHeight();
+        updateDimension(DEFAULT_CAMERA_RESOLUTION * SCREEN_RATIO, DEFAULT_CAMERA_RESOLUTION);
         #ifdef BONUS
             #ifdef MACOSTONIO
                 m_window.setSize(sf::Vector2u(1440, 850));
@@ -45,9 +42,10 @@ namespace Raytracer {
             m_window.setPosition(sf::Vector2i(0, 0));
             if (!ImGui::SFML::Init(m_window))
                 throw std::runtime_error("Failed to initialize ImGui");
+            m_imageHeight = ImGui::GetIO().DisplaySize.y - 180;
+            m_imageWidth = m_imageHeight * SCREEN_RATIO;
+            m_leftPaneWidth = ImGui::GetIO().DisplaySize.x - m_imageWidth - 30;
         #endif
-        m_texture.create(m_dimension.getWidth(), m_dimension.getHeight());
-        m_img.create(m_dimension.getWidth(), m_dimension.getHeight());
         m_window.setFramerateLimit(60);
         setupActions();
     }
@@ -62,6 +60,7 @@ namespace Raytracer {
     {
         m_dimension.setWidth(width);
         m_dimension.setHeight(height);
+        m_renderResolution = m_dimension.getHeight();
         m_texture.create(m_dimension.getWidth(), m_dimension.getHeight());
         m_img.create(m_dimension.getWidth(), m_dimension.getHeight());
         m_scene->getCurrentCamera().setDimension(m_dimension);
@@ -99,21 +98,33 @@ namespace Raytracer {
         applyActions();
     }
 
+    void SceneInteractive::setScenes(const std::vector<std::string_view> &inputFiles)
+    {
+        for (const auto &file : inputFiles) {
+            setScene(std::string(file));
+            m_addToCurrentScene = true;
+        }
+        m_addToCurrentScene = false;
+    }
+
     void SceneInteractive::setScene(const std::string &filename)
     {
         if (!m_addToCurrentScene)
             m_scene = std::make_unique<Scene>();
         Parsing::parse(m_scene, {filename});
         m_interacCam.setCamera(&m_scene->getCurrentCamera());
+        int i = 0;
+        for (const auto &primitive : m_scene->getPrimitives()) {
+            primitive->setID(++i);
+        }
+        for (const auto &light : m_scene->getLights()) {
+            light->setID(++i);
+        }
     }
 
     void SceneInteractive::loop(void)
     {
         m_scene->getCurrentCamera().setDimension(m_dimension);
-        int i = 0;
-        for (const auto &primitive : m_scene->getPrimitives()) {
-            primitive->setID(++i);
-        }
 
         while (m_window.isOpen()) {
             handleEvents();
@@ -126,10 +137,10 @@ namespace Raytracer {
             if (m_needRendering) {
                 m_needRendering = false;
                 m_lastRender = RColorToPixelBuffer(m_scene->render());
+                m_img.create(m_dimension.getWidth(), m_dimension.getHeight(), m_lastRender.get());
+                m_texture.update(m_img);
             }
-            m_img.create(m_dimension.getWidth(), m_dimension.getHeight(), m_lastRender.get());
 
-            m_texture.update(m_img);
             m_window.clear();
             #ifndef BONUS
                 m_window.draw(sf::Sprite(m_texture));

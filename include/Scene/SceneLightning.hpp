@@ -22,6 +22,8 @@ namespace Raytracer {
         }
 
         std::vector<std::unique_ptr<PointLight>> const &getLights(void) const { return m_lights; }
+        std::vector<std::unique_ptr<PointLight>> &getLights(void) { return m_lights; }
+
 
         void addLight(std::unique_ptr<PointLight> obj)
         {

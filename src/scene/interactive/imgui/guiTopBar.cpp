@@ -15,7 +15,7 @@ namespace Raytracer
         #ifdef BONUS
         // Render Resolution
         ImGui::SetNextItemWidth(250);
-        if (ImGui::SliderInt("Dimension", &m_renderResolution, 10, 4000, "%d",
+        if (ImGui::SliderInt("Dimension", (int *)&m_renderResolution, 10, 4000, "%d",
         ImGuiSliderFlags_Logarithmic | ImGuiSliderFlags_AlwaysClamp)) {
             updateDimension(m_renderResolution * SCREEN_RATIO, m_renderResolution);
             m_needRendering = true;

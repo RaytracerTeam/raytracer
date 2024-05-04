@@ -19,4 +19,10 @@ namespace Raytracer {
         {
             return m_sphere.hit(ray);
         }
+
+        void PointLight::setOrigin(const Math::Vector3D &origin)
+        {
+            m_origin = origin;
+            m_sphere.setOrigin(origin);
+        }
 } // namespace Raytracer

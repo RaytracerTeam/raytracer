@@ -29,6 +29,17 @@ namespace Raytracer {
     #define DEFAULT_CAMERA_RESOLUTION 240
     #define FILE_BUF_SIZE 40
 
+    // ImGui default slider values
+    #define DEFAULT_POS_MIN -100.0f
+    #define DEFAULT_POS_MAX 100.0f
+    #define DEFAULT_RADIUS_MIN 0.02f
+    #define DEFAULT_RADIUS_MAX 40.0f
+    #define DEFAULT_HEIGHT_MIN 0.0f
+    #define DEFAULT_HEIGHT_MAX 40.0f
+    #define DEFAULT_INTENSITY_MIN 0.0f
+    #define DEFAULT_INTENSITY_MAX 100.0f
+    
+
     enum class ObjectSelection {
         PRIMITIVE,
         LIGHT,
@@ -44,6 +55,7 @@ namespace Raytracer {
         void loop(void);
 
         void setScene(const std::string &filename);
+        void setScenes(const std::vector<std::string_view> &inputFiles);
 
         static inline sf::Color RColorToSFColor(const Color &color)
         {
@@ -54,6 +66,7 @@ namespace Raytracer {
         }
 
     private:
+        // Keys actions
         void setupActions(void);
         void resetActions(void);
         void parseConfigFile(const std::string &filename);
@@ -72,9 +85,11 @@ namespace Raytracer {
         void handleImGui(void);
         void guiMenuBar(void);
         void guiTopBar(Camera &currentCamera);
-        void guiObjectSelection(int leftPaneWidth, int imageHeight);
+        void guiDebugInfos(void);
+        void guiObjectSelection(void);
         void removeSelectedObject(void);
         void customEditPrimitives(std::unique_ptr<IPrimitive> &primitive);
+        void guiEditLights(void);
         void guiEditPrimitives(void);
         void editSphere(Sphere *sphere);
         void editPlane(Plane *plane);
@@ -97,7 +112,7 @@ namespace Raytracer {
 
         // ImGui
         sf::Clock m_deltaClock;
-        int m_renderResolution;
+        size_t m_renderResolution;
         char m_fileBuf[FILE_BUF_SIZE] = "scenes/";
         char m_skyboxPathBuf[FILE_BUF_SIZE] = DEFAULT_SKYBOX;
         char m_cfgSceneBuf[FILE_BUF_SIZE] = "scenes/";
@@ -106,6 +121,9 @@ namespace Raytracer {
         bool m_addToCurrentScene = false;
         int m_selectedObject = 0;
         ObjectSelection m_objectSelection = ObjectSelection::PRIMITIVE;
+        size_t m_imageHeight;
+        size_t m_imageWidth;
+        size_t m_leftPaneWidth;
 
         // Storing the result of the render
         std::unique_ptr<sf::Uint8 []> m_lastRender;
