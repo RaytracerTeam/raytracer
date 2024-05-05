@@ -18,8 +18,6 @@ namespace Raytracer
 
         if (ImGui::Button("Delete Light")) {
             removeSelectedObject();
-            ImGui::EndTabItem();
-            ImGui::EndTabBar();
             return;
         }
         ImGui::SameLine(0, 20);
@@ -43,19 +41,19 @@ namespace Raytracer
             m_needRendering = true;
         }
 
-        // Radius
-        float radius = light->getRadius();
-        if (ImGui::SliderFloat("Radius", &radius, DEFAULT_RADIUS_MIN,
-        DEFAULT_RADIUS_MAX, "%.3f", ImGuiSliderFlags_Logarithmic)) {
-            light->setRadius(radius);
-            m_needRendering = true;
-        }
-
         // Intensity
         float intensity = light->getIntensity();
         if (ImGui::SliderFloat("Intensity", &intensity, DEFAULT_INTENSITY_MIN,
         DEFAULT_INTENSITY_MAX, "%.3f", ImGuiSliderFlags_Logarithmic)) {
             light->setIntensity(intensity);
+            m_needRendering = true;
+        }
+
+        // Radius
+        float radius = light->getRadius();
+        if (ImGui::SliderFloat("Radius", &radius, DEFAULT_RADIUS_MIN,
+        DEFAULT_RADIUS_MAX, "%.3f", ImGuiSliderFlags_Logarithmic)) {
+            light->setRadius(radius);
             m_needRendering = true;
         }
 
