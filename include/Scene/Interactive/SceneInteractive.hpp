@@ -81,7 +81,7 @@ namespace Raytracer {
         // ImGui
         void handleImGui(void);
         void guiMenuBar(void);
-        void guiTopBar(Camera &currentCamera);
+        void guiTopBar(void);
         void guiDebugInfos(void);
         void guiObjectSelection(void);
         void removeSelectedObject(void);

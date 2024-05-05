@@ -73,14 +73,16 @@ namespace Raytracer
                 customEditPrimitives(primitive);
                 ImGui::EndTabItem();
             }
+
             if (ImGui::BeginTabItem("Material")) {
                 ImGui::EndTabItem();
             }
+
             if (ImGui::BeginTabItem("Transformations")) {
                 ImGui::EndTabItem();
             }
-            ImGui::EndTabBar();
         }
+        ImGui::EndTabBar();
         #endif
     }
 } // namespace Raytracer

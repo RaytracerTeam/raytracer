@@ -42,9 +42,9 @@ namespace Raytracer {
             m_window.setPosition(sf::Vector2i(0, 0));
             if (!ImGui::SFML::Init(m_window))
                 throw std::runtime_error("Failed to initialize ImGui");
-            m_imageHeight = ImGui::GetIO().DisplaySize.y - 180;
-            m_imageWidth = m_imageHeight * SCREEN_RATIO;
-            m_leftPaneWidth = ImGui::GetIO().DisplaySize.x - m_imageWidth - 30;
+            m_leftPaneWidth = 220;
+            m_imageWidth = ImGui::GetIO().DisplaySize.x - m_leftPaneWidth - 50;
+            m_imageHeight = m_imageWidth / (SCREEN_RATIO);
         #endif
         m_window.setFramerateLimit(60);
         setupActions();

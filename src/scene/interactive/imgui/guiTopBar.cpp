@@ -10,9 +10,11 @@
 
 namespace Raytracer
 {
-    void SceneInteractive::guiTopBar(Camera &currentCamera)
+    void SceneInteractive::guiTopBar(void)
     {
         #ifdef BONUS
+        Camera &currentCamera = m_scene->getCurrentCamera();
+
         // Render Resolution
         ImGui::SetNextItemWidth(250);
         if (ImGui::SliderInt("Dimension", (int *)&m_renderResolution, 10, 4000, "%d",
