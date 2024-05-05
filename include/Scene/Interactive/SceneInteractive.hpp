@@ -135,6 +135,8 @@ namespace Raytracer {
         size_t m_imageHeight;
         size_t m_imageWidth;
         size_t m_leftPaneWidth;
+        std::vector<float> m_frameTimes;
+        bool m_alwaysRender;
 
         // Storing the result of the render
         std::unique_ptr<sf::Uint8 []> m_lastRender;

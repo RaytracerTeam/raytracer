@@ -155,7 +155,7 @@ namespace Raytracer {
                 m_newEvent = false;
                 m_scene->updatePrimitives(); // todo : unoptimized
             }
-            if (m_needRendering) {
+            if (m_needRendering || m_alwaysRender) {
                 m_needRendering = false;
                 m_lastRender = RColorToPixelBuffer(m_scene->render());
                 m_img.create(m_dimension.getWidth(), m_dimension.getHeight(), m_lastRender.get());
@@ -176,7 +176,11 @@ namespace Raytracer {
     float SceneInteractive::getFramerate(void)
     {
         m_currentTime = m_clock.getElapsedTime();
-        auto fps = 1.0f / (m_currentTime.asSeconds() - m_previousTime.asSeconds());
+        float frameTime = m_currentTime.asSeconds() - m_previousTime.asSeconds();
+        m_frameTimes.push_back(frameTime);
+        if (m_frameTimes.size() > 200)
+            m_frameTimes.erase(m_frameTimes.begin());
+        auto fps = 1.0f / frameTime;
         m_previousTime = m_currentTime;
         return fps;
     }

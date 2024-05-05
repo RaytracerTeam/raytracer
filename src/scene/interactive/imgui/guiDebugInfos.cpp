@@ -18,6 +18,7 @@ namespace Raytracer
 
             // FPS
             ImGui::Text("FPS: %.1f", getFramerate());
+            ImGui::PlotLines("Frame Times", m_frameTimes.data(), m_frameTimes.size());
             // Camera Pos
             float *pos = currentCamera->getPos();
             if (ImGui::InputFloat3("Pos", pos, "%.2f")) {
@@ -38,6 +39,9 @@ namespace Raytracer
             // New Render
             if (ImGui::Button("Render", ImVec2(60, 20)))
                 m_needRendering = true;
+            ImGui::SameLine();
+            ImGui::Checkbox("Always Render", &m_alwaysRender);
+
         }
         ImGui::EndChild();
         #endif
