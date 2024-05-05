@@ -308,6 +308,8 @@ namespace Raytracer
             auto pos = sf::Mouse::getPosition();
             auto delta = pos - MOUSE_CENTER;
             delta -= m_mouseCenterCorrection;
+            if (delta.x == 0 && delta.y == 0)
+                return;
             sf::Mouse::setPosition(MOUSE_CENTER);
             auto angle = currentCamera.getAngle();
             angle.setYaw(angle.getYaw() - delta.x * sensivity);
