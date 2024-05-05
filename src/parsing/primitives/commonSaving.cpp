@@ -13,12 +13,12 @@ namespace Raytracer
 {
     namespace Parsing
     {
-        void savePos(libconfig::Setting &setting, APrimitive *primitive)
+        void savePos(libconfig::Setting &setting, ISceneObj *obj)
         {
             libconfig::Setting &pos = setting.add(CFG_POSITION, libconfig::Setting::TypeGroup);
-            pos.add("x", libconfig::Setting::TypeFloat) = primitive->getOrigin().getX();
-            pos.add("y", libconfig::Setting::TypeFloat) = primitive->getOrigin().getY();
-            pos.add("z", libconfig::Setting::TypeFloat) = primitive->getOrigin().getZ();
+            pos.add("x", libconfig::Setting::TypeFloat) = obj->getOrigin().getX();
+            pos.add("y", libconfig::Setting::TypeFloat) = obj->getOrigin().getY();
+            pos.add("z", libconfig::Setting::TypeFloat) = obj->getOrigin().getZ();
         }
         void saveColor(libconfig::Setting &setting, APrimitive *primitive)
         {

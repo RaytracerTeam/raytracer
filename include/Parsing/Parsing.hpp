@@ -61,7 +61,7 @@ namespace Raytracer {
         void parseCameras(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
         void parseLights(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
 
-        void savePos(libconfig::Setting &setting, APrimitive *primitive);
+        void savePos(libconfig::Setting &setting, ISceneObj *obj);
         void saveColor(libconfig::Setting &setting, APrimitive *primitive);
         void saveMaterialSolid(libconfig::Setting &setting, APrimitive *primitive);
 
