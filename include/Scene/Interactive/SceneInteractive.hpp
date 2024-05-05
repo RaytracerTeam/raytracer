@@ -35,7 +35,6 @@ namespace Raytracer {
     #define DEFAULT_HEIGHT_MAX 40.0f
     #define DEFAULT_INTENSITY_MIN 0.0f
     #define DEFAULT_INTENSITY_MAX 100.0f
-    
 
     enum class ObjectSelection {
         PRIMITIVE,
@@ -94,6 +93,7 @@ namespace Raytracer {
         void editCone(Cone *cone);
         void editTorus(Torus *torus);
         void editTanglecube(Tanglecube *tanglecube);
+        void editTriangle(Triangle *triangle);
 
         /////////////////////////////////
 

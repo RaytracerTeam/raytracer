@@ -27,6 +27,9 @@ namespace Raytracer {
         #define CFG_HEIGHT "height"
         #define CFG_WIDTH "width"
         #define CFG_DISTANCE "distance"
+        #define CFG_V0 "v0"
+        #define CFG_V1 "v1"
+        #define CFG_V2 "v2"
 
         bool parseArgv(int argc, char **argv, std::vector<std::string_view> &inputFiles); // return true if interactive mode
         void parse(std::unique_ptr<Scene> &scene, const std::vector<std::string_view> &inputFiles);
@@ -37,6 +40,9 @@ namespace Raytracer {
         float parseHeight(const libconfig::Setting &setting);
         float parseRadius(const libconfig::Setting &setting);
         float parseDistance(const libconfig::Setting &setting);
+        Math::Vector3D parseVec0(const libconfig::Setting &setting);
+        Math::Vector3D parseVec1(const libconfig::Setting &setting);
+        Math::Vector3D parseVec2(const libconfig::Setting &setting);
 
         void parsePrimitives(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
         void parseSpheres(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene);
@@ -45,7 +51,7 @@ namespace Raytracer {
         void parseCones(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene);
         void parseToruses(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene);
         void parseTanglecubes(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene);
-        // void parseTriangles(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene);
+        void parseTriangles(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene);
 
 
         void parseCameras(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
@@ -63,7 +69,7 @@ namespace Raytracer {
         void saveCone(libconfig::Setting &list, Cone *cone);
         void saveTorus(libconfig::Setting &list, Torus *torus);
         void saveTanglecube(libconfig::Setting &list, Tanglecube *tanglecube);
-        // void saveTriangle(libconfig::Setting &list, Triangle *triangle);
+        void saveTriangle(libconfig::Setting &list, Triangle *triangle);
         void savePlane(libconfig::Setting &planeList, Plane *plane);
 
         Math::Vector3D getSettingPosition(const libconfig::Setting &setting);
