@@ -94,12 +94,14 @@ namespace Raytracer {
             if (!m_isWriting && m_interacCam.handleInput(event, m_window, m_actions)) {
                 m_newEvent = true;
             }
-            if (event.type == sf::Event::MouseButtonReleased) {
-                m_useSimpleMouse = false;
-            }
-            if (event.type == sf::Event::MouseButtonPressed) {
-                m_useSimpleMouse = true;
-                m_lastMousePos = sf::Mouse::getPosition();
+            if (event.mouseButton.button == sf::Mouse::Right) {
+                if (event.type == sf::Event::MouseButtonReleased) {
+                    m_useSimpleMouse = false;
+                }
+                if (event.type == sf::Event::MouseButtonPressed) {
+                    m_useSimpleMouse = true;
+                    m_lastMousePos = sf::Mouse::getPosition();
+                }
             }
         }
         handleMouse();

@@ -25,6 +25,6 @@ namespace Raytracer
         libconfig::Setting &height = setting.add(CFG_DISTANCE, libconfig::Setting::TypeFloat);
         height = torus->getDistance();
 
-        saveColor(setting, torus);
+        saveMaterialSolid(setting, torus);
     }
 } // namespace Raytracer

@@ -31,6 +31,18 @@ namespace Raytracer
                 color.add("b", libconfig::Setting::TypeInt) = (int)(material->getColor().getB() * 255);
             }
         }
+        void saveMaterialSolid(libconfig::Setting &setting, APrimitive *primitive)
+        {
+            libconfig::Setting &material = setting.add("material", libconfig::Setting::TypeGroup);
+            material.add(CFG_TYPE, libconfig::Setting::TypeString) = CFG_MATERIAL_SOLID_COLOR;
+            saveColor(material, primitive);
+            MaterialSolid *materialSolid = dynamic_cast<MaterialSolid *>(primitive->getMaterial());
+            if (materialSolid) {
+                material.add(CFG_ALBEDO, libconfig::Setting::TypeFloat) = materialSolid->getAlbedo();
+                material.add(CFG_FUZZ, libconfig::Setting::TypeFloat) = materialSolid->getFuzzFactor();
+                material.add(CFG_EMISSION, libconfig::Setting::TypeFloat) = materialSolid->getEmission();
+            }
+        }
     } // namespace Parsing
 } // namespace Raytracer
 

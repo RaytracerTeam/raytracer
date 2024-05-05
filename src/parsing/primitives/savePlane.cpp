@@ -13,16 +13,16 @@
 
 namespace Raytracer
 {
-    void Parsing::savePlane(libconfig::Setting &planeList, Plane *plane)
+    void Parsing::savePlane(libconfig::Setting &list, Plane *plane)
     {
-        libconfig::Setting &planeSetting = planeList.add(libconfig::Setting::TypeGroup);
+        libconfig::Setting &setting = list.add(libconfig::Setting::TypeGroup);
 
-        libconfig::Setting &planeNormal = planeSetting.add("axis", libconfig::Setting::TypeString);
+        libconfig::Setting &planeNormal = setting.add("axis", libconfig::Setting::TypeString);
         planeNormal = plane->getAxisString();
 
-        libconfig::Setting &planePos = planeSetting.add(CFG_POSITION, libconfig::Setting::TypeFloat);
+        libconfig::Setting &planePos = setting.add(CFG_POSITION, libconfig::Setting::TypeFloat);
         planePos = plane->getPos();
 
-        saveColor(planeSetting, plane);
+        saveMaterialSolid(setting, plane);
     }
 } // namespace Raytracer

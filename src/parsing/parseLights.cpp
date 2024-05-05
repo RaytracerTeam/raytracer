@@ -28,9 +28,7 @@ namespace Raytracer {
                 double radius = DEFAULT_POINTLIGHT_RADIUS;
                 if (lightSetting.exists(CFG_RADIUS))
                     radius = lightSetting.lookup(CFG_RADIUS);
-                double intensity = 1.;
-                if (lightSetting.exists("intensity"))
-                    intensity = lightSetting.lookup("intensity");
+                parseIntensity(lightSetting);
                 scene->addLight(std::make_unique<PointLight>(lightPos, radius, lightColor, intensity));
             }
         }

@@ -14,15 +14,15 @@ void Raytracer::Parsing::parsePlanes(const libconfig::Setting &primitiveSetting,
 {
     if (!primitiveSetting.exists("planes"))
         return;
-    for (const auto &planeConfig : primitiveSetting.lookup("planes")) {
+    for (const auto &config : primitiveSetting.lookup("planes")) {
         float planePos = 0;
-        if (planeConfig.exists(CFG_POSITION)) {
-            planePos = planeConfig.lookup(CFG_POSITION);
+        if (config.exists(CFG_POSITION)) {
+            planePos = config.lookup(CFG_POSITION);
         }
 
         Plane::Axis axis = Plane::Y;
-        if (planeConfig.exists("axis")) {
-            std::string axisStr = planeConfig.lookup("axis");
+        if (config.exists("axis")) {
+            std::string axisStr = config.lookup("axis");
             if (axisStr == "X" || axisStr == "x")
                 axis = Plane::X;
             else if (axisStr == "Y" || axisStr == "y")
@@ -31,7 +31,7 @@ void Raytracer::Parsing::parsePlanes(const libconfig::Setting &primitiveSetting,
                 axis = Plane::Z;
         }
         auto plane = std::make_unique<Plane>(planePos,
-            std::make_unique<MaterialSolid>(parseColor(planeConfig)),
+            parseMaterialSolid(config),
             axis);
         scene->addPrimitive(std::move(plane));
     }

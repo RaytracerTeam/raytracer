@@ -16,7 +16,7 @@ void Raytracer::Parsing::parseTanglecubes(const libconfig::Setting &primitiveSet
         return;
     for (const auto &config : primitiveSetting.lookup("tanglecubes")) {
         auto tanglecube = std::make_unique<Tanglecube>(parsePosition(config),
-            std::make_unique<MaterialSolid>(parseColor(config)));
+            parseMaterialSolid(config));
         scene->addPrimitive(std::move(tanglecube));
     }
 }

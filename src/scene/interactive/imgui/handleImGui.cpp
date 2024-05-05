@@ -18,14 +18,6 @@ namespace Raytracer
         #ifdef BONUS
         ImGui::SFML::Update(m_window, m_deltaClock.restart());
 
-        // ImGui::ShowDemoWindow();
-        // return;
-
-        // Plotting Lines
-        // Listbox to select primitive type
-        // put primitive names next to the enum and get the name in APrimitive
-        // Combo to select skybox
-
         ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f));
         ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
         ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
