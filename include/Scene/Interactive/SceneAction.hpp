@@ -20,7 +20,6 @@ namespace Raytracer
         ROTATE_DOWN,
         ROTATE_LEFT,
         ROTATE_RIGHT,
-        USE_MOUSE,
         SPRINT,
     };
 
@@ -32,6 +31,7 @@ namespace Raytracer
         SCREENSHOT,
         REMOVE_OBJECT,
         TOGGLE_FULLSCREEN,
+        TOGGLE_MOUSE,
         RESET,
     };
 } // namespace Raytracer

@@ -35,7 +35,8 @@ namespace Raytracer {
     #define DEFAULT_HEIGHT_MAX 40.0f
     #define DEFAULT_INTENSITY_MIN 0.0f
     #define DEFAULT_INTENSITY_MAX 100.0f
-    
+
+    #define MOUSE_CENTER sf::Vector2i(700, 500)
 
     enum class ObjectSelection {
         PRIMITIVE,
@@ -70,6 +71,7 @@ namespace Raytracer {
         void applyActions(void);
         void applyKeyReleasedActions(sf::Keyboard::Key key);
         void applyKeyReleasedAction(SceneReleaseActions action);
+        void handleMouse(void);
 
         void updateDimension(unsigned int width, unsigned int height);
 
@@ -136,5 +138,8 @@ namespace Raytracer {
         float m_defaultMovementSpeed = DEFAULT_MOVEMENT_SPEED;
         float m_rotationSpeed = DEFAULT_ROTATION_SPEED;
         bool m_useMouse = false;
+        sf::Vector2i m_mouseCenterCorrection = {0, 0};
+        sf::Vector2i m_mousePosBeforeUse = {0, 0};
+        int m_mouseCentered = 0;
     };
 } // namespace Raytracer
