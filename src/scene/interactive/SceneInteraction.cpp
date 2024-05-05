@@ -92,8 +92,10 @@ namespace Raytracer {
             if (!m_isWriting && m_interacCam.handleInput(event, m_window, m_actions)) {
                 m_newEvent = true;
             }
-            if (!m_isWriting && m_interacCam.isActiveMouse())
+            if (!m_isWriting && m_interacCam.isActiveMouse()) {
                 m_interacCam.handleMouse(event, m_window);
+                m_needRendering = true;
+            }
         }
         applyActions();
     }
