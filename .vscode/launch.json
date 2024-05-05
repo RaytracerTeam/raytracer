@@ -1,13 +1,13 @@
 {
     "configurations": [
         {
-            "name": "(lldb) Lancer",
+            "name": "(lldb) Lancer (macos)",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/raytracer",
             "args": ["-i"],
             "stopAtEntry": false,
-            "cwd": "${fileDirname}",
+            "cwd": "${workspaceFolder}",
             "environment": [],
             "externalConsole": false,
             "MIMode": "lldb"

@@ -48,7 +48,7 @@ void Raytracer::Parsing::parseSpheres(const libconfig::Setting &primitiveSetting
         return;
     for (const auto &config : primitiveSetting.lookup("spheres")) {
         auto sphere = std::make_unique<Sphere>(parsePosition(config),
-            std::make_unique<MaterialSolid>(parseColor(config)),
+            parseMaterialSolid(config),
             parseRadius(config));
         scene->addPrimitive(std::move(sphere));
     }
@@ -82,16 +82,16 @@ parseSpheres(primitiveSetting, scene);
 
 namespace Raytracer
 {
-    void Parsing::saveSphere(libconfig::Setting &sphereList, Sphere *sphere)
+    void Parsing::saveSphere(libconfig::Setting &list, Sphere *sphere)
     {
-        libconfig::Setting &sphereSetting = sphereList.add(libconfig::Setting::TypeGroup);
+        libconfig::Setting &setting = list.add(libconfig::Setting::TypeGroup);
 
-        savePos(sphereSetting, sphere);
+        savePos(setting, sphere);
 
-        libconfig::Setting &sphereRadius = sphereSetting.add(CFG_RADIUS, libconfig::Setting::TypeFloat);
+        libconfig::Setting &sphereRadius = setting.add(CFG_RADIUS, libconfig::Setting::TypeFloat);
         sphereRadius = sphere->getRadius();
 
-        saveColor(sphereSetting, sphere);
+        saveMaterialSolid(setting, torus);
     }
 } // namespace Raytracer
 ```
@@ -160,5 +160,25 @@ namespace Raytracer
 case PrimitiveType::SPHERE:
     editSphere(static_cast<Sphere *>(primitive.get()));
     break;
+// ...
+```
+
+## Add the primitive with the GUI
+
+```cpp
+// ADD IN src/scene/interactive/imgui/guiAddPrimitives.cpp
+
+// ...
+if (ImGui::Selectable("Sphere")) {
+    auto sphere = std::make_unique<Sphere>(
+        Math::Vector3D(0, 0, 0),
+        std::make_unique<MaterialSolid>(
+            Color((unsigned int)255, 255, 255)),
+        1.0);
+    sphere->setID(m_scene->getPrimitives().size() + 1);
+    m_scene->addPrimitive(std::move(sphere));
+    m_needRendering = true;
+    m_newEvent = true;
+}
 // ...
 ```

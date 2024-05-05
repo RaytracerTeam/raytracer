@@ -23,45 +23,44 @@ namespace Raytracer
         ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
 
         // Start of the window
-        ImGui::Begin("What a nice tool, Thank you Mister Pommier", nullptr,
-            ImGuiWindowFlags_NoResize | ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDecoration);
+        if (ImGui::Begin("What a nice tool, Thank you Mister Pommier", nullptr,
+        ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDecoration)) {
 
-        //* -- Menu Bar --
-        guiMenuBar();
+            //* -- Menu Bar --
+            guiMenuBar();
 
-        //* -- Top Bar --
-        Camera &currentCamera = m_scene->getCurrentCamera();
-        guiTopBar(currentCamera);
+            //* -- Top Bar --
+            guiTopBar();
 
-        // Left Pane
-        ImGui::BeginChild("left pane", ImVec2(m_leftPaneWidth, m_imageHeight),
-            ImGuiChildFlags_Border);
+            // Left Pane
+            if (ImGui::BeginChild("left pane", ImVec2(m_leftPaneWidth, m_imageHeight),
+            ImGuiChildFlags_Border)) {
 
-        //* -- Object Selection --
-        guiObjectSelection();
+                //* -- Object Selection --
+                guiObjectSelection();
 
-        //* -- Debug Infos --
-        guiDebugInfos();
-        ImGui::EndChild();
-
-        ImGui::SameLine();
-
-        //* -- Image Render --
-        ImGui::Image(m_texture, sf::Vector2f(
-            m_imageWidth,
-            m_imageHeight),
-            sf::Color::White, sf::Color::Cyan);
-
-        //* -- Edit Primitives --
-        if (m_objectSelection == ObjectSelection::PRIMITIVE) {
-            if (m_selectedObject == 0) {
-                (void) m_selectedObject;
-                // addPrimitive();
-            } else {
-                guiEditPrimitives();
+                //* -- Debug Infos --
+                guiDebugInfos();
             }
-        } else if (m_objectSelection == ObjectSelection::LIGHT && m_selectedObject > 0) {
-            guiEditLights();
+            ImGui::EndChild();
+
+            ImGui::SameLine();
+
+            //* -- Image Render --
+            ImGui::Image(m_texture, sf::Vector2f(
+                m_imageWidth,
+                m_imageHeight),
+                sf::Color::White, sf::Color::Cyan);
+
+            //* -- Edit Primitives --
+            if (m_selectedObject >= 0) {
+                switch (m_objectSelection) {
+                case ObjectSelection::PRIMITIVE: guiEditPrimitives(); break;
+                case ObjectSelection::LIGHT: guiEditLights(); break;
+                case ObjectSelection::CAMERA: guiEditCameras(); break;
+                default: break;
+                }
+            }
         }
 
         ImGui::End();

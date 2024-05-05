@@ -19,7 +19,6 @@ namespace Raytracer {
         ~Cylinder() = default;
 
         PrimitiveType getType(void) const override { return PrimitiveType::CYLINDER; };
-        const std::string getTypeString(void) const override { return "Cylinder"; };
 
         float getRadius() const { return m_radius; }
         float getHeight() const { return m_height; }

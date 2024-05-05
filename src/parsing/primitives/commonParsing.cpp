@@ -127,7 +127,32 @@ namespace Raytracer {
         }
         float parseDistance(const libconfig::Setting &setting)
         {
-            return parseFloat(setting, "distance", 0.5);
+            return parseFloat(setting, CFG_DISTANCE, 0.5);
+        }
+        float parseIntensity(const libconfig::Setting &setting)
+        {
+            return parseFloat(setting, CFG_INTENSITY, 1);
+        }
+        std::unique_ptr<MaterialSolid> parseMaterialSolid(const libconfig::Setting &setting)
+        {
+            if (!setting.exists(CFG_MATERIAL))
+                return std::make_unique<MaterialSolid>(Color(200U, 0U, 200U));
+            libconfig::Setting &materialSetting = setting.lookup("material");
+            auto materialSolid = std::make_unique<MaterialSolid>(Color(200U, 0U, 200U));
+
+            if (materialSetting.exists(CFG_COLOR))
+                materialSolid->setColor(getSettingColor(materialSetting));
+
+            if (materialSetting.exists(CFG_ALBEDO))
+                materialSolid->setAlbedo(parseFloat(materialSetting, CFG_ALBEDO, 0.0));
+
+            if (materialSetting.exists(CFG_FUZZ))
+                materialSolid->setFuzzFactor(parseFloat(materialSetting, CFG_FUZZ, 0.3));
+
+            if (materialSetting.exists(CFG_EMISSION))
+                materialSolid->setEmission(parseFloat(materialSetting, CFG_EMISSION, 0.0));
+
+            return materialSolid;
         }
     } // namespace Parsing
 } // namespace Raytracer

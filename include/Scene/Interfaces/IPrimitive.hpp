@@ -28,6 +28,18 @@ namespace Raytracer {
         MOBIUSSTRIP,
         NONE
     };
+    char const *const PrimitiveTypeStrings[] = {
+        "Sphere",
+        "Plane",
+        "Triangle",
+        "Cube",
+        "Cylinder",
+        "Cone",
+        "Torus",
+        "Tanglecube",
+        "MobiusStrip",
+        "None"
+    };
     class IPrimitive : public IShape {
     public:
         virtual void setMaterial(std::unique_ptr<IMaterial> material) = 0;

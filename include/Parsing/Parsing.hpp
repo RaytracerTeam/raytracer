@@ -27,9 +27,18 @@ namespace Raytracer {
         #define CFG_HEIGHT "height"
         #define CFG_WIDTH "width"
         #define CFG_DISTANCE "distance"
+        #define CFG_INTENSITY "intensity"
+        #define CFG_ALBEDO "albedo"
+        #define CFG_FUZZ "fuzz"
+        #define CFG_EMISSION "emission"
+
         #define CFG_V0 "v0"
         #define CFG_V1 "v1"
         #define CFG_V2 "v2"
+
+        #define CFG_MATERIAL "material"
+        #define CFG_TYPE "type"
+        #define CFG_MATERIAL_SOLID_COLOR "solid_color"
 
         bool parseArgv(int argc, char **argv, std::vector<std::string_view> &inputFiles); // return true if interactive mode
         void parse(std::unique_ptr<Scene> &scene, const std::vector<std::string_view> &inputFiles);
@@ -43,6 +52,8 @@ namespace Raytracer {
         Math::Vector3D parseVec0(const libconfig::Setting &setting);
         Math::Vector3D parseVec1(const libconfig::Setting &setting);
         Math::Vector3D parseVec2(const libconfig::Setting &setting);
+        float parseIntensity(const libconfig::Setting &setting);
+        std::unique_ptr<MaterialSolid> parseMaterialSolid(const libconfig::Setting &setting);
 
         void parsePrimitives(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
         void parseSpheres(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene);
@@ -57,20 +68,21 @@ namespace Raytracer {
         void parseCameras(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
         void parseLights(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
 
-        void savePos(libconfig::Setting &setting, APrimitive *primitive);
+        void savePos(libconfig::Setting &setting, ISceneObj *obj);
         void saveColor(libconfig::Setting &setting, APrimitive *primitive);
+        void saveMaterialSolid(libconfig::Setting &setting, APrimitive *primitive);
 
         void saveScene(const Scene &scene, const std::string &outputFile);
         void saveCameras(const Scene &scene, libconfig::Setting &root);
         void saveLights(const Scene &scene, libconfig::Setting &root);
         void savePrimitives(const Scene &scene, libconfig::Setting &root);
-        void saveSphere(libconfig::Setting &sphereList, Sphere *sphere);
+        void saveSphere(libconfig::Setting &list, Sphere *sphere);
         void saveCylinder(libconfig::Setting &list, Cylinder *cylinder);
         void saveCone(libconfig::Setting &list, Cone *cone);
         void saveTorus(libconfig::Setting &list, Torus *torus);
         void saveTanglecube(libconfig::Setting &list, Tanglecube *tanglecube);
         void saveTriangle(libconfig::Setting &list, Triangle *triangle);
-        void savePlane(libconfig::Setting &planeList, Plane *plane);
+        void savePlane(libconfig::Setting &list, Plane *plane);
 
         Math::Vector3D getSettingPosition(const libconfig::Setting &setting);
         Math::Angle3D getSettingRotation(const libconfig::Setting &setting);

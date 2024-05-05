@@ -19,16 +19,16 @@ namespace Raytracer
             PointLight *pointLight = dynamic_cast<PointLight *>(light.get());
             if (pointLight) {
                 libconfig::Setting &lightSetting = pointLights.add(libconfig::Setting::TypeGroup);
-                
-                libconfig::Setting &lightPos = lightSetting.add(CFG_POSITION, libconfig::Setting::TypeGroup);
-                lightPos.add("x", libconfig::Setting::TypeFloat) = pointLight->getOrigin().getX();
-                lightPos.add("y", libconfig::Setting::TypeFloat) = pointLight->getOrigin().getY();
-                lightPos.add("z", libconfig::Setting::TypeFloat) = pointLight->getOrigin().getZ();
+
+                savePos(lightSetting, pointLight);
 
                 libconfig::Setting &lightColor = lightSetting.add(CFG_COLOR, libconfig::Setting::TypeGroup);
                 lightColor.add("r", libconfig::Setting::TypeInt) = (int)(pointLight->getColor().getR() * 255);
                 lightColor.add("g", libconfig::Setting::TypeInt) = (int)(pointLight->getColor().getG() * 255);
                 lightColor.add("b", libconfig::Setting::TypeInt) = (int)(pointLight->getColor().getB() * 255);
+
+                libconfig::Setting &lightIntensity = lightSetting.add(CFG_INTENSITY, libconfig::Setting::TypeFloat);
+                lightIntensity = pointLight->getIntensity();
             }
         }
     }

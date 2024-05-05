@@ -17,6 +17,8 @@
     #include "imgui-SFML.h"
 #endif
 
+#include <filesystem>
+
 #include <SFML/Graphics.hpp>
 
 namespace Raytracer {
@@ -24,7 +26,7 @@ namespace Raytracer {
     #define DEFAULT_ROTATION_SPEED 3
     #define SCREEN_RATIO 16.0f / 9.0f
     #define DEFAULT_CAMERA_RESOLUTION 240
-    #define FILE_BUF_SIZE 40
+    #define FILE_BUF_SIZE 100
 
     // ImGui default slider values
     #define DEFAULT_POS_MIN -60.0f
@@ -35,6 +37,8 @@ namespace Raytracer {
     #define DEFAULT_HEIGHT_MAX 40.0f
     #define DEFAULT_INTENSITY_MIN 0.0f
     #define DEFAULT_INTENSITY_MAX 100.0f
+
+    #define MOUSE_CENTER sf::Vector2i(700, 500)
 
     enum class ObjectSelection {
         PRIMITIVE,
@@ -62,6 +66,7 @@ namespace Raytracer {
         }
 
     private:
+
         // Keys actions
         void setupActions(void);
         void resetActions(void);
@@ -69,24 +74,29 @@ namespace Raytracer {
         void applyActions(void);
         void applyKeyReleasedActions(sf::Keyboard::Key key);
         void applyKeyReleasedAction(SceneReleaseActions action);
+        void handleMouse(void);
 
         void updateDimension(unsigned int width, unsigned int height);
+        void setupCamera(void);
 
         std::unique_ptr<sf::Uint8[]> RColorToPixelBuffer(const std::vector<Raytracer::Color> &vectorRes);
         void setRColorToImg(const std::vector<Raytracer::Color> &vectorRes);
         void handleEvents(void);
         float getFramerate(void);
 
-        // ImGui
+        // -- ImGui --
+        void setupImageSize(void);
         void handleImGui(void);
         void guiMenuBar(void);
-        void guiTopBar(Camera &currentCamera);
+        void guiTopBar(void);
         void guiDebugInfos(void);
         void guiObjectSelection(void);
         void removeSelectedObject(void);
         void customEditPrimitives(std::unique_ptr<IPrimitive> &primitive);
         void guiEditLights(void);
         void guiEditPrimitives(void);
+        void guiEditCameras(void);
+        void guiAddPrimitive(void);
         void editSphere(Sphere *sphere);
         void editPlane(Plane *plane);
         void editCylinder(Cylinder *cylinder);
@@ -94,6 +104,8 @@ namespace Raytracer {
         void editTorus(Torus *torus);
         void editTanglecube(Tanglecube *tanglecube);
         void editTriangle(Triangle *triangle);
+        void addSelectableSkybox(const std::filesystem::directory_entry &entry);
+        void addSelectableScene(const std::filesystem::directory_entry &entry);
 
         /////////////////////////////////
 
@@ -135,6 +147,11 @@ namespace Raytracer {
         float m_movementSpeed = DEFAULT_MOVEMENT_SPEED;
         float m_defaultMovementSpeed = DEFAULT_MOVEMENT_SPEED;
         float m_rotationSpeed = DEFAULT_ROTATION_SPEED;
+        bool m_useSimpleMouse = false;
+        sf::Vector2i m_lastMousePos;
         bool m_useMouse = false;
+        sf::Vector2i m_mouseCenterCorrection = {0, 0};
+        sf::Vector2i m_mousePosBeforeUse = {0, 0};
+        int m_mouseCentered = 0;
     };
 } // namespace Raytracer

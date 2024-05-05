@@ -240,12 +240,15 @@ namespace Raytracer {
     {
         m_lightSystem.removeLight(index);
     }
-    void Scene::removeCamera(size_t index)
+    bool Scene::removeCamera(size_t index)
     {
         if (index >= m_cameras.size())
-            return;
+            return false;
         m_cameras.erase(m_cameras.begin() + index);
-        if (m_cameras.size() == 0)
+        if (m_cameras.size() == 0) {
             m_cameras.push_back(std::make_unique<Camera>());
+            return true;
+        }
+        return false;
     }
 } // namespace Raytracer

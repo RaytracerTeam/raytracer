@@ -18,6 +18,7 @@ CORESRC	=	$(wildcard ./src/*.cpp) \
 			$(wildcard ./src/scene/interactive/*.cpp) \
 			$(wildcard ./src/scene/interactive/imgui/*.cpp) \
 			$(wildcard ./src/scene/interactive/imgui/primitives/*.cpp) \
+			$(wildcard ./src/scene/interactive/imgui/objectSelection/*.cpp) \
 
 IMGUISRC	=	$(wildcard ./bonus/imgui/*.cpp)
 
@@ -63,13 +64,16 @@ UNAME_S := $(shell uname -s)
 
 ifeq ($(UNAME_S),Darwin)
 	LDBONUSFLAGS += -framework OpenGL
-	CFLAGS += $(MACSFMLINCLUDE) -DMACOSTONIO
+	CFLAGS += $(MACSFMLINCLUDE) -DMACOSTONIO $(IMGUIFLAGS)
 	LDFLAGS += $(MACSFMLLIB)
 else
 	LDBONUSFLAGS += -lGL
 endif
 
 all: $(NAME)
+
+bonusdbg: CFLAGS += $(DBGFLAGS)
+bonusdbg: bonus
 
 bonus: $(IMGUIOBJ)
 bonus: OBJ += $(IMGUIOBJ)

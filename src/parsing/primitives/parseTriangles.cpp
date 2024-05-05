@@ -16,7 +16,7 @@ void Raytracer::Parsing::parseTriangles(const libconfig::Setting &primitiveSetti
         return;
     for (const auto &config : primitiveSetting.lookup("triangles")) {
         auto triangle = std::make_unique<Triangle>(parseVec0(config),
-            std::make_unique<MaterialSolid>(parseColor(config)),
+            parseMaterialSolid(config),
             parseVec1(config), parseVec2(config));
         scene->addPrimitive(std::move(triangle));
     }
