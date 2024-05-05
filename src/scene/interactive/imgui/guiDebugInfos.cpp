@@ -30,10 +30,16 @@ namespace Raytracer
                 currentCamera->setAngle(Math::Angle3D(angle[0], angle[1], angle[2]));
                 m_needRendering = true;
             }
+            // Render lights
             bool renderLights = m_scene->getRenderLights();
             if (ImGui::Checkbox("Render Lights", &renderLights))
                 m_needRendering = true;
             m_scene->setRenderLights(renderLights);
+            // New Render
+            if (ImGui::Button("Render", ImVec2(60, 20)))
+                m_needRendering = true;
+            // Use Mouse
+            ImGui::Text("Use mouse (default M): %s", m_useMouse ? "true" : "false");
         }
         ImGui::EndChild();
         #endif

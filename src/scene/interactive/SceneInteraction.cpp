@@ -8,18 +8,6 @@
 #include "Scene/Interactive/CameraInteractive.hpp"
 #include "Scene/Interactive/SceneInteractive.hpp"
 
-// temp : add fps
-// #include <cmath>
-// #include <iostream>
-// float fps;
-// sf::Clock clock = sf::Clock();
-// sf::Time previousTime = clock.getElapsedTime();
-// sf::Time currentTime;
-// currentTime = clock.getElapsedTime();
-// fps = 1.0f / (currentTime.asSeconds() - previousTime.asSeconds()); // the asSeconds returns a float
-// std::cout << "fps =" << std::floor(fps) << std::endl; // flooring it will make the frame rate a rounded number
-// previousTime = currentTime;
-
 #include "Parsing/Parsing.hpp"
 
 namespace Raytracer {
@@ -29,7 +17,11 @@ namespace Raytracer {
         , m_window(sf::VideoMode(dimension.getWidth(), dimension.getHeight()), title)
         , m_previousTime(m_clock.getElapsedTime())
     {
+        m_scene = std::make_unique<Scene>();
         setScenes(inputFiles);
+        if (m_scene->getCameraCount() == 0)
+            m_scene->addCamera(std::make_unique<Camera>());
+        m_interacCam.setCamera(&m_scene->getCurrentCamera());
 
         updateDimension(DEFAULT_CAMERA_RESOLUTION * SCREEN_RATIO, DEFAULT_CAMERA_RESOLUTION);
         #ifdef BONUS
@@ -63,7 +55,9 @@ namespace Raytracer {
         m_renderResolution = m_dimension.getHeight();
         m_texture.create(m_dimension.getWidth(), m_dimension.getHeight());
         m_img.create(m_dimension.getWidth(), m_dimension.getHeight());
-        m_scene->getCurrentCamera().setDimension(m_dimension);
+        Camera *camera = m_interacCam.getCamera();
+        if (camera)
+            camera->setDimension(m_dimension);
     }
 
     void SceneInteractive::handleEvents(void)
@@ -111,7 +105,6 @@ namespace Raytracer {
         if (!m_addToCurrentScene)
             m_scene = std::make_unique<Scene>();
         Parsing::parse(m_scene, {filename});
-        m_interacCam.setCamera(&m_scene->getCurrentCamera());
         int i = 0;
         for (const auto &primitive : m_scene->getPrimitives()) {
             primitive->setID(++i);
@@ -124,8 +117,6 @@ namespace Raytracer {
 
     void SceneInteractive::loop(void)
     {
-        m_scene->getCurrentCamera().setDimension(m_dimension);
-
         while (m_window.isOpen()) {
             handleEvents();
             handleImGui();

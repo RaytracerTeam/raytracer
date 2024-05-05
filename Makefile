@@ -71,6 +71,9 @@ endif
 
 all: $(NAME)
 
+bonusdbg: CFLAGS += $(DBGFLAGS)
+bonusdbg: bonus
+
 bonus: $(IMGUIOBJ)
 bonus: OBJ += $(IMGUIOBJ)
 bonus: LDFLAGS += $(LDBONUSFLAGS)

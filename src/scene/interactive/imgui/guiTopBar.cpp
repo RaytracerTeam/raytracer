@@ -25,11 +25,6 @@ namespace Raytracer
 
         ImGui::SameLine(0, 50);
 
-        if (ImGui::Button("Render", ImVec2(60, 20)))
-            m_needRendering = true;
-
-        ImGui::SameLine(0, 50);
-
         // FOV
         ImGui::SetNextItemWidth(200);
         float fov = currentCamera.getFov();

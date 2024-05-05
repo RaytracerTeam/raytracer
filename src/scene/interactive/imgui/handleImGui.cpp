@@ -53,15 +53,15 @@ namespace Raytracer
                 sf::Color::White, sf::Color::Cyan);
 
             //* -- Edit Primitives --
-            if (m_objectSelection == ObjectSelection::PRIMITIVE) {
-                if (m_selectedObject == 0) {
-                    (void) m_selectedObject;
-                    // addPrimitive();
-                } else {
-                    guiEditPrimitives();
+            // if (m_objectSelection == ObjectSelection::PRIMITIVE && m_selectedObject == 0) 
+                // addPrimitive();
+            if (m_selectedObject > 0) {
+                switch (m_objectSelection) {
+                case ObjectSelection::PRIMITIVE: guiEditPrimitives(); break;
+                case ObjectSelection::LIGHT: guiEditLights(); break;
+                case ObjectSelection::CAMERA: guiEditCameras(); break;
+                default: break;
                 }
-            } else if (m_objectSelection == ObjectSelection::LIGHT && m_selectedObject > 0) {
-                guiEditLights();
             }
         }
 
