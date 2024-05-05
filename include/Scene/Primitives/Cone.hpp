@@ -24,6 +24,7 @@ namespace Raytracer {
         const std::string getTypeString(void) const override { return "Cone"; };
 
         std::optional<RayHit> hit(const Ray &ray) const override;
+        std::optional<RayHit> hitFace(const Math::Vector3D &dstOrigin, const Math::Vector3D &rayDir) const;
         RayHit getNormal(double distance, const Math::Vector3D &hitPt, const Math::Vector3D &origin) const;
 
         float getRadius() const { return m_radius; }

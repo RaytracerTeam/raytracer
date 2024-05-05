@@ -83,7 +83,7 @@ namespace Raytracer {
 
     std::optional<RayHit> Cylinder::hit(const Ray &ray) const
     {
-        std::optional<RayHit> inter;
+        std::optional<RayHit> intersect;
         Math::Vector3D dstOrigin = ray.getOrigin() - m_origin;
         Math::Vector3D rayDir = ray.getDirection();
 
@@ -109,8 +109,8 @@ namespace Raytracer {
                 return getNormal(t0, hitPt, m_origin);
         }
 
-        if ((inter = hitFace(dstOrigin, rayDir)).has_value())
-            return inter.value();
+        if ((intersect = hitFace(dstOrigin, rayDir)).has_value())
+            return intersect.value();
 
         double t1 = (-b + sqrtDelta) / (2 * a);
         if (t1 > 0.001) {
