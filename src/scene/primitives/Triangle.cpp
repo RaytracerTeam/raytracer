@@ -12,8 +12,8 @@
 namespace Raytracer {
     std::optional<RayHit> Triangle::hit(const Ray &ray) const
     {
-        Math::Vector3D edge1 = m_v1 - m_v0;
-        Math::Vector3D edge2 = m_v2 - m_v0;
+        Math::Vector3D edge1 = m_v1 - m_origin;
+        Math::Vector3D edge2 = m_v2 - m_origin;
         Math::Vector3D ray_cross_e2 = ray.getDirection().cross(edge2);
         float det = edge1.dot(ray_cross_e2);
 
@@ -21,7 +21,7 @@ namespace Raytracer {
             return std::nullopt;
 
         float inv_det = 1.0 / det;
-        Math::Vector3D s = ray.getOrigin() - m_v0;
+        Math::Vector3D s = ray.getOrigin() - m_origin;
         float u = inv_det * s.dot(ray_cross_e2);
 
         if (u < 0 || u > 1)
