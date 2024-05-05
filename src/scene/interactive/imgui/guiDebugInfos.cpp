@@ -38,8 +38,6 @@ namespace Raytracer
             // New Render
             if (ImGui::Button("Render", ImVec2(60, 20)))
                 m_needRendering = true;
-            // Use Mouse
-            ImGui::Text("Use mouse (default M): %s", m_useMouse ? "true" : "false");
         }
         ImGui::EndChild();
         #endif

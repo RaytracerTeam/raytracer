@@ -130,6 +130,8 @@ namespace Raytracer
             return SceneReleaseActions::TOGGLE_FULLSCREEN;
         else if (action == "TOGGLE_MOUSE")
             return SceneReleaseActions::TOGGLE_MOUSE;
+        else if (action == "TOGGLE_SIMPLE_MOUSE")
+            return SceneReleaseActions::TOGGLE_SIMPLE_MOUSE;
         else if (action == "RESET")
             return SceneReleaseActions::RESET;
         else
@@ -284,6 +286,10 @@ namespace Raytracer
                 sf::Mouse::setPosition(m_mousePosBeforeUse - m_mouseCenterCorrection);
             }
             break;
+        case SceneReleaseActions::TOGGLE_SIMPLE_MOUSE:
+            m_useSimpleMouse = !m_useSimpleMouse;
+            m_lastMousePos = sf::Mouse::getPosition();
+            break;
         default:
             break;
         }
@@ -295,7 +301,20 @@ namespace Raytracer
 
         float sensivity = m_rotationSpeed / 10;
 
-        if (m_useMouse) {
+        if (m_useSimpleMouse) {
+            auto pos = sf::Mouse::getPosition();
+            auto delta = pos - m_lastMousePos;
+            if (delta.x == 0 && delta.y == 0)
+                return;
+            auto angle = currentCamera.getAngle();
+            angle.setYaw(angle.getYaw() - delta.x * sensivity);
+            angle.setPitch(Math::Algorithm::clampD(angle.getPitch() - delta.y * sensivity, -90., 90.));
+            currentCamera.setAngle(angle);
+            m_needRendering = true;
+            m_lastMousePos = pos;
+        }
+
+        else if (m_useMouse) {
             if (m_mouseCentered > 1) {
                 m_mouseCentered--;
                 return;

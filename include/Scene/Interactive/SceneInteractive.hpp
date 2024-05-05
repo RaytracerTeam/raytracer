@@ -138,6 +138,8 @@ namespace Raytracer {
         float m_movementSpeed = DEFAULT_MOVEMENT_SPEED;
         float m_defaultMovementSpeed = DEFAULT_MOVEMENT_SPEED;
         float m_rotationSpeed = DEFAULT_ROTATION_SPEED;
+        bool m_useSimpleMouse = false;
+        sf::Vector2i m_lastMousePos;
         bool m_useMouse = false;
         sf::Vector2i m_mouseCenterCorrection = {0, 0};
         sf::Vector2i m_mousePosBeforeUse = {0, 0};

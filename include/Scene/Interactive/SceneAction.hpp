@@ -32,6 +32,7 @@ namespace Raytracer
         REMOVE_OBJECT,
         TOGGLE_FULLSCREEN,
         TOGGLE_MOUSE,
+        TOGGLE_SIMPLE_MOUSE,
         RESET,
     };
 } // namespace Raytracer
