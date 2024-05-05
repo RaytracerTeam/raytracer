@@ -64,6 +64,7 @@ namespace Raytracer {
         }
 
     private:
+
         // Keys actions
         void setupActions(void);
         void resetActions(void);
@@ -81,6 +82,7 @@ namespace Raytracer {
         float getFramerate(void);
 
         // ImGui
+        void setupImageSize(void);
         void handleImGui(void);
         void guiMenuBar(void);
         void guiTopBar(void);

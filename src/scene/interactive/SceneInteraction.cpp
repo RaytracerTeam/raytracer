@@ -35,8 +35,7 @@ namespace Raytracer {
             if (!ImGui::SFML::Init(m_window))
                 throw std::runtime_error("Failed to initialize ImGui");
             m_leftPaneWidth = 220;
-            m_imageWidth = ImGui::GetIO().DisplaySize.x - m_leftPaneWidth - 50;
-            m_imageHeight = m_imageWidth / (SCREEN_RATIO);
+            setupImageSize();
         #endif
         m_window.setFramerateLimit(60);
         setupActions();
@@ -45,6 +44,14 @@ namespace Raytracer {
     {
         #ifdef BONUS
             ImGui::SFML::Shutdown();
+        #endif
+    }
+
+    void SceneInteractive::setupImageSize(void)
+    {
+        #ifdef BONUS
+        m_imageWidth = ImGui::GetIO().DisplaySize.x - m_leftPaneWidth - 50;
+        m_imageHeight = m_imageWidth / (SCREEN_RATIO);
         #endif
     }
 
@@ -77,6 +84,8 @@ namespace Raytracer {
                 sf::FloatRect visibleArea(0.f, 0.f, event.size.width, event.size.height);
                 #ifndef BONUS
                     updateDimension(event.size.width, event.size.height);
+                #else
+                    setupImageSize();
                 #endif
                 m_window.setView(sf::View(visibleArea));
                 m_needRendering = true;

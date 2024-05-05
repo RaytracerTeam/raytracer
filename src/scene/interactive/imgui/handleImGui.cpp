@@ -24,7 +24,7 @@ namespace Raytracer
 
         // Start of the window
         if (ImGui::Begin("What a nice tool, Thank you Mister Pommier", nullptr,
-        ImGuiWindowFlags_NoResize | ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDecoration)) {
+        ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDecoration)) {
 
             //* -- Menu Bar --
             guiMenuBar();
@@ -53,7 +53,7 @@ namespace Raytracer
                 sf::Color::White, sf::Color::Cyan);
 
             //* -- Edit Primitives --
-            // if (m_objectSelection == ObjectSelection::PRIMITIVE && m_selectedObject == 0) 
+            // if (m_objectSelection == ObjectSelection::PRIMITIVE && m_selectedObject == 0)
                 // addPrimitive();
             if (m_selectedObject > 0) {
                 switch (m_objectSelection) {
