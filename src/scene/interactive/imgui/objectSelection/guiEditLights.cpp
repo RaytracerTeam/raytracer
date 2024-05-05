@@ -25,7 +25,7 @@ namespace Raytracer
         // Color
         ImGui::SetNextItemWidth(200);
         float *color = light->getColor();
-        if (ImGui::ColorEdit3("Color", color, ImGuiColorEditFlags_PickerHueWheel)) {
+        if (ImGui::ColorEdit3("Color", color)) {
             Color newColor = Color(color);
             light->setColor(newColor);
             m_needRendering = true;

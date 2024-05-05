@@ -34,6 +34,11 @@ namespace Raytracer
 
                         if (ImGui::Selectable(name.c_str(), m_selectedObject == i))
                             m_selectedObject = i;
+                        ImGui::SameLine();
+                        Color color = ((MaterialSolid *)prim->getMaterial())->getColor();
+                        ImGui::ColorButton(" ", ImVec4(color.getR(),
+                            color.getG(), color.getB(), 1.0f),
+                            ImGuiColorEditFlags_InputRGB);
                         i++;
                     }
                 }
@@ -62,6 +67,11 @@ namespace Raytracer
 
                         if (ImGui::Selectable(name.c_str(), m_selectedObject == i))
                             m_selectedObject = i;
+                        ImGui::SameLine();
+                        Color color = light->getColor();
+                        ImGui::ColorButton(" ", ImVec4(color.getR(),
+                            color.getG(), color.getB(), 1.0f),
+                            ImGuiColorEditFlags_InputRGB);
                         i++;
                     }
                 }
