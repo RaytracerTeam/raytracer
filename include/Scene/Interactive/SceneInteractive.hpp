@@ -17,6 +17,8 @@
     #include "imgui-SFML.h"
 #endif
 
+#include <filesystem>
+
 #include <SFML/Graphics.hpp>
 
 namespace Raytracer {
@@ -24,7 +26,7 @@ namespace Raytracer {
     #define DEFAULT_ROTATION_SPEED 3
     #define SCREEN_RATIO 16.0f / 9.0f
     #define DEFAULT_CAMERA_RESOLUTION 240
-    #define FILE_BUF_SIZE 40
+    #define FILE_BUF_SIZE 100
 
     // ImGui default slider values
     #define DEFAULT_POS_MIN -60.0f
@@ -75,6 +77,7 @@ namespace Raytracer {
         void handleMouse(void);
 
         void updateDimension(unsigned int width, unsigned int height);
+        void setupCamera(void);
 
         std::unique_ptr<sf::Uint8[]> RColorToPixelBuffer(const std::vector<Raytracer::Color> &vectorRes);
         void setRColorToImg(const std::vector<Raytracer::Color> &vectorRes);
@@ -100,6 +103,8 @@ namespace Raytracer {
         void editCone(Cone *cone);
         void editTorus(Torus *torus);
         void editTanglecube(Tanglecube *tanglecube);
+        void addSelectableSkybox(const std::filesystem::directory_entry &entry);
+        void addSelectableScene(const std::filesystem::directory_entry &entry);
 
         /////////////////////////////////
 

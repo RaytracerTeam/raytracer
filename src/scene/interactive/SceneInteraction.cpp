@@ -19,11 +19,10 @@ namespace Raytracer {
     {
         m_scene = std::make_unique<Scene>();
         setScenes(inputFiles);
-        if (m_scene->getCameraCount() == 0)
-            m_scene->addCamera(std::make_unique<Camera>());
-        m_interacCam.setCamera(&m_scene->getCurrentCamera());
+        setupCamera();
 
-        updateDimension(DEFAULT_CAMERA_RESOLUTION * SCREEN_RATIO, DEFAULT_CAMERA_RESOLUTION);
+        strcpy(m_cfgSceneBuf, inputFiles[0].data());
+
         #ifdef BONUS
             #ifdef MACOSTONIO
                 m_window.setSize(sf::Vector2u(1440, 850));
@@ -90,10 +89,17 @@ namespace Raytracer {
                 m_window.setView(sf::View(visibleArea));
                 m_needRendering = true;
             }
-            if (event.type == sf::Event::KeyReleased)
+            if (!m_isWriting && event.type == sf::Event::KeyReleased)
                 applyKeyReleasedActions(event.key.code);
             if (!m_isWriting && m_interacCam.handleInput(event, m_window, m_actions)) {
                 m_newEvent = true;
+            }
+            if (event.type == sf::Event::MouseButtonReleased) {
+                m_useSimpleMouse = false;
+            }
+            if (event.type == sf::Event::MouseButtonPressed) {
+                m_useSimpleMouse = true;
+                m_lastMousePos = sf::Mouse::getPosition();
             }
         }
         handleMouse();
@@ -122,6 +128,18 @@ namespace Raytracer {
         for (const auto &light : m_scene->getLights()) {
             light->setID(++i);
         }
+    }
+
+    void SceneInteractive::setupCamera(void)
+    {
+        m_scene->setCameraIndex(0);
+        if (m_scene->getCameraCount() == 0)
+            m_scene->addCamera(std::make_unique<Camera>());
+        Camera &currentCamera = m_scene->getCurrentCamera();
+        m_interacCam.setCamera(&currentCamera);
+        updateDimension(currentCamera.getDimension().getWidth(),
+            currentCamera.getDimension().getHeight());
+        // updateDimension(DEFAULT_CAMERA_RESOLUTION * SCREEN_RATIO, DEFAULT_CAMERA_RESOLUTION);
     }
 
     void SceneInteractive::loop(void)

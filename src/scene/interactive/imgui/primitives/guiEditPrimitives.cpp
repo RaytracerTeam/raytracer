@@ -54,7 +54,7 @@ namespace Raytracer
                 // Color
                 ImGui::SetNextItemWidth(200);
                 float *color = ((MaterialSolid *)primitive->getMaterial())->getColor();
-                if (ImGui::ColorEdit3("Color", color, ImGuiColorEditFlags_PickerHueWheel)) {
+                if (ImGui::ColorEdit3("Color", color)) {
                     Color newColor = Color(color);
                     ((MaterialSolid *)primitive->getMaterial())->setColor(newColor);
                     m_needRendering = true;
@@ -75,6 +75,30 @@ namespace Raytracer
             }
 
             if (ImGui::BeginTabItem("Material")) {
+                // Phong
+                bool hasPhong = ((MaterialSolid *)primitive->getMaterial())->hasPhong();
+                if (ImGui::Checkbox("Phong", &hasPhong)) {
+                    ((MaterialSolid *)primitive->getMaterial())->setHasPhong(hasPhong);
+                    m_needRendering = true;
+                }
+                // Albedo
+                float albedo = ((MaterialSolid *)primitive->getMaterial())->getAlbedo();
+                if (ImGui::SliderFloat("Albedo", &albedo, 0.0f, 2.0f)) {
+                    ((MaterialSolid *)primitive->getMaterial())->setAlbedo(albedo);
+                    m_needRendering = true;
+                }
+                // Emissions
+                float emission = ((MaterialSolid *)primitive->getMaterial())->getEmission();
+                if (ImGui::SliderFloat("Emission", &emission, 0.0f, 2.0f)) {
+                    ((MaterialSolid *)primitive->getMaterial())->setEmission(emission);
+                    m_needRendering = true;
+                }
+                // Fuzz
+                float fuzz = ((MaterialSolid *)primitive->getMaterial())->getFuzzFactor();
+                if (ImGui::SliderFloat("Fuzz", &fuzz, 0.0f, 2.0f)) {
+                    ((MaterialSolid *)primitive->getMaterial())->setFuzzFactor(fuzz);
+                    m_needRendering = true;
+                }
                 ImGui::EndTabItem();
             }
 

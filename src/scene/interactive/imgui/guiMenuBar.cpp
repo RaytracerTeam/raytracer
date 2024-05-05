@@ -11,6 +11,31 @@
 
 namespace Raytracer
 {
+    void SceneInteractive::addSelectableSkybox(const std::filesystem::directory_entry &entry)
+    {
+        std::string path = entry.path().string();
+        if (path.ends_with(".jpg") &&
+        ImGui::Selectable(path.c_str())) {
+            m_scene->setSkyboxPath(entry.path().string());
+            m_needRendering = true;
+            strcpy(m_skyboxPathBuf, path.c_str());
+            ImGui::CloseCurrentPopup();
+        }
+    }
+
+    void SceneInteractive::addSelectableScene(const std::filesystem::directory_entry &entry)
+    {
+        std::string path = entry.path().string();
+        if (path.ends_with(".cfg") &&
+        ImGui::Selectable(path.c_str())) {
+            setScene(entry.path().string());
+            setupCamera();
+            m_needRendering = true;
+            strcpy(m_cfgSceneBuf, path.c_str());
+            ImGui::CloseCurrentPopup();
+        }
+    }
+
     void SceneInteractive::guiMenuBar(void)
     {
         #ifdef BONUS
@@ -32,16 +57,26 @@ namespace Raytracer
             if (ImGui::BeginMenu("Load scene")) {
                 m_isWriting = true;
                 if (ImGui::InputTextWithHint(" File name (press ENTER to load)",
-                "scenes/custom_scene.cfg", m_fileBuf, FILE_BUF_SIZE,
+                "scenes/custom_scene.cfg", m_cfgSceneBuf, FILE_BUF_SIZE,
                 ImGuiInputTextFlags_EnterReturnsTrue)) {
-                    if (std::filesystem::exists(m_fileBuf)) {
-                        setScene(m_fileBuf);
+                    if (std::filesystem::exists(m_cfgSceneBuf)) {
+                        setScene(m_cfgSceneBuf);
+                        setupCamera();
                         m_needRendering = true;
                     }
                     ImGui::CloseCurrentPopup();
                 }
                 ImGui::SameLine(0, 20),
                 ImGui::Checkbox("Add to current scene", &m_addToCurrentScene);
+                if (ImGui::BeginCombo("Scene Path", m_cfgSceneBuf)) {
+                    for (const auto &entry : std::filesystem::directory_iterator("scenes/"))
+                        addSelectableScene(entry);
+                    if (std::filesystem::exists("scenes/local"))
+                        for (const auto &entry : std::filesystem::directory_iterator("scenes/local"))
+                            addSelectableScene(entry);
+
+                    ImGui::EndCombo();
+                }
                 ImGui::EndMenu();
             }
 
@@ -53,6 +88,15 @@ namespace Raytracer
                     if (std::filesystem::exists(m_skyboxPathBuf))
                         m_scene->setSkyboxPath(m_skyboxPathBuf);
                     ImGui::CloseCurrentPopup();
+                }
+                if (ImGui::BeginCombo("Skybox Path", m_skyboxPathBuf)) {
+                    for (const auto &entry : std::filesystem::directory_iterator("assets/skyboxes"))
+                        addSelectableSkybox(entry);
+                    if (std::filesystem::exists("assets/skyboxes/local"))
+                        for (const auto &entry : std::filesystem::directory_iterator("assets/skyboxes/local"))
+                            addSelectableSkybox(entry);
+
+                    ImGui::EndCombo();
                 }
                 ImGui::EndMenu();
             }
