@@ -42,6 +42,7 @@ namespace Raytracer
 
         //* -- Debug Infos --
         guiDebugInfos();
+        ImGui::EndChild();
 
         ImGui::SameLine();
 
