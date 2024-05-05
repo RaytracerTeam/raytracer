@@ -13,6 +13,7 @@ namespace Raytracer
 {
     void SceneInteractive::addSelectableSkybox(const std::filesystem::directory_entry &entry)
     {
+        #ifdef BONUS
         std::string path = entry.path().string();
         if (path.ends_with(".jpg") &&
         ImGui::Selectable(path.c_str())) {
@@ -21,10 +22,12 @@ namespace Raytracer
             strcpy(m_skyboxPathBuf, path.c_str());
             ImGui::CloseCurrentPopup();
         }
+        #endif
     }
 
     void SceneInteractive::addSelectableScene(const std::filesystem::directory_entry &entry)
     {
+        #ifdef BONUS
         std::string path = entry.path().string();
         if (path.ends_with(".cfg") &&
         ImGui::Selectable(path.c_str())) {
@@ -34,6 +37,7 @@ namespace Raytracer
             strcpy(m_cfgSceneBuf, path.c_str());
             ImGui::CloseCurrentPopup();
         }
+        #endif
     }
 
     void SceneInteractive::guiMenuBar(void)

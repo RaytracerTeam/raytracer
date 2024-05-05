@@ -130,7 +130,7 @@ namespace Raytracer {
         bool m_isWriting = false;
         bool m_showDebug = false;
         bool m_addToCurrentScene = false;
-        int m_selectedObject = 0;
+        int m_selectedObject = -1;
         ObjectSelection m_objectSelection = ObjectSelection::PRIMITIVE;
         size_t m_imageHeight;
         size_t m_imageWidth;

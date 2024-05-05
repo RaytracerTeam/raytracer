@@ -21,7 +21,8 @@ namespace Raytracer {
         setScenes(inputFiles);
         setupCamera();
 
-        strcpy(m_cfgSceneBuf, inputFiles[0].data());
+        if (inputFiles.size() > 0)
+            strcpy(m_cfgSceneBuf, inputFiles[0].data());
 
         #ifdef BONUS
             #ifdef MACOSTONIO
