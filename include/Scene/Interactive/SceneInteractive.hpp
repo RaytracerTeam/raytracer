@@ -93,6 +93,7 @@ namespace Raytracer {
         void guiEditLights(void);
         void guiEditPrimitives(void);
         void guiEditCameras(void);
+        void guiAddPrimitive(void);
         void editSphere(Sphere *sphere);
         void editPlane(Plane *plane);
         void editCylinder(Cylinder *cylinder);

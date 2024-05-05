@@ -48,7 +48,7 @@ namespace Raytracer {
         void updatePrimitives(void);
         void removePrimitive(size_t index);
         void removeLight(size_t index);
-        void removeCamera(size_t index);
+        bool removeCamera(size_t index);
 
     private:
         Color castRayColor(const Ray &ray, const IPrimitive *primHit, const RayHit &rhitPrim) const;

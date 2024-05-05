@@ -162,3 +162,23 @@ case PrimitiveType::SPHERE:
     break;
 // ...
 ```
+
+## Add the primitive with the GUI
+
+```cpp
+// ADD IN src/scene/interactive/imgui/guiAddPrimitives.cpp
+
+// ...
+if (ImGui::Selectable("Sphere")) {
+    auto sphere = std::make_unique<Sphere>(
+        Math::Vector3D(0, 0, 0),
+        std::make_unique<MaterialSolid>(
+            Color((unsigned int)255, 255, 255)),
+        1.0);
+    sphere->setID(m_scene->getPrimitives().size() + 1);
+    m_scene->addPrimitive(std::move(sphere));
+    m_needRendering = true;
+    m_newEvent = true;
+}
+// ...
+```

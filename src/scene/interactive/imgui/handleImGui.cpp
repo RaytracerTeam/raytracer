@@ -18,6 +18,14 @@ namespace Raytracer
         #ifdef BONUS
         ImGui::SFML::Update(m_window, m_deltaClock.restart());
 
+        // ImGui::ShowDemoWindow();
+        // return;
+
+        // Plotting Lines
+        // Listbox to select primitive type
+        // put primitive names next to the enum and get the name in APrimitive
+        // Combo to select skybox
+
         ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f));
         ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
         ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
@@ -53,9 +61,7 @@ namespace Raytracer
                 sf::Color::White, sf::Color::Cyan);
 
             //* -- Edit Primitives --
-            // if (m_objectSelection == ObjectSelection::PRIMITIVE && m_selectedObject == 0)
-                // addPrimitive();
-            if (m_selectedObject > 0) {
+            if (m_selectedObject >= 0) {
                 switch (m_objectSelection) {
                 case ObjectSelection::PRIMITIVE: guiEditPrimitives(); break;
                 case ObjectSelection::LIGHT: guiEditLights(); break;

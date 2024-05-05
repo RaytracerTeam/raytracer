@@ -43,6 +43,7 @@ namespace Raytracer
         m_releaseActions.push_back(sf::Keyboard::Backspace);       // REMOVE_OBJECT
         m_releaseActions.push_back(sf::Keyboard::F11);             // TOGGLE_FULLSCREEN
         m_releaseActions.push_back(sf::Keyboard::M);               // TOGGLE_MOUSE
+        m_releaseActions.push_back(sf::Keyboard::N);               // TOGGLE_SIMPLE_MOUSE
         m_releaseActions.push_back(sf::Keyboard::O);          // RESET
         parseConfigFile("config/keys.cfg");
     }
@@ -252,7 +253,7 @@ namespace Raytracer
             break;
         }
         case SceneReleaseActions::RESET: {
-            m_scene->getCurrentCamera().reset();
+            m_interacCam.getCamera()->reset();
             m_needRendering = true;
             break;
         }

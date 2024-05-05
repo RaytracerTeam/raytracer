@@ -14,7 +14,7 @@ namespace Raytracer
     void SceneInteractive::guiEditLights(void)
     {
         #ifdef BONUS
-        std::unique_ptr<PointLight> &light = m_scene->getLights()[m_selectedObject - 1];
+        std::unique_ptr<PointLight> &light = m_scene->getLights()[m_selectedObject];
 
         if (ImGui::Button("Delete Light")) {
             removeSelectedObject();

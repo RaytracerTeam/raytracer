@@ -39,7 +39,7 @@ namespace Raytracer
     void SceneInteractive::guiEditPrimitives(void)
     {
         #ifdef BONUS
-        std::unique_ptr<IPrimitive> &primitive = m_scene->getPrimitives()[m_selectedObject - 1];
+        std::unique_ptr<IPrimitive> &primitive = m_scene->getPrimitives()[m_selectedObject];
 
         if (ImGui::BeginTabBar("Edit Primitives")) {
             if (ImGui::BeginTabItem("Base")) {

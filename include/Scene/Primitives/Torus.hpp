@@ -21,7 +21,6 @@ namespace Raytracer {
         ~Torus() = default;
 
         PrimitiveType getType(void) const override { return PrimitiveType::TORUS; };
-        const std::string getTypeString(void) const override { return "Torus"; };
 
         float getRadius() const { return m_radius; }
         float getDistance() const { return m_distance; }
