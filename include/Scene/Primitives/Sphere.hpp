@@ -24,6 +24,7 @@ namespace Raytracer {
         double getRadius(void) const { return m_radius; }
         void setRadius(double radius) { m_radius = radius; }
 
+        BoundingBox getBoundingBox(void) const override;
         std::optional<RayHit> hit(const Ray &ray) const override;
 
     private:
