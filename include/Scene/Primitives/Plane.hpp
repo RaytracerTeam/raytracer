@@ -24,11 +24,12 @@ namespace Raytracer {
 
         PrimitiveType getType(void) const override { return PrimitiveType::PLANE; };
         const std::string getTypeString(void) const override { return "Plane"; };
-        
+
         float getPos(void) const { return m_pos; }
         void setPos(float pos) { m_pos = pos; setOrigin(Math::Vector3D(pos, pos, pos)); }
         // todo Either add switch to keep infinity or remove infinity
 
+        BoundingBox getBoundingBox(void) const;
         std::optional<RayHit> hit(const Ray &ray) const override;
 
         Axis getAxis(void) const { return m_axis; }
