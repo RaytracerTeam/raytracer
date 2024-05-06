@@ -15,7 +15,7 @@ namespace Raytracer
         for (auto &camera : scene.getCameras()) {
             libconfig::Setting &cameraSetting = camerasSetting.add(libconfig::Setting::TypeGroup);
 
-            libconfig::Setting &cameraResolution = cameraSetting.add("resolution", libconfig::Setting::TypeGroup);
+            libconfig::Setting &cameraResolution = cameraSetting.add(CFG_RESOLUTION, libconfig::Setting::TypeGroup);
             cameraResolution.add(CFG_WIDTH, libconfig::Setting::TypeInt) = (int)camera.get()->getDimension().getWidth();
             cameraResolution.add(CFG_HEIGHT, libconfig::Setting::TypeInt) = (int)camera.get()->getDimension().getHeight();
 
@@ -29,7 +29,7 @@ namespace Raytracer
             cameraRotation.add("pitch", libconfig::Setting::TypeFloat) = camera.get()->getAngle().getPitch();
             cameraRotation.add("roll", libconfig::Setting::TypeFloat) = camera.get()->getAngle().getRoll();
 
-            libconfig::Setting &cameraFov = cameraSetting.add("fov", libconfig::Setting::TypeFloat);
+            libconfig::Setting &cameraFov = cameraSetting.add(CFG_FOV, libconfig::Setting::TypeFloat);
             cameraFov = camera.get()->getFov();
         }
     }

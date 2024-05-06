@@ -51,6 +51,7 @@ namespace Raytracer {
             parseCameras(cfg, scene);
             parsePrimitives(cfg, scene);
             parseLights(cfg, scene);
+            parseObj(cfg, scene);
         }
         void parse(std::unique_ptr<Scene> &scene, const std::string_view &file)
         {

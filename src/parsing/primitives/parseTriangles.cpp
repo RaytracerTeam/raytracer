@@ -15,9 +15,11 @@ void Raytracer::Parsing::parseTriangles(const libconfig::Setting &primitiveSetti
     if (!primitiveSetting.exists("triangles"))
         return;
     for (const auto &config : primitiveSetting.lookup("triangles")) {
-        auto triangle = std::make_unique<Triangle>(parseVec0(config),
+        auto triangle = std::make_unique<Triangle>(parsePosition(config),
             parseMaterialSolid(config),
-            parseVec1(config), parseVec2(config));
+            parseVec3D(config, CFG_V1),
+            parseVec3D(config, CFG_V2));
+
         scene->addPrimitive(std::move(triangle));
     }
 }

@@ -31,6 +31,6 @@ namespace Raytracer {
             double m_albedo = 0; // 1 = mirror, 0 = opaque
             double m_emission = 0;
             double m_fuzz = 0;
-            bool m_hasPhong = true;
+            bool m_hasPhong = false;
     };
 } // namespace Raytracer

@@ -25,6 +25,9 @@ namespace Raytracer {
         #define CFG_PATH "path"
         #define CFG_HASTEXTURE "hasTexture"
         #define CFG_AMBIENT_LIGHT "ambientLight"
+        #define CFG_OBJ "obj"
+        #define CFG_FOV "fov"
+        #define CFG_RESOLUTION "resolution"
         #define CFG_POSITION "position"
         #define CFG_ROTATION "rotation"
         #define CFG_COLOR "color"
@@ -36,7 +39,7 @@ namespace Raytracer {
         #define CFG_ALBEDO "albedo"
         #define CFG_FUZZ "fuzz"
         #define CFG_EMISSION "emission"
-        #define CFG_HAS_PHONG "has_phong"
+        #define CFG_HAS_PHONG "hasPhong"
 
         #define CFG_V0 "v0"
         #define CFG_V1 "v1"
@@ -56,9 +59,7 @@ namespace Raytracer {
         float parseHeight(const libconfig::Setting &setting);
         float parseRadius(const libconfig::Setting &setting);
         float parseDistance(const libconfig::Setting &setting);
-        Math::Vector3D parseVec0(const libconfig::Setting &setting);
-        Math::Vector3D parseVec1(const libconfig::Setting &setting);
-        Math::Vector3D parseVec2(const libconfig::Setting &setting);
+        Math::Vector3D parseVec3D(const libconfig::Setting &setting, const std::string &key);
         float parseIntensity(const libconfig::Setting &setting);
         std::unique_ptr<MaterialSolid> parseMaterialSolid(const libconfig::Setting &setting);
 
@@ -74,6 +75,7 @@ namespace Raytracer {
         void parseGlobal(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
         void parseCameras(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
         void parseLights(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
+        void parseObj(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
 
         void savePos(libconfig::Setting &setting, ISceneObj *obj);
         void saveColor(libconfig::Setting &setting, Color color);
@@ -92,7 +94,6 @@ namespace Raytracer {
         void saveTriangle(libconfig::Setting &list, Triangle *triangle);
         void savePlane(libconfig::Setting &list, Plane *plane);
 
-        Math::Vector3D getSettingPosition(const libconfig::Setting &setting);
         Math::Angle3D getSettingRotation(const libconfig::Setting &setting);
         Color getSettingColor(const libconfig::Setting &setting);
     } // namespace Parsing
