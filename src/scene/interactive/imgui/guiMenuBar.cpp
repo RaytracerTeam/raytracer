@@ -86,21 +86,36 @@ namespace Raytracer
 
             if (ImGui::BeginMenu("Skybox path")) {
                 m_isWriting = true;
-                if (ImGui::InputTextWithHint(" Path to sphere image (press ENTER to save)",
-                "assets/skyboxes/sky.jpg", m_skyboxPathBuf, FILE_BUF_SIZE,
-                ImGuiInputTextFlags_EnterReturnsTrue)) {
-                    if (std::filesystem::exists(m_skyboxPathBuf))
-                        m_scene->setSkyboxPath(m_skyboxPathBuf);
-                    ImGui::CloseCurrentPopup();
+                bool skyboxHasTexture = m_scene->getSkybox().hasTexture();
+                if (ImGui::Checkbox("Has texture", &skyboxHasTexture)) {
+                    m_scene->getSkybox().setHasTexture(skyboxHasTexture);
+                    m_needRendering = true;
                 }
-                if (ImGui::BeginCombo("Skybox Path", m_skyboxPathBuf)) {
-                    for (const auto &entry : std::filesystem::directory_iterator("assets/skyboxes"))
-                        addSelectableSkybox(entry);
-                    if (std::filesystem::exists("assets/skyboxes/local"))
-                        for (const auto &entry : std::filesystem::directory_iterator("assets/skyboxes/local"))
-                            addSelectableSkybox(entry);
+                if (skyboxHasTexture) {
 
-                    ImGui::EndCombo();
+                    if (ImGui::InputTextWithHint(" Path to sphere image (press ENTER to save)",
+                    "assets/skyboxes/sky.jpg", m_skyboxPathBuf, FILE_BUF_SIZE,
+                    ImGuiInputTextFlags_EnterReturnsTrue)) {
+                        if (std::filesystem::exists(m_skyboxPathBuf))
+                            m_scene->setSkyboxPath(m_skyboxPathBuf);
+                        ImGui::CloseCurrentPopup();
+                    }
+                    if (ImGui::BeginCombo("Skybox Path", m_skyboxPathBuf)) {
+                        for (const auto &entry : std::filesystem::directory_iterator("assets/skyboxes"))
+                            addSelectableSkybox(entry);
+                        if (std::filesystem::exists("assets/skyboxes/local"))
+                            for (const auto &entry : std::filesystem::directory_iterator("assets/skyboxes/local"))
+                                addSelectableSkybox(entry);
+
+                        ImGui::EndCombo();
+                    }
+                } else {
+                    Skybox &skybox = m_scene->getSkybox();
+                    float *color = skybox.getAmbientColor();
+                    if (ImGui::ColorEdit3("Skybox Color", color)) {
+                        skybox.setSolidColor(color);
+                        m_needRendering = true;
+                    }
                 }
                 ImGui::EndMenu();
             }

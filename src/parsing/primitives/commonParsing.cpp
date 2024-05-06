@@ -22,6 +22,9 @@ namespace Raytracer {
         }
         Color getSettingColor(const libconfig::Setting &setting)
         {
+            if (!setting.exists("color") || !setting.exists("color.r") ||
+            !setting.exists("color.g") || !setting.exists("color.b"))
+                return Color(255U, 255, 255);
             return Color(
                 (unsigned int)setting.lookup("color.r"),
                 (unsigned int)setting.lookup("color.g"),
@@ -142,6 +145,9 @@ namespace Raytracer {
 
             if (materialSetting.exists(CFG_COLOR))
                 materialSolid->setColor(getSettingColor(materialSetting));
+
+            if (materialSetting.exists(CFG_HAS_PHONG))
+                materialSolid->setHasPhong(materialSetting.lookup(CFG_HAS_PHONG));
 
             if (materialSetting.exists(CFG_ALBEDO))
                 materialSolid->setAlbedo(parseFloat(materialSetting, CFG_ALBEDO, 0.0));

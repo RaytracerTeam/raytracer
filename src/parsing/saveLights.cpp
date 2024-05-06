@@ -31,6 +31,14 @@ namespace Raytracer
                 lightIntensity = pointLight->getIntensity();
             }
         }
+        // Ambient Light
+        auto &ambientLightSetting = lightsSetting.add(CFG_AMBIENT_LIGHT, libconfig::Setting::TypeGroup);
+        libconfig::Setting &alColorSetting = ambientLightSetting.add(CFG_COLOR, libconfig::Setting::TypeGroup);
+        Color color = scene.getAmbientLightColor();
+        alColorSetting.add("r", libconfig::Setting::TypeInt) = (int)(color.getR() * 255);
+        alColorSetting.add("g", libconfig::Setting::TypeInt) = (int)(color.getG() * 255);
+        alColorSetting.add("b", libconfig::Setting::TypeInt) = (int)(color.getB() * 255);
+        ambientLightSetting.add(CFG_INTENSITY, libconfig::Setting::TypeFloat) = scene.getAmbientLightIntensity();
     }
 } // namespace Raytracer
 
