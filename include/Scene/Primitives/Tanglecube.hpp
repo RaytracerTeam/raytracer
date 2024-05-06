@@ -18,6 +18,7 @@ namespace Raytracer {
         }
         ~Tanglecube() = default;
 
+        BoundingBox getBoundingBox(void) const override;
         std::optional<RayHit> hit(const Ray &ray) const override;
         RayHit getNormal(double distance, const Math::Vector3D &hitPt, const Math::Vector3D &origin) const;
     };
