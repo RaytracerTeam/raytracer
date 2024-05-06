@@ -8,8 +8,5 @@
 #include "Scene/Primitives/APrimitive.hpp"
 
 namespace Raytracer {
-    BoundingBox APrimitive::getBoundingBox(void) const
-    {
-        return {};
-    }
+
 } // namespace Raytracer

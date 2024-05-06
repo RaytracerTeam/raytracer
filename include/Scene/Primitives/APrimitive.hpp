@@ -26,8 +26,6 @@ namespace Raytracer {
             m_material = std::move(material);
         }
 
-        BoundingBox getBoundingBox(void) const override final;
-
         const Math::Vector3D &getOrigin(void) const override final { return m_origin; }
         const Math::Matrix44 &getTMatrix(void) const override final { return m_mat; }
         IMaterial *getMaterial(void) const override final { return m_material.get(); };
