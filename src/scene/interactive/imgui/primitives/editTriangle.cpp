@@ -21,6 +21,7 @@ namespace Raytracer
         if (ImGui::SliderFloat3("Vector1", v1, DEFAULT_POS_MIN,
                 DEFAULT_POS_MAX)) {
             triangle->setVec1(Math::Vector3D(v1[0], v1[1], v1[2]));
+            m_updateBVH = true;
             m_needRendering = true;
         }
 
@@ -29,6 +30,7 @@ namespace Raytracer
         if (ImGui::SliderFloat3("Vector2", v2, DEFAULT_POS_MIN,
                 DEFAULT_POS_MAX)) {
             triangle->setVec2(Math::Vector3D(v2[0], v2[1], v2[2]));
+            m_updateBVH = true;
             m_needRendering = true;
         }
         #endif

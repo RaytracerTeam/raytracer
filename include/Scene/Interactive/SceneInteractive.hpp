@@ -145,7 +145,8 @@ namespace Raytracer {
         // Actions
         std::vector<std::pair<sf::Keyboard::Key, bool>> m_actions;
         std::vector<sf::Keyboard::Key> m_releaseActions;
-        bool m_newEvent = true;
+        bool m_newEvent = true; //todo: to remove if BVH is working well
+        bool m_updateBVH = true;
         bool m_needRendering = true;
         float m_movementSpeed = DEFAULT_MOVEMENT_SPEED;
         float m_defaultMovementSpeed = DEFAULT_MOVEMENT_SPEED;

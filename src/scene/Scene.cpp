@@ -100,6 +100,14 @@ namespace Raytracer {
 
     Color Scene::castRay(const Ray &ray) const
     {
+        if (m_renderLights) {
+            for (const auto &light : m_lightSystem.getLights()) {
+                std::optional<RayHit> rayhit = light->hit(ray);
+                if (rayhit == std::nullopt)
+                    continue;
+                return light->getColor();
+            }
+        }
         auto result = BVH::readBVH(ray, *m_bvhTree);
         if (result == std::nullopt)
             return m_skybox.getAmbientColor(ray);

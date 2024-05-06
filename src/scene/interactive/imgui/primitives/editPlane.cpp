@@ -22,6 +22,7 @@ namespace Raytracer
         Plane::Axis axis = plane->getAxis();
         if (ImGui::Combo("Axis", (int *)&axis, "X\0Y\0Z\0\0")) {
             plane->setAxis(axis);
+            m_updateBVH = true;
             m_needRendering = true;
         }
 

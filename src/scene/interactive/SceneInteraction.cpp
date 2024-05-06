@@ -155,11 +155,16 @@ namespace Raytracer {
             handleEvents();
             handleImGui();
 
-            if (m_newEvent) {
-                m_newEvent = false;
-                // todo : make this behavior diffretn : when an object transforms
-                // m_scene->updatePrimitives();
+            if (m_updateBVH) {
+                m_updateBVH = false;
+                m_scene->updatePrimitives();
             }
+
+            // if (m_newEvent) {
+            //     m_newEvent = false;
+            //     // todo : make this behavior diffretn : when an object transforms
+            //     // m_scene->updatePrimitives();
+            // }
             if (m_needRendering || m_alwaysRender) {
                 m_needRendering = false;
                 m_lastRender = RColorToPixelBuffer(m_scene->render());

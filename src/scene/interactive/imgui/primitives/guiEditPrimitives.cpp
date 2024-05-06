@@ -70,6 +70,7 @@ namespace Raytracer
                 if (ImGui::SliderFloat3("Position", pos, DEFAULT_POS_MIN,
                 DEFAULT_POS_MAX)) {
                     primitive->setOrigin(Math::Vector3D(pos[0], pos[1], pos[2]));
+                    m_updateBVH = true;
                     m_needRendering = true;
                 }
 

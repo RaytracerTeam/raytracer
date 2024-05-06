@@ -22,6 +22,7 @@ namespace Raytracer
         if (ImGui::SliderFloat("Radius", &radius, DEFAULT_RADIUS_MIN,
         DEFAULT_RADIUS_MAX, "%.3f", ImGuiSliderFlags_Logarithmic)) {
             cylinder->setRadius(radius);
+            m_updateBVH = true;
             m_needRendering = true;
         }
 
@@ -30,6 +31,7 @@ namespace Raytracer
         if (ImGui::SliderFloat("Height", &height, DEFAULT_RADIUS_MIN,
         DEFAULT_RADIUS_MAX, "%.3f", ImGuiSliderFlags_Logarithmic)) {
             cylinder->setHeight(height);
+            m_updateBVH = true;
             m_needRendering = true;
         }
         #endif
