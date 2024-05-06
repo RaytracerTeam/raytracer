@@ -21,6 +21,7 @@ namespace Raytracer {
         m_scene = std::make_unique<Scene>();
         setScenes(inputFiles);
         setupCamera();
+        m_scene->updatePrimitives();
 
         if (inputFiles.size() > 0)
             strcpy(m_cfgSceneBuf, inputFiles[0].data());
@@ -48,10 +49,12 @@ namespace Raytracer {
         #endif
     }
 
-    void SceneInteractive::setupImageSize(void)
+    void SceneInteractive::setupImageSize()
     {
         #ifdef BONUS
-        m_imageWidth = ImGui::GetIO().DisplaySize.x - m_leftPaneWidth - 50;
+        m_imageWidth = ImGui::GetIO().DisplaySize.x - 20;
+        if (!m_fullscreen)
+            m_imageWidth -= m_leftPaneWidth + 30;
         m_imageHeight = m_imageWidth / (SCREEN_RATIO);
         #endif
     }

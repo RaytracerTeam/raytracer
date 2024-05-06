@@ -31,10 +31,15 @@ namespace Raytracer {
         }
     }
 
+    Color Skybox::getAmbientColor(void) const
+    {
+        return m_solidColor;
+    }
+
     Color Skybox::getAmbientColor(const Ray &ray) const
     {
-        if (m_texture.get() == nullptr || m_methodAmbientColor == nullptr)
-            return Color();
+        if (!m_hasTexture || m_texture.get() == nullptr || m_methodAmbientColor == nullptr)
+            return m_solidColor;
 
         return (*this.*m_methodAmbientColor)(ray);
     }

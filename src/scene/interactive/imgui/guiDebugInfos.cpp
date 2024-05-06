@@ -42,6 +42,17 @@ namespace Raytracer
             ImGui::SameLine();
             ImGui::Checkbox("Always Render", &m_alwaysRender);
 
+            // Ambient light
+            float ambientLightIntensity = m_scene->getAmbientLightIntensity();
+            if (ImGui::SliderFloat("Ambient Light Intensity", &ambientLightIntensity, 0, 1)) {
+                m_scene->setAmbientLightIntensity(ambientLightIntensity);
+                m_needRendering = true;
+            }
+            float *ambientLightColor = m_scene->getAmbientLightColor();
+            if (ImGui::ColorEdit3("Ambient Light", ambientLightColor)) {
+                m_scene->setAmbientLightColor(ambientLightColor);
+                m_needRendering = true;
+            }
         }
         ImGui::EndChild();
         #endif

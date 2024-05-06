@@ -20,6 +20,11 @@ namespace Raytracer {
         #define KEYS_CONFIG "config/keys.cfg"
         #define KEYS_CONFIG_EXAMPLE "config/keys_example.cfg"
 
+        #define CFG_GLOBAL "global"
+        #define CFG_SKYBOX "skybox"
+        #define CFG_PATH "path"
+        #define CFG_HASTEXTURE "hasTexture"
+        #define CFG_AMBIENT_LIGHT "ambientLight"
         #define CFG_POSITION "position"
         #define CFG_ROTATION "rotation"
         #define CFG_COLOR "color"
@@ -31,6 +36,7 @@ namespace Raytracer {
         #define CFG_ALBEDO "albedo"
         #define CFG_FUZZ "fuzz"
         #define CFG_EMISSION "emission"
+        #define CFG_HAS_PHONG "has_phong"
 
         #define CFG_V0 "v0"
         #define CFG_V1 "v1"
@@ -43,6 +49,7 @@ namespace Raytracer {
         bool parseArgv(int argc, char **argv, std::vector<std::string_view> &inputFiles); // return true if interactive mode
         void parse(std::unique_ptr<Scene> &scene, const std::vector<std::string_view> &inputFiles);
 
+        float parseFloat(const libconfig::Setting &setting, const std::string &key, float defaultValue);
         Math::Vector3D parsePosition(const libconfig::Setting &setting);
         Math::Angle3D parseRotation(const libconfig::Setting &setting);
         MaterialSolid parseColor(const libconfig::Setting &setting);
@@ -64,15 +71,16 @@ namespace Raytracer {
         void parseTanglecubes(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene);
         void parseTriangles(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene);
 
-
+        void parseGlobal(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
         void parseCameras(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
         void parseLights(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
 
         void savePos(libconfig::Setting &setting, ISceneObj *obj);
-        void saveColor(libconfig::Setting &setting, APrimitive *primitive);
+        void saveColor(libconfig::Setting &setting, Color color);
         void saveMaterialSolid(libconfig::Setting &setting, APrimitive *primitive);
 
         void saveScene(const Scene &scene, const std::string &outputFile);
+        void saveGlobal(const Scene &scene, libconfig::Setting &root);
         void saveCameras(const Scene &scene, libconfig::Setting &root);
         void saveLights(const Scene &scene, libconfig::Setting &root);
         void savePrimitives(const Scene &scene, libconfig::Setting &root);

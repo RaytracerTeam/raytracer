@@ -169,6 +169,7 @@ namespace Raytracer {
 
         // Directional light
         for (const auto &prim : m_primitives) {
+            break; // temporarly remove directionnal light
             auto ray = Ray(rhitPrim.getHitPoint(), (dirLight.getDirection()));
             if (primHit == prim.get())
                 continue;
@@ -207,6 +208,7 @@ namespace Raytracer {
             }
             color += primColor * (light->getColor() * diffuse * penombraFactor * light->getIntensity());
         }
+        color += primColor * m_ambientLightColor * m_ambientLightIntensity;
         return color;
     }
     void Scene::setSkyboxPath(const std::string &path)

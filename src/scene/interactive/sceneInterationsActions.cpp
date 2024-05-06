@@ -271,6 +271,8 @@ namespace Raytracer
             m_showDebug = !m_showDebug;
             break;
         case SceneReleaseActions::TOGGLE_FULLSCREEN:
+            m_fullscreen = !m_fullscreen;
+            setupImageSize();
             break;
         case SceneReleaseActions::REMOVE_OBJECT:
             removeSelectedObject();

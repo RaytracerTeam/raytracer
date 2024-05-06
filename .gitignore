@@ -30,6 +30,7 @@ todo
 screenshots/*.png
 
 assets/skyboxes/local/*.jpg
+assets/obj/local/*.obj
 scenes/local/*.cfg
 scenes/quick_save.cfg
 config/keys.cfg
