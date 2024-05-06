@@ -8,6 +8,7 @@
 #include "Optimisation/BVH.hpp"
 
 #include <algorithm>
+#include <cmath>
 #include <utility>
 
 namespace Raytracer {
@@ -35,8 +36,8 @@ namespace Raytracer {
 
         static BoundingBox getBoundBox(std::vector<const IPrimitive *> &primitives)
         {
-            Math::Vector3D overallMin;
-            Math::Vector3D overallMax;
+            Math::Vector3D overallMin(INFINITY, INFINITY, INFINITY);
+            Math::Vector3D overallMax(-INFINITY, -INFINITY, -INFINITY);
 
             std::for_each(primitives.begin(), primitives.end(), [&](const IPrimitive *primitive) {
                 const BoundingBox &boundingBox = primitive->getBoundingBox();
@@ -104,16 +105,14 @@ namespace Raytracer {
             }
 
             std::vector<std::pair<RayHit, const IPrimitive *>> hitResults;
-            bool hasHit = false;
             auto vec = *node.primitives;
             for (const auto &prim : vec) {
                 auto hitResult = prim->hit(ray);
-                hitResults.push_back(std::pair<RayHit, const IPrimitive *>(*hitResult, prim));
-                if (hitResult != std::nullopt && !hasHit)
-                    hasHit = true;
+                if (hitResult != std::nullopt)
+                    hitResults.push_back(std::pair<RayHit, const IPrimitive *>(*hitResult, prim));
             }
 
-            if (!hasHit)
+            if (hitResults.size() == 0)
                 return std::nullopt;
             std::sort(
                 begin(hitResults),

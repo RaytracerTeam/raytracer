@@ -48,7 +48,7 @@
             "program": "${workspaceFolder}/raytracer",
             "args": [
                 "-i",
-                "./scenes/old_parsing.cfg"
+                "./scenes/first_config.cfg"
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

@@ -72,6 +72,7 @@ namespace Raytracer {
             Vector3D operator+(double num) const;
             Vector3D operator-() const;
             Vector3D operator-(const Vector3D &right) const;
+            Vector3D operator-(double num) const;
             Vector3D operator*(double scalar) const;
             Vector3D operator*(const Vector3D &right) const;
             Vector3D operator/(double scalar) const;
