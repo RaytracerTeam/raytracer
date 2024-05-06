@@ -48,7 +48,7 @@
             "program": "${workspaceFolder}/raytracer",
             "args": [
                 "-i",
-                "./scenes/first_config.cfg"
+                "./scenes/antoine.cfg"
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
