@@ -29,6 +29,7 @@ namespace Raytracer {
         void setVec1(const Math::Vector3D &v1) { m_v1 = v1; }
         void setVec2(const Math::Vector3D &v2) { m_v2 = v2; }
 
+        BoundingBox getBoundingBox(void) const override;
         std::optional<RayHit> hit(const Ray &ray) const override;
 
     private:
