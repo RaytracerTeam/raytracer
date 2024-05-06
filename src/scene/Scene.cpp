@@ -87,39 +87,23 @@ namespace Raytracer {
         return buffer;
     }
 
-    /* call this whenever the camera updates */
+    /* call this whenever the object move posititon */
     void Scene::updatePrimitives(void)
     {
-        auto cameraPos = getCurrentCamera().getPos();
+        m_readonlyPrimitives = std::vector<const IPrimitive *>();
+        m_readonlyPrimitives.reserve(m_primitives.size());
+        for (const auto &prim : m_primitives)
+            m_readonlyPrimitives.push_back(static_cast<const IPrimitive *>(prim.get()));
 
-        std::sort(
-            begin(m_primitives),
-            end(m_primitives),
-            [cameraPos](const std::unique_ptr<IPrimitive> &lhs, const std::unique_ptr<IPrimitive> &rhs) {
-                return Math::Vector3D::gDist(cameraPos, lhs->getOrigin()) < Math::Vector3D::gDist(cameraPos, rhs->getOrigin());
-            });
+        m_bvhTree = BVH::createBVH(5, m_readonlyPrimitives, BVH::axisAligned);
     }
 
     Color Scene::castRay(const Ray &ray) const
     {
-        if (m_renderLights) {
-            for (const auto &light : m_lightSystem.getLights()) {
-                std::optional<RayHit> rayhit = light->hit(ray);
-                if (rayhit == std::nullopt)
-                    continue;
-
-                return light->getColor();
-
-            }
-        }
-        for (const auto &prim : m_primitives) {
-            std::optional<RayHit> rayhit = prim->hit(ray);
-            if (rayhit == std::nullopt)
-                continue;
-
-            return castRayColor(ray, prim.get(), rayhit.value());
-        }
-        return m_skybox.getAmbientColor(ray);
+        auto result = BVH::readBVH(ray, *m_bvhTree);
+        if (result == std::nullopt)
+            return m_skybox.getAmbientColor(ray);
+        return castRayColor(ray, result->second, result->first);
     }
 
     double Scene::shadowPenombra(const Ray &lightRay, const IPrimitive *primHit, const PointLight &pointLight) const

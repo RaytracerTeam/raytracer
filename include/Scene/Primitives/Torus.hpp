@@ -28,6 +28,7 @@ namespace Raytracer {
         void setRadius(float radius) { m_radius = radius; }
         void setDistance(float distance) { m_distance = distance; }
 
+        BoundingBox getBoundingBox(void) const override;
         std::optional<RayHit> hit(const Ray &ray) const override;
         RayHit getNormal(double distance, const Math::Vector3D &hitPt, const Math::Vector3D &origin) const;
 

@@ -9,6 +9,7 @@
 #include "Scene/Interactive/SceneInteractive.hpp"
 
 #include "Parsing/Parsing.hpp"
+#include <cstring>
 
 namespace Raytracer {
     SceneInteractive::SceneInteractive(Dimension &dimension, const std::string &title,
@@ -153,7 +154,8 @@ namespace Raytracer {
 
             if (m_newEvent) {
                 m_newEvent = false;
-                m_scene->updatePrimitives(); // todo : unoptimized
+                // todo : make this behavior diffretn : when an object transforms
+                // m_scene->updatePrimitives();
             }
             if (m_needRendering || m_alwaysRender) {
                 m_needRendering = false;

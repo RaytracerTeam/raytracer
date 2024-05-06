@@ -10,8 +10,14 @@
 #include <cmath>
 
 namespace Raytracer {
-    RayHit Cylinder::getNormal(double distance, const Math::Vector3D &hitPt,
-        const Math::Vector3D &origin) const
+    BoundingBox Cylinder::getBoundingBox(void) const
+    {
+        return BoundingBox(
+            Math::Vector3D(m_origin.getX() - m_radius, m_origin.getY(), m_origin.getZ() - m_radius),
+            Math::Vector3D(m_origin.getX() + m_radius, m_origin.getY() + m_height, m_origin.getZ() + m_radius));
+    }
+
+    static RayHit getNormal(double distance, const Math::Vector3D &hitPt, const Math::Vector3D &origin)
     {
         auto normal = Math::Vector3D(
             hitPt.getX() - origin.getX(), 0, hitPt.getZ() - origin.getZ())

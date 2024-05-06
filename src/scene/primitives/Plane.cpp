@@ -43,6 +43,22 @@ namespace Raytracer {
         return -(rayOrigin - origin) / rayDir;
     }
 
+    BoundingBox Plane::getBoundingBox(void) const
+    {
+        auto inf = std::numeric_limits<double>::infinity();
+        switch (m_axis) {
+        case X:
+            return BoundingBox(
+                Math::Vector3D(0, -inf, -inf), Math::Vector3D(0, inf, inf));
+        case Y:
+            return BoundingBox(
+                Math::Vector3D(-inf, 0, -inf), Math::Vector3D(inf, 0, inf));
+        default:
+            return BoundingBox(
+                Math::Vector3D(-inf, -inf, 0), Math::Vector3D(inf, inf, 0));
+        }
+    }
+
     std::optional<RayHit> Plane::hit(const Ray &ray) const
     {
         double t;

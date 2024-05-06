@@ -10,6 +10,7 @@
 #include "IMaterial.hpp"
 #include "ISceneObj.hpp"
 #include "IShape.hpp"
+#include "Optimisation/BoundingBox.hpp"
 #include "Scene/Ray.hpp"
 
 #include <memory>
@@ -44,6 +45,8 @@ namespace Raytracer {
     public:
         virtual void setMaterial(std::unique_ptr<IMaterial> material) = 0;
         virtual IMaterial *getMaterial(void) const = 0;
+
+        virtual BoundingBox getBoundingBox(void) const = 0;
 
         virtual PrimitiveType getType(void) const = 0;
         virtual const std::string getTypeString(void) const = 0;
