@@ -33,8 +33,12 @@ namespace Raytracer {
                     Math::Vector3D vertex(x, y, z);
                     vertices.push_back(vertex);
                 } else if (token == "f") {
+                    std::string i1, i2, i3;
+                    iss >> i1 >> i2 >> i3;
                     int index1, index2, index3;
-                    iss >> index1 >> index2 >> index3;
+                    index1 = std::stoi(i1.substr(0, i1.find('/')));
+                    index2 = std::stoi(i2.substr(0, i2.find('/')));
+                    index3 = std::stoi(i3.substr(0, i3.find('/')));
                     Math::Vector3D origin = vertices[index1 - 1];
                     Math::Vector3D v1 = vertices[index2 - 1];
                     Math::Vector3D v2 = vertices[index3 - 1];
