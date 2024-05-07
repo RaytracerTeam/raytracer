@@ -25,7 +25,7 @@ namespace Raytracer
                 sphere->setID(m_scene->getPrimitives().size() + 1);
                 m_scene->addPrimitive(std::move(sphere));
                 m_needRendering = true;
-                m_newEvent = true;
+                m_updateBVH = true;
             }
             if (ImGui::Selectable("Plane")) {
                 auto plane = std::make_unique<Plane>(
@@ -36,7 +36,7 @@ namespace Raytracer
                 plane->setID(m_scene->getPrimitives().size() + 1);
                 m_scene->addPrimitive(std::move(plane));
                 m_needRendering = true;
-                m_newEvent = true;
+                m_updateBVH = true;
             }
             if (ImGui::Selectable("Cylinder")) {
                 auto cylinder = std::make_unique<Cylinder>(
@@ -48,7 +48,7 @@ namespace Raytracer
                 cylinder->setID(m_scene->getPrimitives().size() + 1);
                 m_scene->addPrimitive(std::move(cylinder));
                 m_needRendering = true;
-                m_newEvent = true;
+                m_updateBVH = true;
             }
             if (ImGui::Selectable("Cone")) {
                 auto cone = std::make_unique<Cone>(
@@ -60,7 +60,7 @@ namespace Raytracer
                 cone->setID(m_scene->getPrimitives().size() + 1);
                 m_scene->addPrimitive(std::move(cone));
                 m_needRendering = true;
-                m_newEvent = true;
+                m_updateBVH = true;
             }
             if (ImGui::Selectable("Torus")) {
                 auto torus = std::make_unique<Torus>(
@@ -72,7 +72,7 @@ namespace Raytracer
                 torus->setID(m_scene->getPrimitives().size() + 1);
                 m_scene->addPrimitive(std::move(torus));
                 m_needRendering = true;
-                m_newEvent = true;
+                m_updateBVH = true;
             }
             if (ImGui::Selectable("Tanglecube")) {
                 auto tanglecube = std::make_unique<Tanglecube>(
@@ -82,7 +82,7 @@ namespace Raytracer
                 tanglecube->setID(m_scene->getPrimitives().size() + 1);
                 m_scene->addPrimitive(std::move(tanglecube));
                 m_needRendering = true;
-                m_newEvent = true;
+                m_updateBVH = true;
             }
             if (ImGui::Selectable("Triangle")) {
                 auto triangle = std::make_unique<Triangle>(
@@ -94,7 +94,7 @@ namespace Raytracer
                 triangle->setID(m_scene->getPrimitives().size() + 1);
                 m_scene->addPrimitive(std::move(triangle));
                 m_needRendering = true;
-                m_newEvent = true;
+                m_updateBVH = true;
             }
             ImGui::EndCombo();
         }

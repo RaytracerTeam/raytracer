@@ -24,7 +24,6 @@
 namespace Raytracer {
     #define DEFAULT_MOVEMENT_SPEED 0.3f
     #define DEFAULT_ROTATION_SPEED 3
-    #define SCREEN_RATIO 16.0f / 9.0f
     #define DEFAULT_CAMERA_RESOLUTION 240
     #define FILE_BUF_SIZE 100
 
@@ -124,9 +123,9 @@ namespace Raytracer {
         // ImGui
         sf::Clock m_deltaClock;
         size_t m_renderResolution;
-        char m_fileBuf[FILE_BUF_SIZE] = "scenes/";
+        char m_saveFileBuf[FILE_BUF_SIZE] = "scenes/";
         char m_skyboxPathBuf[FILE_BUF_SIZE] = DEFAULT_SKYBOX;
-        char m_cfgSceneBuf[FILE_BUF_SIZE] = "scenes/";
+        char m_loadFileBuf[FILE_BUF_SIZE] = "scenes/";
         bool m_isWriting = false;
         bool m_showDebug = false;
         bool m_addToCurrentScene = false;
@@ -145,7 +144,6 @@ namespace Raytracer {
         // Actions
         std::vector<std::pair<sf::Keyboard::Key, bool>> m_actions;
         std::vector<sf::Keyboard::Key> m_releaseActions;
-        bool m_newEvent = true; //todo: to remove if BVH is working well
         bool m_updateBVH = true;
         bool m_needRendering = true;
         float m_movementSpeed = DEFAULT_MOVEMENT_SPEED;

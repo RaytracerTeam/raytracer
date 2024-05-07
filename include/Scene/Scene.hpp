@@ -21,6 +21,7 @@
 
 namespace Raytracer {
     #define DEFAULT_SKYBOX "assets/skyboxes/sky.jpg"
+    #define SCREEN_RATIO 16.0f / 9.0f
     class Scene {
     public:
         Scene();

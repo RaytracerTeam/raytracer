@@ -176,7 +176,7 @@ if (ImGui::Selectable("Sphere")) {
     sphere->setID(m_scene->getPrimitives().size() + 1);
     m_scene->addPrimitive(std::move(sphere));
     m_needRendering = true;
-    m_newEvent = true;
+    m_updateBVH = true;
 }
 // ...
 ```

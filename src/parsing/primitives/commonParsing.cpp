@@ -52,24 +52,26 @@ namespace Raytracer {
             }
             return rotation;
         }
+        float parseFloat(const libconfig::Setting &setting, const std::string &key, float defaultValue = 0.0f)
+        {
+            if (setting.exists(key.c_str())) {
+                if (setting.lookup(key.c_str()).getType() == libconfig::Setting::TypeInt)
+                    return (float)((int)setting.lookup(key.c_str()));
+                return setting.lookup(key.c_str());
+            }
+            return defaultValue;
+        }
         Math::Vector3D parseVec3D(const libconfig::Setting &setting, const std::string &key)
         {
             Math::Vector3D vec(0, 0, 0);
             if (setting.exists(key.c_str())) {
                 vec = Math::Vector3D(
-                    setting.lookup(key + ".x"),
-                    setting.lookup(key + ".y"),
-                    setting.lookup(key + ".z")
+                    parseFloat(setting, key + ".x"),
+                    parseFloat(setting, key + ".y"),
+                    parseFloat(setting, key + ".z")
                 );
             }
             return vec;
-        }
-        float parseFloat(const libconfig::Setting &setting, const std::string &key, float defaultValue = 0.0f)
-        {
-            if (setting.exists(key.c_str())) {
-                defaultValue = setting.lookup(key.c_str());
-            }
-            return defaultValue;
         }
         float parseRadius(const libconfig::Setting &setting)
         {

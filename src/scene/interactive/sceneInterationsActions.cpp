@@ -36,7 +36,7 @@ namespace Raytracer
         m_actions.push_back(std::make_pair(sf::Keyboard::LControl, false)); // SPRINT
 
         m_releaseActions.push_back(sf::Keyboard::Escape);          // EXIT
-        m_releaseActions.push_back(sf::Keyboard::C);               // QUICK_SAVE
+        m_releaseActions.push_back(sf::Keyboard::C);               // SAVE_CURRENT_AND_EXIT
         m_releaseActions.push_back(sf::Keyboard::X);               // SAVE_AND_QUIT
         m_releaseActions.push_back(sf::Keyboard::F3);              // SHOW_DEBUG
         m_releaseActions.push_back(sf::Keyboard::F2);              // SCREENSHOT
@@ -117,10 +117,10 @@ namespace Raytracer
         std::transform(action.begin(), action.end(), action.begin(), ::toupper);
         if (action == "EXIT")
             return SceneReleaseActions::EXIT;
-        else if (action == "QUICK_SAVE")
-            return SceneReleaseActions::QUICK_SAVE;
-        else if (action == "SAVE_AND_EXIT")
-            return SceneReleaseActions::SAVE_AND_EXIT;
+        else if (action == "SAVE_CURRENT_AND_EXIT")
+            return SceneReleaseActions::SAVE_CURRENT_AND_EXIT;
+        else if (action == "QUICK_SAVE_AND_EXIT")
+            return SceneReleaseActions::QUICK_SAVE_AND_EXIT;
         else if (action == "SHOW_DEBUG")
             return SceneReleaseActions::SHOW_DEBUG;
         else if (action == "SCREENSHOT")
@@ -260,10 +260,11 @@ namespace Raytracer
         case SceneReleaseActions::EXIT:
             m_window.close();
             break;
-        case SceneReleaseActions::QUICK_SAVE:
-            Parsing::saveScene(*m_scene, "scenes/quick_save.cfg");
+        case SceneReleaseActions::SAVE_CURRENT_AND_EXIT:
+            Parsing::saveScene(*m_scene, m_loadFileBuf);
+            m_window.close();
             break;
-        case SceneReleaseActions::SAVE_AND_EXIT:
+        case SceneReleaseActions::QUICK_SAVE_AND_EXIT:
             Parsing::saveScene(*m_scene, "scenes/quick_save.cfg");
             m_window.close();
             break;

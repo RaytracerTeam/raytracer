@@ -24,7 +24,7 @@ namespace Raytracer {
         m_scene->updatePrimitives();
 
         if (inputFiles.size() > 0)
-            strcpy(m_cfgSceneBuf, inputFiles[0].data());
+            strcpy(m_loadFileBuf, inputFiles[0].data());
 
         #ifdef BONUS
             #ifdef MACOSTONIO
@@ -96,8 +96,8 @@ namespace Raytracer {
             }
             if (!m_isWriting && event.type == sf::Event::KeyReleased)
                 applyKeyReleasedActions(event.key.code);
-            if (!m_isWriting && m_interacCam.handleInput(event, m_window, m_actions)) {
-                m_newEvent = true;
+            if (!m_isWriting) {
+                m_interacCam.handleInput(event, m_window, m_actions);
             }
             if (event.mouseButton.button == sf::Mouse::Right) {
                 if (event.type == sf::Event::MouseButtonReleased) {
@@ -159,12 +159,6 @@ namespace Raytracer {
                 m_updateBVH = false;
                 m_scene->updatePrimitives();
             }
-
-            // if (m_newEvent) {
-            //     m_newEvent = false;
-            //     // todo : make this behavior diffretn : when an object transforms
-            //     // m_scene->updatePrimitives();
-            // }
             if (m_needRendering || m_alwaysRender) {
                 m_needRendering = false;
                 m_lastRender = RColorToPixelBuffer(m_scene->render());
