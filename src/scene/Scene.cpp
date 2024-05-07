@@ -146,16 +146,12 @@ namespace Raytracer {
         return nbShadowRays / m_maxDropShadowsRay;
     }
 
-    bool Scene::hit(const std::optional<RayHit> &rayHit, const Math::Vector3D &objOrigin, const Math::Vector3D &objTarget) const
+    bool Scene::hit(const std::optional<RayHit> &rayHit) const
     {
         if (rayHit == std::nullopt)
             return false;
         if (rayHit->getDistance() * rayHit->getDistance() < 0.001)
             return false;
-        if ( // even if the ray touches something, that doesn't mean it's before the light.
-            Math::Vector3D::gDist(objOrigin, rayHit->getHitPoint())
-            < Math::Vector3D::gDist(objOrigin, objTarget))
-            return true;
         return false;
     }
 
@@ -176,14 +172,9 @@ namespace Raytracer {
         }
 
         // Directional light
-        for (const auto &prim : m_primitives) {
-            break; // temporarly remove directionnal light
-            auto ray = Ray(rhitPrim.getHitPoint(), (dirLight.getDirection()));
-            if (primHit == prim.get())
-                continue;
-            auto lightHit = prim->hit(ray);
-            if (lightHit != std::nullopt)
-                continue;
+        auto dirRay = Ray(rhitPrim.getHitPoint(), (dirLight.getDirection()));
+        auto lightHit = BVH::readBVH(dirRay, *m_bvhTree);
+        if (!hit(lightHit->first)) {
             auto dirLightDiffuse = Math::Algorithm::clampD(rhitPrim.getNormal().dot(dirLight.getDirection()), 0., 1.);
             color += primColor * (dirLight.getColor() * dirLightDiffuse * dirLight.getIntensity());
         }
@@ -195,19 +186,13 @@ namespace Raytracer {
             Ray lightRay = Ray(rhitPrim.getHitPoint(), lightDirection);
             double penombraFactor = 1.;
 
-            for (const auto &prim : m_primitives) {
-                if (primHit == prim.get())
-                    continue;
-                auto lightHit = prim->hit(lightRay);
-                if (lightHit != std::nullopt) {
-                    if (hit(lightHit, rhitPrim.getHitPoint(), light->getOrigin())) {
-                        if (m_maxDropShadowsRay > 1)
-                            penombraFactor = shadowPenombra(lightRay, primHit, *light);
-                        else
-                            penombraFactor = 0;
-                        break;
-                    }
-                }
+            auto lightHit = BVH::readBVH(lightRay, *m_bvhTree);
+            if (hit(lightHit->first)) {
+                if (m_maxDropShadowsRay > 1)
+                    penombraFactor = shadowPenombra(lightRay, primHit, *light);
+                else
+                    penombraFactor = 0;
+                break;
             }
 
             auto diffuse = Math::Algorithm::clampD(rhitPrim.getNormal().dot(lightDirection), 0., 1.);

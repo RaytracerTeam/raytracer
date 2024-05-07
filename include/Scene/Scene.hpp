@@ -63,7 +63,7 @@ namespace Raytracer {
         Color castRayColor(const Ray &ray, const IPrimitive *primHit, const RayHit &rhitPrim) const;
         Color castRay(const Ray &ray) const;
         double shadowPenombra(const Ray &lightRay, const IPrimitive *primHit, const PointLight &pointLight) const;
-        bool hit(const std::optional<RayHit> &rayHit, const Math::Vector3D &objOrigin, const Math::Vector3D &objTarget) const;
+        bool hit(const std::optional<RayHit> &rayHit) const;
 
         std::vector<std::unique_ptr<IPrimitive>> m_primitives;
         // useful to copy the vector around.
