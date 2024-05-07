@@ -13,7 +13,8 @@
 
 namespace Raytracer {
     namespace Parsing {
-        void readObj(const std::string &path, std::unique_ptr<Scene> &scene)
+        void readObj(const std::string &path, std::unique_ptr<Scene> &scene,
+            const Math::Vector3D &translation, const Math::Vector3D &scale)
         {
             std::ifstream file(path);
             if (!file.is_open()) {
@@ -39,9 +40,9 @@ namespace Raytracer {
                     index1 = std::stoi(i1.substr(0, i1.find('/')));
                     index2 = std::stoi(i2.substr(0, i2.find('/')));
                     index3 = std::stoi(i3.substr(0, i3.find('/')));
-                    Math::Vector3D origin = vertices[index1 - 1];
-                    Math::Vector3D v1 = vertices[index2 - 1];
-                    Math::Vector3D v2 = vertices[index3 - 1];
+                    Math::Vector3D origin = vertices[index1 - 1] + translation;
+                    Math::Vector3D v1 = vertices[index2 - 1] + translation;
+                    Math::Vector3D v2 = vertices[index3 - 1] + translation;
                     scene->addPrimitive(std::make_unique<Triangle>(
                         origin,
                         std::make_unique<MaterialSolid>(Color(255U, 255, 255)),
@@ -55,9 +56,13 @@ namespace Raytracer {
             if (!config.exists(CFG_OBJ))
                 return;
 
+            Math::Vector3D translation = Math::Vector3D(0, 0, 0);
+            Math::Vector3D scale = Math::Vector3D(1, 1, 1);
+
             for (const auto &objSetting : config.lookup(CFG_OBJ)) {
+                translation = parsePosition(objSetting);
                 if (objSetting.exists(CFG_PATH)) {
-                    readObj(objSetting.lookup(CFG_PATH), scene);
+                    readObj(objSetting.lookup(CFG_PATH), scene, translation, scale);
                 }
             }
         }
