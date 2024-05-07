@@ -17,7 +17,7 @@ namespace Raytracer
     {
         libconfig::Setting &setting = list.add(libconfig::Setting::TypeGroup);
 
-        savePos(setting, triangle);
+        savePos(setting, triangle->getOrigin());
 
         libconfig::Setting &v1 = setting.add(CFG_V1, libconfig::Setting::TypeGroup);
         v1.add("x", libconfig::Setting::TypeFloat) = triangle->getVec1().getX();

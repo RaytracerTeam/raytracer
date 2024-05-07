@@ -17,7 +17,7 @@ namespace Raytracer
     {
         libconfig::Setting &setting = list.add(libconfig::Setting::TypeGroup);
 
-        savePos(setting, cylinder);
+        savePos(setting, cylinder->getOrigin());
 
         libconfig::Setting &radius = setting.add(CFG_RADIUS, libconfig::Setting::TypeFloat);
         radius = cylinder->getRadius();

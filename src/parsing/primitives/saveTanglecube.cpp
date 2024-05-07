@@ -17,7 +17,7 @@ namespace Raytracer
     {
         libconfig::Setting &setting = list.add(libconfig::Setting::TypeGroup);
 
-        savePos(setting, tanglecube);
+        savePos(setting, tanglecube->getOrigin());
         saveMaterialSolid(setting, tanglecube);
     }
 } // namespace Raytracer

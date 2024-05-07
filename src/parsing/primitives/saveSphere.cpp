@@ -17,7 +17,7 @@ namespace Raytracer
     {
         libconfig::Setting &setting = list.add(libconfig::Setting::TypeGroup);
 
-        savePos(setting, sphere);
+        savePos(setting, sphere->getOrigin());
 
         libconfig::Setting &sphereRadius = setting.add(CFG_RADIUS, libconfig::Setting::TypeFloat);
         sphereRadius = sphere->getRadius();

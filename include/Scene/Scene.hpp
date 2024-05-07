@@ -47,6 +47,7 @@ namespace Raytracer {
         const std::vector<std::unique_ptr<IPrimitive>> &getPrimitives(void) const { return m_primitives; }
         const std::vector<std::unique_ptr<PointLight>> &getLights(void) const { return m_lightSystem.getLights(); }
         std::vector<std::unique_ptr<PointLight>> &getLights(void) { return m_lightSystem.getLights(); }
+        const SceneLightning &getLightSystem(void) const { return m_lightSystem; }
         bool getRenderLights(void) const { return m_renderLights; }
         Skybox &getSkybox(void) { return m_skybox; }
         const Skybox &getSkybox(void) const { return m_skybox; }

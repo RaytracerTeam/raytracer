@@ -177,7 +177,7 @@ namespace Raytracer {
 
         // Directional light
         for (const auto &prim : m_primitives) {
-            break; // temporarly remove directionnal light
+            break; // temporarly remove directional light
             auto ray = Ray(rhitPrim.getHitPoint(), (dirLight.getDirection()));
             if (primHit == prim.get())
                 continue;

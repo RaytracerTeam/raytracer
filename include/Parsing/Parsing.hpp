@@ -43,6 +43,7 @@ namespace Raytracer {
         #define CFG_FUZZ "fuzz"
         #define CFG_EMISSION "emission"
         #define CFG_HAS_PHONG "hasPhong"
+        #define CFG_DIRECTIONAL_LIGHTS "directionalLights"
 
         #define CFG_V0 "v0"
         #define CFG_V1 "v1"
@@ -81,8 +82,8 @@ namespace Raytracer {
         void parseLights(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
         void parseObj(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
 
-        void savePos(libconfig::Setting &setting, ISceneObj *obj);
-        void saveColor(libconfig::Setting &setting, Color color);
+        void savePos(libconfig::Setting &setting, const Math::Vector3D pos);
+        void saveColor(libconfig::Setting &setting, const Color color);
         void saveMaterialSolid(libconfig::Setting &setting, APrimitive *primitive);
 
         void saveScene(const Scene &scene, const std::string &outputFile);
