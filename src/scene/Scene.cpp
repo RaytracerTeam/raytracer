@@ -146,12 +146,14 @@ namespace Raytracer {
         return nbShadowRays / m_maxDropShadowsRay;
     }
 
-    bool Scene::hit(const std::optional<RayHit> &rayHit) const
+    bool Scene::hit(const std::optional<RayHit> &rayHit, const Math::Vector3D &objOrigin, const Math::Vector3D &objTarget) const
     {
         if (rayHit == std::nullopt)
             return false;
-        if (rayHit->getDistance() * rayHit->getDistance() < 0.001)
-            return false;
+        if ( // even if the ray touches something, that doesn't mean it's before the light.
+            Math::Vector3D::gDist(objOrigin, rayHit->getHitPoint())
+            < Math::Vector3D::gDist(objOrigin, objTarget))
+            return true;
         return false;
     }
 
@@ -174,7 +176,7 @@ namespace Raytracer {
         // Directional light
         auto dirRay = Ray(rhitPrim.getHitPoint(), (dirLight.getDirection()));
         auto lightHit = BVH::readBVH(dirRay, *m_bvhTree);
-        if (!hit(lightHit->first)) {
+        if (lightHit == std::nullopt) {
             auto dirLightDiffuse = Math::Algorithm::clampD(rhitPrim.getNormal().dot(dirLight.getDirection()), 0., 1.);
             color += primColor * (dirLight.getColor() * dirLightDiffuse * dirLight.getIntensity());
         }
@@ -187,7 +189,7 @@ namespace Raytracer {
             double penombraFactor = 1.;
 
             auto lightHit = BVH::readBVH(lightRay, *m_bvhTree);
-            if (hit(lightHit->first)) {
+            if (lightHit != std::nullopt && hit(lightHit->first, rhitPrim.getHitPoint(), light->getOrigin())) {
                 if (m_maxDropShadowsRay > 1)
                     penombraFactor = shadowPenombra(lightRay, primHit, *light);
                 else
