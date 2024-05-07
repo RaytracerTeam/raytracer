@@ -16,9 +16,13 @@ namespace Raytracer
         Camera &currentCamera = m_scene->getCurrentCamera();
 
         if (ImGui::BeginChild("TopBar", ImVec2(ImGui::GetIO().DisplaySize.x, 30),
-        ImGuiChildFlags_AutoResizeX,
-        ImGuiWindowFlags_HorizontalScrollbar
-        )) {
+        ImGuiChildFlags_AutoResizeX, ImGuiWindowFlags_HorizontalScrollbar)) {
+            // Resize
+            if (ImGui::Button("Resize")) {
+                setupImageSize();
+            }
+
+            ImGui::SameLine(0, 50);
 
             // Render Resolution
             if (ImGui::SliderInt("Dimension", (int *)&m_renderResolution, 10, 4000, "%d",

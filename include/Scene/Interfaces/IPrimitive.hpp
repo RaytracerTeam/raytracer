@@ -52,5 +52,8 @@ namespace Raytracer {
         virtual const std::string getTypeString(void) const = 0;
 
         virtual std::optional<RayHit> hit(const Ray &ray) const = 0;
+        virtual void setIsShown(bool isShown) = 0;
+        virtual bool isShown(void) const = 0;
+
     };
 }

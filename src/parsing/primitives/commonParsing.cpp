@@ -61,17 +61,17 @@ namespace Raytracer {
             }
             return defaultValue;
         }
-        Math::Vector3D parseVec3D(const libconfig::Setting &setting, const std::string &key)
+        Math::Vector3D parseVec3D(const libconfig::Setting &setting, const std::string &key,
+        Math::Vector3D defaultValue)
         {
-            Math::Vector3D vec(0, 0, 0);
             if (setting.exists(key.c_str())) {
-                vec = Math::Vector3D(
+                return Math::Vector3D(
                     parseFloat(setting, key + ".x"),
                     parseFloat(setting, key + ".y"),
                     parseFloat(setting, key + ".z")
                 );
             }
-            return vec;
+            return defaultValue;
         }
         float parseRadius(const libconfig::Setting &setting)
         {

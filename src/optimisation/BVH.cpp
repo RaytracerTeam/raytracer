@@ -120,6 +120,8 @@ namespace Raytracer {
             std::vector<std::pair<RayHit, const IPrimitive *>> hitResults;
             auto vec = *node.primitives;
             for (const auto &prim : vec) {
+                if (!prim->isShown())
+                    continue;
                 auto hitResult = prim->hit(ray);
                 if (hitResult != std::nullopt)
                     hitResults.push_back(std::pair<RayHit, const IPrimitive *>(*hitResult, prim));

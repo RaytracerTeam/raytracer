@@ -54,6 +54,16 @@ namespace Raytracer
                 }
                 ImGui::SameLine(0, 20);
 
+                // isShown
+                bool isShown = primitive->isShown();
+                if (ImGui::Checkbox("Is Shown", &isShown)) {
+                    primitive->setIsShown(isShown);
+                    m_updateBVH = true;
+                    m_needRendering = true;
+                }
+
+                ImGui::SameLine(0, 20);
+
                 // Color
                 ImGui::SetNextItemWidth(200);
                 float *color = ((MaterialSolid *)primitive->getMaterial())->getColor();

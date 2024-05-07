@@ -24,12 +24,15 @@ namespace Raytracer {
         #define CFG_SKYBOX "skybox"
         #define CFG_PATH "path"
         #define CFG_HASTEXTURE "hasTexture"
+
         #define CFG_AMBIENT_LIGHT "ambientLight"
         #define CFG_OBJ "obj"
         #define CFG_FOV "fov"
         #define CFG_RESOLUTION "resolution"
         #define CFG_POSITION "position"
         #define CFG_ROTATION "rotation"
+        #define CFG_SCALE "scale"
+        #define CRG_TRANSLATION "translation"
         #define CFG_COLOR "color"
         #define CFG_RADIUS "radius"
         #define CFG_HEIGHT "height"
@@ -59,7 +62,8 @@ namespace Raytracer {
         float parseHeight(const libconfig::Setting &setting);
         float parseRadius(const libconfig::Setting &setting);
         float parseDistance(const libconfig::Setting &setting);
-        Math::Vector3D parseVec3D(const libconfig::Setting &setting, const std::string &key);
+        Math::Vector3D parseVec3D(const libconfig::Setting &setting, const std::string &key,
+            Math::Vector3D defaultValue = Math::Vector3D(0, 0, 0));
         float parseIntensity(const libconfig::Setting &setting);
         std::unique_ptr<MaterialSolid> parseMaterialSolid(const libconfig::Setting &setting);
 
