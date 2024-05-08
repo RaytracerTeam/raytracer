@@ -117,6 +117,15 @@ namespace Raytracer
             }
 
             if (ImGui::BeginTabItem("Transformations")) {
+                // Rotation
+                Math::Angle3D rot3D = primitive->getTMatrix().getRot();
+                float rot[3] = {(float)rot3D.getPitch(), (float)rot3D.getYaw(), (float)rot3D.getRoll()};
+                if (ImGui::SliderFloat3("Rotation", rot, 0, 360)) {
+                    primitive->setRotXYZ(rot[0], rot[1], rot[2]);
+                    // primitive->
+                    m_updateBVH = true;
+                    m_needRendering = true;
+                }
                 ImGui::EndTabItem();
             }
         }

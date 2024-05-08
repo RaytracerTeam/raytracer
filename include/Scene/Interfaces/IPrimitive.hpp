@@ -52,5 +52,7 @@ namespace Raytracer {
 
         virtual std::optional<RayHit> hit(const Ray &ray) const = 0;
 
+        virtual void setRotXYZ(double rotX, double rotY, double rotZ) = 0;
+        virtual const Math::Matrix44 &getTMatrix(void) const = 0;
     };
 }

@@ -20,6 +20,10 @@ namespace Raytracer {
         {
             m_mat = mat;
         }
+        void setTMatrix(double rotX, double rotY, double rotZ) override
+        {
+            m_mat = Math::Matrix44(rotX, rotY, rotZ);
+        }
 
         void setMaterial(std::unique_ptr<IMaterial> material) override final
         {
@@ -34,6 +38,10 @@ namespace Raytracer {
         const std::string getTypeString(void) const override { return PrimitiveTypeStrings[static_cast<int>(getType())]; };
         int getID(void) const override { return m_id; }
         void setID(int id) override { m_id = id; }
+        void setRotXYZ(double rotX, double rotY, double rotZ) override
+        {
+            m_mat = Math::Matrix44(rotX, rotY, rotZ);
+        }
         bool isShown(void) const override { return m_isShown; }
     protected:
         APrimitive(const Math::Vector3D &origin,  std::unique_ptr<IMaterial> material)

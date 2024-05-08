@@ -114,7 +114,8 @@ namespace Raytracer {
             for (const auto &prim : vec) {
                 if (!prim->isShown())
                     continue;
-                auto hitResult = prim->hit(ray);
+                Ray ray_temp(ray.getOrigin(),  (prim->getTMatrix() * ray.getDirection()), ray.getDepth());
+                auto hitResult = prim->hit(ray_temp);
                 if (hitResult != std::nullopt && hitResult->getDistance() * hitResult->getDistance() >= 0.001)
                     hitResults.push_back(std::pair<RayHit, const IPrimitive *>(*hitResult, prim));
             }

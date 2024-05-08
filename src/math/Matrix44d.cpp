@@ -6,15 +6,49 @@
 */
 
 #include "Math/Matrix44d.hpp"
+#include <cmath>
 
 namespace Raytracer {
     namespace Math {
+        Matrix44::Matrix44(std::array<std::array<double, 4>, 4> arr)
+            : m_arr(arr)
+        {
+        }
+
         Matrix44::Matrix44()
-            : m_arr({ { { 1, 0, 0, 0 },
+            : m_arr(
+              { { { 1, 0, 0, 0 },
                   { 0, 1, 0, 0 },
                   { 0, 0, 1, 0 },
                   { 0, 0, 0, 1 } } })
         {
+        }
+
+
+        Matrix44::Matrix44(double rotX, double rotY, double rotZ)
+        {
+            m_rot = { rotX, rotY, rotZ };
+            rotX = rotX * M_PI / 180;
+            rotY = rotY * M_PI / 180;
+            rotZ = rotZ * M_PI / 180;
+            Matrix44 m1(
+                { { { 1, 0, 0, 0 },
+                    { 0, cos(rotX), -sin(rotX), 0 },
+                    { 0, sin(rotX), cos(rotX), 0 },
+                    { 0, 0, 0, 1 } } });
+            Matrix44 m2(
+                { { { cos(rotY), 0, sin(rotY), 0 },
+                    { 0, 1, 0, 0 },
+                    { -sin(rotY), 0, cos(rotY), 0 },
+                    { 0, 0, 0, 1 } } });
+
+            Matrix44 m3(
+                { { { cos(rotZ), -sin(rotZ), 0, 0 },
+                    { sin(rotZ), cos(rotZ), 0, 0 },
+                    { 0, 0, 1, 0 },
+                    { 0, 0, 0, 1 } } });
+            Matrix44 m12 = m1 * m2;
+            *this = m12 * m3;
         }
 
         Matrix44::Matrix44(const Matrix44 &m)
@@ -35,6 +69,16 @@ namespace Raytracer {
             double y = src[0] * m_arr[0][1] + src[1] * m_arr[1][1] + src[2] * m_arr[2][1];
             double z = src[0] * m_arr[0][2] + src[1] * m_arr[1][2] + src[2] * m_arr[2][2];
             return Vector3D(x, y, z);
+        }
+
+        /* Matrix multiplication operation */
+        Matrix44 Matrix44::operator*(const Matrix44 &src) const
+        {
+            Matrix44 m;
+            for (uint8_t i = 0; i < 4; ++i)
+                for (uint8_t j = 0; j < 4; ++j)
+                    m[i][j] = m_arr[i][0] * src[0][j] + m_arr[i][1] * src[1][j] + m_arr[i][2] * src[2][j] + m_arr[i][3] * src[3][j];
+            return m;
         }
 
         /* Vector Point operation */

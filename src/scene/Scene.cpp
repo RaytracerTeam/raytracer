@@ -9,6 +9,7 @@
 #include "Error.hpp"
 #include "Math/Algorithm.hpp"
 #include "Math/Utils.hpp"
+#include "Math/Matrix44d.hpp"
 
 #include <algorithm>
 #include <cmath>
@@ -139,6 +140,7 @@ namespace Raytracer {
 
     Color Scene::castRay(const Ray &ray) const
     {
+        Math::Matrix44 mat;
         if (m_renderLights) {
             for (const auto &light : m_lightSystem.getLights()) {
                 if (!light->isShown())
