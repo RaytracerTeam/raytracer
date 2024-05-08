@@ -18,7 +18,8 @@ namespace Raytracer
 
             // FPS
             ImGui::Text("FPS: %.1f", getFramerate());
-            ImGui::PlotLines("Frame Times", m_frameTimes.data(), m_frameTimes.size());
+            ImGui::PlotLines("Time/F", m_frameTimes.data(), m_frameTimes.size());
+            ImGui::ProgressBar((float)m_scene->getRenderY() / m_dimension.getHeight());
             // Camera Pos
             float *pos = currentCamera->getPos();
             if (ImGui::InputFloat3("Pos", pos, "%.2f")) {
@@ -40,17 +41,30 @@ namespace Raytracer
             if (ImGui::Button("Render", ImVec2(60, 20)))
                 m_needRendering = true;
 
+            ImGui::SameLine(0, 20);
+            // Resize
+            if (ImGui::Button("Resize")) {
+                setupImageSize();
+            }
+
             // Ambient light
             float ambientLightIntensity = m_scene->getAmbientLightIntensity();
-            if (ImGui::SliderFloat("Ambient Light Intensity", &ambientLightIntensity, 0, 1)) {
+            if (ImGui::SliderFloat("AL Intens", &ambientLightIntensity, 0, 1)) {
                 m_scene->setAmbientLightIntensity(ambientLightIntensity);
                 m_needRendering = true;
             }
             float *ambientLightColor = m_scene->getAmbientLightColor();
-            if (ImGui::ColorEdit3("Ambient Light", ambientLightColor)) {
+            if (ImGui::ColorEdit3("AL", ambientLightColor)) {
                 m_scene->setAmbientLightColor(ambientLightColor);
                 m_needRendering = true;
             }
+
+            int threadNumber = m_scene->getNbThreads();
+            if (ImGui::SliderInt("Threads", &threadNumber, 1, m_scene->getMaxNbThreads())) {
+                m_scene->setNbThreads(threadNumber);
+                m_needRendering = true;
+            }
+
         }
         ImGui::EndChild();
         #endif
