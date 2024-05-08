@@ -136,7 +136,7 @@ namespace Raytracer {
         size_t m_imageWidth;
         size_t m_leftPaneWidth;
         std::vector<float> m_frameTimes;
-        bool m_alwaysRender;
+        bool m_alwaysRender = false;
         bool m_fullscreen = false;
 
         // Storing the result of the render
