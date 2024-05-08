@@ -86,9 +86,10 @@ namespace Raytracer
 
             if (ImGui::BeginMenu("Skybox path")) {
                 m_isWriting = true;
-                bool skyboxHasTexture = m_scene->getSkybox().hasTexture();
+                Skybox &skybox = m_scene->getSkybox();
+                bool skyboxHasTexture = skybox.hasTexture();
                 if (ImGui::Checkbox("Has texture", &skyboxHasTexture)) {
-                    m_scene->getSkybox().setHasTexture(skyboxHasTexture);
+                    skybox.setHasTexture(skyboxHasTexture);
                     m_needRendering = true;
                 }
                 if (skyboxHasTexture) {
@@ -109,8 +110,12 @@ namespace Raytracer
 
                         ImGui::EndCombo();
                     }
+                    bool useSphere = skybox.getSkyboxUVTypee() == SPHERE;
+                    if (ImGui::Checkbox("Use UV Sphere", &useSphere)) {
+                       skybox.setSkyboxUVTypee(useSphere ? SPHERE : BOX);
+                        m_needRendering = true;
+                    }
                 } else {
-                    Skybox &skybox = m_scene->getSkybox();
                     float *color = skybox.getAmbientColor();
                     if (ImGui::ColorEdit3("Skybox Color", color)) {
                         skybox.setSolidColor(color);

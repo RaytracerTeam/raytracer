@@ -31,17 +31,19 @@ namespace Raytracer {
             RayHit() = default;
             ~RayHit() = default;
 
-            RayHit(double distance, Math::Vector3D hitPt, Math::Vector3D normal);
+            RayHit(double distance, Math::Vector3D hitPt, Math::Vector3D normal, Math::Vector3D relativeHitPt = Math::Vector3D(0, 0, 0));
             RayHit(const RayHit &rhit);
             RayHit &operator=(const RayHit &ray);
 
             double getDistance(void) const { return m_distance; }
             Math::Vector3D getHitPoint(void) const { return m_hitPt; }
+            Math::Vector3D getRelativeHitPoint(void) const { return m_relativeHitPt; }
             Math::Vector3D getNormal(void) const { return m_normal; }
 
         private:
             double m_distance = std::numeric_limits<double>::infinity();
             Math::Vector3D m_hitPt;
+            Math::Vector3D m_relativeHitPt;
             Math::Vector3D m_normal;
     };
 } // namespace Raytracer

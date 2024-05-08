@@ -48,7 +48,7 @@ void Raytracer::Parsing::parseSpheres(const libconfig::Setting &primitiveSetting
         return;
     for (const auto &config : primitiveSetting.lookup("spheres")) {
         auto sphere = std::make_unique<Sphere>(parsePosition(config),
-            parseMaterialSolid(config),
+            parseMaterial(config),
             parseRadius(config));
         scene->addPrimitive(std::move(sphere));
     }
@@ -91,7 +91,7 @@ namespace Raytracer
         libconfig::Setting &sphereRadius = setting.add(CFG_RADIUS, libconfig::Setting::TypeFloat);
         sphereRadius = sphere->getRadius();
 
-        saveMaterialSolid(setting, torus);
+        saveMaterial(setting, torus);
     }
 } // namespace Raytracer
 ```

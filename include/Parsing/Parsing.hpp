@@ -54,6 +54,7 @@ namespace Raytracer {
         #define CFG_MATERIAL "material"
         #define CFG_TYPE "type"
         #define CFG_MATERIAL_SOLID_COLOR "solid_color"
+        #define CFG_MATERIAL_TEXTURE "texture"
 
         bool parseArgv(int argc, char **argv, std::vector<std::string_view> &inputFiles); // return true if interactive mode
         void parse(std::unique_ptr<Scene> &scene, const std::vector<std::string_view> &inputFiles);
@@ -68,7 +69,8 @@ namespace Raytracer {
         Math::Vector3D parseVec3D(const libconfig::Setting &setting, const std::string &key,
             Math::Vector3D defaultValue = Math::Vector3D(0, 0, 0));
         float parseIntensity(const libconfig::Setting &setting);
-        std::unique_ptr<MaterialSolid> parseMaterialSolid(const libconfig::Setting &setting);
+        std::unique_ptr<IMaterial> parseMaterial(const libconfig::Setting &setting,
+            PrimitiveType primType = PrimitiveType::SPHERE);
 
         void parsePrimitives(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
         void parseSpheres(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene);
@@ -86,7 +88,7 @@ namespace Raytracer {
 
         void savePos(libconfig::Setting &setting, const Math::Vector3D pos);
         void saveColor(libconfig::Setting &setting, const Color color);
-        void saveMaterialSolid(libconfig::Setting &setting, APrimitive *primitive);
+        void saveMaterial(libconfig::Setting &setting, APrimitive *primitive);
 
         void saveScene(const Scene &scene, const std::string &outputFile);
         void saveGlobal(const Scene &scene, libconfig::Setting &root);

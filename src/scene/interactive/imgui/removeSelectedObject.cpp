@@ -17,11 +17,8 @@ namespace Raytracer
         case ObjectSelection::PRIMITIVE: m_scene->removePrimitive(m_selectedObject); break;
         case ObjectSelection::LIGHT: m_scene->removeLight(m_selectedObject); break;
         case ObjectSelection::CAMERA:
-            if (m_scene->removeCamera(m_selectedObject)) {
-                Camera &cam = m_scene->getCurrentCamera();
-                m_interacCam.setCamera(&cam);
-                updateDimension(cam.getDimension().getWidth(), cam.getDimension().getHeight());
-            }
+            m_scene->removeCamera(m_selectedObject);
+            setupCamera();
             break;
         default:
             break;

@@ -16,7 +16,7 @@ void Raytracer::Parsing::parseCylinders(const libconfig::Setting &primitiveSetti
         return;
     for (const auto &config : primitiveSetting.lookup("cylinders")) {
         auto cylinder = std::make_unique<Cylinder>(parsePosition(config),
-            parseMaterialSolid(config),
+            parseMaterial(config),
             parseRadius(config),
             parseHeight(config));
         scene->addPrimitive(std::move(cylinder));

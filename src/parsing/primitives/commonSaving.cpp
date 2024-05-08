@@ -31,16 +31,35 @@ namespace Raytracer
 
         void saveMaterialSolid(libconfig::Setting &setting, APrimitive *primitive)
         {
-            libconfig::Setting &material = setting.add("material", libconfig::Setting::TypeGroup);
-            material.add(CFG_TYPE, libconfig::Setting::TypeString) = CFG_MATERIAL_SOLID_COLOR;
+            setting.add(CFG_TYPE, libconfig::Setting::TypeString) = CFG_MATERIAL_SOLID_COLOR;
             MaterialSolid *materialSolid = dynamic_cast<MaterialSolid *>(primitive->getMaterial());
             Color materialColor = materialSolid->getColor();
-            saveColor(material, materialColor);
-            if (materialSolid) {
-                material.add(CFG_ALBEDO, libconfig::Setting::TypeFloat) = materialSolid->getAlbedo();
-                material.add(CFG_FUZZ, libconfig::Setting::TypeFloat) = materialSolid->getFuzzFactor();
-                material.add(CFG_EMISSION, libconfig::Setting::TypeFloat) = materialSolid->getEmission();
-                material.add(CFG_HAS_PHONG, libconfig::Setting::TypeBoolean) = materialSolid->hasPhong();
+            saveColor(setting, materialColor);
+        }
+
+        void saveMaterialTexture(libconfig::Setting &setting, APrimitive *primitive)
+        {
+            setting.add(CFG_TYPE, libconfig::Setting::TypeString) = CFG_MATERIAL_TEXTURE;
+            MaterialTexture *materialTexture = dynamic_cast<MaterialTexture *>(primitive->getMaterial());
+            setting.add(CFG_PATH, libconfig::Setting::TypeString) = materialTexture->getPathname();
+        }
+
+        void saveMaterial(libconfig::Setting &setting, APrimitive *primitive)
+        {
+            libconfig::Setting &materialSetting = setting.add(CFG_MATERIAL, libconfig::Setting::TypeGroup);
+            if (dynamic_cast<MaterialSolid *>(primitive->getMaterial()))
+                saveMaterialSolid(materialSetting, primitive);
+            else if (dynamic_cast<MaterialTexture *>(primitive->getMaterial()))
+                saveMaterialTexture(materialSetting, primitive);
+            else
+                throw Error("Unknown material type", "saveMaterial");
+
+            IMaterial *material = primitive->getMaterial();
+            if (material) {
+                setting.add(CFG_ALBEDO, libconfig::Setting::TypeFloat) = material->getAlbedo();
+                setting.add(CFG_FUZZ, libconfig::Setting::TypeFloat) = material->getFuzzFactor();
+                setting.add(CFG_EMISSION, libconfig::Setting::TypeFloat) = material->getEmission();
+                setting.add(CFG_HAS_PHONG, libconfig::Setting::TypeBoolean) = material->hasPhong();
             }
         }
     } // namespace Parsing
