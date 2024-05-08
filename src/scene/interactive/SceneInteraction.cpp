@@ -177,6 +177,7 @@ namespace Raytracer {
             #endif
             m_window.display();
         }
+        m_scene->setRenderNbr(m_scene->getRenderNbr() + 1);
     }
 
     float SceneInteractive::getFramerate(void)

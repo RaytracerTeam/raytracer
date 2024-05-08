@@ -103,7 +103,7 @@ namespace Raytracer {
         double imageAspectRatio = dimension.getWidthD() / dimension.getHeightD();
 
         m_renderY = -1;
-        for (size_t i = 0; i < nbThreads - 1; i++)
+        for (size_t i = 0; i < m_nbThreads - 1; i++)
             std::thread(&Scene::renderLine, this, imageAspectRatio, scale, threadNbr).detach();
     }
 
