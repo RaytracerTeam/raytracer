@@ -10,8 +10,8 @@
 #include "Scene/Interfaces/IPrimitive.hpp"
 
 #include <memory>
-#include <vector>
 #include <optional>
+#include <vector>
 
 namespace Raytracer {
     namespace BVH {
@@ -23,7 +23,10 @@ namespace Raytracer {
 
         class Node {
         public:
-            Node(const BoundingBox &b) : box(b) {}
+            Node(const BoundingBox &b)
+                : box(b)
+            {
+            }
             ~Node() = default;
 
             BoundingBox box;
@@ -32,10 +35,17 @@ namespace Raytracer {
             std::unique_ptr<Node> right;
         };
 
+        class Intersection {
+            public:
+                RayHit rayhit;
+                const IPrimitive *primitve;
+        };
+
         std::unique_ptr<Node> createBVH(size_t nPrims,
             std::vector<const IPrimitive *> &primitives,
-            double (*seperateFunc)(double (Math::Vector3D::*biggestAxisM)() const, std::vector<const IPrimitive *> &primitives));
-        std::optional<std::pair<RayHit, const IPrimitive *>> readBVH(const Ray &ray, const Node &node);
+            double (*seperateFunc)(double (Math::Vector3D::*biggestAxisM)() const,
+            std::vector<const IPrimitive *> &primitives));
+        bool readBVH(const Ray &ray, const Node &node, Intersection &intersection);
 
         // Algorithms
 

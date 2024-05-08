@@ -95,7 +95,7 @@ namespace Raytracer {
         for (const auto &prim : m_primitives)
             m_readonlyPrimitives.push_back(static_cast<const IPrimitive *>(prim.get()));
 
-        m_bvhTree = BVH::createBVH(5, m_readonlyPrimitives, BVH::axisAligned);
+        m_bvhTree = BVH::createBVH(m_bvhMaxPrimLimit, m_readonlyPrimitives, BVH::axisAligned);
     }
 
     Color Scene::castRay(const Ray &ray) const
@@ -108,10 +108,11 @@ namespace Raytracer {
                 return light->getColor();
             }
         }
-        auto result = BVH::readBVH(ray, *m_bvhTree);
-        if (result == std::nullopt)
+        BVH::Intersection intersection;
+        auto result = BVH::readBVH(ray, *m_bvhTree, intersection);
+        if (!result)
             return m_skybox.getAmbientColor(ray);
-        return castRayColor(ray, result->second, result->first);
+        return castRayColor(ray, intersection.primitve, intersection.rayhit);
     }
 
     double Scene::shadowPenombra(const Ray &lightRay, const IPrimitive *primHit, const PointLight &pointLight) const
@@ -175,8 +176,9 @@ namespace Raytracer {
 
         // Directional light
         auto dirRay = Ray(rhitPrim.getHitPoint(), (dirLight.getDirection()));
-        auto lightHit = BVH::readBVH(dirRay, *m_bvhTree);
-        if (lightHit == std::nullopt) {
+        BVH::Intersection intersection;
+        auto hasLightHit = BVH::readBVH(dirRay, *m_bvhTree, intersection);
+        if (!hasLightHit) {
             auto dirLightDiffuse = Math::Algorithm::clampD(rhitPrim.getNormal().dot(dirLight.getDirection()), 0., 1.);
             color += primColor * (dirLight.getColor() * dirLightDiffuse * dirLight.getIntensity());
         }
@@ -188,8 +190,9 @@ namespace Raytracer {
             Ray lightRay = Ray(rhitPrim.getHitPoint(), lightDirection);
             double penombraFactor = 1.;
 
-            auto lightHit = BVH::readBVH(lightRay, *m_bvhTree);
-            if (lightHit != std::nullopt && hit(lightHit->first, rhitPrim.getHitPoint(), light->getOrigin())) {
+            BVH::Intersection intersection;
+            auto hasLightHit = BVH::readBVH(lightRay, *m_bvhTree, intersection);
+            if (hasLightHit && hit(intersection.rayhit, rhitPrim.getHitPoint(), light->getOrigin())) {
                 if (m_maxDropShadowsRay > 1)
                     penombraFactor = shadowPenombra(lightRay, primHit, *light);
                 else

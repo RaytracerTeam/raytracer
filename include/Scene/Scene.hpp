@@ -68,7 +68,9 @@ namespace Raytracer {
         std::vector<std::unique_ptr<IPrimitive>> m_primitives;
         // useful to copy the vector around.
         std::vector<const IPrimitive *> m_readonlyPrimitives;
+
         std::unique_ptr<BVH::Node> m_bvhTree;
+        size_t m_bvhMaxPrimLimit = 5; // temp : get via optimisation
 
         std::vector<std::unique_ptr<Camera>> m_cameras;
         size_t m_curCamIndex = 0;

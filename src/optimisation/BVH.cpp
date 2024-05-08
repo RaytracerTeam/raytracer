@@ -22,14 +22,6 @@ namespace Raytracer {
                 return box.max.getX() < box.max.getZ() ? Z : X;
         }
 
-        static double getBiggestAxisVal(const BoundingBox &box)
-        {
-            if (box.max.getX() < box.max.getY())
-                return std::max(box.max.getY(), box.max.getZ());
-            else
-                return std::max(box.max.getX(), box.max.getZ());
-        }
-
         static auto getBiggestAxisMethod(Axis axis)
         {
             switch (axis) {
@@ -80,10 +72,11 @@ namespace Raytracer {
             return pair;
         }
 
-        // nPrims should never be zero.
+        /* nPrims should never be zero. */
         std::unique_ptr<Node> createBVH(size_t nPrims,
             std::vector<const IPrimitive *> &primitives,
-            double (*seperateFunc)(double (Math::Vector3D::*biggestAxisM)() const, std::vector<const IPrimitive *> &primitives))
+            double (*seperateFunc)(double (Math::Vector3D::*biggestAxisM)() const,
+            std::vector<const IPrimitive *> &primitives))
         {
             auto node = std::make_unique<Node>(getBoundBox(primitives));
 
@@ -105,16 +98,15 @@ namespace Raytracer {
             return node;
         }
 
-        std::optional<std::pair<RayHit, const IPrimitive *>> readBVH(const Ray &ray, const Node &node)
+        bool readBVH(const Ray &ray, const Node &node, Intersection &intersection)
         {
             if (!node.box.intersect(ray))
-                return std::nullopt;
+                return false;
 
             if (node.primitives == nullptr) {
-                auto resLeft = readBVH(ray, *node.left);
-                if (resLeft != std::nullopt)
-                    return resLeft;
-                return readBVH(ray, *node.right);
+                auto resLeft = readBVH(ray, *node.left, intersection);
+                auto resRight = readBVH(ray, *node.right, intersection);
+                return resLeft | resRight;
             }
 
             std::vector<std::pair<RayHit, const IPrimitive *>> hitResults;
@@ -126,14 +118,19 @@ namespace Raytracer {
             }
 
             if (hitResults.size() == 0)
-                return std::nullopt;
+                return false;
             std::sort(
                 begin(hitResults),
                 end(hitResults),
                 [](const std::pair<RayHit, const IPrimitive *> &lhs, const std::pair<RayHit, const IPrimitive *> &rhs) {
                     return lhs.first.getDistance() < rhs.first.getDistance();
                 });
-            return hitResults.front();
+            auto res = hitResults.front();
+            if (res.first.getDistance() < intersection.rayhit.getDistance()) {
+                intersection.rayhit = res.first;
+                intersection.primitve = res.second;
+            }
+            return true;
         }
     }
 }

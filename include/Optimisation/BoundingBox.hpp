@@ -22,6 +22,7 @@ namespace Raytracer {
 
         bool intersect(const Ray &ray) const;
         double surfaceArea(void) const;
+        Math::Vector3D closestPointOnPerimeter(const Ray &ray) const;
 
         Math::Vector3D min;
         Math::Vector3D max;
