@@ -108,6 +108,25 @@ namespace Raytracer {
             std::thread(&Scene::renderLine, this, imageAspectRatio, scale, threadNbr).detach();
     }
 
+    void Scene::renderWhitoutThread(void)
+    {
+        Camera &camera = getCurrentCamera();
+        Dimension dimension = camera.getDimension();
+
+        double scale = std::tan(Math::deg2rad(camera.getFov() * 0.5));
+        double imageAspectRatio = dimension.getWidthD() / dimension.getHeightD();
+
+        for (size_t y = 0; y < dimension.getHeight(); y++) {
+            for (size_t x = 0; x < dimension.getWidth(); x++) {
+                double rayX = (2 * (x + 0.5) / dimension.getWidthD() - 1) * imageAspectRatio * scale;
+                double rayY = (1 - 2 * (y + 0.5) / dimension.getHeightD()) * scale;
+                Math::Vector3D dir = Math::Vector3D(rayX, rayY, -1).normalize().rotate(camera.getAngle());
+                Color color = castRay(Ray(camera.getPos(), dir)) * 255.;
+                m_render.setPixel(x, y, sf::Color(color.getR(), color.getG(), color.getB()));
+            }
+        }
+    }
+
     /* call this whenever the object move posititon */
     void Scene::updatePrimitives(void)
     {

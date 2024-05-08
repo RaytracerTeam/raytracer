@@ -35,6 +35,7 @@ namespace Raytracer {
 
         void render(void);
         void renderLine(double imageAspectRatio, double scale, uint64_t threadNbr);
+        void renderWhitoutThread(void);
 
         bool setCameraIndex(size_t index);
         bool setCameraIndexRelative(int64_t offset);
@@ -62,6 +63,7 @@ namespace Raytracer {
         float getAmbientLightIntensity(void) const { return m_ambientLightIntensity; }
         const sf::Image &getRender(void) const { return m_render; }
         uint64_t getRenderNbr(void) const { return m_renderNbr; }
+        size_t getNbThreads(void) const { return m_nbThreads; }
 
         void resizeRender(unsigned int width, unsigned int height);
         void updatePrimitives(void);

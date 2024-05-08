@@ -164,7 +164,10 @@ namespace Raytracer {
             }
             if (m_needRendering || m_alwaysRender) {
                 m_needRendering = false;
-                std::thread(&Scene::render, m_scene.get()).detach();
+                if (m_scene->getNbThreads() < 2)
+                    m_scene->renderWhitoutThread();
+                else
+                    std::thread(&Scene::render, m_scene.get()).detach();
             }
 
             m_texture.update(m_scene->getRender());
