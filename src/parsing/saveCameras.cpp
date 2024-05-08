@@ -7,6 +7,8 @@
 
 #include "Parsing/Parsing.hpp"
 
+#include <cmath>
+
 namespace Raytracer
 {
     void Parsing::saveCameras(const Scene &scene, libconfig::Setting &root)
