@@ -63,15 +63,17 @@ namespace Raytracer {
         return m_cameras.size();
     }
 
-    // https://stackoverflow.com/questions/28896001/read-write-to-ppm-image-file-c
-    // https://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-generating-camera-rays/generating-camera-rays.html
-    std::vector<Color> Scene::render(void)
+    void Scene::resizeRender(unsigned int width, unsigned int height)
     {
+        m_render.create(width, height);
+    }
+
+    void Scene::render(void)
+    {
+        thread_local uint64_t threadNbr = ++m_renderNbr;
+
         Camera &camera = getCurrentCamera();
         Dimension dimension = camera.getDimension();
-
-        std::vector<Color> buffer(dimension.getHeight() * dimension.getWidth());
-        size_t curPosBuffer = 0;
 
         double scale = std::tan(Math::deg2rad(camera.getFov() * 0.5));
         double imageAspectRatio = dimension.getWidthD() / dimension.getHeightD();
@@ -81,10 +83,12 @@ namespace Raytracer {
                 double rayX = (2 * (x + 0.5) / dimension.getWidthD() - 1) * imageAspectRatio * scale;
                 double rayY = (1 - 2 * (y + 0.5) / dimension.getHeightD()) * scale;
                 Math::Vector3D dir = Math::Vector3D(rayX, rayY, -1).normalize().rotate(camera.getAngle());
-                buffer[curPosBuffer++] = castRay(Ray(camera.getPos(), dir));
+                Color color = castRay(Ray(camera.getPos(), dir)) * 255.;
+                if (m_renderNbr != threadNbr)
+                    return;
+                m_render.setPixel(x, y, sf::Color(color.getR(), color.getG(), color.getB()));
             }
         }
-        return buffer;
     }
 
     /* call this whenever the object move posititon */

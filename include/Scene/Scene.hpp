@@ -30,7 +30,7 @@ namespace Raytracer {
         void addCamera(std::unique_ptr<Camera> obj);
         void addLight(std::unique_ptr<PointLight> obj);
 
-        std::vector<Color> render(void);
+        void render(void);
 
         bool setCameraIndex(size_t index);
         bool setCameraIndexRelative(int64_t offset);
@@ -38,6 +38,7 @@ namespace Raytracer {
         void setRenderLights(bool renderLights) { m_renderLights = renderLights; }
         void setAmbientLightColor(const Color &color) { m_ambientLightColor = color; }
         void setAmbientLightIntensity(float intensity) { m_ambientLightIntensity = intensity; }
+        void setRenderNbr(uint64_t nbr) { m_renderNbr = nbr; }
 
         Camera &getCurrentCamera(void) const;
         const std::vector<std::unique_ptr<Camera>> &getCameras(void) const { return m_cameras; }
@@ -53,7 +54,10 @@ namespace Raytracer {
         Color getSkyboxColor(void) const { return m_skybox.getAmbientColor(); }
         Color getAmbientLightColor(void) const { return m_ambientLightColor; }
         float getAmbientLightIntensity(void) const { return m_ambientLightIntensity; }
+        const sf::Image &getRender(void) const { return m_render; }
+        uint64_t getRenderNbr(void) const { return m_renderNbr; }
 
+        void resizeRender(unsigned int width, unsigned int height);
         void updatePrimitives(void);
         void removePrimitive(size_t index);
         void removeLight(size_t index);
@@ -82,5 +86,8 @@ namespace Raytracer {
         bool m_renderLights = false;
         Color m_ambientLightColor = Color(1., 1, 1);
         float m_ambientLightIntensity = 0.1;
+
+        sf::Image m_render;
+        uint64_t m_renderNbr = 0;
     };
 }

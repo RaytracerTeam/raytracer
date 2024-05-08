@@ -79,7 +79,6 @@ namespace Raytracer {
         void updateDimension(unsigned int width, unsigned int height);
         void setupCamera(void);
 
-        std::unique_ptr<sf::Uint8[]> RColorToPixelBuffer(const std::vector<Raytracer::Color> &vectorRes);
         void setRColorToImg(const std::vector<Raytracer::Color> &vectorRes);
         void handleEvents(void);
         float getFramerate(void);
@@ -114,7 +113,6 @@ namespace Raytracer {
 
         Dimension &m_dimension;
         sf::RenderWindow m_window;
-        sf::Image m_img;
         sf::Texture m_texture;
 
         sf::Clock m_clock;

@@ -248,7 +248,8 @@ namespace Raytracer
         switch (action) {
         case SceneReleaseActions::SCREENSHOT: {
             const auto time = std::chrono::system_clock::now().time_since_epoch().count();
-             m_img.saveToFile(std::string("screenshots/screenshot-")
+            const auto render = m_scene->getRender();
+            render.saveToFile(std::string("screenshots/screenshot-")
                 + std::to_string(time / 100000) + std::string(".png"));
             break;
         }

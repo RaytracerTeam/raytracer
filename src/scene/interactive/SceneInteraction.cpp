@@ -10,6 +10,7 @@
 
 #include "Parsing/Parsing.hpp"
 #include <cstring>
+#include <thread>
 
 namespace Raytracer {
     SceneInteractive::SceneInteractive(Dimension &dimension, const std::string &title,
@@ -65,10 +66,11 @@ namespace Raytracer {
         m_dimension.setHeight(height);
         m_renderResolution = m_dimension.getHeight();
         m_texture.create(m_dimension.getWidth(), m_dimension.getHeight());
-        m_img.create(m_dimension.getWidth(), m_dimension.getHeight());
         Camera *camera = m_interacCam.getCamera();
         if (camera)
             camera->setDimension(m_dimension);
+        m_scene->setRenderNbr(m_scene->getRenderNbr() + 1);
+        m_scene->resizeRender(width, height);
     }
 
     void SceneInteractive::handleEvents(void)
@@ -167,10 +169,10 @@ namespace Raytracer {
             // }
             if (m_needRendering || m_alwaysRender) {
                 m_needRendering = false;
-                m_lastRender = RColorToPixelBuffer(m_scene->render());
-                m_img.create(m_dimension.getWidth(), m_dimension.getHeight(), m_lastRender.get());
-                m_texture.update(m_img);
+                std::thread(&Scene::render, m_scene.get()).detach();
             }
+
+            m_texture.update(m_scene->getRender());
 
             m_window.clear();
             #ifndef BONUS
@@ -194,19 +196,4 @@ namespace Raytracer {
         m_previousTime = m_currentTime;
         return fps;
     }
-
-    ///////////////////////////
-
-    std::unique_ptr<sf::Uint8[]> SceneInteractive::RColorToPixelBuffer(const std::vector<Raytracer::Color> &vectorRes)
-    {
-        sf::Uint8 *pixels = new sf::Uint8[m_dimension.getSize() * 4];
-        for (size_t i = 0; const auto &value : vectorRes) {
-            pixels[i++] = Color::PercentToRGB(value.getR());
-            pixels[i++] = Color::PercentToRGB(value.getG());
-            pixels[i++] = Color::PercentToRGB(value.getB());
-            pixels[i++] = 255;
-        }
-        return std::unique_ptr<sf::Uint8[]>(pixels);
-    }
-
 } // namespace Raytracer
