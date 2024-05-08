@@ -19,6 +19,7 @@
 #include "Scene/SceneLightning.hpp"
 #include "Skybox.hpp"
 #include "Optimisation/BVH.hpp"
+#include <thread>
 
 namespace Raytracer {
     #define DEFAULT_SKYBOX "assets/skyboxes/sky.jpg"
@@ -94,7 +95,8 @@ namespace Raytracer {
         Color m_ambientLightColor = Color(1., 1, 1);
         float m_ambientLightIntensity = 0.1;
 
-        const size_t nbThreads = sysconf(_SC_NPROCESSORS_ONLN);
+        const size_t nbThreads = std::thread::hardware_concurrency();
+            // nbThreads = sysconf(_SC_NPROCESSORS_ONLN);
         std::mutex m_mutex;
 
         sf::Image m_render;
