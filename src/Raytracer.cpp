@@ -32,10 +32,12 @@ namespace Raytracer {
         if (scene->getCameraCount() == 0)
             scene->addCamera(std::make_unique<Camera>());
         scene->updatePrimitives();
-        auto res = scene->render();
-        const Dimension &dim = scene->getCurrentCamera().getDimension();
 
-        WriteFile::writeImage(WriteFile::PPM, res, dim);
+        const Dimension &dim = scene->getCurrentCamera().getDimension();
+        scene->resizeRender(dim.getWidth(), dim.getHeight());
+        scene->render();
+
+        WriteFile::writeImage(WriteFile::PPM, scene->getRender(), dim);
         return 0;
     }
 
