@@ -11,6 +11,7 @@
 #include <memory>
 #include <mutex>
 #include <vector>
+#include <thread>
 
 #include "Color.hpp"
 #include "Scene/Camera.hpp"
@@ -19,7 +20,6 @@
 #include "Scene/SceneLightning.hpp"
 #include "Skybox.hpp"
 #include "Optimisation/BVH.hpp"
-#include <thread>
 
 namespace Raytracer {
     #define DEFAULT_SKYBOX "assets/skyboxes/sky.jpg"

@@ -12,7 +12,6 @@
 
 #include <algorithm>
 #include <cmath>
-#include <thread>
 
 namespace Raytracer {
     // todo : direction should be in parsing
