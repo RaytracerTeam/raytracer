@@ -25,8 +25,8 @@ namespace Raytracer
 
     enum SceneReleaseActions {
         EXIT,
-        QUICK_SAVE,
-        SAVE_AND_EXIT,
+        SAVE_CURRENT_AND_EXIT,
+        QUICK_SAVE_AND_EXIT,
         SHOW_DEBUG,
         SCREENSHOT,
         REMOVE_OBJECT,

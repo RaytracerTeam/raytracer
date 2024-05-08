@@ -17,9 +17,10 @@ namespace Raytracer {
 
     ////////////////////////////////////////:
 
-    RayHit::RayHit(double distance, Math::Vector3D hitPt, Math::Vector3D normal)
+    RayHit::RayHit(double distance, Math::Vector3D hitPt, Math::Vector3D normal, Math::Vector3D relativeHitPt)
         : m_distance(distance)
         , m_hitPt(hitPt)
+        , m_relativeHitPt(relativeHitPt)
         , m_normal(normal)
     {
     }
@@ -27,6 +28,7 @@ namespace Raytracer {
     RayHit::RayHit(const RayHit &rhit)
         : m_distance(rhit.m_distance)
         , m_hitPt(rhit.m_hitPt)
+        , m_relativeHitPt(rhit.m_relativeHitPt)
         , m_normal(rhit.m_normal)
     {
     }

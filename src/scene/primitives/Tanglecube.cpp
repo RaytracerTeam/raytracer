@@ -13,7 +13,7 @@ namespace Raytracer {
     BoundingBox Tanglecube::getBoundingBox(void) const
     {
         return BoundingBox(
-            Math::Vector3D(m_origin - 1.), Math::Vector3D(m_origin + 1.));
+            Math::Vector3D(m_origin - 3.), Math::Vector3D(m_origin + 3.));
     }
 
     RayHit Tanglecube::getNormal(double distance, const Math::Vector3D &hitPt,

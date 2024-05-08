@@ -19,6 +19,7 @@ namespace Raytracer {
 
     void Skybox::setSkyboxUVTypee(SkyboxUVType type)
     {
+        m_uvtype = type;
         switch (type) {
         case SPHERE:
             m_methodAmbientColor = &Skybox::getAmbientColorUVSphere;

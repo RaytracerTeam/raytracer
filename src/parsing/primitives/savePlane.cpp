@@ -23,6 +23,6 @@ namespace Raytracer
         libconfig::Setting &planePos = setting.add(CFG_POSITION, libconfig::Setting::TypeFloat);
         planePos = plane->getPos();
 
-        saveMaterialSolid(setting, plane);
+        saveMaterial(setting, plane);
     }
 } // namespace Raytracer

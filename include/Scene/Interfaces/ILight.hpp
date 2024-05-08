@@ -8,7 +8,8 @@
 #pragma once
 
 #include "Color.hpp"
-#include "ISceneObj.hpp"
+#include "Math/Matrix44d.hpp"
+#include "Math/Vector3D.hpp"
 
 namespace Raytracer {
     class ILight {

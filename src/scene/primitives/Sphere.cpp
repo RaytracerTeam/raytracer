@@ -34,6 +34,6 @@ namespace Raytracer {
             return std::nullopt;
 
         Math::Vector3D hitPt = ray.getOrigin() + ray.getDirection() * distance;
-        return RayHit(distance, hitPt, (hitPt - m_origin).normalize());
+        return RayHit(distance, hitPt, (hitPt - m_origin).normalize(), (hitPt - m_origin) / m_radius);
     }
 } // namespace Raytracer

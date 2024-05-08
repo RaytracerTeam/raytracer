@@ -12,6 +12,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <thread>
 
 namespace Raytracer {
     // todo : direction should be in parsing
@@ -63,28 +64,48 @@ namespace Raytracer {
         return m_cameras.size();
     }
 
-    // https://stackoverflow.com/questions/28896001/read-write-to-ppm-image-file-c
-    // https://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-generating-camera-rays/generating-camera-rays.html
-    std::vector<Color> Scene::render(void)
+    void Scene::resizeRender(unsigned int width, unsigned int height)
+    {
+        m_render.create(width, height);
+    }
+
+    void Scene::renderLine(double imageAspectRatio, double scale, uint64_t threadNbr)
     {
         Camera &camera = getCurrentCamera();
         Dimension dimension = camera.getDimension();
 
-        std::vector<Color> buffer(dimension.getHeight() * dimension.getWidth());
-        size_t curPosBuffer = 0;
+        m_mutex.lock();
+        size_t y = ++m_renderY;
+        m_mutex.unlock();
+
+        if (y >= dimension.getHeight())
+            return;
+        for (size_t x = 0; x < dimension.getWidth(); x++) {
+            double rayX = (2 * (x + 0.5) / dimension.getWidthD() - 1) * imageAspectRatio * scale;
+            double rayY = (1 - 2 * (y + 0.5) / dimension.getHeightD()) * scale;
+            Math::Vector3D dir = Math::Vector3D(rayX, rayY, -1).normalize().rotate(camera.getAngle());
+            Color color = castRay(Ray(camera.getPos(), dir)) * 255.;
+            if (m_renderNbr != threadNbr)
+                return;
+            m_render.setPixel(x, y, sf::Color(color.getR(), color.getG(), color.getB()));
+        }
+
+        std::thread(&Scene::renderLine, this, imageAspectRatio, scale, threadNbr).detach();
+    }
+
+    void Scene::render(void)
+    {
+        thread_local uint64_t threadNbr = ++m_renderNbr;
+
+        Camera &camera = getCurrentCamera();
+        Dimension dimension = camera.getDimension();
 
         double scale = std::tan(Math::deg2rad(camera.getFov() * 0.5));
         double imageAspectRatio = dimension.getWidthD() / dimension.getHeightD();
 
-        for (size_t y = 0; y < dimension.getHeight(); y++) {
-            for (size_t x = 0; x < dimension.getWidth(); x++) {
-                double rayX = (2 * (x + 0.5) / dimension.getWidthD() - 1) * imageAspectRatio * scale;
-                double rayY = (1 - 2 * (y + 0.5) / dimension.getHeightD()) * scale;
-                Math::Vector3D dir = Math::Vector3D(rayX, rayY, -1).normalize().rotate(camera.getAngle());
-                buffer[curPosBuffer++] = castRay(Ray(camera.getPos(), dir));
-            }
-        }
-        return buffer;
+        m_renderY = -1;
+        for (size_t i = 0; i < nbThreads - 1; i++)
+            std::thread(&Scene::renderLine, this, imageAspectRatio, scale, threadNbr).detach();
     }
 
     /* call this whenever the object move posititon */
@@ -102,6 +123,8 @@ namespace Raytracer {
     {
         if (m_renderLights) {
             for (const auto &light : m_lightSystem.getLights()) {
+                if (!light->isShown())
+                    continue;
                 std::optional<RayHit> rayhit = light->hit(ray);
                 if (rayhit == std::nullopt)
                     continue;
@@ -185,6 +208,8 @@ namespace Raytracer {
 
         // Point lights
         for (const auto &light : m_lightSystem.getLights()) {
+            if (!light->isShown())
+                continue;
             auto lightVec = light->getOrigin() - rhitPrim.getHitPoint();
             auto lightDirection = lightVec.normalize();
             Ray lightRay = Ray(rhitPrim.getHitPoint(), lightDirection);
@@ -224,15 +249,12 @@ namespace Raytracer {
     {
         m_lightSystem.removeLight(index);
     }
+    // return false if the index is out of range
     bool Scene::removeCamera(size_t index)
     {
         if (index >= m_cameras.size())
             return false;
         m_cameras.erase(m_cameras.begin() + index);
-        if (m_cameras.size() == 0) {
-            m_cameras.push_back(std::make_unique<Camera>());
-            return true;
-        }
-        return false;
+        return true;
     }
 } // namespace Raytracer

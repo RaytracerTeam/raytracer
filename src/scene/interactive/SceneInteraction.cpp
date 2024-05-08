@@ -10,6 +10,7 @@
 
 #include "Parsing/Parsing.hpp"
 #include <cstring>
+#include <thread>
 
 namespace Raytracer {
     SceneInteractive::SceneInteractive(Dimension &dimension, const std::string &title,
@@ -24,7 +25,7 @@ namespace Raytracer {
         m_scene->updatePrimitives();
 
         if (inputFiles.size() > 0)
-            strcpy(m_cfgSceneBuf, inputFiles[0].data());
+            strcpy(m_loadFileBuf, inputFiles[0].data());
 
         #ifdef BONUS
             #ifdef MACOSTONIO
@@ -36,7 +37,7 @@ namespace Raytracer {
             m_window.setPosition(sf::Vector2i(0, 0));
             if (!ImGui::SFML::Init(m_window))
                 throw std::runtime_error("Failed to initialize ImGui");
-            m_leftPaneWidth = 220;
+            m_leftPaneWidth = 230;
             setupImageSize();
         #endif
         m_window.setFramerateLimit(60);
@@ -65,10 +66,11 @@ namespace Raytracer {
         m_dimension.setHeight(height);
         m_renderResolution = m_dimension.getHeight();
         m_texture.create(m_dimension.getWidth(), m_dimension.getHeight());
-        m_img.create(m_dimension.getWidth(), m_dimension.getHeight());
         Camera *camera = m_interacCam.getCamera();
         if (camera)
             camera->setDimension(m_dimension);
+        m_scene->setRenderNbr(m_scene->getRenderNbr() + 1);
+        m_scene->resizeRender(width, height);
     }
 
     void SceneInteractive::handleEvents(void)
@@ -97,16 +99,16 @@ namespace Raytracer {
             if (!m_isWriting && event.type == sf::Event::KeyReleased)
                 applyKeyReleasedActions(event.key.code);
             if (!m_isWriting && m_interacCam.handleInput(event, m_window, m_actions)) {
-                m_newEvent = true;
+                
             }
-            if (event.mouseButton.button == sf::Mouse::Right) {
-                if (event.type == sf::Event::MouseButtonReleased) {
-                    m_useSimpleMouse = false;
-                }
-                if (event.type == sf::Event::MouseButtonPressed) {
-                    m_useSimpleMouse = true;
-                    m_lastMousePos = sf::Mouse::getPosition();
-                }
+            if (event.type == sf::Event::MouseButtonReleased
+            && event.mouseButton.button == sf::Mouse::Right) {
+                m_useSimpleMouse = false;
+            }
+            if (event.type == sf::Event::MouseButtonPressed
+            && event.mouseButton.button == sf::Mouse::Right) {
+                m_useSimpleMouse = true;
+                m_lastMousePos = sf::Mouse::getPosition();
             }
         }
         handleMouse();
@@ -159,18 +161,12 @@ namespace Raytracer {
                 m_updateBVH = false;
                 m_scene->updatePrimitives();
             }
-
-            // if (m_newEvent) {
-            //     m_newEvent = false;
-            //     // todo : make this behavior diffretn : when an object transforms
-            //     // m_scene->updatePrimitives();
-            // }
             if (m_needRendering || m_alwaysRender) {
                 m_needRendering = false;
-                m_lastRender = RColorToPixelBuffer(m_scene->render());
-                m_img.create(m_dimension.getWidth(), m_dimension.getHeight(), m_lastRender.get());
-                m_texture.update(m_img);
+                std::thread(&Scene::render, m_scene.get()).detach();
             }
+
+            m_texture.update(m_scene->getRender());
 
             m_window.clear();
             #ifndef BONUS
@@ -194,19 +190,4 @@ namespace Raytracer {
         m_previousTime = m_currentTime;
         return fps;
     }
-
-    ///////////////////////////
-
-    std::unique_ptr<sf::Uint8[]> SceneInteractive::RColorToPixelBuffer(const std::vector<Raytracer::Color> &vectorRes)
-    {
-        sf::Uint8 *pixels = new sf::Uint8[m_dimension.getSize() * 4];
-        for (size_t i = 0; const auto &value : vectorRes) {
-            pixels[i++] = Color::PercentToRGB(value.getR());
-            pixels[i++] = Color::PercentToRGB(value.getG());
-            pixels[i++] = Color::PercentToRGB(value.getB());
-            pixels[i++] = 255;
-        }
-        return std::unique_ptr<sf::Uint8[]>(pixels);
-    }
-
 } // namespace Raytracer

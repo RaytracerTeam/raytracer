@@ -11,25 +11,47 @@
 #include <fstream>
 #include <iostream>
 
-#include <SFML/Graphics/Image.hpp>
-
 namespace Raytracer {
-    void WriteFile::writeImage(WriteType type, std::vector<Color> buffer,
-        const Dimension &dimension)
+    void WriteFile::writeImagePPM(
+        const sf::Image &buffer, const Dimension &dimension)
     {
         std::ofstream ofs("./out.ppm", std::ios::out | std::ios::binary);
-        sf::Image bernard;
-        const size_t imgSize = dimension.getSize();
 
-        if (type == PNG)
-            bernard.saveToFile("./out");
         ofs << "P6\n"
-            << dimension.getWidth() << " " << dimension.getHeight() << "\n255\n";
-        for (size_t i = 0; i < imgSize; i++) {
-            char r = (char)(Color::PercentToRGB(buffer[i][0]));
-            char g = (char)(Color::PercentToRGB(buffer[i][1]));
-            char b = (char)(Color::PercentToRGB(buffer[i][2]));
-            ofs << r << g << b;
+            << dimension.getWidth() << " " << dimension.getHeight()
+            << "\n255\n";
+
+        for (size_t y = 0; y < dimension.getHeight(); y++) {
+            for (size_t x = 0; x < dimension.getWidth(); x++) {
+                sf::Color pixel = buffer.getPixel(x, y);
+                ofs << pixel.r << pixel.g << pixel.b;
+            }
+        }
+    }
+
+    void WriteFile::writeImageJPG(const sf::Image &buffer)
+    {
+        buffer.saveToFile("./out.jpg");
+    }
+
+    void WriteFile::writeImagePNG(const sf::Image &buffer)
+    {
+        buffer.saveToFile("./out.png");
+    }
+
+    void WriteFile::writeImage(
+        WriteType type, const sf::Image &buffer, const Dimension &dimension)
+    {
+        switch (type) {
+        case PPM:
+            writeImagePPM(buffer, dimension);
+            break;
+        case JPG:
+            writeImageJPG(buffer);
+            break;
+        case PNG:
+            writeImagePNG(buffer);
+            break;
         }
     }
 } // namespace Raytracer

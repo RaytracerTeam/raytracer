@@ -21,5 +21,7 @@ namespace Raytracer {
 
         virtual int getID(void) const = 0;
         virtual void setID(int id) = 0;
+        virtual void setIsShown(bool isShown) = 0;
+        virtual bool isShown(void) const = 0;
     };
 }
