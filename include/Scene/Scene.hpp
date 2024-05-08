@@ -96,7 +96,6 @@ namespace Raytracer {
         float m_ambientLightIntensity = 0.1;
 
         const size_t nbThreads = std::thread::hardware_concurrency();
-            // nbThreads = sysconf(_SC_NPROCESSORS_ONLN);
         std::mutex m_mutex;
 
         sf::Image m_render;
