@@ -37,6 +37,7 @@ namespace Raytracer {
     {
         m_distance = rhit.m_distance;
         m_hitPt = rhit.m_hitPt;
+        m_relativeHitPt = rhit.m_relativeHitPt;
         m_normal = rhit.m_normal;
         return *this;
     }

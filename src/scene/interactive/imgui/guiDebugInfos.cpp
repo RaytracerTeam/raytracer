@@ -39,8 +39,6 @@ namespace Raytracer
             // New Render
             if (ImGui::Button("Render", ImVec2(60, 20)))
                 m_needRendering = true;
-            ImGui::SameLine();
-            ImGui::Checkbox("Always Render", &m_alwaysRender);
 
             // Ambient light
             float ambientLightIntensity = m_scene->getAmbientLightIntensity();
