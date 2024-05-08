@@ -12,6 +12,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <thread>
 
 namespace Raytracer {
     // todo : direction should be in parsing
@@ -68,6 +69,30 @@ namespace Raytracer {
         m_render.create(width, height);
     }
 
+    void Scene::renderLine(double imageAspectRatio, double scale, uint64_t threadNbr)
+    {
+        Camera &camera = getCurrentCamera();
+        Dimension dimension = camera.getDimension();
+
+        m_mutex.lock();
+        size_t y = ++m_renderY;
+        m_mutex.unlock();
+
+        if (y >= dimension.getHeight())
+            return;
+        for (size_t x = 0; x < dimension.getWidth(); x++) {
+            double rayX = (2 * (x + 0.5) / dimension.getWidthD() - 1) * imageAspectRatio * scale;
+            double rayY = (1 - 2 * (y + 0.5) / dimension.getHeightD()) * scale;
+            Math::Vector3D dir = Math::Vector3D(rayX, rayY, -1).normalize().rotate(camera.getAngle());
+            Color color = castRay(Ray(camera.getPos(), dir)) * 255.;
+            if (m_renderNbr != threadNbr)
+                return;
+            m_render.setPixel(x, y, sf::Color(color.getR(), color.getG(), color.getB()));
+        }
+
+        std::thread(&Scene::renderLine, this, imageAspectRatio, scale, threadNbr).detach();
+    }
+
     void Scene::render(void)
     {
         thread_local uint64_t threadNbr = ++m_renderNbr;
@@ -78,17 +103,9 @@ namespace Raytracer {
         double scale = std::tan(Math::deg2rad(camera.getFov() * 0.5));
         double imageAspectRatio = dimension.getWidthD() / dimension.getHeightD();
 
-        for (size_t y = 0; y < dimension.getHeight(); y++) {
-            for (size_t x = 0; x < dimension.getWidth(); x++) {
-                double rayX = (2 * (x + 0.5) / dimension.getWidthD() - 1) * imageAspectRatio * scale;
-                double rayY = (1 - 2 * (y + 0.5) / dimension.getHeightD()) * scale;
-                Math::Vector3D dir = Math::Vector3D(rayX, rayY, -1).normalize().rotate(camera.getAngle());
-                Color color = castRay(Ray(camera.getPos(), dir)) * 255.;
-                if (m_renderNbr != threadNbr)
-                    return;
-                m_render.setPixel(x, y, sf::Color(color.getR(), color.getG(), color.getB()));
-            }
-        }
+        m_renderY = -1;
+        for (size_t i = 0; i < nbThreads - 1; i++)
+            std::thread(&Scene::renderLine, this, imageAspectRatio, scale, threadNbr).detach();
     }
 
     /* call this whenever the object move posititon */

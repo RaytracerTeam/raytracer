@@ -9,6 +9,7 @@
 
 #include <list>
 #include <memory>
+#include <mutex>
 #include <vector>
 
 #include "Color.hpp"
@@ -31,6 +32,7 @@ namespace Raytracer {
         void addLight(std::unique_ptr<PointLight> obj);
 
         void render(void);
+        void renderLine(double imageAspectRatio, double scale, uint64_t threadNbr);
 
         bool setCameraIndex(size_t index);
         bool setCameraIndexRelative(int64_t offset);
@@ -87,7 +89,11 @@ namespace Raytracer {
         Color m_ambientLightColor = Color(1., 1, 1);
         float m_ambientLightIntensity = 0.1;
 
+        const size_t nbThreads = sysconf(_SC_NPROCESSORS_ONLN);
+        std::mutex m_mutex;
+
         sf::Image m_render;
         uint64_t m_renderNbr = 0;
+        size_t m_renderY;
     };
 }
