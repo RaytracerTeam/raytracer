@@ -14,7 +14,7 @@ namespace Raytracer
     void Parsing::saveLights(const Scene &scene, libconfig::Setting &root)
     {
         libconfig::Setting &lightsSetting = root.add("lights", libconfig::Setting::TypeGroup);
-        libconfig::Setting &pointLights = lightsSetting.add("pointLights", libconfig::Setting::TypeList);
+        libconfig::Setting &pointLights = lightsSetting.add(CFG_POINT_LIGHTS, libconfig::Setting::TypeList);
         for (auto &light : scene.getLights()) {
             PointLight *pointLight = dynamic_cast<PointLight *>(light.get());
             if (pointLight) {
@@ -35,17 +35,18 @@ namespace Raytracer
 
         // Directional Lights
         libconfig::Setting &directionalLights = lightsSetting.add(CFG_DIRECTIONAL_LIGHTS, libconfig::Setting::TypeList);
-        // DirectionalLight *directionalLight = scene.getLightSystem().getDirectionLight();
-        // if (directionalLight) {
-        //     libconfig::Setting &dLightSetting = directionalLights.add(libconfig::Setting::TypeGroup);
+        const DirectionalLight &directionalLight = scene.getLightSystem().getDirectionLight();
 
-        //     saveColor(dLightSetting, directionalLight->getColor());
-        //     libconfig::Setting &lightIntensity = dLightSetting.add(CFG_INTENSITY, libconfig::Setting::TypeFloat);
-        //     lightIntensity = directionalLight->getIntensity();
+        libconfig::Setting &dLightSetting = directionalLights.add(libconfig::Setting::TypeGroup);
 
-        //     savePos(dLightSetting, directionalLight->getDirection());
+        saveColor(dLightSetting, directionalLight.getColor());
+        libconfig::Setting &lightIntensity = dLightSetting.add(CFG_INTENSITY, libconfig::Setting::TypeFloat);
+        lightIntensity = directionalLight.getIntensity();
 
-        // }
+        libconfig::Setting &dirSetting = dLightSetting.add(CFG_DIRECTION, libconfig::Setting::TypeGroup);
+        dirSetting.add("x", libconfig::Setting::TypeFloat) = directionalLight.getDirection().getX();
+        dirSetting.add("y", libconfig::Setting::TypeFloat) = directionalLight.getDirection().getY();
+        dirSetting.add("z", libconfig::Setting::TypeFloat) = directionalLight.getDirection().getZ();
     }
 } // namespace Raytracer
 

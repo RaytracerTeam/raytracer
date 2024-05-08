@@ -43,7 +43,9 @@ namespace Raytracer {
         #define CFG_FUZZ "fuzz"
         #define CFG_EMISSION "emission"
         #define CFG_HAS_PHONG "hasPhong"
+        #define CFG_POINT_LIGHTS "pointLights"
         #define CFG_DIRECTIONAL_LIGHTS "directionalLights"
+        #define CFG_DIRECTION "direction"
 
         #define CFG_V0 "v0"
         #define CFG_V1 "v1"
@@ -59,7 +61,7 @@ namespace Raytracer {
         float parseFloat(const libconfig::Setting &setting, const std::string &key, float defaultValue);
         Math::Vector3D parsePosition(const libconfig::Setting &setting);
         Math::Angle3D parseRotation(const libconfig::Setting &setting);
-        MaterialSolid parseColor(const libconfig::Setting &setting);
+        MaterialSolid parseMaterialColor(const libconfig::Setting &setting);
         float parseHeight(const libconfig::Setting &setting);
         float parseRadius(const libconfig::Setting &setting);
         float parseDistance(const libconfig::Setting &setting);

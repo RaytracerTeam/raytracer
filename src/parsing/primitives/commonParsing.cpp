@@ -36,7 +36,7 @@ namespace Raytracer {
         {
             return parseVec3D(setting, CFG_POSITION);
         }
-        MaterialSolid parseColor(const libconfig::Setting &setting)
+        MaterialSolid parseMaterialColor(const libconfig::Setting &setting)
         {
             MaterialSolid materialSolid(Color(200U, 0U, 200U));
             if (setting.exists(CFG_COLOR)) {
