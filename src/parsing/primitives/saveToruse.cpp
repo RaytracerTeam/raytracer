@@ -17,7 +17,7 @@ namespace Raytracer
     {
         libconfig::Setting &setting = list.add(libconfig::Setting::TypeGroup);
 
-        savePos(setting, torus);
+        savePos(setting, torus->getOrigin());
 
         libconfig::Setting &radius = setting.add(CFG_RADIUS, libconfig::Setting::TypeFloat);
         radius = torus->getRadius();
@@ -25,6 +25,6 @@ namespace Raytracer
         libconfig::Setting &height = setting.add(CFG_DISTANCE, libconfig::Setting::TypeFloat);
         height = torus->getDistance();
 
-        saveMaterialSolid(setting, torus);
+        saveMaterial(setting, torus);
     }
 } // namespace Raytracer

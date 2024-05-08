@@ -34,6 +34,8 @@ namespace Raytracer {
         auto size = m_image->getSize();
         auto x = u * size.x;
         auto y = v * size.y;
+        if (x < 0 || x >= size.x || y < 0 || y >= size.y)
+            return Color(1., 0, 1);
         sf::Color color = m_image->getPixel(x, y);
         return Color((unsigned int)color.r, color.g, color.b);
     }

@@ -12,7 +12,7 @@
 namespace Raytracer {
     class DirectionalLight : public ALight {
     public:
-        DirectionalLight(const Math::Vector3D &direction, const Color &color = {255, 255, 255.}, double intensity = 1.)
+        DirectionalLight(const Math::Vector3D &direction, const Color &color = {255U, 255, 255}, double intensity = 1.)
             : ALight(color, intensity)
             , m_direction(direction)
         {

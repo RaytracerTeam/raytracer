@@ -25,7 +25,7 @@ namespace Raytracer {
         m_scene->updatePrimitives();
 
         if (inputFiles.size() > 0)
-            strcpy(m_cfgSceneBuf, inputFiles[0].data());
+            strcpy(m_loadFileBuf, inputFiles[0].data());
 
         #ifdef BONUS
             #ifdef MACOSTONIO
@@ -37,7 +37,7 @@ namespace Raytracer {
             m_window.setPosition(sf::Vector2i(0, 0));
             if (!ImGui::SFML::Init(m_window))
                 throw std::runtime_error("Failed to initialize ImGui");
-            m_leftPaneWidth = 220;
+            m_leftPaneWidth = 230;
             setupImageSize();
         #endif
         m_window.setFramerateLimit(60);
@@ -99,16 +99,16 @@ namespace Raytracer {
             if (!m_isWriting && event.type == sf::Event::KeyReleased)
                 applyKeyReleasedActions(event.key.code);
             if (!m_isWriting && m_interacCam.handleInput(event, m_window, m_actions)) {
-                m_newEvent = true;
+                
             }
-            if (event.mouseButton.button == sf::Mouse::Right) {
-                if (event.type == sf::Event::MouseButtonReleased) {
-                    m_useSimpleMouse = false;
-                }
-                if (event.type == sf::Event::MouseButtonPressed) {
-                    m_useSimpleMouse = true;
-                    m_lastMousePos = sf::Mouse::getPosition();
-                }
+            if (event.type == sf::Event::MouseButtonReleased
+            && event.mouseButton.button == sf::Mouse::Right) {
+                m_useSimpleMouse = false;
+            }
+            if (event.type == sf::Event::MouseButtonPressed
+            && event.mouseButton.button == sf::Mouse::Right) {
+                m_useSimpleMouse = true;
+                m_lastMousePos = sf::Mouse::getPosition();
             }
         }
         handleMouse();
@@ -161,12 +161,6 @@ namespace Raytracer {
                 m_updateBVH = false;
                 m_scene->updatePrimitives();
             }
-
-            // if (m_newEvent) {
-            //     m_newEvent = false;
-            //     // todo : make this behavior diffretn : when an object transforms
-            //     // m_scene->updatePrimitives();
-            // }
             if (m_needRendering || m_alwaysRender) {
                 m_needRendering = false;
                 std::thread(&Scene::render, m_scene.get()).detach();

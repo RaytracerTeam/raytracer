@@ -22,6 +22,7 @@
 
 namespace Raytracer {
     #define DEFAULT_SKYBOX "assets/skyboxes/sky.jpg"
+    #define SCREEN_RATIO 16.0f / 9.0f
     class Scene {
     public:
         Scene();
@@ -49,6 +50,8 @@ namespace Raytracer {
         const std::vector<std::unique_ptr<IPrimitive>> &getPrimitives(void) const { return m_primitives; }
         const std::vector<std::unique_ptr<PointLight>> &getLights(void) const { return m_lightSystem.getLights(); }
         std::vector<std::unique_ptr<PointLight>> &getLights(void) { return m_lightSystem.getLights(); }
+        SceneLightning &getLightSystem(void) { return m_lightSystem; }
+        const SceneLightning &getLightSystem(void) const { return m_lightSystem; }
         bool getRenderLights(void) const { return m_renderLights; }
         Skybox &getSkybox(void) { return m_skybox; }
         const Skybox &getSkybox(void) const { return m_skybox; }

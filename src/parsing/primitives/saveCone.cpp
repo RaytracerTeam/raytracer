@@ -15,7 +15,7 @@ namespace Raytracer
     {
         libconfig::Setting &setting = list.add(libconfig::Setting::TypeGroup);
 
-        savePos(setting, cone);
+        savePos(setting, cone->getOrigin());
 
         libconfig::Setting &radius = setting.add(CFG_RADIUS, libconfig::Setting::TypeFloat);
         radius = cone->getRadius();
@@ -23,6 +23,6 @@ namespace Raytracer
         libconfig::Setting &height = setting.add(CFG_HEIGHT, libconfig::Setting::TypeFloat);
         height = cone->getHeight();
 
-        saveMaterialSolid(setting, cone);
+        saveMaterial(setting, cone);
     }
 } // namespace Raytracer

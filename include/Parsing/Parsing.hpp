@@ -24,12 +24,15 @@ namespace Raytracer {
         #define CFG_SKYBOX "skybox"
         #define CFG_PATH "path"
         #define CFG_HASTEXTURE "hasTexture"
+
         #define CFG_AMBIENT_LIGHT "ambientLight"
         #define CFG_OBJ "obj"
         #define CFG_FOV "fov"
         #define CFG_RESOLUTION "resolution"
         #define CFG_POSITION "position"
         #define CFG_ROTATION "rotation"
+        #define CFG_SCALE "scale"
+        #define CRG_TRANSLATION "translation"
         #define CFG_COLOR "color"
         #define CFG_RADIUS "radius"
         #define CFG_HEIGHT "height"
@@ -40,6 +43,9 @@ namespace Raytracer {
         #define CFG_FUZZ "fuzz"
         #define CFG_EMISSION "emission"
         #define CFG_HAS_PHONG "hasPhong"
+        #define CFG_POINT_LIGHTS "pointLights"
+        #define CFG_DIRECTIONAL_LIGHTS "directionalLights"
+        #define CFG_DIRECTION "direction"
 
         #define CFG_V0 "v0"
         #define CFG_V1 "v1"
@@ -48,6 +54,7 @@ namespace Raytracer {
         #define CFG_MATERIAL "material"
         #define CFG_TYPE "type"
         #define CFG_MATERIAL_SOLID_COLOR "solid_color"
+        #define CFG_MATERIAL_TEXTURE "texture"
 
         bool parseArgv(int argc, char **argv, std::vector<std::string_view> &inputFiles); // return true if interactive mode
         void parse(std::unique_ptr<Scene> &scene, const std::vector<std::string_view> &inputFiles);
@@ -55,13 +62,15 @@ namespace Raytracer {
         float parseFloat(const libconfig::Setting &setting, const std::string &key, float defaultValue);
         Math::Vector3D parsePosition(const libconfig::Setting &setting);
         Math::Angle3D parseRotation(const libconfig::Setting &setting);
-        MaterialSolid parseColor(const libconfig::Setting &setting);
+        MaterialSolid parseMaterialColor(const libconfig::Setting &setting);
         float parseHeight(const libconfig::Setting &setting);
         float parseRadius(const libconfig::Setting &setting);
         float parseDistance(const libconfig::Setting &setting);
-        Math::Vector3D parseVec3D(const libconfig::Setting &setting, const std::string &key);
+        Math::Vector3D parseVec3D(const libconfig::Setting &setting, const std::string &key,
+            Math::Vector3D defaultValue = Math::Vector3D(0, 0, 0));
         float parseIntensity(const libconfig::Setting &setting);
-        std::unique_ptr<MaterialSolid> parseMaterialSolid(const libconfig::Setting &setting);
+        std::unique_ptr<IMaterial> parseMaterial(const libconfig::Setting &setting,
+            PrimitiveType primType = PrimitiveType::SPHERE);
 
         void parsePrimitives(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
         void parseSpheres(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene);
@@ -77,9 +86,9 @@ namespace Raytracer {
         void parseLights(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
         void parseObj(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
 
-        void savePos(libconfig::Setting &setting, ISceneObj *obj);
-        void saveColor(libconfig::Setting &setting, Color color);
-        void saveMaterialSolid(libconfig::Setting &setting, APrimitive *primitive);
+        void savePos(libconfig::Setting &setting, const Math::Vector3D pos);
+        void saveColor(libconfig::Setting &setting, const Color color);
+        void saveMaterial(libconfig::Setting &setting, APrimitive *primitive);
 
         void saveScene(const Scene &scene, const std::string &outputFile);
         void saveGlobal(const Scene &scene, libconfig::Setting &root);

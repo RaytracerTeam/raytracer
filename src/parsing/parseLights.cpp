@@ -25,12 +25,22 @@ namespace Raytracer {
         }
 
         // Point lights
-        for (const auto &setting : lightsSetting.lookup("pointLights")) {
+        for (const auto &setting : lightsSetting[CFG_POINT_LIGHTS]) {
             scene->addLight(std::make_unique<PointLight>(
                 parsePosition(setting),
                 parseRadius(setting),
                 getSettingColor(setting),
                 parseIntensity(setting)));
+        }
+
+        // Directional lights
+        if (lightsSetting.exists(CFG_DIRECTIONAL_LIGHTS)) {
+            for (const auto &dLightSetting : lightsSetting[CFG_DIRECTIONAL_LIGHTS]) {
+                scene->getLightSystem().setDirectionLight(DirectionalLight(
+                    parseVec3D(dLightSetting, CFG_DIRECTION),
+                    getSettingColor(dLightSetting),
+                    parseIntensity(dLightSetting)));
+            }
         }
     }
 } // namespace Raytracer
