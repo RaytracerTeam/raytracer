@@ -8,7 +8,6 @@
 #pragma once
 
 #include "IMaterial.hpp"
-#include "ISceneObj.hpp"
 #include "IShape.hpp"
 #include "Optimisation/BoundingBox.hpp"
 #include "Scene/Ray.hpp"
@@ -52,8 +51,6 @@ namespace Raytracer {
         virtual const std::string getTypeString(void) const = 0;
 
         virtual std::optional<RayHit> hit(const Ray &ray) const = 0;
-        virtual void setIsShown(bool isShown) = 0;
-        virtual bool isShown(void) const = 0;
 
     };
 }

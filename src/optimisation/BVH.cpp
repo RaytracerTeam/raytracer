@@ -123,7 +123,7 @@ namespace Raytracer {
                 if (!prim->isShown())
                     continue;
                 auto hitResult = prim->hit(ray);
-                if (hitResult != std::nullopt)
+                if (hitResult != std::nullopt && hitResult->getDistance() * hitResult->getDistance() >= 0.001)
                     hitResults.push_back(std::pair<RayHit, const IPrimitive *>(*hitResult, prim));
             }
 

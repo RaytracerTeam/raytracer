@@ -23,7 +23,6 @@ namespace Raytracer
             float *pos = currentCamera->getPos();
             if (ImGui::InputFloat3("Pos", pos, "%.2f")) {
                 currentCamera->setPos(pos);
-                std::cout << "Camera Pos: " << pos[0] << " " << pos[1] << " " << pos[2] << std::endl;
                 m_needRendering = true;
             }
             // Camera Angle

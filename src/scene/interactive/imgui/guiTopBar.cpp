@@ -44,7 +44,7 @@ namespace Raytracer
             ImGui::SameLine(0, 50);
 
             if (ImGui::SliderFloat("Speed", &m_defaultMovementSpeed, 0.01, 10, "%.3f",
-            ImGuiSliderFlags_Logarithmic | ImGuiSliderFlags_AlwaysClamp)) {
+            ImGuiSliderFlags_Logarithmic)) {
                 m_needRendering = true;
             }
 

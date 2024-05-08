@@ -36,7 +36,7 @@ namespace Raytracer {
             m_window.setPosition(sf::Vector2i(0, 0));
             if (!ImGui::SFML::Init(m_window))
                 throw std::runtime_error("Failed to initialize ImGui");
-            m_leftPaneWidth = 220;
+            m_leftPaneWidth = 230;
             setupImageSize();
         #endif
         m_window.setFramerateLimit(60);

@@ -22,6 +22,14 @@ namespace Raytracer
         }
         ImGui::SameLine(0, 20);
 
+        // isShown
+        bool isShown = light->isShown();
+        if (ImGui::Checkbox("Is Shown", &isShown)) {
+            light->setIsShown(isShown);
+            m_updateBVH = true;
+            m_needRendering = true;
+        }
+
         // Color
         ImGui::SetNextItemWidth(200);
         float *color = light->getColor();

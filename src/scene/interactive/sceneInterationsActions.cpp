@@ -40,7 +40,7 @@ namespace Raytracer
         m_releaseActions.push_back(sf::Keyboard::X);               // SAVE_AND_QUIT
         m_releaseActions.push_back(sf::Keyboard::F3);              // SHOW_DEBUG
         m_releaseActions.push_back(sf::Keyboard::F2);              // SCREENSHOT
-        m_releaseActions.push_back(sf::Keyboard::Backspace);       // REMOVE_OBJECT
+        m_releaseActions.push_back(sf::Keyboard::Delete);           // REMOVE_OBJECT
         m_releaseActions.push_back(sf::Keyboard::F11);             // TOGGLE_FULLSCREEN
         m_releaseActions.push_back(sf::Keyboard::M);               // TOGGLE_MOUSE
         m_releaseActions.push_back(sf::Keyboard::N);               // TOGGLE_SIMPLE_MOUSE
@@ -72,8 +72,8 @@ namespace Raytracer
                 return sf::Keyboard::Key::F3;
             else if (keyCode == "F11")
                 return sf::Keyboard::F11;
-            else if (keyCode == "BACKSPACE")
-                return sf::Keyboard::Key::Backspace;
+            else if (keyCode == "DELETE")
+                return sf::Keyboard::Key::Delete;
             else if (keyCode == "TAB")
                 return sf::Keyboard::Key::Tab;
             else if (keyCode >= "A" && keyCode <= "Z")
