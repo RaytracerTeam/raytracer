@@ -1,18 +1,0 @@
-
-v	cpp:S1135"4Complete the task associated to this "todo" comment.(È……8©½ñó1J$4a98dd44-0e20-4088-8198-57a99c654483
-˜	cpp:S5276Q"Vimplicit conversion from 'size_t' (aka 'unsigned long') to 'double' may lose precision(Ä˜µ¸8Øè’ñó1J$e6d4a438-fb12-47bb-8793-a590a997eeff
-	cpp:S5276R"Vimplicit conversion from 'size_t' (aka 'unsigned long') to 'double' may lose precision(‰ÎœÚşÿÿÿÿ8Øè’ñó1J$aa950d01-5080-4c15-83a3-4afa7090b294
-g	cpp:S1117¿"$declaration shadows a local variable(†­Ø8õ¿–éô1J$4665e410-0535-40e1-b00c-f2e7566df5b2
-	cpp:S11558"=Use "empty()" to check whether the container is empty or not.(„ßÉÂ8ìè’ñó1J$f880f97a-919e-48a4-9799-e87f825f732b
-³	cpp:S5350F"qMake the type of this variable a reference-to-const. The current type of "camera" is "class Raytracer::Camera &".(¬à±ü8íè’ñó1J$cdc5dcda-6e40-437d-a850-e783d27d3cf7
-s	cpp:S1121T",Extract the assignment from this expression.(“¨üşÿÿÿÿ8ñè’ñó1J$a585c70f-fe09-4615-8a2e-f9ca7bac993b
-b	cpp:S6197_"!Replace with "std::ranges::sort".(¤Ø8òè’ñó1J$b5af006f-c2c3-4540-932d-b4cce4c47f41
-|	cpp:S5495b";Capture variables by reference, it is safe in this context.(ØˆŒs8òè’ñó1J$79b1abe0-2922-4125-8f54-b2700936cb7e
-cpp:S134"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(àÙ°ö8À–éô1J$4cb341d9-e848-4689-af95-02b8cb4af62b
-cpp:S134’"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(µÔñ£8şà÷—õ1J$d4e7f5b5-ee21-44a1-93a2-fc5b45803ada
-e	cpp:S2193†"#Do not use a counter of type float.(¤èİ8ÿà÷—õ1J$3420bd92-00d4-40e5-a7b7-18b2d3b1d6a3
-—	cpp:S3776­"TRefactor this function to reduce its Cognitive Complexity from 32 to the 25 allowed.(¶¨ÕŸ8À–éô1J$e2545e3c-97f6-476e-b858-9a61554c1c7f
-cpp:S134Õ"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(™¦İ¦8‰á÷—õ1J$5c062a0d-2ba4-4443-9cb7-e56366bbd60f
-y	cpp:S1066¶"1Merge this "if" statement with the enclosing one.(ôŒ³ûÿÿÿÿ8À–éô1J$e8160f9a-13b1-4108-bef0-a845ce21d0a6
-…	cpp:S1155û"=Use "empty()" to check whether the container is empty or not.(Î£µ¿úÿÿÿÿ8«À–éô1J$05588235-bddd-4427-9145-707b033f9ac2
-¶	cpp:S3230"tDo not use the constructor's initializer list for data member "m_lightSystem". Use the in-class initializer instead.(Ö©•¯8é’ñó1J$307d7da1-2b0c-4bde-b385-782669e28685

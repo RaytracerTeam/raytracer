@@ -1,2 +1,0 @@
-
-úcpp:S995"áMake the type of this parameter a reference-to-const. The current type of "scene" is "class std::unique_ptr<class Raytracer::Scene> &".(÷Ù”Ê

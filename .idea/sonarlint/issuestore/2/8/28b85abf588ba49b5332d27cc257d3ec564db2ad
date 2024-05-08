@@ -1,17 +1,0 @@
-
-	cpp:S5276""Oimplicit conversion turns floating-point number into integer: 'float' to 'bool'(ŒáÉøûÿÿÿÿJ$bbecfa74-33f5-4ed4-b2a3-4b231d0de9c0
-	cpp:S5276$"Oimplicit conversion turns floating-point number into integer: 'float' to 'bool'(º£á·þÿÿÿÿJ$410e59ed-3e82-4442-8ef3-50d9b3872df1
-	cpp:S5276&"Oimplicit conversion turns floating-point number into integer: 'float' to 'bool'(å—´ýÿÿÿÿJ$2df696a8-a41a-4124-9a13-14646d4b7f27
-	cpp:S52764"Gimplicit conversion loses floating-point precision: 'double' to 'float'(ß²øQJ$642a3d38-f846-4f5a-8c09-f20d2eb6bf8c
-‡	cpp:S52765"Gimplicit conversion loses floating-point precision: 'double' to 'float'(‡´¾¨ûÿÿÿÿJ$1b59db64-5105-4ffd-8d57-b4638821a03a
-‡	cpp:S52766"Gimplicit conversion loses floating-point precision: 'double' to 'float'(žÞ±ïûÿÿÿÿJ$919ce61f-95cf-4f3e-ba11-aca069f8cb52
-o	cpp:S5812"/Concatenate this namespace with the nested one.(¼£Ã„úÿÿÿÿJ$241613ea-7e05-4c82-be2f-30d9ccfd5494
-	cpp:S3230"]Do not assign data members in a constructor. Initialize member "x" in an initialization list.(‡á‘äùÿÿÿÿJ$2693f928-cb6f-4849-addd-59930fd7d09e
-˜	cpp:S3230"]Do not assign data members in a constructor. Initialize member "y" in an initialization list.(¦ˆJ$2bfd92cb-9d16-45f1-a008-57297bd38b8b
-˜	cpp:S3230"]Do not assign data members in a constructor. Initialize member "z" in an initialization list.(¥×ßJ$c2ea036d-968e-4fe2-bd26-d1304b539584
-	cpp:S3230"]Do not assign data members in a constructor. Initialize member "x" in an initialization list.(¿ûºúÿÿÿÿJ$0cff474b-9b81-4978-a922-65e68c488d97
-	cpp:S3230"]Do not assign data members in a constructor. Initialize member "y" in an initialization list.(é£¡¦ÿÿÿÿÿJ$e8db0696-0075-4d20-a026-8be8a3d74685
-	cpp:S3230"]Do not assign data members in a constructor. Initialize member "z" in an initialization list.(ÿÕ´¢øÿÿÿÿJ$188c07cf-a84c-4d20-a56c-4c3d3bf0b778
-–cpp:S995"\Make the type of this parameter a pointer-to-const. The current type of "vals" is "float *".(Íí€³J$551b96a2-6119-4fa0-95fe-52ea5eafe1da
-c	cpp:S5817W")This function should be declared "const".(øáÍ>J$cf95cedc-3762-4778-bf7d-9991a4604cf0
-j	cpp:S5817Ô")This function should be declared "const".(±ˆÞôùÿÿÿÿJ$8da0684f-ccd5-440e-8712-d6447eb93926
