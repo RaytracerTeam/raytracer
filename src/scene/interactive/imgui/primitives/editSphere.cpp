@@ -20,6 +20,7 @@ namespace Raytracer
         if (ImGui::SliderFloat("Radius", &sphereRadius, DEFAULT_RADIUS_MIN,
         DEFAULT_RADIUS_MAX, "%.3f", ImGuiSliderFlags_Logarithmic)) {
             sphere->setRadius(sphereRadius);
+            m_updateBVH = true;
             m_needRendering = true;
         }
         #endif

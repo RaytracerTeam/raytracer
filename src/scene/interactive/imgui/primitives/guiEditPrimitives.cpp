@@ -54,6 +54,16 @@ namespace Raytracer
                 }
                 ImGui::SameLine(0, 20);
 
+                // isShown
+                bool isShown = primitive->isShown();
+                if (ImGui::Checkbox("Is Shown", &isShown)) {
+                    primitive->setIsShown(isShown);
+                    m_updateBVH = true;
+                    m_needRendering = true;
+                }
+
+                ImGui::SameLine(0, 20);
+
                 // Color
                 ImGui::SetNextItemWidth(200);
                 float *color = ((MaterialSolid *)primitive->getMaterial())->getColor();
@@ -70,6 +80,7 @@ namespace Raytracer
                 if (ImGui::SliderFloat3("Position", pos, DEFAULT_POS_MIN,
                 DEFAULT_POS_MAX)) {
                     primitive->setOrigin(Math::Vector3D(pos[0], pos[1], pos[2]));
+                    m_updateBVH = true;
                     m_needRendering = true;
                 }
 
@@ -106,6 +117,15 @@ namespace Raytracer
             }
 
             if (ImGui::BeginTabItem("Transformations")) {
+                // Rotation
+                Math::Angle3D rot3D = primitive->getTMatrix().getRot();
+                float rot[3] = {(float)rot3D.getPitch(), (float)rot3D.getYaw(), (float)rot3D.getRoll()};
+                if (ImGui::SliderFloat3("Rotation", rot, 0, 360)) {
+                    primitive->setRotXYZ(rot[0], rot[1], rot[2]);
+                    // primitive->
+                    m_updateBVH = true;
+                    m_needRendering = true;
+                }
                 ImGui::EndTabItem();
             }
         }

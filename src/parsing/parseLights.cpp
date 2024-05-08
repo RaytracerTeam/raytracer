@@ -10,21 +10,37 @@
 #include "Scene/Lights/PointLight.hpp"
 
 namespace Raytracer {
-    namespace Parsing {
-        void parseLights(const libconfig::Config &config, std::unique_ptr<Scene> &scene)
-        {
-            if (!config.exists("lights"))
-                return;
+    void Parsing::parseLights(const libconfig::Config &config, std::unique_ptr<Scene> &scene)
+    {
+        if (!config.exists("lights"))
+            return;
 
-            const libconfig::Setting &lightsSetting = config.lookup("lights");
+        const libconfig::Setting &lightsSetting = config.lookup("lights");
 
-            for (const auto &setting : lightsSetting.lookup("pointLights")) {
-                scene->addLight(std::make_unique<PointLight>(
-                    parsePosition(setting),
-                    parseRadius(setting),
-                    getSettingColor(setting),
-                    parseIntensity(setting)));
+        // Ambient light
+        if (lightsSetting.exists(CFG_AMBIENT_LIGHT)) {
+            auto &ambientLightSetting = lightsSetting[CFG_AMBIENT_LIGHT];
+            scene->setAmbientLightColor(getSettingColor(ambientLightSetting));
+            scene->setAmbientLightIntensity(parseFloat(ambientLightSetting, CFG_INTENSITY, 0.1));
+        }
+
+        // Point lights
+        for (const auto &setting : lightsSetting[CFG_POINT_LIGHTS]) {
+            scene->addLight(std::make_unique<PointLight>(
+                parsePosition(setting),
+                parseRadius(setting),
+                getSettingColor(setting),
+                parseIntensity(setting)));
+        }
+
+        // Directional lights
+        if (lightsSetting.exists(CFG_DIRECTIONAL_LIGHTS)) {
+            for (const auto &dLightSetting : lightsSetting[CFG_DIRECTIONAL_LIGHTS]) {
+                scene->getLightSystem().setDirectionLight(DirectionalLight(
+                    parseVec3D(dLightSetting, CFG_DIRECTION),
+                    getSettingColor(dLightSetting),
+                    parseIntensity(dLightSetting)));
             }
         }
-    } // namespace Parsing
+    }
 } // namespace Raytracer

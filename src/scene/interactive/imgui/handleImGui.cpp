@@ -25,26 +25,27 @@ namespace Raytracer
         // Start of the window
         if (ImGui::Begin("What a nice tool, Thank you Mister Pommier", nullptr,
         ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDecoration)) {
+            if (!m_fullscreen) {
+                //* -- Menu Bar --
+                guiMenuBar();
 
-            //* -- Menu Bar --
-            guiMenuBar();
+                //* -- Top Bar --
+                guiTopBar();
 
-            //* -- Top Bar --
-            guiTopBar();
+                // Left Pane
+                if (ImGui::BeginChild("left pane", ImVec2(m_leftPaneWidth, m_imageHeight),
+                ImGuiChildFlags_Border)) {
 
-            // Left Pane
-            if (ImGui::BeginChild("left pane", ImVec2(m_leftPaneWidth, m_imageHeight),
-            ImGuiChildFlags_Border)) {
+                    //* -- Object Selection --
+                    guiObjectSelection();
 
-                //* -- Object Selection --
-                guiObjectSelection();
+                    //* -- Debug Infos --
+                    guiDebugInfos();
+                }
+                ImGui::EndChild();
 
-                //* -- Debug Infos --
-                guiDebugInfos();
+                ImGui::SameLine();
             }
-            ImGui::EndChild();
-
-            ImGui::SameLine();
 
             //* -- Image Render --
             ImGui::Image(m_texture, sf::Vector2f(
@@ -53,7 +54,7 @@ namespace Raytracer
                 sf::Color::White, sf::Color::Cyan);
 
             //* -- Edit Primitives --
-            if (m_selectedObject >= 0) {
+            if (!m_fullscreen && m_selectedObject >= 0) {
                 switch (m_objectSelection) {
                 case ObjectSelection::PRIMITIVE: guiEditPrimitives(); break;
                 case ObjectSelection::LIGHT: guiEditLights(); break;

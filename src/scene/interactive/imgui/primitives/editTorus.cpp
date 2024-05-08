@@ -22,6 +22,7 @@ namespace Raytracer
         if (ImGui::SliderFloat("Radius", &radius, DEFAULT_RADIUS_MIN,
         DEFAULT_RADIUS_MAX, "%.3f", ImGuiSliderFlags_Logarithmic)) {
             torus->setRadius(radius);
+            m_updateBVH = true;
             m_needRendering = true;
         }
 
@@ -30,6 +31,7 @@ namespace Raytracer
         if (ImGui::SliderFloat("Distance", &distance, DEFAULT_RADIUS_MIN,
         DEFAULT_RADIUS_MAX, "%.3f", ImGuiSliderFlags_Logarithmic)) {
             torus->setDistance(distance);
+            m_updateBVH = true;
             m_needRendering = true;
         }
         #endif

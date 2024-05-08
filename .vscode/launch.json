@@ -5,7 +5,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/raytracer",
-            "args": ["-i"],
+            "args": ["-i", "scenes/quick_save.cfg"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
@@ -48,7 +48,7 @@
             "program": "${workspaceFolder}/raytracer",
             "args": [
                 "-i",
-                "./scenes/old_parsing.cfg"
+                "./scenes/thomas.cfg"
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

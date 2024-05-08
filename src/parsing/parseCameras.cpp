@@ -14,18 +14,17 @@ void Raytracer::Parsing::parseCameras(const libconfig::Config &config, std::uniq
 
     for (const auto &cameraSetting : config.lookup("cameras")) {
         Camera camera;
-        if (cameraSetting.exists("resolution")) {
-            auto &resSetting = cameraSetting.lookup("resolution");
-            // camera.setDimension(Dimension(
-            //     (unsigned int)resSetting.lookup(CFG_WIDTH),
-            //     (unsigned int)resSetting.lookup(CFG_HEIGHT)));
+        if (cameraSetting.exists(CFG_RESOLUTION) &&
+        cameraSetting.lookup(CFG_RESOLUTION).isNumber()) {
+            int resolution = cameraSetting.lookup(CFG_RESOLUTION);
+            camera.setDimension(Dimension(resolution * SCREEN_RATIO, resolution));
         }
-        if (cameraSetting.exists("fieldOfView")) {
-            camera.setFov(cameraSetting.lookup("fieldOfView"));
+        if (cameraSetting.exists(CFG_FOV)) {
+            camera.setFov(cameraSetting.lookup(CFG_FOV));
         }
         if (cameraSetting.exists(CFG_POSITION)) {
-            camera.setPos(getSettingPosition(cameraSetting));
-            camera.setDefaultPos(getSettingPosition(cameraSetting));
+            camera.setPos(parsePosition(cameraSetting));
+            camera.setDefaultPos(parsePosition(cameraSetting));
         }
         if (cameraSetting.exists(CFG_ROTATION)) {
             camera.setAngle(getSettingRotation(cameraSetting));

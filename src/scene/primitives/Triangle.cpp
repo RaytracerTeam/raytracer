@@ -10,6 +10,19 @@
 #include "Math/Algorithm.hpp"
 
 namespace Raytracer {
+    BoundingBox Triangle::getBoundingBox(void) const
+    {
+        Math::Vector3D min = Math::Vector3D(
+            std::min(m_origin.getX(), std::min(m_v1.getX(), m_v2.getX())),
+            std::min(m_origin.getY(), std::min(m_v1.getY(), m_v2.getY())),
+            std::min(m_origin.getZ(), std::min(m_v1.getZ(), m_v2.getZ())));
+        Math::Vector3D max = Math::Vector3D(
+            std::max(m_origin.getX(), std::max(m_v1.getX(), m_v2.getX())),
+            std::max(m_origin.getY(), std::max(m_v1.getY(), m_v2.getY())),
+            std::max(m_origin.getZ(), std::max(m_v1.getZ(), m_v2.getZ())));
+        return BoundingBox(min, max);
+    }
+
     std::optional<RayHit> Triangle::hit(const Ray &ray) const
     {
         Math::Vector3D edge1 = m_v1 - m_origin;

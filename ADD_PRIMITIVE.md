@@ -48,7 +48,7 @@ void Raytracer::Parsing::parseSpheres(const libconfig::Setting &primitiveSetting
         return;
     for (const auto &config : primitiveSetting.lookup("spheres")) {
         auto sphere = std::make_unique<Sphere>(parsePosition(config),
-            parseMaterialSolid(config),
+            parseMaterial(config),
             parseRadius(config));
         scene->addPrimitive(std::move(sphere));
     }
@@ -86,12 +86,12 @@ namespace Raytracer
     {
         libconfig::Setting &setting = list.add(libconfig::Setting::TypeGroup);
 
-        savePos(setting, sphere);
+        savePos(setting, sphere->getOrigin());
 
         libconfig::Setting &sphereRadius = setting.add(CFG_RADIUS, libconfig::Setting::TypeFloat);
         sphereRadius = sphere->getRadius();
 
-        saveMaterialSolid(setting, torus);
+        saveMaterial(setting, torus);
     }
 } // namespace Raytracer
 ```
@@ -172,13 +172,11 @@ case PrimitiveType::SPHERE:
 if (ImGui::Selectable("Sphere")) {
     auto sphere = std::make_unique<Sphere>(
         Math::Vector3D(0, 0, 0),
-        std::make_unique<MaterialSolid>(
-            Color((unsigned int)255, 255, 255)),
-        1.0);
+        std::make_unique<MaterialSolid>(Color(255U, 255, 255)), 1.0);
     sphere->setID(m_scene->getPrimitives().size() + 1);
     m_scene->addPrimitive(std::move(sphere));
     m_needRendering = true;
-    m_newEvent = true;
+    m_updateBVH = true;
 }
 // ...
 ```

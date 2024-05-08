@@ -26,6 +26,7 @@ namespace Raytracer {
         void setRadius(float radius) { m_radius = radius; }
         void setHeight(float height) { m_height = height; }
 
+        BoundingBox getBoundingBox(void) const override;
         std::optional<RayHit> hit(const Ray &ray) const override;
         std::optional<RayHit> hitFace(const Math::Vector3D &dstOrigin, const Math::Vector3D &rayDir) const;
         RayHit getNormal(double distance, const Math::Vector3D &hitPt, const Math::Vector3D &origin) const;

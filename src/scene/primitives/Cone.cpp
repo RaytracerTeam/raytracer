@@ -10,8 +10,14 @@
 #include <cmath>
 
 namespace Raytracer {
-    RayHit Cone::getNormal(double distance, const Math::Vector3D &hitPt,
-        const Math::Vector3D &origin) const
+    BoundingBox Cone::getBoundingBox(void) const
+    {
+        return BoundingBox(
+            Math::Vector3D(m_origin.getX() - m_radius, m_origin.getY(), m_origin.getZ() - m_radius),
+            Math::Vector3D(m_origin.getX() + m_radius, m_origin.getY() + m_height, m_origin.getZ() + m_radius));
+    }
+
+    RayHit Cone::getNormal(double distance, const Math::Vector3D &hitPt, const Math::Vector3D &origin) const
     {
         double r = std::sqrt(std::pow(hitPt.getX() - origin.getX(), 2)
             + std::pow(hitPt.getZ() - origin.getZ(), 2));

@@ -27,6 +27,7 @@ namespace Raytracer {
 
         Matrix44::Matrix44(double rotX, double rotY, double rotZ)
         {
+            m_rot = { rotX, rotY, rotZ };
             rotX = rotX * M_PI / 180;
             rotY = rotY * M_PI / 180;
             rotZ = rotZ * M_PI / 180;

@@ -16,7 +16,7 @@ void Raytracer::Parsing::parseCones(const libconfig::Setting &primitiveSetting, 
         return;
     for (const auto &config : primitiveSetting.lookup("cones")) {
         auto cone = std::make_unique<Cone>(parsePosition(config),
-            parseMaterialSolid(config),
+            parseMaterial(config),
             parseRadius(config),
             parseHeight(config));
         scene->addPrimitive(std::move(cone));

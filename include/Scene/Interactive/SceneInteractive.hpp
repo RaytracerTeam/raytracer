@@ -24,7 +24,6 @@
 namespace Raytracer {
     #define DEFAULT_MOVEMENT_SPEED 0.3f
     #define DEFAULT_ROTATION_SPEED 3
-    #define SCREEN_RATIO 16.0f / 9.0f
     #define DEFAULT_CAMERA_RESOLUTION 240
     #define FILE_BUF_SIZE 100
 
@@ -79,7 +78,6 @@ namespace Raytracer {
         void updateDimension(unsigned int width, unsigned int height);
         void setupCamera(void);
 
-        std::unique_ptr<sf::Uint8[]> RColorToPixelBuffer(const std::vector<Raytracer::Color> &vectorRes);
         void setRColorToImg(const std::vector<Raytracer::Color> &vectorRes);
         void handleEvents(void);
         float getFramerate(void);
@@ -114,7 +112,6 @@ namespace Raytracer {
 
         Dimension &m_dimension;
         sf::RenderWindow m_window;
-        sf::Image m_img;
         sf::Texture m_texture;
 
         sf::Clock m_clock;
@@ -124,9 +121,9 @@ namespace Raytracer {
         // ImGui
         sf::Clock m_deltaClock;
         size_t m_renderResolution;
-        char m_fileBuf[FILE_BUF_SIZE] = "scenes/";
+        char m_saveFileBuf[FILE_BUF_SIZE] = "scenes/";
         char m_skyboxPathBuf[FILE_BUF_SIZE] = DEFAULT_SKYBOX;
-        char m_cfgSceneBuf[FILE_BUF_SIZE] = "scenes/";
+        char m_loadFileBuf[FILE_BUF_SIZE] = "scenes/";
         bool m_isWriting = false;
         bool m_showDebug = false;
         bool m_addToCurrentScene = false;
@@ -136,7 +133,8 @@ namespace Raytracer {
         size_t m_imageWidth;
         size_t m_leftPaneWidth;
         std::vector<float> m_frameTimes;
-        bool m_alwaysRender;
+        bool m_alwaysRender = false;
+        bool m_fullscreen = false;
 
         // Storing the result of the render
         std::unique_ptr<sf::Uint8 []> m_lastRender;
@@ -144,7 +142,7 @@ namespace Raytracer {
         // Actions
         std::vector<std::pair<sf::Keyboard::Key, bool>> m_actions;
         std::vector<sf::Keyboard::Key> m_releaseActions;
-        bool m_newEvent = true;
+        bool m_updateBVH = true;
         bool m_needRendering = true;
         float m_movementSpeed = DEFAULT_MOVEMENT_SPEED;
         float m_defaultMovementSpeed = DEFAULT_MOVEMENT_SPEED;
