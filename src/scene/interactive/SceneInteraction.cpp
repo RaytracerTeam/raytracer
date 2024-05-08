@@ -7,6 +7,7 @@
 
 #include "Scene/Interactive/CameraInteractive.hpp"
 #include "Scene/Interactive/SceneInteractive.hpp"
+#include <cstring>
 
 #include "Parsing/Parsing.hpp"
 

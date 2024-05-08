@@ -21,6 +21,7 @@ namespace Raytracer {
 
         void setID(int id) override { m_id = id; }
         void setTMatrix(const Math::Matrix44 &mat) override { m_mat = mat; };
+        void setTMatrix(double rotX, double rotY, double rotZ) override { m_mat = Math::Matrix44(rotX, rotY, rotZ); };
         void setColor(const Color &color) override { m_color = color; }
         void setOrigin(const Math::Vector3D &origin) override { m_origin = origin; }
         void setIntensity(double intensity) override { m_intensity = intensity; }

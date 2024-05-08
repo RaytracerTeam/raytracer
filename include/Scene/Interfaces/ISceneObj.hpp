@@ -18,6 +18,7 @@ namespace Raytracer {
 
         /* tranform matrix */
         virtual void setTMatrix(const Math::Matrix44 &mat) = 0;
+        virtual void setTMatrix(double rotX, double rotY, double rotZ) = 0;
         virtual const Math::Matrix44 &getTMatrix(void) const = 0;
     };
 } // namespace Raytracer

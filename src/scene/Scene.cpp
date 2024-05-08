@@ -9,6 +9,7 @@
 #include "Error.hpp"
 #include "Math/Algorithm.hpp"
 #include "Math/Utils.hpp"
+#include "Math/Matrix44d.hpp"
 
 #include <algorithm>
 #include <cmath>
@@ -102,9 +103,12 @@ namespace Raytracer {
 
     Color Scene::castRay(const Ray &ray) const
     {
+        Math::Matrix44 mat;
         if (m_renderLights) {
             for (const auto &light : m_lightSystem.getLights()) {
-                std::optional<RayHit> rayhit = light->hit(ray);
+                Ray ray_temp = ray;
+
+                std::optional<RayHit> rayhit = light->hit(ray_temp);
                 if (rayhit == std::nullopt)
                     continue;
 
@@ -113,11 +117,12 @@ namespace Raytracer {
             }
         }
         for (const auto &prim : m_primitives) {
-            std::optional<RayHit> rayhit = prim->hit(ray);
+            Ray ray_temp(ray.getOrigin(),  (prim->getTMatrix() * ray.getDirection()), ray.getDepth());
+            std::optional<RayHit> rayhit = prim->hit(ray_temp);
             if (rayhit == std::nullopt)
                 continue;
 
-            return castRayColor(ray, prim.get(), rayhit.value());
+            return castRayColor(ray_temp, prim.get(), rayhit.value());
         }
         return m_skybox.getAmbientColor(ray);
     }
