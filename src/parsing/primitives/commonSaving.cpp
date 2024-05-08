@@ -56,10 +56,10 @@ namespace Raytracer
 
             IMaterial *material = primitive->getMaterial();
             if (material) {
-                setting.add(CFG_ALBEDO, libconfig::Setting::TypeFloat) = material->getAlbedo();
-                setting.add(CFG_FUZZ, libconfig::Setting::TypeFloat) = material->getFuzzFactor();
-                setting.add(CFG_EMISSION, libconfig::Setting::TypeFloat) = material->getEmission();
-                setting.add(CFG_HAS_PHONG, libconfig::Setting::TypeBoolean) = material->hasPhong();
+                materialSetting.add(CFG_ALBEDO, libconfig::Setting::TypeFloat) = material->getAlbedo();
+                materialSetting.add(CFG_FUZZ, libconfig::Setting::TypeFloat) = material->getFuzzFactor();
+                materialSetting.add(CFG_EMISSION, libconfig::Setting::TypeFloat) = material->getEmission();
+                materialSetting.add(CFG_HAS_PHONG, libconfig::Setting::TypeBoolean) = material->hasPhong();
             }
         }
     } // namespace Parsing
