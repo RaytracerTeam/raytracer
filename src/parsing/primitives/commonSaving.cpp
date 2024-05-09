@@ -57,6 +57,8 @@ namespace Raytracer
             IMaterial *material = primitive->getMaterial();
             if (material) {
                 materialSetting.add(CFG_ALBEDO, libconfig::Setting::TypeFloat) = material->getAlbedo();
+                materialSetting.add(CFG_TRANSPARENCY, libconfig::Setting::TypeFloat) = material->getTransparency();
+                materialSetting.add(CFG_REFRACTION, libconfig::Setting::TypeFloat) = material->getRefraction();
                 materialSetting.add(CFG_FUZZ, libconfig::Setting::TypeFloat) = material->getFuzzFactor();
                 materialSetting.add(CFG_EMISSION, libconfig::Setting::TypeFloat) = material->getEmission();
                 materialSetting.add(CFG_HAS_PHONG, libconfig::Setting::TypeBoolean) = material->hasPhong();

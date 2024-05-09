@@ -90,33 +90,39 @@ namespace Raytracer
 
             if (ImGui::BeginTabItem("Material")) {
                 // Phong
-                bool hasPhong = ((MaterialSolid *)primitive->getMaterial())->hasPhong();
+                bool hasPhong = primitive->getMaterial()->hasPhong();
                 if (ImGui::Checkbox("Phong", &hasPhong)) {
-                    ((MaterialSolid *)primitive->getMaterial())->setHasPhong(hasPhong);
+                    primitive->getMaterial()->setHasPhong(hasPhong);
                     m_needRendering = true;
                 }
                 // Albedo
-                float albedo = ((MaterialSolid *)primitive->getMaterial())->getAlbedo();
+                float albedo = primitive->getMaterial()->getAlbedo();
                 if (ImGui::SliderFloat("Albedo", &albedo, 0.0f, 2.0f)) {
-                    ((MaterialSolid *)primitive->getMaterial())->setAlbedo(albedo);
-                    m_needRendering = true;
-                }
-                // Emissions
-                float emission = ((MaterialSolid *)primitive->getMaterial())->getEmission();
-                if (ImGui::SliderFloat("Emission", &emission, 0.0f, 2.0f)) {
-                    ((MaterialSolid *)primitive->getMaterial())->setEmission(emission);
-                    m_needRendering = true;
-                }
-                // Fuzz
-                float fuzz = ((MaterialSolid *)primitive->getMaterial())->getFuzzFactor();
-                if (ImGui::SliderFloat("Fuzz", &fuzz, 0.0f, 2.0f)) {
-                    ((MaterialSolid *)primitive->getMaterial())->setFuzzFactor(fuzz);
+                    primitive->getMaterial()->setAlbedo(albedo);
                     m_needRendering = true;
                 }
                 // Transparency
-                float transparency = ((MaterialSolid *)primitive->getMaterial())->getTransparency();
+                float transparency = primitive->getMaterial()->getTransparency();
                 if (ImGui::SliderFloat("Transparency", &transparency, 0.0f, 2.0f)) {
-                    ((MaterialSolid *)primitive->getMaterial())->setTransparency(transparency);
+                    primitive->getMaterial()->setTransparency(transparency);
+                    m_needRendering = true;
+                }
+                // Refraction
+                float refraction = primitive->getMaterial()->getRefraction();
+                if (ImGui::SliderFloat("Refraction", &refraction, 0.0f, 2.0f)) {
+                    primitive->getMaterial()->setRefraction(refraction);
+                    m_needRendering = true;
+                }
+                // Emissions
+                float emission = primitive->getMaterial()->getEmission();
+                if (ImGui::SliderFloat("Emission", &emission, 0.0f, 2.0f)) {
+                    primitive->getMaterial()->setEmission(emission);
+                    m_needRendering = true;
+                }
+                // Fuzz
+                float fuzz = primitive->getMaterial()->getFuzzFactor();
+                if (ImGui::SliderFloat("Fuzz", &fuzz, 0.0f, 2.0f)) {
+                    primitive->getMaterial()->setFuzzFactor(fuzz);
                     m_needRendering = true;
                 }
                 ImGui::EndTabItem();
@@ -131,6 +137,8 @@ namespace Raytracer
                     m_updateBVH = true;
                     m_needRendering = true;
                 }
+                // Scale
+                // Translation
                 ImGui::EndTabItem();
             }
         }

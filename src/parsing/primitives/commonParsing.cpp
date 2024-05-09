@@ -134,6 +134,12 @@ namespace Raytracer {
 
             if (materialSetting.exists(CFG_ALBEDO))
                 material->setAlbedo(parseFloat(materialSetting, CFG_ALBEDO, 0.0));
+            
+            if (materialSetting.exists(CFG_TRANSPARENCY))
+                material->setTransparency(parseFloat(materialSetting, CFG_TRANSPARENCY, 0.0));
+
+            if (materialSetting.exists(CFG_REFRACTION))
+                material->setRefraction(parseFloat(materialSetting, CFG_REFRACTION, 1.3));
 
             if (materialSetting.exists(CFG_FUZZ))
                 material->setFuzzFactor(parseFloat(materialSetting, CFG_FUZZ, 0.3));

@@ -36,12 +36,12 @@ namespace Raytracer {
         return rayScattered;
     }
 
-    std::optional<Ray> AMaterial::getTransparencyReflectionRay(const Ray &rayIn, const RayHit &rayHit) const
+    std::optional<Ray> AMaterial::getTransparencyRefractionRay(const Ray &rayIn, const RayHit &rayHit) const
     {
         Math::Vector3D normal = rayHit.getNormal();
         float cosi = Math::Algorithm::clampD(rayIn.getDirection().dot(rayHit.getNormal()), -1., 1.);
         float etai = 1;
-        float etat = 1.3;
+        float etat = m_refractionIndex;
 
         if (cosi < 0) {
             cosi = -cosi;

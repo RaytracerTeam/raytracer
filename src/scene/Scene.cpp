@@ -210,7 +210,7 @@ namespace Raytracer {
         Color color;
         IMaterial *primMaterial = primHit->getMaterial();
 
-        // Reflections
+        // Refelctions
         Color primColor = primMaterial->getColor(rhitPrim);
         if (primMaterial->getAlbedo() > 0) {
             if (ray.getDepth() < m_maxRayBounces) {
@@ -224,8 +224,8 @@ namespace Raytracer {
         if (primMaterial->getTransparency() > 0) {
             if (ray.getDepth() < m_maxRayBounces) {
                 std::optional<Ray> rayTransparency;
-                if (primMaterial->hasReflection())
-                    rayTransparency = primMaterial->getTransparencyReflectionRay(ray, rhitPrim);
+                if (primMaterial->getRefraction() != 0)
+                    rayTransparency = primMaterial->getTransparencyRefractionRay(ray, rhitPrim);
                 else
                     rayTransparency = primMaterial->getTransparencyRay(ray, rhitPrim);
                 if (rayTransparency != std::nullopt)

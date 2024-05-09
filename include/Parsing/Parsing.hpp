@@ -42,6 +42,8 @@ namespace Raytracer {
         #define CFG_ALBEDO "albedo"
         #define CFG_FUZZ "fuzz"
         #define CFG_EMISSION "emission"
+        #define CFG_TRANSPARENCY "transparency"
+        #define CFG_REFRACTION "refraction"
         #define CFG_HAS_PHONG "hasPhong"
         #define CFG_POINT_LIGHTS "pointLights"
         #define CFG_DIRECTIONAL_LIGHTS "directionalLights"
