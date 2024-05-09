@@ -34,7 +34,7 @@ namespace Raytracer
             }
             // Render lights
             bool renderLights = m_scene->getRenderLights();
-            if (ImGui::Checkbox("Render Lights", &renderLights))
+            if (ImGui::Checkbox("Render Point Lights", &renderLights))
                 m_needRendering = true;
             m_scene->setRenderLights(renderLights);
             // New Render
