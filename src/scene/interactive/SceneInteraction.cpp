@@ -18,7 +18,6 @@ namespace Raytracer {
         const std::vector<std::string_view> &inputFiles)
         : m_dimension(dimension)
         , m_window(sf::VideoMode(dimension.getWidth(), dimension.getHeight()), title)
-        , m_previousTime(m_clock.getElapsedTime())
     {
         m_scene = std::make_unique<Scene>();
         setScenes(inputFiles);
@@ -100,7 +99,6 @@ namespace Raytracer {
             if (!m_isWriting && event.type == sf::Event::KeyReleased)
                 applyKeyReleasedActions(event.key.code);
             if (!m_isWriting && m_interacCam.handleInput(event, m_window, m_actions)) {
-                
             }
             if (event.type == sf::Event::MouseButtonReleased
             && event.mouseButton.button == sf::Mouse::Right) {
@@ -163,11 +161,18 @@ namespace Raytracer {
                 m_scene->updatePrimitives();
             }
             if (m_needRendering || m_alwaysRender) {
-                m_needRendering = false;
-                if (m_scene->getNbThreads() < 2)
-                    m_scene->renderWhitoutThread();
-                else
-                    std::thread(&Scene::render, m_scene.get()).detach();
+                float timeSinceLastFrame = m_renderClock.getElapsedTime().asSeconds();
+                bool renderDone = m_scene->getRenderY() >= m_dimension.getHeight();
+                if ((renderDone && timeSinceLastFrame > 1 / m_maxFramerate)
+                || timeSinceLastFrame > 1 / m_minFramerate) {
+                    m_framerate = 1 / timeSinceLastFrame;
+                    m_needRendering = false;
+                    m_renderClock.restart();
+                    if (m_scene->getNbThreads() < 2)
+                        m_scene->renderWhitoutThread();
+                    else
+                        std::thread(&Scene::render, m_scene.get()).detach();
+                }
             }
 
             m_texture.update(m_scene->getRender());
@@ -184,15 +189,4 @@ namespace Raytracer {
         m_scene->setRenderNbr(m_scene->getRenderNbr() + 1);
     }
 
-    float SceneInteractive::getFramerate(void)
-    {
-        m_currentTime = m_clock.getElapsedTime();
-        float frameTime = m_currentTime.asSeconds() - m_previousTime.asSeconds();
-        m_frameTimes.push_back(frameTime);
-        if (m_frameTimes.size() > 200)
-            m_frameTimes.erase(m_frameTimes.begin());
-        auto fps = 1.0f / frameTime;
-        m_previousTime = m_currentTime;
-        return fps;
-    }
 } // namespace Raytracer

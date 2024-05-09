@@ -80,7 +80,6 @@ namespace Raytracer {
 
         void setRColorToImg(const std::vector<Raytracer::Color> &vectorRes);
         void handleEvents(void);
-        float getFramerate(void);
 
         // -- ImGui --
         void setupImageSize(void);
@@ -115,8 +114,11 @@ namespace Raytracer {
         sf::Texture m_texture;
 
         sf::Clock m_clock;
-        sf::Time m_currentTime;
-        sf::Time m_previousTime;
+
+        sf::Clock m_renderClock;
+        float m_minFramerate = 10;
+        float m_maxFramerate = 60;
+        float m_framerate = 0;
 
         // ImGui
         sf::Clock m_deltaClock;
@@ -132,7 +134,6 @@ namespace Raytracer {
         size_t m_imageHeight;
         size_t m_imageWidth;
         size_t m_leftPaneWidth;
-        std::vector<float> m_frameTimes;
         bool m_alwaysRender = false;
         bool m_fullscreen = false;
 

@@ -17,9 +17,14 @@ namespace Raytracer
         ImGuiChildFlags_Border)) {
 
             // FPS
-            ImGui::Text("FPS: %.1f", getFramerate());
-            ImGui::PlotLines("Time/F", m_frameTimes.data(), m_frameTimes.size());
+            ImGui::Text("FPS: %.1f", m_framerate);
+            ImGui::SliderFloat("MIN FPS", &m_minFramerate, 1, 60, "%.1f",
+                ImGuiSliderFlags_AlwaysClamp);
+            ImGui::SliderFloat("MAX FPS", &m_maxFramerate, 10, 1000, "%.1f",
+                ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
             ImGui::ProgressBar((float)m_scene->getRenderY() / m_dimension.getHeight());
+            ImGui::Checkbox("Always Render", &m_alwaysRender);
+            ImGui::Checkbox("Fullscreen", &m_fullscreen);
             // Camera Pos
             float *pos = currentCamera->getPos();
             if (ImGui::InputFloat3("Pos", pos, "%.2f")) {
