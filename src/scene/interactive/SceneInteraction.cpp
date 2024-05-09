@@ -98,7 +98,7 @@ namespace Raytracer {
             }
             if (!m_isWriting && event.type == sf::Event::KeyReleased)
                 applyKeyReleasedActions(event.key.code);
-            if (!m_isWriting && m_interacCam.handleInput(event, m_window, m_actions)) {
+            if (!m_isWriting && m_interacCam.handleInput(event, m_actions)) {
             }
             if (event.type == sf::Event::MouseButtonReleased
             && event.mouseButton.button == sf::Mouse::Right) {

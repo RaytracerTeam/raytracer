@@ -29,7 +29,7 @@ namespace Raytracer {
         return false;
     }
 
-    bool CameraInteractive::handleInput(const sf::Event &event, sf::Window &window, std::vector<std::pair<sf::Keyboard::Key, bool>> &actions)
+    bool CameraInteractive::handleInput(const sf::Event &event, std::vector<std::pair<sf::Keyboard::Key, bool>> &actions)
     {
         if (m_camera == nullptr)
             return false;

@@ -14,8 +14,28 @@ namespace Raytracer
         if (m_selectedObject < 0)
             return;
         switch (m_objectSelection) {
-        case ObjectSelection::PRIMITIVE: m_scene->removePrimitive(m_selectedObject); break;
-        case ObjectSelection::LIGHT: m_scene->removeLight(m_selectedObject); break;
+        case ObjectSelection::PRIMITIVE:
+            m_scene->removePrimitive(m_selectedObject);
+            break;
+        case ObjectSelection::LIGHT: {
+            SceneLightning &lightSystem = m_scene->getLightSystem();
+            size_t localSelectedObject = m_selectedObject;
+            if (localSelectedObject < lightSystem.getAmbientLights().size()) {
+                lightSystem.removeAmbientLight(localSelectedObject);
+                break;
+            }
+            localSelectedObject -= lightSystem.getAmbientLights().size();
+            if (localSelectedObject < lightSystem.getDirectionalLights().size()) {
+                lightSystem.removeDirectionalLight(localSelectedObject);
+                break;
+            }
+            localSelectedObject -= lightSystem.getDirectionalLights().size();
+            if (localSelectedObject < lightSystem.getLights().size()) {
+                lightSystem.removeLight(localSelectedObject);
+                break;
+            }
+            break;
+        }
         case ObjectSelection::CAMERA:
             m_scene->removeCamera(m_selectedObject);
             setupCamera();

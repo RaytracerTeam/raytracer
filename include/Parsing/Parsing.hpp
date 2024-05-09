@@ -46,6 +46,7 @@ namespace Raytracer {
         #define CFG_POINT_LIGHTS "pointLights"
         #define CFG_DIRECTIONAL_LIGHTS "directionalLights"
         #define CFG_DIRECTION "direction"
+        #define CFG_TRANSFORMATIONS "transformations"
 
         #define CFG_V0 "v0"
         #define CFG_V1 "v1"
@@ -92,7 +93,6 @@ namespace Raytracer {
 
         void saveScene(const Scene &scene, const std::string &outputFile);
         void saveGlobal(const Scene &scene, libconfig::Setting &root);
-        void saveObj(const Scene &scene, libconfig::Setting &root);
         void saveCameras(const Scene &scene, libconfig::Setting &root);
         void saveLights(const Scene &scene, libconfig::Setting &root);
         void savePrimitives(const Scene &scene, libconfig::Setting &root);

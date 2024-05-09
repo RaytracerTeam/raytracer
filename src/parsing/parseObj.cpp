@@ -14,7 +14,8 @@
 namespace Raytracer {
     namespace Parsing {
         void readObj(const std::string &path, std::unique_ptr<Scene> &scene,
-            const Math::Vector3D &translation, const Math::Vector3D &scale)
+            const Math::Vector3D &translation, const Math::Vector3D &scale,
+            std::unique_ptr<IMaterial> material)
         {
             std::ifstream file(path);
             if (!file.is_open()) {
@@ -45,7 +46,7 @@ namespace Raytracer {
                     Math::Vector3D v2 = vertices[index3 - 1];
                     scene->addPrimitive(std::make_unique<Triangle>(
                         origin,
-                        std::make_unique<MaterialSolid>(Color(255U, 255, 255)),
+                        std::make_unique<MaterialSolid>(static_cast<MaterialSolid &>(*material)),
                         v1, v2));
                 }
             }
@@ -61,9 +62,11 @@ namespace Raytracer {
 
             for (const auto &objSetting : config.lookup(CFG_OBJ)) {
                 translation = parsePosition(objSetting);
-                scale = parseVec3D(objSetting, CFG_SCALE, Math::Vector3D(1, 1, 1));
+                auto &transformationSetting = objSetting.lookup(CFG_TRANSFORMATIONS);
+                scale = parseVec3D(transformationSetting, CFG_SCALE, Math::Vector3D(1, 1, 1));
                 if (objSetting.exists(CFG_PATH)) {
-                    readObj(objSetting.lookup(CFG_PATH), scene, translation, scale);
+                    readObj(objSetting.lookup(CFG_PATH), scene, translation, scale,
+                        parseMaterial(objSetting));
                 }
             }
         }
