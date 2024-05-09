@@ -19,7 +19,7 @@ namespace Raytracer
             (float)light->getDirection().getX(),
             (float)light->getDirection().getY(),
             (float)light->getDirection().getZ() };
-        if (ImGui::SliderFloat3("Radius", direction, -1, 1, "%.3f", ImGuiSliderFlags_AlwaysClamp)) {
+        if (ImGui::SliderFloat3("Direction", direction, -1, 1, "%.3f", ImGuiSliderFlags_AlwaysClamp)) {
             light->setDirection(Math::Vector3D(direction[0], direction[1], direction[2]));
             m_needRendering = true;
         }

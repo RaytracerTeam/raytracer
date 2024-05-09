@@ -35,7 +35,7 @@ namespace Raytracer {
     #define DEFAULT_HEIGHT_MIN 0.0f
     #define DEFAULT_HEIGHT_MAX 40.0f
     #define DEFAULT_INTENSITY_MIN 0.0f
-    #define DEFAULT_INTENSITY_MAX 100.0f
+    #define DEFAULT_INTENSITY_MAX 3.0f
 
     #define MOUSE_CENTER sf::Vector2i(700, 500)
 
@@ -95,6 +95,7 @@ namespace Raytracer {
         void guiEditPrimitives(void);
         void guiEditCameras(void);
         void guiAddPrimitive(void);
+        void guiAddLight(void);
         void editSphere(Sphere *sphere);
         void editPlane(Plane *plane);
         void editCylinder(Cylinder *cylinder);
@@ -108,6 +109,8 @@ namespace Raytracer {
 
         void addSelectableSkybox(const std::filesystem::directory_entry &entry);
         void addSelectableScene(const std::filesystem::directory_entry &entry);
+
+        void guiColoredSquare(const Color &color);
 
         /////////////////////////////////
 

@@ -8,6 +8,8 @@
 #include "Parsing/Parsing.hpp"
 
 #include "Scene/Lights/PointLight.hpp"
+#include "Scene/Lights/DirectionalLight.hpp"
+#include "Scene/Lights/AmbientLight.hpp"
 
 namespace Raytracer {
     void Parsing::parseLights(const libconfig::Config &config, std::unique_ptr<Scene> &scene)
@@ -28,18 +30,20 @@ namespace Raytracer {
         }
 
         // Point lights
-        for (const auto &setting : lightsSetting[CFG_POINT_LIGHTS]) {
-            lightSystem.addLight(std::make_unique<PointLight>(
-                parsePosition(setting),
-                parseRadius(setting),
-                getSettingColor(setting),
-                parseIntensity(setting)));
+        if (lightsSetting.exists(CFG_POINT_LIGHTS)) {
+            for (const auto &setting : lightsSetting[CFG_POINT_LIGHTS]) {
+                lightSystem.addLight(std::make_unique<PointLight>(
+                    parsePosition(setting),
+                    parseRadius(setting),
+                    getSettingColor(setting),
+                    parseIntensity(setting)));
+            }
         }
 
         // Directional lights
         if (lightsSetting.exists(CFG_DIRECTIONAL_LIGHTS)) {
             for (const auto &dLightSetting : lightsSetting[CFG_DIRECTIONAL_LIGHTS]) {
-                lightSystem.setDirectionLight(DirectionalLight(
+                lightSystem.addDirectionalLight(std::make_unique<DirectionalLight>(
                     parseVec3D(dLightSetting, CFG_DIRECTION),
                     getSettingColor(dLightSetting),
                     parseIntensity(dLightSetting)));

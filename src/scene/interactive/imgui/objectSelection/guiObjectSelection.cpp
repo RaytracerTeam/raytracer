@@ -10,9 +10,6 @@
 #include "Scene/Materials/MaterialSolid.hpp"
 #include "Scene/Lights/PointLight.hpp"
 
-// todo: remove this when real adding primitives is implemented
-#include "Scene/Primitives/Sphere.hpp"
-
 namespace Raytracer
 {
     void SceneInteractive::guiObjectSelection(void) {
@@ -35,10 +32,8 @@ namespace Raytracer
                         if (ImGui::Selectable(name.c_str(), m_selectedObject == i))
                             m_selectedObject = i;
                         ImGui::SameLine();
-                        Color color = ((MaterialSolid *)prim->getMaterial())->getColor();
-                        ImGui::ColorButton(" ", ImVec4(color.getR(),
-                            color.getG(), color.getB(), 1.0f),
-                            ImGuiColorEditFlags_InputRGB);
+                        if (prim->getMaterial()->getType() == MaterialType::SOLID)
+                            guiColoredSquare(static_cast<MaterialSolid *>(prim->getMaterial())->getColor());
                         i++;
                     }
                 }
@@ -50,42 +45,27 @@ namespace Raytracer
                 if (m_objectSelection != ObjectSelection::LIGHT)
                     m_selectedObject = -1;
                 m_objectSelection = ObjectSelection::LIGHT;
+                guiAddLight();
                 SceneLightning &lightSystem = m_scene->getLightSystem();
                 if (ImGui::BeginChild("light selection", ImVec2(m_leftPaneWidth,
                 m_imageHeight / 2 - 20), ImGuiChildFlags_Border)) {
-                    if (ImGui::Button("Add Light")) {
-                        std::unique_ptr<PointLight> light = std::make_unique<PointLight>(
-                            Math::Vector3D(0, 0, 0), DEFAULT_POINTLIGHT_RADIUS,
-                            Color((unsigned int)255, 255, 255),
-                            1.0);
-                        light->setID(lightSystem.getLights().size() + 1);
-                        lightSystem.addLight(std::move(light));
-                    }
                     int i = 0;
-                    for (auto &aLight : lightSystem.getAmbientLights()) {
-                        // std::string name = std::to_string(i) + " id" +
-                        //     std::to_string(aLight->getID()) + " AmbientLight";
+                    // Create a vector with all the lights
+                    std::vector<ILight *> lightVector;
+                    for (auto &aLight : lightSystem.getAmbientLights())
+                        lightVector.push_back(aLight.get());
+                    for (auto &dLight : lightSystem.getDirectionalLights())
+                        lightVector.push_back(dLight.get());
+                    for (auto &pLight : lightSystem.getLights())
+                        lightVector.push_back(pLight.get());
 
-                        // if (ImGui::Selectable(name.c_str(), m_selectedObject == i))
-                        //     m_selectedObject = i;
-                        // ImGui::SameLine();
-                        // Color color = aLight->getColor();
-                        // ImGui::ColorButton(" ", ImVec4(color.getR(),
-                        //     color.getG(), color.getB(), 1.0f),
-                        //     ImGuiColorEditFlags_InputRGB);
-                        // i++;
-                    }
-                    for (auto &light : lightSystem.getLights()) {
-                        std::string name = std::to_string(i) + " id" +
-                            std::to_string(light->getID()) + " PointLight";
+                    for (auto &light : lightVector) {
+                        std::string name = std::to_string(i) + " " + light->getTypeString();
 
                         if (ImGui::Selectable(name.c_str(), m_selectedObject == i))
                             m_selectedObject = i;
                         ImGui::SameLine();
-                        Color color = light->getColor();
-                        ImGui::ColorButton(" ", ImVec4(color.getR(),
-                            color.getG(), color.getB(), 1.0f),
-                            ImGuiColorEditFlags_InputRGB);
+                        guiColoredSquare(light->getColor());
                         i++;
                     }
                 }

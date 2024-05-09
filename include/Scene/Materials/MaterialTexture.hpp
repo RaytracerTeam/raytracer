@@ -19,6 +19,8 @@ namespace Raytracer {
     public:
         MaterialTexture(const std::string &pathname);
 
+        MaterialType getType() const override { return MaterialType::TEXTURE; }
+
         virtual Color getColor(const RayHit &rayhit) const override;
         virtual Color getColor(double u, double v) const;
         const std::string &getTexture(void) const { return m_pathname; }

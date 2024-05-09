@@ -12,6 +12,9 @@
 namespace Raytracer {
     class AMaterial : public IMaterial {
         public:
+            MaterialType getType(void) const override { return MaterialType::NONE; };
+            const std::string getTypeString(void) const override { return MaterialTypeStrings[static_cast<int>(getType())]; };
+
             double getAlbedo(void) const override { return m_albedo; }
             double getEmission(void) const override { return m_emission; }
             double getFuzzFactor(void) const override { return m_fuzz; }

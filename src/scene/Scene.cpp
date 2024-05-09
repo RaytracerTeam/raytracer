@@ -15,12 +15,6 @@
 #include <cmath>
 
 namespace Raytracer {
-    // todo : direction should be in parsing
-    Scene::Scene()
-        : m_lightSystem({ -1, 1, -1 }, { 200U, 200, 200 })
-    {
-    }
-
     void Scene::addPrimitive(std::unique_ptr<IPrimitive> obj)
     {
         m_primitives.push_back(std::move(obj));
@@ -215,7 +209,6 @@ namespace Raytracer {
     {
         Color color;
         IMaterial *primMaterial = primHit->getMaterial();
-        auto &dirLight = m_lightSystem.getDirectionLight();
 
         // Reflections
         Color primColor = primMaterial->getColor(rhitPrim);
@@ -228,12 +221,14 @@ namespace Raytracer {
         }
 
         // Directional light
-        auto dirRay = Ray(rhitPrim.getHitPoint(), (dirLight.getDirection()));
-        BVH::Intersection intersection;
-        auto hasLightHit = BVH::readBVH(dirRay, *m_bvhTree, intersection);
-        if (!hasLightHit) {
-            auto dirLightDiffuse = Math::Algorithm::clampD(rhitPrim.getNormal().dot(dirLight.getDirection()), 0., 1.);
-            color += primColor * (dirLight.getColor() * dirLightDiffuse * dirLight.getIntensity());
+        for (const auto &dLight : m_lightSystem.getDirectionalLights()) {
+            auto dirRay = Ray(rhitPrim.getHitPoint(), (dLight->getDirection()));
+            BVH::Intersection intersection;
+            auto hasLightHit = BVH::readBVH(dirRay, *m_bvhTree, intersection);
+            if (!hasLightHit) {
+                auto dirLightDiffuse = Math::Algorithm::clampD(rhitPrim.getNormal().dot(dLight->getDirection()), 0., 1.);
+                color += primColor * (dLight->getColor() * dirLightDiffuse * dLight->getIntensity());
+            }
         }
 
         // Point lights
@@ -264,7 +259,6 @@ namespace Raytracer {
         for (const auto &ambientLight : m_lightSystem.getAmbientLights()) {
             color += primColor * ambientLight->getColor() * ambientLight->getIntensity();
         }
-        // color += primColor * m_ambientLightColor * m_ambientLightIntensity;
         return color;
     }
     void Scene::setSkyboxPath(const std::string &path)

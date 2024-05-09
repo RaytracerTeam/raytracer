@@ -26,6 +26,14 @@ namespace Raytracer
             ImGui::Checkbox("Always Render", &m_alwaysRender);
             if (ImGui::Checkbox("Fullscreen", &m_fullscreen))
                 setupImageSize();
+            // New Render
+            if (ImGui::Button("Render", ImVec2(60, 20)))
+                m_needRendering = true;
+            ImGui::SameLine(0, 20);
+            // Resize
+            if (ImGui::Button("Resize")) {
+                setupImageSize();
+            }
             // Camera Pos
             float *pos = currentCamera->getPos();
             if (ImGui::InputFloat3("Pos", pos, "%.2f")) {
@@ -43,15 +51,6 @@ namespace Raytracer
             if (ImGui::Checkbox("Render Point Lights", &renderLights))
                 m_needRendering = true;
             m_scene->setRenderLights(renderLights);
-            // New Render
-            if (ImGui::Button("Render", ImVec2(60, 20)))
-                m_needRendering = true;
-
-            ImGui::SameLine(0, 20);
-            // Resize
-            if (ImGui::Button("Resize")) {
-                setupImageSize();
-            }
 
             int threadNumber = m_scene->getNbThreads();
             if (ImGui::SliderInt("Threads", &threadNumber, 1, m_scene->getMaxNbThreads())) {

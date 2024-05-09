@@ -15,6 +15,8 @@ namespace Raytracer {
         MaterialCode(size_t factor);
         ~MaterialCode() = default;
 
+        MaterialType getType() const override { return MaterialType::CODE; }
+
         size_t m_factor;
     };
 } // namespace Raytracer

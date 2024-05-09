@@ -26,7 +26,7 @@ namespace Raytracer {
     #define SCREEN_RATIO 16.0f / 9.0f
     class Scene {
     public:
-        Scene();
+        Scene() = default;
         ~Scene() = default;
 
         void addPrimitive(std::unique_ptr<IPrimitive> obj);

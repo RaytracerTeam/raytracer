@@ -12,6 +12,7 @@
 #include "Math/Vector3D.hpp"
 
 namespace Raytracer {
+
     enum class LightType {
         AMBIENT,
         POINT,

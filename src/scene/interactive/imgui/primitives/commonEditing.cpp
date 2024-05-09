@@ -9,5 +9,10 @@
 
 namespace Raytracer
 {
-
+    void SceneInteractive::guiColoredSquare(const Color &color)
+    {
+        ImGui::ColorButton(" ", ImVec4(color.getR(),
+            color.getG(), color.getB(), 1.0f),
+            ImGuiColorEditFlags_InputRGB);
+    }
 } // namespace Raytracer

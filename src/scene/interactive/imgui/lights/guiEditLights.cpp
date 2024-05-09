@@ -29,10 +29,25 @@ namespace Raytracer
     void SceneInteractive::guiEditLights(void)
     {
         #ifdef BONUS
+        if (m_selectedObject < 0)
+            return;
         SceneLightning &lightSystem = m_scene->getLightSystem();
         ILight *light = nullptr;
-        if ((size_t)m_selectedObject < lightSystem.getLights().size())
-            light = lightSystem.getLights()[m_selectedObject].get();
+        size_t localSelectedObject = m_selectedObject;
+        std::vector<std::unique_ptr<AmbientLight>> &ambientLights = lightSystem.getAmbientLights();
+        std::vector<std::unique_ptr<PointLight>> &pointLights = lightSystem.getLights();
+        std::vector<std::unique_ptr<DirectionalLight>> &directionalLights = lightSystem.getDirectionalLights();
+
+        if (localSelectedObject < ambientLights.size())
+            light = ambientLights[localSelectedObject].get();
+        localSelectedObject -= ambientLights.size();
+        if (localSelectedObject < directionalLights.size())
+            light = directionalLights[localSelectedObject].get();
+        localSelectedObject -= directionalLights.size();
+        if (localSelectedObject < pointLights.size())
+            light = pointLights[localSelectedObject].get();
+        localSelectedObject -= pointLights.size();
+
         if (!light)
             return;
 
