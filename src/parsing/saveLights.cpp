@@ -14,23 +14,54 @@ namespace Raytracer
     void Parsing::saveLights(const Scene &scene, libconfig::Setting &root)
     {
         libconfig::Setting &lightsSetting = root.add("lights", libconfig::Setting::TypeGroup);
-        libconfig::Setting &pointLights = lightsSetting.add("pointLights", libconfig::Setting::TypeList);
-        for (auto &light : scene.getLights()) {
-            PointLight *pointLight = dynamic_cast<PointLight *>(light.get());
-            if (pointLight) {
-                libconfig::Setting &lightSetting = pointLights.add(libconfig::Setting::TypeGroup);
-                
-                libconfig::Setting &lightPos = lightSetting.add(CFG_POSITION, libconfig::Setting::TypeGroup);
-                lightPos.add("x", libconfig::Setting::TypeFloat) = pointLight->getOrigin().getX();
-                lightPos.add("y", libconfig::Setting::TypeFloat) = pointLight->getOrigin().getY();
-                lightPos.add("z", libconfig::Setting::TypeFloat) = pointLight->getOrigin().getZ();
+        const SceneLightning &lightSystem = scene.getLightSystem();
 
-                libconfig::Setting &lightColor = lightSetting.add(CFG_COLOR, libconfig::Setting::TypeGroup);
-                lightColor.add("r", libconfig::Setting::TypeInt) = (int)(pointLight->getColor().getR() * 255);
-                lightColor.add("g", libconfig::Setting::TypeInt) = (int)(pointLight->getColor().getG() * 255);
-                lightColor.add("b", libconfig::Setting::TypeInt) = (int)(pointLight->getColor().getB() * 255);
-            }
+        // Point Lights
+        libconfig::Setting &pointLights = lightsSetting.add(CFG_POINT_LIGHTS, libconfig::Setting::TypeList);
+        for (auto &pLight : lightSystem.getLights()) {
+            libconfig::Setting &pLightSetting = pointLights.add(libconfig::Setting::TypeGroup);
+
+            savePos(pLightSetting, pLight->getOrigin());
+            saveColor(pLightSetting, pLight->getColor());
+            pLightSetting.add(CFG_INTENSITY, libconfig::Setting::TypeFloat) = pLight->getIntensity();
         }
+        // Ambient Light
+        libconfig::Setting &ambientLights = lightsSetting.add(CFG_AMBIENT_LIGHT, libconfig::Setting::TypeList);
+        for (auto &aLight : lightSystem.getAmbientLights()) {
+            libconfig::Setting &ambientLightSetting = ambientLights.add(libconfig::Setting::TypeGroup);
+
+            saveColor(ambientLightSetting, aLight->getColor());
+            ambientLightSetting.add(CFG_INTENSITY, libconfig::Setting::TypeFloat) = aLight->getIntensity();
+        }
+        // auto &ambientLightSetting = lightsSetting.add(CFG_AMBIENT_LIGHT, libconfig::Setting::TypeGroup);
+        // saveColor(ambientLightSetting, lightSystem.getAmbientLights()[0]->getColor());
+        // ambientLightSetting.add(CFG_INTENSITY, libconfig::Setting::TypeFloat) = lightSystem.getAmbientLights()[0]->getIntensity();
+
+        // Directional Lights
+        libconfig::Setting &dLights = lightsSetting.add(CFG_DIRECTIONAL_LIGHTS, libconfig::Setting::TypeList);
+        for (auto &dLight : lightSystem.getDirectionalLights()) {
+            libconfig::Setting &dLightSetting = dLights.add(libconfig::Setting::TypeGroup);
+
+            saveColor(dLightSetting, dLight->getColor());
+            dLightSetting.add(CFG_INTENSITY, libconfig::Setting::TypeFloat) = dLight->getIntensity();
+
+            dLightSetting.add("x", libconfig::Setting::TypeFloat) = dLight->getDirection().getX();
+            dLightSetting.add("y", libconfig::Setting::TypeFloat) = dLight->getDirection().getY();
+            dLightSetting.add("z", libconfig::Setting::TypeFloat) = dLight->getDirection().getZ();
+        }
+        // libconfig::Setting &directionalLights = lightsSetting.add(CFG_DIRECTIONAL_LIGHTS, libconfig::Setting::TypeList);
+        // const DirectionalLight &directionalLight = lightSystem.getDirectionalLights();
+
+        // libconfig::Setting &dLightSetting = directionalLights.add(libconfig::Setting::TypeGroup);
+
+        // saveColor(dLightSetting, directionalLight.getColor());
+        // libconfig::Setting &lightIntensity = dLightSetting.add(CFG_INTENSITY, libconfig::Setting::TypeFloat);
+        // lightIntensity = directionalLight.getIntensity();
+
+        // libconfig::Setting &dirSetting = dLightSetting.add(CFG_DIRECTION, libconfig::Setting::TypeGroup);
+        // dirSetting.add("x", libconfig::Setting::TypeFloat) = directionalLight.getDirection().getX();
+        // dirSetting.add("y", libconfig::Setting::TypeFloat) = directionalLight.getDirection().getY();
+        // dirSetting.add("z", libconfig::Setting::TypeFloat) = directionalLight.getDirection().getZ();
     }
 } // namespace Raytracer
 

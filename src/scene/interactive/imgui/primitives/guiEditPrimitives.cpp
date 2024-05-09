@@ -32,6 +32,9 @@ namespace Raytracer
         case PrimitiveType::TANGLECUBE:
             editTanglecube(static_cast<Tanglecube *>(primitive.get()));
             break;
+        case PrimitiveType::TRIANGLE:
+            editTriangle(static_cast<Triangle *>(primitive.get()));
+            break;
         default:
             break;
         }
@@ -39,7 +42,7 @@ namespace Raytracer
     void SceneInteractive::guiEditPrimitives(void)
     {
         #ifdef BONUS
-        std::unique_ptr<IPrimitive> &primitive = m_scene->getPrimitives()[m_selectedObject - 1];
+        std::unique_ptr<IPrimitive> &primitive = m_scene->getPrimitives()[m_selectedObject];
 
         if (ImGui::BeginTabBar("Edit Primitives")) {
             if (ImGui::BeginTabItem("Base")) {
@@ -51,10 +54,20 @@ namespace Raytracer
                 }
                 ImGui::SameLine(0, 20);
 
+                // isShown
+                bool isShown = primitive->isShown();
+                if (ImGui::Checkbox("Is Shown", &isShown)) {
+                    primitive->setIsShown(isShown);
+                    m_updateBVH = true;
+                    m_needRendering = true;
+                }
+
+                ImGui::SameLine(0, 20);
+
                 // Color
                 ImGui::SetNextItemWidth(200);
                 float *color = ((MaterialSolid *)primitive->getMaterial())->getColor();
-                if (ImGui::ColorEdit3("Color", color, ImGuiColorEditFlags_PickerHueWheel)) {
+                if (ImGui::ColorEdit3("Color", color)) {
                     Color newColor = Color(color);
                     ((MaterialSolid *)primitive->getMaterial())->setColor(newColor);
                     m_needRendering = true;
@@ -67,20 +80,55 @@ namespace Raytracer
                 if (ImGui::SliderFloat3("Position", pos, DEFAULT_POS_MIN,
                 DEFAULT_POS_MAX)) {
                     primitive->setOrigin(Math::Vector3D(pos[0], pos[1], pos[2]));
+                    m_updateBVH = true;
                     m_needRendering = true;
                 }
 
                 customEditPrimitives(primitive);
                 ImGui::EndTabItem();
             }
+
             if (ImGui::BeginTabItem("Material")) {
+                // Phong
+                bool hasPhong = ((MaterialSolid *)primitive->getMaterial())->hasPhong();
+                if (ImGui::Checkbox("Phong", &hasPhong)) {
+                    ((MaterialSolid *)primitive->getMaterial())->setHasPhong(hasPhong);
+                    m_needRendering = true;
+                }
+                // Albedo
+                float albedo = ((MaterialSolid *)primitive->getMaterial())->getAlbedo();
+                if (ImGui::SliderFloat("Albedo", &albedo, 0.0f, 2.0f)) {
+                    ((MaterialSolid *)primitive->getMaterial())->setAlbedo(albedo);
+                    m_needRendering = true;
+                }
+                // Emissions
+                float emission = ((MaterialSolid *)primitive->getMaterial())->getEmission();
+                if (ImGui::SliderFloat("Emission", &emission, 0.0f, 2.0f)) {
+                    ((MaterialSolid *)primitive->getMaterial())->setEmission(emission);
+                    m_needRendering = true;
+                }
+                // Fuzz
+                float fuzz = ((MaterialSolid *)primitive->getMaterial())->getFuzzFactor();
+                if (ImGui::SliderFloat("Fuzz", &fuzz, 0.0f, 2.0f)) {
+                    ((MaterialSolid *)primitive->getMaterial())->setFuzzFactor(fuzz);
+                    m_needRendering = true;
+                }
                 ImGui::EndTabItem();
             }
+
             if (ImGui::BeginTabItem("Transformations")) {
+                // Rotation
+                Math::Angle3D rot3D = primitive->getTMatrix().getRot();
+                float rot[3] = {(float)rot3D.getYaw(), (float)rot3D.getPitch(), (float)rot3D.getRoll()};
+                if (ImGui::SliderFloat3("Rotation", rot, 0, 360)) {
+                    primitive->setRotXYZ(rot[0], rot[1], rot[2]);
+                    m_updateBVH = true;
+                    m_needRendering = true;
+                }
                 ImGui::EndTabItem();
             }
-            ImGui::EndTabBar();
         }
+        ImGui::EndTabBar();
         #endif
     }
 } // namespace Raytracer

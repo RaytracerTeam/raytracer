@@ -9,17 +9,12 @@
 #include "Error.hpp"
 #include "Math/Algorithm.hpp"
 #include "Math/Utils.hpp"
+#include "Math/Matrix44d.hpp"
 
 #include <algorithm>
 #include <cmath>
 
 namespace Raytracer {
-    // todo : direction should be in parsing
-    Scene::Scene()
-        : m_lightSystem({ -1, 1, -1 }, { 200U, 200, 200 })
-    {
-    }
-
     void Scene::addPrimitive(std::unique_ptr<IPrimitive> obj)
     {
         m_primitives.push_back(std::move(obj));
@@ -63,15 +58,64 @@ namespace Raytracer {
         return m_cameras.size();
     }
 
-    // https://stackoverflow.com/questions/28896001/read-write-to-ppm-image-file-c
-    // https://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-generating-camera-rays/generating-camera-rays.html
-    std::vector<Color> Scene::render(void)
+    void Scene::resizeRender(unsigned int width, unsigned int height)
+    {
+        m_render.create(width, height);
+    }
+
+    void Scene::quitRenderLine(void)
+    {
+        m_mutex.lock();
+        m_nbThreadsAlive--;
+        m_mutex.unlock();
+    }
+
+    void Scene::renderLine(double imageAspectRatio, double scale, uint64_t threadNbr)
     {
         Camera &camera = getCurrentCamera();
         Dimension dimension = camera.getDimension();
 
-        std::vector<Color> buffer(dimension.getHeight() * dimension.getWidth());
-        size_t curPosBuffer = 0;
+        m_mutex.lock();
+        size_t y = ++m_renderY;
+        m_nbThreadsAlive++;
+        m_mutex.unlock();
+
+        if (y >= dimension.getHeight())
+            return quitRenderLine();
+        for (size_t x = 0; x < dimension.getWidth(); x++) {
+            double rayX = (2 * (x + 0.5) / dimension.getWidthD() - 1) * imageAspectRatio * scale;
+            double rayY = (1 - 2 * (y + 0.5) / dimension.getHeightD()) * scale;
+            Math::Vector3D dir = Math::Vector3D(rayX, rayY, -1).normalize().rotate(camera.getAngle());
+            Color color = castRay(Ray(camera.getPos(), dir)) * 255.;
+            if (m_renderNbr != threadNbr)
+                return quitRenderLine();
+            m_render.setPixel(x, y, sf::Color(color.getR(), color.getG(), color.getB()));
+        }
+
+        std::thread(&Scene::renderLine, this, imageAspectRatio, scale, threadNbr).detach();
+
+        quitRenderLine();
+    }
+
+    void Scene::render(void)
+    {
+        thread_local uint64_t threadNbr = ++m_renderNbr;
+
+        Camera &camera = getCurrentCamera();
+        Dimension dimension = camera.getDimension();
+
+        double scale = std::tan(Math::deg2rad(camera.getFov() * 0.5));
+        double imageAspectRatio = dimension.getWidthD() / dimension.getHeightD();
+
+        m_renderY = -1;
+        for (size_t i = 0; i < m_nbThreads - 1; i++)
+            std::thread(&Scene::renderLine, this, imageAspectRatio, scale, threadNbr).detach();
+    }
+
+    void Scene::renderWhitoutThread(void)
+    {
+        Camera &camera = getCurrentCamera();
+        Dimension dimension = camera.getDimension();
 
         double scale = std::tan(Math::deg2rad(camera.getFov() * 0.5));
         double imageAspectRatio = dimension.getWidthD() / dimension.getHeightD();
@@ -81,45 +125,41 @@ namespace Raytracer {
                 double rayX = (2 * (x + 0.5) / dimension.getWidthD() - 1) * imageAspectRatio * scale;
                 double rayY = (1 - 2 * (y + 0.5) / dimension.getHeightD()) * scale;
                 Math::Vector3D dir = Math::Vector3D(rayX, rayY, -1).normalize().rotate(camera.getAngle());
-                buffer[curPosBuffer++] = castRay(Ray(camera.getPos(), dir));
+                Color color = castRay(Ray(camera.getPos(), dir)) * 255.;
+                m_render.setPixel(x, y, sf::Color(color.getR(), color.getG(), color.getB()));
             }
         }
-        return buffer;
     }
 
-    /* call this whenever the camera updates */
+    /* call this whenever the object move posititon */
     void Scene::updatePrimitives(void)
     {
-        auto cameraPos = getCurrentCamera().getPos();
+        m_readonlyPrimitives = std::vector<const IPrimitive *>();
+        m_readonlyPrimitives.reserve(m_primitives.size());
+        for (const auto &prim : m_primitives)
+            m_readonlyPrimitives.push_back(static_cast<const IPrimitive *>(prim.get()));
 
-        std::sort(
-            begin(m_primitives),
-            end(m_primitives),
-            [cameraPos](const std::unique_ptr<IPrimitive> &lhs, const std::unique_ptr<IPrimitive> &rhs) {
-                return Math::Vector3D::gDist(cameraPos, lhs->getOrigin()) < Math::Vector3D::gDist(cameraPos, rhs->getOrigin());
-            });
+        m_bvhTree = BVH::createBVH(m_bvhMaxPrimLimit, m_readonlyPrimitives, BVH::axisAligned);
     }
 
     Color Scene::castRay(const Ray &ray) const
     {
+        Math::Matrix44 mat;
         if (m_renderLights) {
             for (const auto &light : m_lightSystem.getLights()) {
+                if (!light->isShown())
+                    continue;
                 std::optional<RayHit> rayhit = light->hit(ray);
                 if (rayhit == std::nullopt)
                     continue;
-
                 return light->getColor();
-
             }
         }
-        for (const auto &prim : m_primitives) {
-            std::optional<RayHit> rayhit = prim->hit(ray);
-            if (rayhit == std::nullopt)
-                continue;
-
-            return castRayColor(ray, prim.get(), rayhit.value());
-        }
-        return m_skybox.getAmbientColor(ray);
+        BVH::Intersection intersection;
+        auto result = BVH::readBVH(ray, *m_bvhTree, intersection);
+        if (!result)
+            return m_skybox.getAmbientColor(ray);
+        return castRayColor(ray, intersection.primitve, intersection.rayhit);
     }
 
     double Scene::shadowPenombra(const Ray &lightRay, const IPrimitive *primHit, const PointLight &pointLight) const
@@ -158,8 +198,6 @@ namespace Raytracer {
     {
         if (rayHit == std::nullopt)
             return false;
-        if (rayHit->getDistance() * rayHit->getDistance() < 0.001)
-            return false;
         if ( // even if the ray touches something, that doesn't mean it's before the light.
             Math::Vector3D::gDist(objOrigin, rayHit->getHitPoint())
             < Math::Vector3D::gDist(objOrigin, objTarget))
@@ -171,7 +209,6 @@ namespace Raytracer {
     {
         Color color;
         IMaterial *primMaterial = primHit->getMaterial();
-        auto &dirLight = m_lightSystem.getDirectionLight();
 
         // Reflections
         Color primColor = primMaterial->getColor(rhitPrim);
@@ -184,37 +221,33 @@ namespace Raytracer {
         }
 
         // Directional light
-        for (const auto &prim : m_primitives) {
-            auto ray = Ray(rhitPrim.getHitPoint(), (dirLight.getDirection()));
-            if (primHit == prim.get())
-                continue;
-            auto lightHit = prim->hit(ray);
-            if (lightHit != std::nullopt)
-                continue;
-            auto dirLightDiffuse = Math::Algorithm::clampD(rhitPrim.getNormal().dot(dirLight.getDirection()), 0., 1.);
-            color += primColor * (dirLight.getColor() * dirLightDiffuse * dirLight.getIntensity());
+        for (const auto &dLight : m_lightSystem.getDirectionalLights()) {
+            auto dirRay = Ray(rhitPrim.getHitPoint(), (dLight->getDirection()));
+            BVH::Intersection intersection;
+            auto hasLightHit = BVH::readBVH(dirRay, *m_bvhTree, intersection);
+            if (!hasLightHit) {
+                auto dirLightDiffuse = Math::Algorithm::clampD(rhitPrim.getNormal().dot(dLight->getDirection()), 0., 1.);
+                color += primColor * (dLight->getColor() * dirLightDiffuse * dLight->getIntensity());
+            }
         }
 
         // Point lights
         for (const auto &light : m_lightSystem.getLights()) {
+            if (!light->isShown())
+                continue;
             auto lightVec = light->getOrigin() - rhitPrim.getHitPoint();
             auto lightDirection = lightVec.normalize();
             Ray lightRay = Ray(rhitPrim.getHitPoint(), lightDirection);
             double penombraFactor = 1.;
 
-            for (const auto &prim : m_primitives) {
-                if (primHit == prim.get())
-                    continue;
-                auto lightHit = prim->hit(lightRay);
-                if (lightHit != std::nullopt) {
-                    if (hit(lightHit, rhitPrim.getHitPoint(), light->getOrigin())) {
-                        if (m_maxDropShadowsRay > 1)
-                            penombraFactor = shadowPenombra(lightRay, primHit, *light);
-                        else
-                            penombraFactor = 0;
-                        break;
-                    }
-                }
+            BVH::Intersection intersection;
+            auto hasLightHit = BVH::readBVH(lightRay, *m_bvhTree, intersection);
+            if (hasLightHit && hit(intersection.rayhit, rhitPrim.getHitPoint(), light->getOrigin())) {
+                if (m_maxDropShadowsRay > 1)
+                    penombraFactor = shadowPenombra(lightRay, primHit, *light);
+                else
+                    penombraFactor = 0;
+                break;
             }
 
             auto diffuse = Math::Algorithm::clampD(rhitPrim.getNormal().dot(lightDirection), 0., 1.);
@@ -222,6 +255,9 @@ namespace Raytracer {
                 primColor += primMaterial->getSpecular(light.get(), rhitPrim, lightDirection);
             }
             color += primColor * (light->getColor() * diffuse * penombraFactor * light->getIntensity());
+        }
+        for (const auto &ambientLight : m_lightSystem.getAmbientLights()) {
+            color += primColor * ambientLight->getColor() * ambientLight->getIntensity();
         }
         return color;
     }
@@ -240,12 +276,12 @@ namespace Raytracer {
     {
         m_lightSystem.removeLight(index);
     }
-    void Scene::removeCamera(size_t index)
+    // return false if the index is out of range
+    bool Scene::removeCamera(size_t index)
     {
         if (index >= m_cameras.size())
-            return;
+            return false;
         m_cameras.erase(m_cameras.begin() + index);
-        if (m_cameras.size() == 0)
-            m_cameras.push_back(std::make_unique<Camera>());
+        return true;
     }
 } // namespace Raytracer

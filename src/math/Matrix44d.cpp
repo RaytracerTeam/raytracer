@@ -6,25 +6,61 @@
 */
 
 #include "Math/Matrix44d.hpp"
+#include <cmath>
 
 namespace Raytracer {
     namespace Math {
+        Matrix44::Matrix44(std::array<std::array<double, 4>, 4> arr)
+            : m_arr(arr)
+        {
+        }
+
         Matrix44::Matrix44()
-            : m_arr({ { { 1, 0, 0, 0 },
+            : m_arr(
+              { { { 1, 0, 0, 0 },
                   { 0, 1, 0, 0 },
                   { 0, 0, 1, 0 },
                   { 0, 0, 0, 1 } } })
         {
         }
 
+
+        Matrix44::Matrix44(double rotX, double rotY, double rotZ)
+        {
+            double rotXRad = rotX * M_PI / 180;
+            double rotYRad = rotY * M_PI / 180;
+            double rotZRad = rotZ * M_PI / 180;
+            Matrix44 m1(
+                { { { 1, 0, 0, 0 },
+                    { 0, cos(rotXRad), -sin(rotXRad), 0 },
+                    { 0, sin(rotXRad), cos(rotXRad), 0 },
+                    { 0, 0, 0, 1 } } });
+            Matrix44 m2(
+                { { { cos(rotYRad), 0, sin(rotYRad), 0 },
+                    { 0, 1, 0, 0 },
+                    { -sin(rotYRad), 0, cos(rotYRad), 0 },
+                    { 0, 0, 0, 1 } } });
+
+            Matrix44 m3(
+                { { { cos(rotZRad), -sin(rotZRad), 0, 0 },
+                    { sin(rotZRad), cos(rotZRad), 0, 0 },
+                    { 0, 0, 1, 0 },
+                    { 0, 0, 0, 1 } } });
+            Matrix44 m12 = m1 * m2;
+            *this = m12 * m3;
+            this->m_rot = { rotX, rotY, rotZ };
+        }
+
         Matrix44::Matrix44(const Matrix44 &m)
         {
             m_arr = m.m_arr;
+            m_rot = m.m_rot;
         }
 
         Matrix44 &Matrix44::operator=(const Matrix44 &m)
         {
             m_arr = m.m_arr;
+            m_rot = m.m_rot;
             return *this;
         }
 
@@ -35,6 +71,16 @@ namespace Raytracer {
             double y = src[0] * m_arr[0][1] + src[1] * m_arr[1][1] + src[2] * m_arr[2][1];
             double z = src[0] * m_arr[0][2] + src[1] * m_arr[1][2] + src[2] * m_arr[2][2];
             return Vector3D(x, y, z);
+        }
+
+        /* Matrix multiplication operation */
+        Matrix44 Matrix44::operator*(const Matrix44 &src) const
+        {
+            Matrix44 m;
+            for (uint8_t i = 0; i < 4; ++i)
+                for (uint8_t j = 0; j < 4; ++j)
+                    m[i][j] = m_arr[i][0] * src[0][j] + m_arr[i][1] * src[1][j] + m_arr[i][2] * src[2][j] + m_arr[i][3] * src[3][j];
+            return m;
         }
 
         /* Vector Point operation */

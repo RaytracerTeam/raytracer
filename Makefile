@@ -7,6 +7,7 @@
 
 CORESRC	=	$(wildcard ./src/*.cpp) \
 			$(wildcard ./src/math/*.cpp) \
+			$(wildcard ./src/optimisation/*.cpp) \
 			$(wildcard ./src/parsing/*.cpp) \
 			$(wildcard ./src/parsing/primitives/*.cpp) \
 			$(wildcard ./src/scene/*.cpp) \
@@ -18,6 +19,8 @@ CORESRC	=	$(wildcard ./src/*.cpp) \
 			$(wildcard ./src/scene/interactive/*.cpp) \
 			$(wildcard ./src/scene/interactive/imgui/*.cpp) \
 			$(wildcard ./src/scene/interactive/imgui/primitives/*.cpp) \
+			$(wildcard ./src/scene/interactive/imgui/lights/*.cpp) \
+			$(wildcard ./src/scene/interactive/imgui/objectSelection/*.cpp) \
 
 IMGUISRC	=	$(wildcard ./bonus/imgui/*.cpp)
 
@@ -70,6 +73,9 @@ else
 endif
 
 all: $(NAME)
+
+bonusdbg: CFLAGS += $(DBGFLAGS)
+bonusdbg: bonus
 
 bonus: $(IMGUIOBJ)
 bonus: OBJ += $(IMGUIOBJ)

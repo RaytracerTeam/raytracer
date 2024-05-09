@@ -14,9 +14,34 @@ namespace Raytracer
         #ifdef BONUS
         Camera *currentCamera = m_interacCam.getCamera();
         if (ImGui::BeginChild("Debug Infos", ImVec2(m_leftPaneWidth, m_imageHeight / 2 - 30),
-            ImGuiChildFlags_Border)) {
+        ImGuiChildFlags_Border)) {
+
             // FPS
-            ImGui::Text("FPS: %.1f", getFramerate());
+            ImGui::Text("FPS: %.1f", m_framerate);
+            ImGui::SliderFloat("MIN FPS", &m_minFramerate, 1, 60, "%.1f",
+                ImGuiSliderFlags_AlwaysClamp);
+            ImGui::SliderFloat("MAX FPS", &m_maxFramerate, 10, 1000, "%.1f",
+                ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
+            ImGui::ProgressBar((float)m_scene->getRenderY() / m_dimension.getHeight());
+            // New Render
+            if (ImGui::Button("Render", ImVec2(60, 20)))
+                m_needRendering = true;
+            ImGui::SameLine(0, 20);
+            // Resize
+            if (ImGui::Button("Resize")) {
+                setupImageSize();
+            }
+            // Render lights
+            bool renderLights = m_scene->getRenderLights();
+            if (ImGui::Checkbox("Render Point Lights", &renderLights)) {
+                m_needRendering = true;
+                m_scene->setRenderLights(renderLights);
+            }
+            // Always Render
+            ImGui::Checkbox("Always Render", &m_alwaysRender);
+            // Fullscreen
+            if (ImGui::Checkbox("Fullscreen", &m_fullscreen))
+                setupImageSize();
             // Camera Pos
             float *pos = currentCamera->getPos();
             if (ImGui::InputFloat3("Pos", pos, "%.2f")) {
@@ -29,12 +54,18 @@ namespace Raytracer
                 currentCamera->setAngle(Math::Angle3D(angle[0], angle[1], angle[2]));
                 m_needRendering = true;
             }
-            bool renderLights = m_scene->getRenderLights();
-            if (ImGui::Checkbox("Render Lights", &renderLights))
-                m_needRendering = true;
-            m_scene->setRenderLights(renderLights);
 
-            ImGui::EndChild();
+            int threadNumber = m_scene->getNbThreads();
+            if (ImGui::SliderInt("Threads", &threadNumber, 1, m_scene->getMaxNbThreads())) {
+                m_scene->setNbThreads(threadNumber);
+                m_needRendering = true;
+            }
+
+            int maxRayBounces = m_scene->getMaxRayBounces();
+            if (ImGui::SliderInt("Ray Bounces", &maxRayBounces, 1, 10)) {
+                m_scene->setMaxRayBounces(maxRayBounces);
+                m_needRendering = true;
+            }
         }
         ImGui::EndChild();
         #endif

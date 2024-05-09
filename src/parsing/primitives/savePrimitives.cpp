@@ -18,6 +18,7 @@ namespace Raytracer
         libconfig::Setting &coneList = primitivesSetting.add("cones", libconfig::Setting::TypeList);
         libconfig::Setting &torusList = primitivesSetting.add("toruses", libconfig::Setting::TypeList);
         libconfig::Setting &tanglecubeList = primitivesSetting.add("tanglecubes", libconfig::Setting::TypeList);
+        libconfig::Setting &triangleList = primitivesSetting.add("triangles", libconfig::Setting::TypeList);
         for (auto &primitive : scene.getPrimitives()) {
             switch (primitive->getType())
             {
@@ -38,6 +39,9 @@ namespace Raytracer
                 break;
             case PrimitiveType::TANGLECUBE:
                 saveTanglecube(tanglecubeList, static_cast<Tanglecube *>(primitive.get()));
+                break;
+            case PrimitiveType::TRIANGLE:
+                saveTriangle(triangleList, static_cast<Triangle *>(primitive.get()));
                 break;
             default:
                 break;

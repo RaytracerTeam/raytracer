@@ -19,7 +19,6 @@ namespace Raytracer {
         ~Cylinder() = default;
 
         PrimitiveType getType(void) const override { return PrimitiveType::CYLINDER; };
-        const std::string getTypeString(void) const override { return "Cylinder"; };
 
         float getRadius() const { return m_radius; }
         float getHeight() const { return m_height; }
@@ -27,7 +26,10 @@ namespace Raytracer {
         void setRadius(float radius) { m_radius = radius; }
         void setHeight(float height) { m_height = height; }
 
+        BoundingBox getBoundingBox(void) const override;
         std::optional<RayHit> hit(const Ray &ray) const override;
+        std::optional<RayHit> hitFace(const Math::Vector3D &dstOrigin, const Math::Vector3D &rayDir) const;
+        RayHit getNormal(double distance, const Math::Vector3D &hitPt, const Math::Vector3D &origin) const;
 
     private:
         double m_radius;

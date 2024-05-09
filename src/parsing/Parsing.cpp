@@ -47,25 +47,22 @@ namespace Raytracer {
             } catch (libconfig::ParseException &e) {
                 throw Error(e.getError(), "Parsing::parse");
             }
+            parseGlobal(cfg, scene);
+            parseOptimization(cfg, scene);
             parseCameras(cfg, scene);
             parsePrimitives(cfg, scene);
             parseLights(cfg, scene);
+            parseObj(cfg, scene);
         }
         void parse(std::unique_ptr<Scene> &scene, const std::string_view &file)
         {
             parseFile(scene, file);
-            if (scene->getCameraCount() == 0)
-                scene->addCamera(std::make_unique<Camera>());
-            scene->updatePrimitives();
         }
         void parse(std::unique_ptr<Scene> &scene, const std::vector<std::string_view> &inputFiles)
         {
             for (const auto& file : inputFiles) {
                 parseFile(scene, file);
             }
-            if (scene->getCameraCount() == 0)
-                scene->addCamera(std::make_unique<Camera>());
-            scene->updatePrimitives();
         }
     } // namespace Parsing
 } // namespace Raytracer

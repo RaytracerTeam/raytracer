@@ -13,15 +13,15 @@
 
 namespace Raytracer
 {
-    void Parsing::saveSphere(libconfig::Setting &sphereList, Sphere *sphere)
+    void Parsing::saveSphere(libconfig::Setting &list, Sphere *sphere)
     {
-        libconfig::Setting &sphereSetting = sphereList.add(libconfig::Setting::TypeGroup);
+        libconfig::Setting &setting = list.add(libconfig::Setting::TypeGroup);
 
-        savePos(sphereSetting, sphere);
+        savePos(setting, sphere->getOrigin());
 
-        libconfig::Setting &sphereRadius = sphereSetting.add(CFG_RADIUS, libconfig::Setting::TypeFloat);
+        libconfig::Setting &sphereRadius = setting.add(CFG_RADIUS, libconfig::Setting::TypeFloat);
         sphereRadius = sphere->getRadius();
 
-        saveColor(sphereSetting, sphere);
+        saveMaterial(setting, sphere);
     }
 } // namespace Raytracer

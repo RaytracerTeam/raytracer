@@ -21,7 +21,6 @@ namespace Raytracer {
         ~Torus() = default;
 
         PrimitiveType getType(void) const override { return PrimitiveType::TORUS; };
-        const std::string getTypeString(void) const override { return "Torus"; };
 
         float getRadius() const { return m_radius; }
         float getDistance() const { return m_distance; }
@@ -29,6 +28,7 @@ namespace Raytracer {
         void setRadius(float radius) { m_radius = radius; }
         void setDistance(float distance) { m_distance = distance; }
 
+        BoundingBox getBoundingBox(void) const override;
         std::optional<RayHit> hit(const Ray &ray) const override;
         RayHit getNormal(double distance, const Math::Vector3D &hitPt, const Math::Vector3D &origin) const;
 

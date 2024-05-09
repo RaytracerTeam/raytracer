@@ -8,31 +8,46 @@
 #include "Parsing/Parsing.hpp"
 
 #include "Scene/Lights/PointLight.hpp"
+#include "Scene/Lights/DirectionalLight.hpp"
+#include "Scene/Lights/AmbientLight.hpp"
 
 namespace Raytracer {
-    namespace Parsing {
-        void parseLights(const libconfig::Config &config, std::unique_ptr<Scene> &scene)
-        {
-            if (!config.exists("lights"))
-                return;
+    void Parsing::parseLights(const libconfig::Config &config, std::unique_ptr<Scene> &scene)
+    {
+        if (!config.exists("lights"))
+            return;
 
-            const libconfig::Setting &lightsSetting = config.lookup("lights");
+        const libconfig::Setting &lightsSetting = config.lookup("lights");
 
-            for (const auto &lightSetting : lightsSetting.lookup("pointLights")) {
-                Math::Vector3D lightPos(0, 0, 0);
-                if (lightSetting.exists(CFG_POSITION))
-                    lightPos = getSettingPosition(lightSetting);
-                Color lightColor(255U, 255U, 255U);
-                if (lightSetting.exists(CFG_COLOR))
-                    lightColor = getSettingColor(lightSetting);
-                double radius = DEFAULT_POINTLIGHT_RADIUS;
-                if (lightSetting.exists(CFG_RADIUS))
-                    radius = lightSetting.lookup(CFG_RADIUS);
-                double intensity = 1.;
-                if (lightSetting.exists("intensity"))
-                    intensity = lightSetting.lookup("intensity");
-                scene->addLight(std::make_unique<PointLight>(lightPos, radius, lightColor, intensity));
+        SceneLightning &lightSystem = scene->getLightSystem();
+
+        // Ambient light
+        if (lightsSetting.exists(CFG_AMBIENT_LIGHT)) {
+            auto &ambientLightSetting = lightsSetting[CFG_AMBIENT_LIGHT];
+            lightSystem.addAmbientLight(std::make_unique<AmbientLight>(
+                getSettingColor(ambientLightSetting),
+                parseFloat(ambientLightSetting, CFG_INTENSITY, 0.1)));
+        }
+
+        // Point lights
+        if (lightsSetting.exists(CFG_POINT_LIGHTS)) {
+            for (const auto &setting : lightsSetting[CFG_POINT_LIGHTS]) {
+                lightSystem.addLight(std::make_unique<PointLight>(
+                    parsePosition(setting),
+                    parseRadius(setting),
+                    getSettingColor(setting),
+                    parseIntensity(setting)));
             }
         }
-    } // namespace Parsing
+
+        // Directional lights
+        if (lightsSetting.exists(CFG_DIRECTIONAL_LIGHTS)) {
+            for (const auto &dLightSetting : lightsSetting[CFG_DIRECTIONAL_LIGHTS]) {
+                lightSystem.addDirectionalLight(std::make_unique<DirectionalLight>(
+                    parseVec3D(dLightSetting, CFG_DIRECTION),
+                    getSettingColor(dLightSetting),
+                    parseIntensity(dLightSetting)));
+            }
+        }
+    }
 } // namespace Raytracer

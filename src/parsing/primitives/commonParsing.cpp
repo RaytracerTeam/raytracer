@@ -8,20 +8,16 @@
 #include "Parsing/Parsing.hpp"
 
 #include "Scene/Materials/MaterialSolid.hpp"
+#include "Scene/Materials/MaterialTexture/SphereTexture.hpp"
 
 namespace Raytracer {
     namespace Parsing
     {
-        Math::Vector3D getSettingPosition(const libconfig::Setting &setting)
-        {
-            return Math::Vector3D(
-                setting.lookup("position.x"),
-                setting.lookup("position.y"),
-                setting.lookup("position.z")
-            );
-        }
         Color getSettingColor(const libconfig::Setting &setting)
         {
+            if (!setting.exists("color") || !setting.exists("color.r") ||
+            !setting.exists("color.g") || !setting.exists("color.b"))
+                return Color(255U, 255, 255);
             return Color(
                 (unsigned int)setting.lookup("color.r"),
                 (unsigned int)setting.lookup("color.g"),
@@ -39,13 +35,9 @@ namespace Raytracer {
 
         Math::Vector3D parsePosition(const libconfig::Setting &setting)
         {
-            Math::Vector3D pos(0, 0, 0);
-            if (setting.exists(CFG_POSITION)) {
-                pos = getSettingPosition(setting);
-            }
-            return pos;
+            return parseVec3D(setting, CFG_POSITION);
         }
-        MaterialSolid parseColor(const libconfig::Setting &setting)
+        MaterialSolid parseMaterialColor(const libconfig::Setting &setting)
         {
             MaterialSolid materialSolid(Color(200U, 0U, 200U));
             if (setting.exists(CFG_COLOR)) {
@@ -64,7 +56,21 @@ namespace Raytracer {
         float parseFloat(const libconfig::Setting &setting, const std::string &key, float defaultValue = 0.0f)
         {
             if (setting.exists(key.c_str())) {
-                defaultValue = setting.lookup(key.c_str());
+                if (setting.lookup(key.c_str()).getType() == libconfig::Setting::TypeInt)
+                    return (float)((int)setting.lookup(key.c_str()));
+                return setting.lookup(key.c_str());
+            }
+            return defaultValue;
+        }
+        Math::Vector3D parseVec3D(const libconfig::Setting &setting, const std::string &key,
+        Math::Vector3D defaultValue)
+        {
+            if (setting.exists(key.c_str())) {
+                return Math::Vector3D(
+                    parseFloat(setting, key + ".x"),
+                    parseFloat(setting, key + ".y"),
+                    parseFloat(setting, key + ".z")
+                );
             }
             return defaultValue;
         }
@@ -78,7 +84,64 @@ namespace Raytracer {
         }
         float parseDistance(const libconfig::Setting &setting)
         {
-            return parseFloat(setting, "distance", 0.5);
+            return parseFloat(setting, CFG_DISTANCE, 0.5);
+        }
+        float parseIntensity(const libconfig::Setting &setting)
+        {
+            return parseFloat(setting, CFG_INTENSITY, 1);
+        }
+        std::unique_ptr<MaterialSolid> parseMaterialSolid(const libconfig::Setting &setting)
+        {
+            auto materialSolid = std::make_unique<MaterialSolid>(Color(1., 0, 0));
+
+            if (setting.exists(CFG_COLOR))
+                materialSolid->setColor(getSettingColor(setting));
+
+            return materialSolid;
+        }
+
+        std::unique_ptr<MaterialTexture> parseMaterialTexture(const libconfig::Setting &setting, PrimitiveType primType)
+        {
+            if (!setting.exists(CFG_PATH))
+                return std::make_unique<MaterialTexture>("");
+            switch (primType) {
+            case PrimitiveType::SPHERE:
+                return std::make_unique<SphereTexture>(setting.lookup(CFG_PATH));
+            default:
+                return std::make_unique<MaterialTexture>(setting.lookup(CFG_PATH));
+            }
+        }
+
+        std::unique_ptr<IMaterial> parseMaterial(const libconfig::Setting &setting, PrimitiveType primType) {
+            if (!setting.exists(CFG_MATERIAL))
+                return std::make_unique<MaterialSolid>(Color(1., 0, 1));
+            libconfig::Setting &materialSetting = setting.lookup("material");
+            if (!materialSetting.exists(CFG_TYPE))
+                return std::make_unique<MaterialSolid>(Color(1., 0, 1));
+
+            std::unique_ptr<IMaterial> material;
+            std::string materialType = materialSetting.lookup(CFG_TYPE);
+            if (materialType == CFG_MATERIAL_SOLID_COLOR)
+                material = parseMaterialSolid(materialSetting);
+            else if (materialType == CFG_MATERIAL_TEXTURE)
+                material = parseMaterialTexture(materialSetting, primType);
+            else {
+                return std::make_unique<MaterialSolid>(Color(1., 0, 1));
+            }
+
+            if (materialSetting.exists(CFG_HAS_PHONG))
+                material->setHasPhong(materialSetting.lookup(CFG_HAS_PHONG));
+
+            if (materialSetting.exists(CFG_ALBEDO))
+                material->setAlbedo(parseFloat(materialSetting, CFG_ALBEDO, 0.0));
+
+            if (materialSetting.exists(CFG_FUZZ))
+                material->setFuzzFactor(parseFloat(materialSetting, CFG_FUZZ, 0.3));
+
+            if (materialSetting.exists(CFG_EMISSION))
+                material->setEmission(parseFloat(materialSetting, CFG_EMISSION, 0.0));
+
+            return material;
         }
     } // namespace Parsing
 } // namespace Raytracer

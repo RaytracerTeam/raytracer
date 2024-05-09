@@ -10,6 +10,11 @@
 #include <cmath>
 
 namespace Raytracer {
+    BoundingBox Sphere::getBoundingBox(void) const
+    {
+        return BoundingBox(m_origin - m_radius, m_origin + m_radius);
+    }
+
     std::optional<RayHit> Sphere::hit(const Ray &ray) const
     {
         Math::Vector3D dstOrigin = ray.getOrigin() - m_origin;
@@ -29,6 +34,6 @@ namespace Raytracer {
             return std::nullopt;
 
         Math::Vector3D hitPt = ray.getOrigin() + ray.getDirection() * distance;
-        return RayHit(distance, hitPt, (hitPt - m_origin).normalize());
+        return RayHit(distance, hitPt, (hitPt - m_origin).normalize(), (hitPt - m_origin) / m_radius);
     }
 } // namespace Raytracer

@@ -1,13 +1,13 @@
 {
     "configurations": [
         {
-            "name": "(lldb) Lancer",
+            "name": "(lldb) Lancer (macos)",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/raytracer",
-            "args": ["-i"],
+            "args": ["-i", "scenes/config_example.cfg"],
             "stopAtEntry": false,
-            "cwd": "${fileDirname}",
+            "cwd": "${workspaceFolder}",
             "environment": [],
             "externalConsole": false,
             "MIMode": "lldb"
@@ -48,7 +48,7 @@
             "program": "${workspaceFolder}/raytracer",
             "args": [
                 "-i",
-                "./scenes/old_parsing.cfg"
+                "./scenes/thomas.cfg"
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

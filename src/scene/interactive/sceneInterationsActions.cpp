@@ -33,16 +33,17 @@ namespace Raytracer
         m_actions.push_back(std::make_pair(sf::Keyboard::J, false));        // ROTATE_DOWN
         m_actions.push_back(std::make_pair(sf::Keyboard::H, false));        // ROTATE_LEFT
         m_actions.push_back(std::make_pair(sf::Keyboard::K, false));        // ROTATE_RIGHT
-        m_actions.push_back(std::make_pair(sf::Keyboard::Tab, false));      // USE_MOUSE
         m_actions.push_back(std::make_pair(sf::Keyboard::LControl, false)); // SPRINT
 
         m_releaseActions.push_back(sf::Keyboard::Escape);          // EXIT
-        m_releaseActions.push_back(sf::Keyboard::C);               // QUICK_SAVE
+        m_releaseActions.push_back(sf::Keyboard::C);               // SAVE_CURRENT_AND_EXIT
         m_releaseActions.push_back(sf::Keyboard::X);               // SAVE_AND_QUIT
         m_releaseActions.push_back(sf::Keyboard::F3);              // SHOW_DEBUG
         m_releaseActions.push_back(sf::Keyboard::F2);              // SCREENSHOT
-        m_releaseActions.push_back(sf::Keyboard::Backspace);       // REMOVE_OBJECT
+        m_releaseActions.push_back(sf::Keyboard::Delete);           // REMOVE_OBJECT
         m_releaseActions.push_back(sf::Keyboard::F11);             // TOGGLE_FULLSCREEN
+        m_releaseActions.push_back(sf::Keyboard::M);               // TOGGLE_MOUSE
+        m_releaseActions.push_back(sf::Keyboard::N);               // TOGGLE_SIMPLE_MOUSE
         m_releaseActions.push_back(sf::Keyboard::O);          // RESET
         parseConfigFile("config/keys.cfg");
     }
@@ -71,8 +72,8 @@ namespace Raytracer
                 return sf::Keyboard::Key::F3;
             else if (keyCode == "F11")
                 return sf::Keyboard::F11;
-            else if (keyCode == "BACKSPACE")
-                return sf::Keyboard::Key::Backspace;
+            else if (keyCode == "DELETE")
+                return sf::Keyboard::Key::Delete;
             else if (keyCode == "TAB")
                 return sf::Keyboard::Key::Tab;
             else if (keyCode >= "A" && keyCode <= "Z")
@@ -105,8 +106,6 @@ namespace Raytracer
             return SceneAction::ROTATE_LEFT;
         else if (action == "ROTATE_RIGHT")
             return SceneAction::ROTATE_RIGHT;
-        else if (action == "USE_MOUSE")
-            return SceneAction::USE_MOUSE;
         else if (action == "SPRINT")
             return SceneAction::SPRINT;
         else
@@ -118,10 +117,10 @@ namespace Raytracer
         std::transform(action.begin(), action.end(), action.begin(), ::toupper);
         if (action == "EXIT")
             return SceneReleaseActions::EXIT;
-        else if (action == "QUICK_SAVE")
-            return SceneReleaseActions::QUICK_SAVE;
-        else if (action == "SAVE_AND_EXIT")
-            return SceneReleaseActions::SAVE_AND_EXIT;
+        else if (action == "SAVE_CURRENT_AND_EXIT")
+            return SceneReleaseActions::SAVE_CURRENT_AND_EXIT;
+        else if (action == "QUICK_SAVE_AND_EXIT")
+            return SceneReleaseActions::QUICK_SAVE_AND_EXIT;
         else if (action == "SHOW_DEBUG")
             return SceneReleaseActions::SHOW_DEBUG;
         else if (action == "SCREENSHOT")
@@ -130,6 +129,10 @@ namespace Raytracer
             return SceneReleaseActions::REMOVE_OBJECT;
         else if (action == "TOGGLE_FULLSCREEN")
             return SceneReleaseActions::TOGGLE_FULLSCREEN;
+        else if (action == "TOGGLE_MOUSE")
+            return SceneReleaseActions::TOGGLE_MOUSE;
+        else if (action == "TOGGLE_SIMPLE_MOUSE")
+            return SceneReleaseActions::TOGGLE_SIMPLE_MOUSE;
         else if (action == "RESET")
             return SceneReleaseActions::RESET;
         else
@@ -221,7 +224,6 @@ namespace Raytracer
             camera->setAngle(camAngle);
             m_needRendering = true;
         }
-        m_useMouse = m_actions[SceneAction::USE_MOUSE].second;
         if (m_actions[SceneAction::SPRINT].second) {
             m_movementSpeed = m_defaultMovementSpeed * 4;
         } else {
@@ -246,22 +248,24 @@ namespace Raytracer
         switch (action) {
         case SceneReleaseActions::SCREENSHOT: {
             const auto time = std::chrono::system_clock::now().time_since_epoch().count();
-             m_img.saveToFile(std::string("screenshots/screenshot-")
+            const auto render = m_scene->getRender();
+            render.saveToFile(std::string("screenshots/screenshot-")
                 + std::to_string(time / 100000) + std::string(".png"));
             break;
         }
         case SceneReleaseActions::RESET: {
-            m_scene->getCurrentCamera().reset();
+            m_interacCam.getCamera()->reset();
             m_needRendering = true;
             break;
         }
         case SceneReleaseActions::EXIT:
             m_window.close();
             break;
-        case SceneReleaseActions::QUICK_SAVE:
-            Parsing::saveScene(*m_scene, "scenes/quick_save.cfg");
+        case SceneReleaseActions::SAVE_CURRENT_AND_EXIT:
+            Parsing::saveScene(*m_scene, m_loadFileBuf);
+            m_window.close();
             break;
-        case SceneReleaseActions::SAVE_AND_EXIT:
+        case SceneReleaseActions::QUICK_SAVE_AND_EXIT:
             Parsing::saveScene(*m_scene, "scenes/quick_save.cfg");
             m_window.close();
             break;
@@ -269,12 +273,73 @@ namespace Raytracer
             m_showDebug = !m_showDebug;
             break;
         case SceneReleaseActions::TOGGLE_FULLSCREEN:
+            m_fullscreen = !m_fullscreen;
+            setupImageSize();
             break;
         case SceneReleaseActions::REMOVE_OBJECT:
             removeSelectedObject();
             break;
+        case SceneReleaseActions::TOGGLE_MOUSE:
+            m_useMouse = !m_useMouse;
+            if (m_useMouse) {
+                m_mousePosBeforeUse = sf::Mouse::getPosition();
+                sf::Mouse::setPosition(MOUSE_CENTER);
+                m_window.setMouseCursorVisible(false);
+                m_mouseCentered = 2;
+            } else {
+                m_window.setMouseCursorVisible(true);
+                sf::Mouse::setPosition(m_mousePosBeforeUse - m_mouseCenterCorrection);
+            }
+            break;
+        case SceneReleaseActions::TOGGLE_SIMPLE_MOUSE:
+            m_useSimpleMouse = !m_useSimpleMouse;
+            m_lastMousePos = sf::Mouse::getPosition();
+            break;
         default:
             break;
+        }
+    }
+
+    void SceneInteractive::handleMouse(void)
+    {
+        Camera &currentCamera = m_scene->getCurrentCamera();
+
+        float sensivity = m_rotationSpeed / 10;
+
+        if (m_useSimpleMouse) {
+            auto pos = sf::Mouse::getPosition();
+            auto delta = pos - m_lastMousePos;
+            if (delta.x == 0 && delta.y == 0)
+                return;
+            auto angle = currentCamera.getAngle();
+            angle.setYaw(angle.getYaw() - delta.x * sensivity);
+            angle.setPitch(Math::Algorithm::clampD(angle.getPitch() - delta.y * sensivity, -90., 90.));
+            currentCamera.setAngle(angle);
+            m_needRendering = true;
+            m_lastMousePos = pos;
+        }
+
+        else if (m_useMouse) {
+            if (m_mouseCentered > 1) {
+                m_mouseCentered--;
+                return;
+            }
+            if (m_mouseCentered == 1) {
+                m_mouseCenterCorrection = sf::Mouse::getPosition() - MOUSE_CENTER;
+                m_mouseCentered = 0;
+            }
+
+            auto pos = sf::Mouse::getPosition();
+            auto delta = pos - MOUSE_CENTER;
+            delta -= m_mouseCenterCorrection;
+            if (delta.x == 0 && delta.y == 0)
+                return;
+            sf::Mouse::setPosition(MOUSE_CENTER);
+            auto angle = currentCamera.getAngle();
+            angle.setYaw(angle.getYaw() - delta.x * sensivity);
+            angle.setPitch(Math::Algorithm::clampD(angle.getPitch() - delta.y * sensivity, -90., 90.));
+            currentCamera.setAngle(angle);
+            m_needRendering = true;
         }
     }
 } // namespace Raytracer

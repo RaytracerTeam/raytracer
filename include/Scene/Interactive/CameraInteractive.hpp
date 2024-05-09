@@ -24,22 +24,14 @@ namespace Raytracer {
 
         Camera *getCamera(void) const { return m_camera; }
 
-        bool handleInput(const sf::Event &event, sf::Window &window, std::vector<std::pair<sf::Keyboard::Key, bool>> &actions);
-        void handleMouse(const sf::Event &event, const sf::Window &window);
-
-        bool isActiveMouse(void) const { return m_mouseStillPressed; }
+        bool handleInput(const sf::Event &event, std::vector<std::pair<sf::Keyboard::Key, bool>> &actions);
 
     private:
-        static inline void resetPosMouse(const sf::Window &window)
-        {
-            sf::Mouse::setPosition(sf::Vector2i(window.getSize().x / 2, window.getSize().y / 2), window);
-        }
         void updatePos(SceneAction action);
         bool applyKeyToActions(std::vector<std::pair<sf::Keyboard::Key, bool>> &actions, sf::Keyboard::Key key, bool isPressed);
         void applyActions(void);
         //////////////
 
         Camera *m_camera = nullptr;
-        bool m_mouseStillPressed = false;
     };
 } // namespace Raytracer

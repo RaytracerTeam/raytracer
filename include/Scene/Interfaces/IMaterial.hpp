@@ -14,14 +14,26 @@
 #include <optional>
 
 namespace Raytracer {
-    enum MaterialType {
+    enum class MaterialType {
         SOLID,
         CODE, // algorithm
-        TEXTURE
+        TEXTURE,
+        NONE
+    };
+    char const *const MaterialTypeStrings[] = {
+        "Solid",
+        "Code",
+        "Texture",
+        "None"
     };
 
     class IMaterial {
     public:
+        virtual ~IMaterial() = default;
+
+        virtual MaterialType getType(void) const = 0;
+        virtual const std::string getTypeString(void) const = 0;
+
         virtual double getAlbedo(void) const = 0;
         virtual void setAlbedo(double albedo) = 0;
         virtual double getEmission(void) const = 0;

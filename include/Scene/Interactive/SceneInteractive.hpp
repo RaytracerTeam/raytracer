@@ -17,14 +17,15 @@
     #include "imgui-SFML.h"
 #endif
 
+#include <filesystem>
+
 #include <SFML/Graphics.hpp>
 
 namespace Raytracer {
     #define DEFAULT_MOVEMENT_SPEED 0.3f
     #define DEFAULT_ROTATION_SPEED 3
-    #define SCREEN_RATIO 16.0f / 9.0f
     #define DEFAULT_CAMERA_RESOLUTION 240
-    #define FILE_BUF_SIZE 40
+    #define FILE_BUF_SIZE 100
 
     // ImGui default slider values
     #define DEFAULT_POS_MIN -60.0f
@@ -34,8 +35,9 @@ namespace Raytracer {
     #define DEFAULT_HEIGHT_MIN 0.0f
     #define DEFAULT_HEIGHT_MAX 40.0f
     #define DEFAULT_INTENSITY_MIN 0.0f
-    #define DEFAULT_INTENSITY_MAX 100.0f
-    
+    #define DEFAULT_INTENSITY_MAX 3.0f
+
+    #define MOUSE_CENTER sf::Vector2i(700, 500)
 
     enum class ObjectSelection {
         PRIMITIVE,
@@ -63,6 +65,7 @@ namespace Raytracer {
         }
 
     private:
+
         // Keys actions
         void setupActions(void);
         void resetActions(void);
@@ -70,30 +73,44 @@ namespace Raytracer {
         void applyActions(void);
         void applyKeyReleasedActions(sf::Keyboard::Key key);
         void applyKeyReleasedAction(SceneReleaseActions action);
+        void handleMouse(void);
 
         void updateDimension(unsigned int width, unsigned int height);
+        void setupCamera(void);
 
-        std::unique_ptr<sf::Uint8[]> RColorToPixelBuffer(const std::vector<Raytracer::Color> &vectorRes);
         void setRColorToImg(const std::vector<Raytracer::Color> &vectorRes);
         void handleEvents(void);
-        float getFramerate(void);
 
-        // ImGui
+        // -- ImGui --
+        void setupImageSize(void);
         void handleImGui(void);
         void guiMenuBar(void);
-        void guiTopBar(Camera &currentCamera);
+        void guiTopBar(void);
         void guiDebugInfos(void);
         void guiObjectSelection(void);
         void removeSelectedObject(void);
         void customEditPrimitives(std::unique_ptr<IPrimitive> &primitive);
+        void customEditLights(ILight *light);
         void guiEditLights(void);
         void guiEditPrimitives(void);
+        void guiEditCameras(void);
+        void guiAddPrimitive(void);
+        void guiAddLight(void);
         void editSphere(Sphere *sphere);
         void editPlane(Plane *plane);
         void editCylinder(Cylinder *cylinder);
         void editCone(Cone *cone);
         void editTorus(Torus *torus);
         void editTanglecube(Tanglecube *tanglecube);
+        void editTriangle(Triangle *triangle);
+
+        void editPointLight(PointLight *light);
+        void editDirectionalLight(DirectionalLight *light);
+
+        void addSelectableSkybox(const std::filesystem::directory_entry &entry);
+        void addSelectableScene(const std::filesystem::directory_entry &entry);
+
+        void guiColoredSquare(const Color &color);
 
         /////////////////////////////////
 
@@ -102,27 +119,31 @@ namespace Raytracer {
 
         Dimension &m_dimension;
         sf::RenderWindow m_window;
-        sf::Image m_img;
         sf::Texture m_texture;
 
         sf::Clock m_clock;
-        sf::Time m_currentTime;
-        sf::Time m_previousTime;
+
+        sf::Clock m_renderClock;
+        float m_minFramerate = 10;
+        float m_maxFramerate = 60;
+        float m_framerate = 0;
 
         // ImGui
         sf::Clock m_deltaClock;
         size_t m_renderResolution;
-        char m_fileBuf[FILE_BUF_SIZE] = "scenes/";
+        char m_saveFileBuf[FILE_BUF_SIZE] = "scenes/";
         char m_skyboxPathBuf[FILE_BUF_SIZE] = DEFAULT_SKYBOX;
-        char m_cfgSceneBuf[FILE_BUF_SIZE] = "scenes/";
+        char m_loadFileBuf[FILE_BUF_SIZE] = "scenes/";
         bool m_isWriting = false;
         bool m_showDebug = false;
         bool m_addToCurrentScene = false;
-        int m_selectedObject = 0;
+        int m_selectedObject = -1;
         ObjectSelection m_objectSelection = ObjectSelection::PRIMITIVE;
         size_t m_imageHeight;
         size_t m_imageWidth;
         size_t m_leftPaneWidth;
+        bool m_alwaysRender = false;
+        bool m_fullscreen = false;
 
         // Storing the result of the render
         std::unique_ptr<sf::Uint8 []> m_lastRender;
@@ -130,11 +151,17 @@ namespace Raytracer {
         // Actions
         std::vector<std::pair<sf::Keyboard::Key, bool>> m_actions;
         std::vector<sf::Keyboard::Key> m_releaseActions;
-        bool m_newEvent = true;
+        bool m_updateBVH = true;
+        bool m_renderBVH = false;
         bool m_needRendering = true;
         float m_movementSpeed = DEFAULT_MOVEMENT_SPEED;
         float m_defaultMovementSpeed = DEFAULT_MOVEMENT_SPEED;
         float m_rotationSpeed = DEFAULT_ROTATION_SPEED;
+        bool m_useSimpleMouse = false;
+        sf::Vector2i m_lastMousePos;
         bool m_useMouse = false;
+        sf::Vector2i m_mouseCenterCorrection = {0, 0};
+        sf::Vector2i m_mousePosBeforeUse = {0, 0};
+        int m_mouseCentered = 0;
     };
 } // namespace Raytracer

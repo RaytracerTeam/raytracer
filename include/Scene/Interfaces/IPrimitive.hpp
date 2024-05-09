@@ -8,8 +8,8 @@
 #pragma once
 
 #include "IMaterial.hpp"
-#include "ISceneObj.hpp"
 #include "IShape.hpp"
+#include "Optimisation/BoundingBox.hpp"
 #include "Scene/Ray.hpp"
 
 #include <memory>
@@ -28,14 +28,31 @@ namespace Raytracer {
         MOBIUSSTRIP,
         NONE
     };
+    char const *const PrimitiveTypeStrings[] = {
+        "Sphere",
+        "Plane",
+        "Triangle",
+        "Cube",
+        "Cylinder",
+        "Cone",
+        "Torus",
+        "Tanglecube",
+        "MobiusStrip",
+        "None"
+    };
     class IPrimitive : public IShape {
     public:
         virtual void setMaterial(std::unique_ptr<IMaterial> material) = 0;
         virtual IMaterial *getMaterial(void) const = 0;
 
+        virtual BoundingBox getBoundingBox(void) const = 0;
+
         virtual PrimitiveType getType(void) const = 0;
         virtual const std::string getTypeString(void) const = 0;
 
         virtual std::optional<RayHit> hit(const Ray &ray) const = 0;
+
+        virtual void setRotXYZ(double rotX, double rotY, double rotZ) = 0;
+        virtual const Math::Matrix44 &getTMatrix(void) const = 0;
     };
 }

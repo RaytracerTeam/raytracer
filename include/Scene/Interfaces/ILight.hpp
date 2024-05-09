@@ -8,11 +8,32 @@
 #pragma once
 
 #include "Color.hpp"
-#include "ISceneObj.hpp"
+#include "Math/Matrix44d.hpp"
+#include "Math/Vector3D.hpp"
 
 namespace Raytracer {
+
+    enum class LightType {
+        AMBIENT,
+        POINT,
+        DIRECTIONAL,
+        SPOT,
+        NONE
+    };
+    char const *const LightTypeStrings[] = {
+        "Ambient",
+        "Point",
+        "Directional",
+        "Spot",
+        "None"
+    };
     class ILight {
     public:
+        virtual ~ILight() = default;
+
+        virtual LightType getType(void) const = 0;
+        virtual const std::string getTypeString(void) const = 0;
+
         virtual Color getColor(void) const = 0;
         virtual double getIntensity(void) const = 0;
 

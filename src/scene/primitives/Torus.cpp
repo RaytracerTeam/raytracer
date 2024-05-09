@@ -10,6 +10,12 @@
 #include "Math/Vector3D.hpp"
 
 namespace Raytracer {
+    BoundingBox Torus::getBoundingBox(void) const
+    {
+        return BoundingBox(Math::Vector3D(m_origin - m_distance - m_radius),
+            Math::Vector3D(m_origin + m_distance + m_radius));
+    }
+
     RayHit Torus::getNormal(double distance, const Math::Vector3D &hitPt,
         const Math::Vector3D &origin) const
     {

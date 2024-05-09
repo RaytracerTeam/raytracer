@@ -13,3 +13,4 @@
 #include "Scene/Primitives/Cone.hpp"
 #include "Scene/Primitives/Torus.hpp"
 #include "Scene/Primitives/Tanglecube.hpp"
+#include "Scene/Primitives/Triangle.hpp"

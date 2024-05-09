@@ -11,59 +11,121 @@
 
 namespace Raytracer
 {
+    void SceneInteractive::addSelectableSkybox(const std::filesystem::directory_entry &entry)
+    {
+        #ifdef BONUS
+        std::string path = entry.path().string();
+        if (path.ends_with(".jpg") &&
+        ImGui::Selectable(path.c_str())) {
+            m_scene->setSkyboxPath(entry.path().string());
+            m_needRendering = true;
+            strcpy(m_skyboxPathBuf, path.c_str());
+            ImGui::CloseCurrentPopup();
+        }
+        #endif
+    }
+
+    void SceneInteractive::addSelectableScene(const std::filesystem::directory_entry &entry)
+    {
+        #ifdef BONUS
+        std::string path = entry.path().string();
+        if (path.ends_with(".cfg") &&
+        ImGui::Selectable(path.c_str())) {
+            setScene(entry.path().string());
+            setupCamera();
+            m_needRendering = true;
+            strcpy(m_loadFileBuf, path.c_str());
+            ImGui::CloseCurrentPopup();
+        }
+        #endif
+    }
+
     void SceneInteractive::guiMenuBar(void)
     {
         #ifdef BONUS
         m_isWriting = false;
-        if (ImGui::BeginMenuBar())
-        {
-        // Save scene to .cfg
-            if (ImGui::BeginMenu("Save as ..."))
-            {
+        if (ImGui::BeginMenuBar()) {
+            // Save scene to .cfg
+            if (ImGui::BeginMenu("Save as ...")) {
                 m_isWriting = true;
                 std::string hint("custom_scene.cfg");
                 if (ImGui::InputTextWithHint(" File name (press ENTER to save)",
-                    hint.c_str(), m_fileBuf, FILE_BUF_SIZE,
-                    ImGuiInputTextFlags_EnterReturnsTrue))
-                {
-                    Parsing::saveScene(*m_scene, m_fileBuf);
+                hint.c_str(), m_saveFileBuf, FILE_BUF_SIZE,
+                ImGuiInputTextFlags_EnterReturnsTrue)) {
+                    Parsing::saveScene(*m_scene, m_saveFileBuf);
                     ImGui::CloseCurrentPopup();
                 }
                 ImGui::EndMenu();
             }
-            if (ImGui::BeginMenu("Load scene"))
-            {
+
+            if (ImGui::BeginMenu("Load scene")) {
                 m_isWriting = true;
                 if (ImGui::InputTextWithHint(" File name (press ENTER to load)",
-                    "scenes/custom_scene.cfg", m_fileBuf, FILE_BUF_SIZE,
-                    ImGuiInputTextFlags_EnterReturnsTrue))
-                {
-                    if (std::filesystem::exists(m_fileBuf))
-                    {
-                        setScene(m_fileBuf);
+                "scenes/custom_scene.cfg", m_loadFileBuf, FILE_BUF_SIZE,
+                ImGuiInputTextFlags_EnterReturnsTrue)) {
+                    if (std::filesystem::exists(m_loadFileBuf)) {
+                        setScene(m_loadFileBuf);
+                        setupCamera();
                         m_needRendering = true;
                     }
                     ImGui::CloseCurrentPopup();
                 }
                 ImGui::SameLine(0, 20),
                 ImGui::Checkbox("Add to current scene", &m_addToCurrentScene);
-                ImGui::EndMenu();
-            }
-            if (ImGui::BeginMenu("Skybox path"))
-            {
-                m_isWriting = true;
-                if (ImGui::InputTextWithHint(" Path to sphere image (press ENTER to save)",
-                    "assets/skyboxes/sky.jpg", m_skyboxPathBuf, FILE_BUF_SIZE,
-                    ImGuiInputTextFlags_EnterReturnsTrue))
-                {
-                    if (std::filesystem::exists(m_skyboxPathBuf))
-                        m_scene->setSkyboxPath(m_skyboxPathBuf);
-                    ImGui::CloseCurrentPopup();
+                if (ImGui::BeginCombo("Scene Path", m_loadFileBuf)) {
+                    for (const auto &entry : std::filesystem::directory_iterator("scenes/"))
+                        addSelectableScene(entry);
+                    if (std::filesystem::exists("scenes/local"))
+                        for (const auto &entry : std::filesystem::directory_iterator("scenes/local"))
+                            addSelectableScene(entry);
+
+                    ImGui::EndCombo();
                 }
                 ImGui::EndMenu();
             }
-            ImGui::EndMenuBar();
+
+            if (ImGui::BeginMenu("Skybox path")) {
+                m_isWriting = true;
+                Skybox &skybox = m_scene->getSkybox();
+                bool skyboxHasTexture = skybox.hasTexture();
+                if (ImGui::Checkbox("Has texture", &skyboxHasTexture)) {
+                    skybox.setHasTexture(skyboxHasTexture);
+                    m_needRendering = true;
+                }
+                if (skyboxHasTexture) {
+
+                    if (ImGui::InputTextWithHint(" Path to sphere image (press ENTER to save)",
+                    "assets/skyboxes/sky.jpg", m_skyboxPathBuf, FILE_BUF_SIZE,
+                    ImGuiInputTextFlags_EnterReturnsTrue)) {
+                        if (std::filesystem::exists(m_skyboxPathBuf))
+                            m_scene->setSkyboxPath(m_skyboxPathBuf);
+                        ImGui::CloseCurrentPopup();
+                    }
+                    if (ImGui::BeginCombo("Skybox Path", m_skyboxPathBuf)) {
+                        for (const auto &entry : std::filesystem::directory_iterator("assets/skyboxes"))
+                            addSelectableSkybox(entry);
+                        if (std::filesystem::exists("assets/skyboxes/local"))
+                            for (const auto &entry : std::filesystem::directory_iterator("assets/skyboxes/local"))
+                                addSelectableSkybox(entry);
+
+                        ImGui::EndCombo();
+                    }
+                    bool useSphere = skybox.getSkyboxUVTypee() == SPHERE;
+                    if (ImGui::Checkbox("Use UV Sphere", &useSphere)) {
+                       skybox.setSkyboxUVTypee(useSphere ? SPHERE : BOX);
+                        m_needRendering = true;
+                    }
+                } else {
+                    float *color = skybox.getAmbientColor();
+                    if (ImGui::ColorEdit3("Skybox Color", color)) {
+                        skybox.setSolidColor(color);
+                        m_needRendering = true;
+                    }
+                }
+                ImGui::EndMenu();
+            }
         }
+        ImGui::EndMenuBar();
         #endif
     }
 } // namespace Raytracer
