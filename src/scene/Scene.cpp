@@ -220,6 +220,15 @@ namespace Raytracer {
             }
         }
 
+        // Transparency
+        if (primMaterial->getTransparency() > 0) {
+            if (ray.getDepth() < m_maxRayBounces) {
+                auto rayTransparency = primMaterial->getTransparencyRay(ray, rhitPrim);
+                if (rayTransparency != std::nullopt)
+                    primColor *= castRay(*rayTransparency) * primMaterial->getTransparency();
+            }
+        }
+
         // Directional light
         for (const auto &dLight : m_lightSystem.getDirectionalLights()) {
             auto dirRay = Ray(rhitPrim.getHitPoint(), (dLight->getDirection()));
