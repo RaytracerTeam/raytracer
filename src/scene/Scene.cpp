@@ -69,6 +69,13 @@ namespace Raytracer {
         m_render.create(width, height);
     }
 
+    void Scene::quitRenderLine(void)
+    {
+        m_mutex.lock();
+        m_nbThreadsAlive--;
+        m_mutex.unlock();
+    }
+
     void Scene::renderLine(double imageAspectRatio, double scale, uint64_t threadNbr)
     {
         Camera &camera = getCurrentCamera();
@@ -76,21 +83,24 @@ namespace Raytracer {
 
         m_mutex.lock();
         size_t y = ++m_renderY;
+        m_nbThreadsAlive++;
         m_mutex.unlock();
 
         if (y >= dimension.getHeight())
-            return;
+            return quitRenderLine();
         for (size_t x = 0; x < dimension.getWidth(); x++) {
             double rayX = (2 * (x + 0.5) / dimension.getWidthD() - 1) * imageAspectRatio * scale;
             double rayY = (1 - 2 * (y + 0.5) / dimension.getHeightD()) * scale;
             Math::Vector3D dir = Math::Vector3D(rayX, rayY, -1).normalize().rotate(camera.getAngle());
             Color color = castRay(Ray(camera.getPos(), dir)) * 255.;
             if (m_renderNbr != threadNbr)
-                return;
+                return quitRenderLine();
             m_render.setPixel(x, y, sf::Color(color.getR(), color.getG(), color.getB()));
         }
 
         std::thread(&Scene::renderLine, this, imageAspectRatio, scale, threadNbr).detach();
+
+        quitRenderLine();
     }
 
     void Scene::render(void)
