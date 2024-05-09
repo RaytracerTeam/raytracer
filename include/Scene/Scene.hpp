@@ -44,6 +44,7 @@ namespace Raytracer {
         void setAmbientLightColor(const Color &color) { m_ambientLightColor = color; }
         void setAmbientLightIntensity(float intensity) { m_ambientLightIntensity = intensity; }
         void setRenderNbr(uint64_t nbr) { m_renderNbr = nbr; }
+        void setNbThreads(size_t nbThreads) { m_nbThreads = nbThreads; }
 
         Camera &getCurrentCamera(void) const;
         const std::vector<std::unique_ptr<Camera>> &getCameras(void) const { return m_cameras; }
@@ -64,6 +65,8 @@ namespace Raytracer {
         const sf::Image &getRender(void) const { return m_render; }
         uint64_t getRenderNbr(void) const { return m_renderNbr; }
         size_t getNbThreads(void) const { return m_nbThreads; }
+        const size_t getMaxNbThreads(void) const { return m_maxNbThreads; }
+        size_t getRenderY(void) const { return m_renderY; }
 
         void resizeRender(unsigned int width, unsigned int height);
         void updatePrimitives(void);
@@ -97,7 +100,8 @@ namespace Raytracer {
         Color m_ambientLightColor = Color(1., 1, 1);
         float m_ambientLightIntensity = 0.1;
 
-        const size_t m_nbThreads = std::thread::hardware_concurrency();
+        const size_t m_maxNbThreads = std::thread::hardware_concurrency();
+        size_t m_nbThreads = m_maxNbThreads;
         std::mutex m_mutex;
 
         sf::Image m_render;
