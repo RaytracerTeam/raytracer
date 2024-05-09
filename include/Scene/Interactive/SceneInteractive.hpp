@@ -90,6 +90,7 @@ namespace Raytracer {
         void guiObjectSelection(void);
         void removeSelectedObject(void);
         void customEditPrimitives(std::unique_ptr<IPrimitive> &primitive);
+        void customEditLights(ILight *light);
         void guiEditLights(void);
         void guiEditPrimitives(void);
         void guiEditCameras(void);
@@ -101,6 +102,10 @@ namespace Raytracer {
         void editTorus(Torus *torus);
         void editTanglecube(Tanglecube *tanglecube);
         void editTriangle(Triangle *triangle);
+
+        void editPointLight(PointLight *light);
+        void editDirectionalLight(DirectionalLight *light);
+
         void addSelectableSkybox(const std::filesystem::directory_entry &entry);
         void addSelectableScene(const std::filesystem::directory_entry &entry);
 

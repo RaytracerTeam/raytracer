@@ -41,8 +41,6 @@ namespace Raytracer {
         bool setCameraIndexRelative(int64_t offset);
         void setSkyboxPath(const std::string &path);
         void setRenderLights(bool renderLights) { m_renderLights = renderLights; }
-        void setAmbientLightColor(const Color &color) { m_ambientLightColor = color; }
-        void setAmbientLightIntensity(float intensity) { m_ambientLightIntensity = intensity; }
         void setRenderNbr(uint64_t nbr) { m_renderNbr = nbr; }
         void setNbThreads(size_t nbThreads) { m_nbThreads = nbThreads; }
 
@@ -60,12 +58,10 @@ namespace Raytracer {
         const Skybox &getSkybox(void) const { return m_skybox; }
         std::string getSkyboxPath(void) const { return m_skybox.getMaterialTexture()->getPathname(); }
         Color getSkyboxColor(void) const { return m_skybox.getAmbientColor(); }
-        Color getAmbientLightColor(void) const { return m_ambientLightColor; }
-        float getAmbientLightIntensity(void) const { return m_ambientLightIntensity; }
         const sf::Image &getRender(void) const { return m_render; }
         uint64_t getRenderNbr(void) const { return m_renderNbr; }
         size_t getNbThreads(void) const { return m_nbThreads; }
-        const size_t getMaxNbThreads(void) const { return m_maxNbThreads; }
+        size_t getMaxNbThreads(void) const { return m_maxNbThreads; }
         size_t getRenderY(void) const { return m_renderY; }
 
         void resizeRender(unsigned int width, unsigned int height);
@@ -73,6 +69,13 @@ namespace Raytracer {
         void removePrimitive(size_t index);
         void removeLight(size_t index);
         bool removeCamera(size_t index);
+
+        void showCurrentRenderedLine(void) {
+            if (m_renderY >= m_render.getSize().y)
+                return;
+            for (size_t x = 0; x < m_render.getSize().x; x++)
+                m_render.setPixel(x, m_renderY + 1, m_render.getPixel(x, m_renderY + 1) * sf::Color(100, 100, 100));
+        }
 
     private:
         Color castRayColor(const Ray &ray, const IPrimitive *primHit, const RayHit &rhitPrim) const;
@@ -97,8 +100,6 @@ namespace Raytracer {
         double m_maxDropShadowsRay = 1; // todo : set in config
 
         bool m_renderLights = false;
-        Color m_ambientLightColor = Color(1., 1, 1);
-        float m_ambientLightIntensity = 0.1;
 
         const size_t m_maxNbThreads = std::thread::hardware_concurrency();
         size_t m_nbThreads = m_maxNbThreads;

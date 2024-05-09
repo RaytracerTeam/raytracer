@@ -22,6 +22,7 @@ namespace Raytracer {
 
     class IMaterial {
     public:
+        virtual ~IMaterial() = default;
         virtual double getAlbedo(void) const = 0;
         virtual void setAlbedo(double albedo) = 0;
         virtual double getEmission(void) const = 0;

@@ -24,7 +24,8 @@ namespace Raytracer
                 ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
             ImGui::ProgressBar((float)m_scene->getRenderY() / m_dimension.getHeight());
             ImGui::Checkbox("Always Render", &m_alwaysRender);
-            ImGui::Checkbox("Fullscreen", &m_fullscreen);
+            if (ImGui::Checkbox("Fullscreen", &m_fullscreen))
+                setupImageSize();
             // Camera Pos
             float *pos = currentCamera->getPos();
             if (ImGui::InputFloat3("Pos", pos, "%.2f")) {
@@ -50,18 +51,6 @@ namespace Raytracer
             // Resize
             if (ImGui::Button("Resize")) {
                 setupImageSize();
-            }
-
-            // Ambient light
-            float ambientLightIntensity = m_scene->getAmbientLightIntensity();
-            if (ImGui::SliderFloat("AL Intens", &ambientLightIntensity, 0, 1)) {
-                m_scene->setAmbientLightIntensity(ambientLightIntensity);
-                m_needRendering = true;
-            }
-            float *ambientLightColor = m_scene->getAmbientLightColor();
-            if (ImGui::ColorEdit3("AL", ambientLightColor)) {
-                m_scene->setAmbientLightColor(ambientLightColor);
-                m_needRendering = true;
             }
 
             int threadNumber = m_scene->getNbThreads();

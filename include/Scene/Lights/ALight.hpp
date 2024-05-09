@@ -13,6 +13,9 @@
 namespace Raytracer {
     class ALight : public ILight {
     public:
+        LightType getType(void) const override { return LightType::NONE; };
+        const std::string getTypeString(void) const override { return LightTypeStrings[static_cast<int>(getType())]; };
+
         Color getColor(void) const override { return m_color; }
         void setColor(const Color &color) override { m_color = color; }
 

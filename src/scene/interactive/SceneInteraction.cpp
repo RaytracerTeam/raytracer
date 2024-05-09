@@ -175,6 +175,7 @@ namespace Raytracer {
                 }
             }
 
+            // m_scene->showCurrentRenderedLine();
             m_texture.update(m_scene->getRender());
 
             m_window.clear();

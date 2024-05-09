@@ -50,6 +50,7 @@ namespace Raytracer
                 if (m_objectSelection != ObjectSelection::LIGHT)
                     m_selectedObject = -1;
                 m_objectSelection = ObjectSelection::LIGHT;
+                SceneLightning &lightSystem = m_scene->getLightSystem();
                 if (ImGui::BeginChild("light selection", ImVec2(m_leftPaneWidth,
                 m_imageHeight / 2 - 20), ImGuiChildFlags_Border)) {
                     if (ImGui::Button("Add Light")) {
@@ -57,11 +58,24 @@ namespace Raytracer
                             Math::Vector3D(0, 0, 0), DEFAULT_POINTLIGHT_RADIUS,
                             Color((unsigned int)255, 255, 255),
                             1.0);
-                        light->setID(m_scene->getLights().size() + 1);
-                        m_scene->addLight(std::move(light));
+                        light->setID(lightSystem.getLights().size() + 1);
+                        lightSystem.addLight(std::move(light));
                     }
                     int i = 0;
-                    for (auto &light : m_scene->getLights()) {
+                    for (auto &aLight : lightSystem.getAmbientLights()) {
+                        // std::string name = std::to_string(i) + " id" +
+                        //     std::to_string(aLight->getID()) + " AmbientLight";
+
+                        // if (ImGui::Selectable(name.c_str(), m_selectedObject == i))
+                        //     m_selectedObject = i;
+                        // ImGui::SameLine();
+                        // Color color = aLight->getColor();
+                        // ImGui::ColorButton(" ", ImVec4(color.getR(),
+                        //     color.getG(), color.getB(), 1.0f),
+                        //     ImGuiColorEditFlags_InputRGB);
+                        // i++;
+                    }
+                    for (auto &light : lightSystem.getLights()) {
                         std::string name = std::to_string(i) + " id" +
                             std::to_string(light->getID()) + " PointLight";
 
@@ -90,6 +104,7 @@ namespace Raytracer
                     }
                     int i = 0;
                     for (auto &camera : m_scene->getCameras()) {
+                        (void)camera;
                         std::string name = std::to_string(i) + " Camera";
 
                         if (ImGui::Selectable(name.c_str(), m_selectedObject == i)) {

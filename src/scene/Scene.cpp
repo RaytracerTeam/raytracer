@@ -251,7 +251,10 @@ namespace Raytracer {
             }
             color += primColor * (light->getColor() * diffuse * penombraFactor * light->getIntensity());
         }
-        color += primColor * m_ambientLightColor * m_ambientLightIntensity;
+        for (const auto &ambientLight : m_lightSystem.getAmbientLights()) {
+            color += primColor * ambientLight->getColor() * ambientLight->getIntensity();
+        }
+        // color += primColor * m_ambientLightColor * m_ambientLightIntensity;
         return color;
     }
     void Scene::setSkyboxPath(const std::string &path)

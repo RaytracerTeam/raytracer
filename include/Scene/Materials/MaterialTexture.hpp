@@ -18,7 +18,6 @@ namespace Raytracer {
     class MaterialTexture : public AMaterial {
     public:
         MaterialTexture(const std::string &pathname);
-        ~MaterialTexture() = default;
 
         virtual Color getColor(const RayHit &rayhit) const override;
         virtual Color getColor(double u, double v) const;

@@ -14,8 +14,9 @@ namespace Raytracer
     void Parsing::saveLights(const Scene &scene, libconfig::Setting &root)
     {
         libconfig::Setting &lightsSetting = root.add("lights", libconfig::Setting::TypeGroup);
+        const SceneLightning &lightSystem = scene.getLightSystem();
         libconfig::Setting &pointLights = lightsSetting.add(CFG_POINT_LIGHTS, libconfig::Setting::TypeList);
-        for (auto &light : scene.getLights()) {
+        for (auto &light : lightSystem.getLights()) {
             PointLight *pointLight = dynamic_cast<PointLight *>(light.get());
             if (pointLight) {
                 libconfig::Setting &lightSetting = pointLights.add(libconfig::Setting::TypeGroup);
@@ -30,8 +31,8 @@ namespace Raytracer
         }
         // Ambient Light
         auto &ambientLightSetting = lightsSetting.add(CFG_AMBIENT_LIGHT, libconfig::Setting::TypeGroup);
-        saveColor(ambientLightSetting, scene.getAmbientLightColor());
-        ambientLightSetting.add(CFG_INTENSITY, libconfig::Setting::TypeFloat) = scene.getAmbientLightIntensity();
+        saveColor(ambientLightSetting, lightSystem.getAmbientLights()[0]->getColor());
+        ambientLightSetting.add(CFG_INTENSITY, libconfig::Setting::TypeFloat) = lightSystem.getAmbientLights()[0]->getIntensity();
 
         // Directional Lights
         libconfig::Setting &directionalLights = lightsSetting.add(CFG_DIRECTIONAL_LIGHTS, libconfig::Setting::TypeList);
