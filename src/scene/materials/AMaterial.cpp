@@ -36,7 +36,7 @@ namespace Raytracer {
         return rayScattered;
     }
 
-    std::optional<Ray> AMaterial::getTransparencyRay(const Ray &rayIn, const RayHit &rayHit) const
+    std::optional<Ray> AMaterial::getTransparencyReflectionRay(const Ray &rayIn, const RayHit &rayHit) const
     {
         Math::Vector3D normal = rayHit.getNormal();
         float cosi = Math::Algorithm::clampD(rayIn.getDirection().dot(rayHit.getNormal()), -1., 1.);
@@ -61,9 +61,9 @@ namespace Raytracer {
         return rayTransparency;
     }
 
-    // std::optional<Ray> AMaterial::getTransparencyRay(const Ray &rayIn, const RayHit &rayHit) const
-    // {
-    //     Ray rayTransparency = Ray(rayHit.getHitPoint(), rayIn.getDirection(), rayIn.getDepth() + 1);
-    //     return rayTransparency;
-    // }
+    std::optional<Ray> AMaterial::getTransparencyRay(const Ray &rayIn, const RayHit &rayHit) const
+    {
+        Ray rayTransparency = Ray(rayHit.getHitPoint(), rayIn.getDirection(), rayIn.getDepth() + 1);
+        return rayTransparency;
+    }
 } // namespace Raytracer

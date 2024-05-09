@@ -223,7 +223,11 @@ namespace Raytracer {
         // Transparency
         if (primMaterial->getTransparency() > 0) {
             if (ray.getDepth() < m_maxRayBounces) {
-                auto rayTransparency = primMaterial->getTransparencyRay(ray, rhitPrim);
+                std::optional<Ray> rayTransparency;
+                if (primMaterial->hasReflection())
+                    rayTransparency = primMaterial->getTransparencyReflectionRay(ray, rhitPrim);
+                else
+                    rayTransparency = primMaterial->getTransparencyRay(ray, rhitPrim);
                 if (rayTransparency != std::nullopt)
                     primColor *= castRay(*rayTransparency) * primMaterial->getTransparency();
             }
