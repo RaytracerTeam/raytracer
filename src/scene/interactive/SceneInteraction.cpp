@@ -159,10 +159,15 @@ namespace Raytracer {
             handleImGui();
 
             if (m_updateBVH) {
+                m_scene->setRenderNbr(m_scene->getRenderNbr() + 1);
                 m_updateBVH = false;
+                m_renderBVH = true;
+            }
+            if (m_renderBVH && m_scene->getNbThreadsAlive() == 0) {
+                m_renderBVH = false;
                 m_scene->updatePrimitives();
             }
-            if (m_needRendering || m_alwaysRender) {
+            if ((m_needRendering || m_alwaysRender) && !m_renderBVH) {
                 m_needRendering = false;
                 if (m_scene->getNbThreads() < 2)
                     m_scene->renderWhitoutThread();
