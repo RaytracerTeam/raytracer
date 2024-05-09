@@ -35,6 +35,7 @@ namespace Raytracer {
 
         void render(void);
         void renderLine(double imageAspectRatio, double scale, uint64_t threadNbr);
+        void quitRenderLine(void);
         void renderWhitoutThread(void);
 
         bool setCameraIndex(size_t index);
@@ -62,6 +63,7 @@ namespace Raytracer {
         uint64_t getRenderNbr(void) const { return m_renderNbr; }
         size_t getNbThreads(void) const { return m_nbThreads; }
         size_t getMaxNbThreads(void) const { return m_maxNbThreads; }
+        size_t getNbThreadsAlive(void) const { return m_nbThreadsAlive; }
         size_t getRenderY(void) const { return m_renderY; }
 
         void resizeRender(unsigned int width, unsigned int height);
@@ -103,6 +105,7 @@ namespace Raytracer {
 
         const size_t m_maxNbThreads = std::thread::hardware_concurrency();
         size_t m_nbThreads = m_maxNbThreads;
+        size_t m_nbThreadsAlive = 0;
         std::mutex m_mutex;
 
         sf::Image m_render;

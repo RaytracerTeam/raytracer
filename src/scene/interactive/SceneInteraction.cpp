@@ -157,10 +157,15 @@ namespace Raytracer {
             handleImGui();
 
             if (m_updateBVH) {
+                m_scene->setRenderNbr(m_scene->getRenderNbr() + 1);
                 m_updateBVH = false;
+                m_renderBVH = true;
+            }
+            if (m_renderBVH && m_scene->getNbThreadsAlive() == 0) {
+                m_renderBVH = false;
                 m_scene->updatePrimitives();
             }
-            if (m_needRendering || m_alwaysRender) {
+            if ((m_needRendering || m_alwaysRender) && !m_renderBVH) {
                 float timeSinceLastFrame = m_renderClock.getElapsedTime().asSeconds();
                 bool renderDone = m_scene->getRenderY() >= m_dimension.getHeight();
                 if ((renderDone && timeSinceLastFrame > 1 / m_maxFramerate)
