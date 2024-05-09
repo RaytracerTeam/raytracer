@@ -37,6 +37,8 @@ namespace Raytracer {
     #define DEFAULT_INTENSITY_MIN 0.0f
     #define DEFAULT_INTENSITY_MAX 3.0f
 
+    #define WINDOW_FPS 60
+
     #define MOUSE_CENTER sf::Vector2i(700, 500)
 
     enum class ObjectSelection {
@@ -125,7 +127,7 @@ namespace Raytracer {
 
         sf::Clock m_renderClock;
         float m_minFramerate = 10;
-        float m_maxFramerate = 60;
+        float m_maxFramerate = WINDOW_FPS;
         float m_framerate = 0;
 
         // ImGui

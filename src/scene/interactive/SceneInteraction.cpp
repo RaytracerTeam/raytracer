@@ -40,7 +40,7 @@ namespace Raytracer {
             m_leftPaneWidth = 230;
             setupImageSize();
         #endif
-        m_window.setFramerateLimit(60);
+        m_window.setFramerateLimit(WINDOW_FPS);
         setupActions();
     }
     SceneInteractive::~SceneInteractive()

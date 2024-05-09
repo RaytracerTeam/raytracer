@@ -20,8 +20,8 @@ namespace Raytracer
             ImGui::Text("FPS: %.1f", m_framerate);
             ImGui::SliderFloat("MIN FPS", &m_minFramerate, 1, 60, "%.1f",
                 ImGuiSliderFlags_AlwaysClamp);
-            ImGui::SliderFloat("MAX FPS", &m_maxFramerate, 10, 1000, "%.1f",
-                ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
+            ImGui::SliderFloat("MAX FPS", &m_maxFramerate, 10, WINDOW_FPS, "%.1f",
+                ImGuiSliderFlags_AlwaysClamp);
             ImGui::ProgressBar((float)m_scene->getRenderY() / m_dimension.getHeight());
             // New Render
             if (ImGui::Button("Render", ImVec2(60, 20)))
