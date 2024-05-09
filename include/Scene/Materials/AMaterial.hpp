@@ -20,15 +20,18 @@ namespace Raytracer {
             double getFuzzFactor(void) const override { return m_fuzz; }
             double getTransparency(void) const override { return m_transparency; }
             bool hasPhong(void) const override { return m_hasPhong; }
+            bool hasReflection(void) const override { return m_hasReflection; }
 
             void setAlbedo(double albedo) override { m_albedo = albedo; }
             void setEmission(double emission) override { m_emission = emission; }
             void setFuzzFactor(double fuzz) override { m_fuzz = fuzz; }
             void setTransparency(double transparency) override { m_transparency = transparency; }
             void setHasPhong(bool hasPhong) override { m_hasPhong = hasPhong; }
+            void setHasReflection(bool hasReflection) override { m_hasReflection = hasReflection; }
 
             Color getSpecular(const ILight *light, const RayHit &rayhit, const Math::Vector3D &lightVec) const override;
             virtual std::optional<Ray> getScatteredRay(const Ray &rayIn, const RayHit &rayHit) const override;
+            virtual std::optional<Ray> getTransparencyReflectionRay(const Ray &rayIn, const RayHit &rayHit) const override;
             virtual std::optional<Ray> getTransparencyRay(const Ray &rayIn, const RayHit &rayHit) const override;
         protected:
             AMaterial() = default;
@@ -39,5 +42,6 @@ namespace Raytracer {
             double m_fuzz = 0;
             double m_transparency = 0;
             bool m_hasPhong = false;
+            bool m_hasReflection = true;
     };
 } // namespace Raytracer
