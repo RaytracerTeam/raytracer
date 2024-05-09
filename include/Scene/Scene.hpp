@@ -44,6 +44,7 @@ namespace Raytracer {
         void setRenderLights(bool renderLights) { m_renderLights = renderLights; }
         void setRenderNbr(uint64_t nbr) { m_renderNbr = nbr; }
         void setNbThreads(size_t nbThreads) { m_nbThreads = nbThreads; }
+        void setMaxRayBounces(size_t maxRayBounces) { m_maxRayBounces = maxRayBounces; }
 
         Camera &getCurrentCamera(void) const;
         const std::vector<std::unique_ptr<Camera>> &getCameras(void) const { return m_cameras; }
@@ -65,6 +66,7 @@ namespace Raytracer {
         size_t getMaxNbThreads(void) const { return m_maxNbThreads; }
         size_t getNbThreadsAlive(void) const { return m_nbThreadsAlive; }
         size_t getRenderY(void) const { return m_renderY; }
+        size_t getMaxRayBounces(void) const { return m_maxRayBounces; }
 
         void resizeRender(unsigned int width, unsigned int height);
         void updatePrimitives(void);

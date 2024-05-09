@@ -47,6 +47,9 @@ namespace Raytracer {
         #define CFG_DIRECTIONAL_LIGHTS "directionalLights"
         #define CFG_DIRECTION "direction"
         #define CFG_TRANSFORMATIONS "transformations"
+        #define CFG_OPTIMIZATION "optimization"
+        #define CFG_MAX_RAY_BOUNCES "maxRayBounces"
+        #define CFG_USE_MULTITHREADING "useMultithreading"
 
         #define CFG_V0 "v0"
         #define CFG_V1 "v1"
@@ -83,6 +86,7 @@ namespace Raytracer {
         void parseTriangles(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene);
 
         void parseGlobal(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
+        void parseOptimization(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
         void parseCameras(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
         void parseLights(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
         void parseObj(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
@@ -93,6 +97,7 @@ namespace Raytracer {
 
         void saveScene(const Scene &scene, const std::string &outputFile);
         void saveGlobal(const Scene &scene, libconfig::Setting &root);
+        void saveOptimization(const Scene &scene, libconfig::Setting &root);
         void saveCameras(const Scene &scene, libconfig::Setting &root);
         void saveLights(const Scene &scene, libconfig::Setting &root);
         void savePrimitives(const Scene &scene, libconfig::Setting &root);

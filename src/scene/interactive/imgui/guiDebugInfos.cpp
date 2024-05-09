@@ -61,6 +61,11 @@ namespace Raytracer
                 m_needRendering = true;
             }
 
+            int maxRayBounces = m_scene->getMaxRayBounces();
+            if (ImGui::SliderInt("Ray Bounces", &maxRayBounces, 1, 10)) {
+                m_scene->setMaxRayBounces(maxRayBounces);
+                m_needRendering = true;
+            }
         }
         ImGui::EndChild();
         #endif
