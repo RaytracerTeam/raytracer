@@ -113,6 +113,12 @@ namespace Raytracer
                     ((MaterialSolid *)primitive->getMaterial())->setFuzzFactor(fuzz);
                     m_needRendering = true;
                 }
+                // Transparency
+                float transparency = ((MaterialSolid *)primitive->getMaterial())->getTransparency();
+                if (ImGui::SliderFloat("Transparency", &transparency, 0.0f, 2.0f)) {
+                    ((MaterialSolid *)primitive->getMaterial())->setTransparency(transparency);
+                    m_needRendering = true;
+                }
                 ImGui::EndTabItem();
             }
 
