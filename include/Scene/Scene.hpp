@@ -100,7 +100,7 @@ namespace Raytracer {
         Color m_ambientLightColor = Color(1., 1, 1);
         float m_ambientLightIntensity = 0.1;
 
-        const size_t m_maxNbThreads = std::thread::hardware_concurrency();
+        const size_t m_maxNbThreads = 1; //std::thread::hardware_concurrency();
         size_t m_nbThreads = m_maxNbThreads;
         std::mutex m_mutex;
 

@@ -36,11 +36,10 @@ namespace Raytracer {
                     { 0, sin(rotXRad), cos(rotXRad), 0 },
                     { 0, 0, 0, 1 } } });
             Matrix44 m2(
-                { { { cos(rotYRad), 0, sin(rotYRad), 0 },
+                { { { cos(rotYRad), 0, -sin(rotYRad), 0 },
                     { 0, 1, 0, 0 },
-                    { -sin(rotYRad), 0, cos(rotYRad), 0 },
+                    { sin(rotYRad), 0, cos(rotYRad), 0 },
                     { 0, 0, 0, 1 } } });
-
             Matrix44 m3(
                 { { { cos(rotZRad), -sin(rotZRad), 0, 0 },
                     { sin(rotZRad), cos(rotZRad), 0, 0 },
@@ -48,7 +47,7 @@ namespace Raytracer {
                     { 0, 0, 0, 1 } } });
             Matrix44 m12 = m1 * m2;
             *this = m12 * m3;
-            this->m_rot = { rotX, rotY, rotZ };
+            // *this = m3;
         }
 
         Matrix44::Matrix44(const Matrix44 &m)

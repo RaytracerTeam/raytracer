@@ -12,9 +12,11 @@
 namespace Raytracer {
     BoundingBox Cylinder::getBoundingBox(void) const
     {
+        Math::Vector3D n_origin = getTMatrix() * m_origin;
         return BoundingBox(
-            Math::Vector3D(m_origin.getX() - m_radius, m_origin.getY(), m_origin.getZ() - m_radius),
-            Math::Vector3D(m_origin.getX() + m_radius, m_origin.getY() + m_height, m_origin.getZ() + m_radius));
+            Math::Vector3D(n_origin.getX() - m_radius * cos(getTMatrix().getRot().getYaw()), n_origin.getY() - m_height * sin(getTMatrix().getRot().getPitch()), n_origin.getZ() - m_radius * cos(getTMatrix().getRot().getRoll())),
+            Math::Vector3D(n_origin.getX() + m_radius * cos(getTMatrix().getRot().getYaw()), n_origin.getY() + m_height * cos(getTMatrix().getRot().getPitch()), n_origin.getZ() + m_radius * cos(getTMatrix().getRot().getRoll()))
+            );
     }
 
     RayHit Cylinder::getNormal(double distance, const Math::Vector3D &hitPt, const Math::Vector3D &origin) const
