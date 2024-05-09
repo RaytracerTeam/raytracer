@@ -95,6 +95,13 @@ namespace Raytracer
                     ((MaterialSolid *)primitive->getMaterial())->setHasPhong(hasPhong);
                     m_needRendering = true;
                 }
+                ImGui::SameLine(0, 20);
+                // Reflection
+                bool hasReflection = ((MaterialSolid *)primitive->getMaterial())->hasReflection();
+                if (ImGui::Checkbox("Reflection", &hasReflection)) {
+                    ((MaterialSolid *)primitive->getMaterial())->setHasReflection(hasReflection);
+                    m_needRendering = true;
+                }
                 // Albedo
                 float albedo = ((MaterialSolid *)primitive->getMaterial())->getAlbedo();
                 if (ImGui::SliderFloat("Albedo", &albedo, 0.0f, 2.0f)) {
