@@ -40,12 +40,18 @@ namespace Raytracer {
         virtual void setEmission(double emission) = 0;
         virtual double getFuzzFactor(void) const = 0;
         virtual void setFuzzFactor(double fuzz) = 0;
+        virtual double getTransparency(void) const = 0;
+        virtual void setTransparency(double transparency) = 0;
         virtual void setHasPhong(bool hasPhong) = 0;
+        virtual void setHasReflection(bool hasReflection) = 0;
 
         virtual Color getColor(const RayHit &rayhit) const = 0;
         virtual Color getSpecular(const ILight *light, const RayHit &rayhit, const Math::Vector3D &lightVec) const = 0;
         virtual std::optional<Ray> getScatteredRay(const Ray &rayIn, const RayHit &rayHit) const = 0;
+        virtual std::optional<Ray> getTransparencyReflectionRay(const Ray &rayIn, const RayHit &rayHit) const = 0;
+        virtual std::optional<Ray> getTransparencyRay(const Ray &rayIn, const RayHit &rayHit) const = 0;
 
         virtual bool hasPhong(void) const = 0;
+        virtual bool hasReflection(void) const = 0;
     };
 } // namespace Material
