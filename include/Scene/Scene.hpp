@@ -74,12 +74,7 @@ namespace Raytracer {
         void removeLight(size_t index);
         bool removeCamera(size_t index);
 
-        void showCurrentRenderedLine(void) {
-            if (m_renderY >= m_render.getSize().y)
-                return;
-            for (size_t x = 0; x < m_render.getSize().x; x++)
-                m_render.setPixel(x, m_renderY + 1, m_render.getPixel(x, m_renderY + 1) * sf::Color(100, 100, 100));
-        }
+        void showCurrentRenderedLine(void);
 
     private:
         Color castRayColor(const Ray &ray, const IPrimitive *primHit, const RayHit &rhitPrim) const;

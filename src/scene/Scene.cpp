@@ -284,4 +284,12 @@ namespace Raytracer {
         m_cameras.erase(m_cameras.begin() + index);
         return true;
     }
+
+    void Scene::showCurrentRenderedLine(void)
+    {
+        if (m_renderY >= m_render.getSize().y)
+            return;
+        for (size_t x = 0; x < m_render.getSize().x; x++)
+            m_render.setPixel(x, m_renderY + 1, m_render.getPixel(x, m_renderY + 1) * sf::Color(100, 100, 100));
+    }
 } // namespace Raytracer
