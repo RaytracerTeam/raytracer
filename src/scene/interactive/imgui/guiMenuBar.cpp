@@ -13,6 +13,7 @@ namespace Raytracer
 {
     void SceneInteractive::addSelectableSkybox(const std::filesystem::directory_entry &entry)
     {
+        (void)entry;
         #ifdef BONUS
         std::string path = entry.path().string();
         if (path.ends_with(".jpg") &&
@@ -27,6 +28,7 @@ namespace Raytracer
 
     void SceneInteractive::addSelectableScene(const std::filesystem::directory_entry &entry)
     {
+        (void)entry;
         #ifdef BONUS
         std::string path = entry.path().string();
         if (path.ends_with(".cfg") &&
