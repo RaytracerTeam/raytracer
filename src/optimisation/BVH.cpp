@@ -98,21 +98,21 @@ namespace Raytracer {
             return node;
         }
 
-        bool readBVH(const Ray &ray, const Node &node, Intersection &intersection)
+        bool readBVH(const Ray &ray, const Node &node, Intersection &intersection, bool isLight)
         {
             if (!node.box.intersect(ray))
                 return false;
 
             if (node.primitives == nullptr) {
-                auto resLeft = readBVH(ray, *node.left, intersection);
-                auto resRight = readBVH(ray, *node.right, intersection);
+                auto resLeft = readBVH(ray, *node.left, intersection, isLight);
+                auto resRight = readBVH(ray, *node.right, intersection, isLight);
                 return resLeft | resRight;
             }
 
             std::vector<std::pair<RayHit, const IPrimitive *>> hitResults;
             auto vec = *node.primitives;
             for (const auto &prim : vec) {
-                if (!prim->isShown())
+                if (!prim->isShown() || (prim->getMaterial()->getTransparency() > 1e-8 && isLight))
                     continue;
                 Ray ray_temp(ray.getOrigin(),  (prim->getTMatrix() * ray.getDirection()), ray.getDepth());
                 auto hitResult = prim->hit(ray_temp);
