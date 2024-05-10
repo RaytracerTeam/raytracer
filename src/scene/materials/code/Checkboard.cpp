@@ -19,18 +19,20 @@ namespace Raytracer {
 
     static inline bool isPair(double p)
     {
-        return std::fmod(p, 2.) == 0;
+        int i = p;
+        return i % 2 == 0;
+        // return std::fmod(p, 2.) == 0;
     }
 
     Color MaterialCheckBoard::getColor(const RayHit &rayhit) const
     {
         auto point = rayhit.getHitPoint();
-        bool subPair = (isPair(point.getX()) && isPair(point.getY()))
-            || (!isPair(point.getX()) && !isPair(point.getY()));
+        // bool subPair = (isPair(point.getX()) && isPair(point.getY()))
+        //     || (!isPair(point.getX()) && !isPair(point.getY()));
 
         if (isPair(point.getZ()))
-            return subPair ? m_c1 : m_c2;
+            return m_c1;
         else
-            return subPair ? m_c2 : m_c1;
+            return m_c2;
     }
 } // namespace Raytracer

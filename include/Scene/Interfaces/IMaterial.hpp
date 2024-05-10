@@ -18,12 +18,14 @@ namespace Raytracer {
         SOLID,
         CODE, // algorithm
         TEXTURE,
+        CHECKBOARD,
         NONE
     };
     char const *const MaterialTypeStrings[] = {
         "Solid",
         "Code",
         "Texture",
+        "Checkboard",
         "None"
     };
 
