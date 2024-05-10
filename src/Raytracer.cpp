@@ -53,7 +53,10 @@ namespace Raytracer {
 
             return imageOutput(inputFiles);
         } catch (Error &error) {
-            std::cerr << "Error : " << error.what() << ". (" << error.where() << ")" << std::endl;
+            std::cerr << "Error: " << error.what() << ". (" << error.where() << ")" << std::endl;
+            return EXIT_FAILURE_EPITECH;
+        } catch (const std::runtime_error &error) {
+            std::cerr << "Error: " << error.what() << std::endl;
             return EXIT_FAILURE_EPITECH;
         }
     }
