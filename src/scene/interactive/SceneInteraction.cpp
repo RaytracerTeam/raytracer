@@ -84,8 +84,10 @@ namespace Raytracer {
                 ImGui::SFML::ProcessEvent(event);
             #endif
 
-            if (event.type == sf::Event::Closed)
+            if (event.type == sf::Event::Closed) {
+                Parsing::saveScene(*m_scene, TEMP_CFG_FILE);
                 return m_window.close();
+            }
             if (event.type == sf::Event::Resized) {
                 sf::FloatRect visibleArea(0.f, 0.f, event.size.width, event.size.height);
                 #ifndef BONUS

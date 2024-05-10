@@ -41,6 +41,9 @@ namespace Raytracer {
 
     #define MOUSE_CENTER sf::Vector2i(700, 500)
 
+    #define TEMP_CFG_FILE "scenes/temp.cfg"
+    #define QUICK_SAVE_CFG_FILE "scenes/quick_save.cfg"
+
     enum class ObjectSelection {
         PRIMITIVE,
         LIGHT,
