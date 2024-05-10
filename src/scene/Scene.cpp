@@ -331,4 +331,32 @@ namespace Raytracer {
             return nullptr;
         return intersection.primitve;
     }
+
+    void Scene::killObjects(void)
+    {
+        for (int i = 0; i < m_primitives.size(); i++) {
+            if (m_primitives[i]->dieASAP()) {
+                removePrimitive(i);
+                i--;
+            }
+        }
+        for (int i = 0; i < m_lightSystem.getLights().size(); i++) {
+            if (m_lightSystem.getLights()[i]->dieASAP()) {
+                m_lightSystem.removeLight(i);
+                i--;
+            }
+        }
+        for (int i = 0; i < m_lightSystem.getAmbientLights().size(); i++) {
+            if (m_lightSystem.getAmbientLights()[i]->dieASAP()) {
+                m_lightSystem.removeAmbientLight(i);
+                i--;
+            }
+        }
+        for (int i = 0; i < m_lightSystem.getDirectionalLights().size(); i++) {
+            if (m_lightSystem.getDirectionalLights()[i]->dieASAP()) {
+                m_lightSystem.removeDirectionalLight(i);
+                i--;
+            }
+        }
+    }
 } // namespace Raytracer

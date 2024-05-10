@@ -38,6 +38,8 @@ namespace Raytracer {
         const std::string getTypeString(void) const override { return PrimitiveTypeStrings[static_cast<int>(getType())]; };
         int getID(void) const override { return m_id; }
         void setID(int id) override { m_id = id; }
+        bool dieASAP(void) const override { return m_dieASAP; }
+        void setdieASAP(bool dieASAP) override { m_dieASAP = dieASAP; }
         void setRotXYZ(double rotX, double rotY, double rotZ) override
         {
             m_mat = Math::Matrix44(rotX, rotY, rotZ);
@@ -54,5 +56,6 @@ namespace Raytracer {
         Math::Matrix44 m_mat;
         std::unique_ptr<IMaterial> m_material;
         bool m_isShown = true;
+        bool m_dieASAP = false;
     };
 } // namespace Raytracer
