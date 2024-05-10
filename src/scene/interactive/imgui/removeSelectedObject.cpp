@@ -15,23 +15,27 @@ namespace Raytracer
             return;
         switch (m_objectSelection) {
         case ObjectSelection::PRIMITIVE:
-            m_scene->removePrimitive(m_selectedObject);
+            m_scene->getPrimitives()[m_selectedObject]->setdieASAP(true);
+            // m_scene->removePrimitive(m_selectedObject);
             break;
         case ObjectSelection::LIGHT: {
             SceneLightning &lightSystem = m_scene->getLightSystem();
             size_t localSelectedObject = m_selectedObject;
             if (localSelectedObject < lightSystem.getAmbientLights().size()) {
-                lightSystem.removeAmbientLight(localSelectedObject);
+                lightSystem.getAmbientLights()[localSelectedObject]->setdieASAP(true);
+                // lightSystem.removeAmbientLight(localSelectedObject);
                 break;
             }
             localSelectedObject -= lightSystem.getAmbientLights().size();
             if (localSelectedObject < lightSystem.getDirectionalLights().size()) {
-                lightSystem.removeDirectionalLight(localSelectedObject);
+                lightSystem.getDirectionalLights()[localSelectedObject]->setdieASAP(true);
+                // lightSystem.removeDirectionalLight(localSelectedObject);
                 break;
             }
             localSelectedObject -= lightSystem.getDirectionalLights().size();
             if (localSelectedObject < lightSystem.getLights().size()) {
-                lightSystem.removeLight(localSelectedObject);
+                lightSystem.getLights()[localSelectedObject]->setdieASAP(true);
+                // lightSystem.removeLight(localSelectedObject);
                 break;
             }
             break;

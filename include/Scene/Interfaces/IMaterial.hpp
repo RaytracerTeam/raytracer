@@ -57,4 +57,4 @@ namespace Raytracer {
         virtual std::optional<Ray> getTransparencyRay(const Ray &rayIn, const RayHit &rayHit) const = 0;
 
     };
-} // namespace Material
+} // namespace Raytracer

@@ -79,6 +79,8 @@ namespace Raytracer {
         void showCurrentRenderedLine(void);
         const IShape *getPrimitiveHit(sf::Vector2i mousePos) const;
 
+        void killObjects(void);
+
     private:
         Color castRayColor(const Ray &ray, const IPrimitive *primHit, const RayHit &rhitPrim) const;
         Color castRay(const Ray &ray) const;
@@ -98,8 +100,8 @@ namespace Raytracer {
         SceneLightning m_lightSystem;
 
         Skybox m_skybox = Skybox(std::make_unique<MaterialTexture>(DEFAULT_SKYBOX), SPHERE);
-        size_t m_maxRayBounces = 5; // todo : set in config
-        double m_maxDropShadowsRay = 1; // todo : set in config
+        size_t m_maxRayBounces = 5;
+        double m_maxDropShadowsRay = 1;
 
         bool m_renderLights = false;
 

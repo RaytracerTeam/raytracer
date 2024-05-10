@@ -13,7 +13,7 @@ namespace Raytracer
     {
         #ifdef BONUS
         Camera *currentCamera = m_interacCam.getCamera();
-        if (ImGui::BeginChild("Debug Infos", ImVec2(m_leftPaneWidth, m_imageHeight / 2 - 30),
+        if (ImGui::BeginChild("Debug Infos", ImVec2(m_leftPaneWidth, m_imageHeight / 2 - 50),
         ImGuiChildFlags_Border)) {
 
             // FPS
