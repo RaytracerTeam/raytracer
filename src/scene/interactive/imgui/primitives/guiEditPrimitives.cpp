@@ -62,15 +62,16 @@ namespace Raytracer
                     m_needRendering = true;
                 }
 
-                ImGui::SameLine(0, 20);
-
-                // Color
-                ImGui::SetNextItemWidth(200);
-                float *color = ((MaterialSolid *)primitive->getMaterial())->getColor();
-                if (ImGui::ColorEdit3("Color", color)) {
-                    Color newColor = Color(color);
-                    ((MaterialSolid *)primitive->getMaterial())->setColor(newColor);
-                    m_needRendering = true;
+                if (primitive->getMaterial()->getType() == MaterialType::SOLID) {
+                    ImGui::SameLine(0, 20);
+                    // Color
+                    ImGui::SetNextItemWidth(200);
+                    float *color = ((MaterialSolid *)primitive->getMaterial())->getColor();
+                    if (ImGui::ColorEdit3("Color", color)) {
+                        Color newColor = Color(color);
+                        ((MaterialSolid *)primitive->getMaterial())->setColor(newColor);
+                        m_needRendering = true;
+                    }
                 }
 
                 // Position
