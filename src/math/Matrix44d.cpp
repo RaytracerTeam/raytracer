@@ -32,22 +32,22 @@ namespace Raytracer {
             double rotZRad = rotZ * M_PI / 180;
             Matrix44 m1(
                 { { { 1, 0, 0, 0 },
-                    { 0, cos(rotXRad), -sin(rotXRad), 0 },
-                    { 0, sin(rotXRad), cos(rotXRad), 0 },
+                    { 0, cos(rotXRad), sin(rotXRad), 0 },
+                    { 0, -sin(rotXRad), cos(rotXRad), 0 },
                     { 0, 0, 0, 1 } } });
             Matrix44 m2(
-                { { { cos(rotYRad), 0, -sin(rotYRad), 0 },
+                { { { cos(rotYRad), 0, sin(rotYRad), 0 },
                     { 0, 1, 0, 0 },
-                    { sin(rotYRad), 0, cos(rotYRad), 0 },
+                    { -sin(rotYRad), 0, cos(rotYRad), 0 },
                     { 0, 0, 0, 1 } } });
             Matrix44 m3(
-                { { { cos(rotZRad), -sin(rotZRad), 0, 0 },
-                    { sin(rotZRad), cos(rotZRad), 0, 0 },
+                { { { cos(rotZRad), sin(rotZRad), 0, 0 },
+                    { -sin(rotZRad), cos(rotZRad), 0, 0 },
                     { 0, 0, 1, 0 },
                     { 0, 0, 0, 1 } } });
             Matrix44 m12 = m1 * m2;
             *this = m12 * m3;
-            // *this = m3;
+            this->m_rot = Math::Angle3D(rotX, rotY, rotZ);
         }
 
         Matrix44::Matrix44(const Matrix44 &m)
@@ -93,6 +93,16 @@ namespace Raytracer {
             return Vector3D(a / w, b / w, c / w);
         }
 
+        Vector3D Matrix44::operator*(const std::array<double, 4> &src) const
+        {
+            std::array<double, 4> arr;
+
+            for (uint8_t i = 0; i < 4; ++i)
+                arr[i] = src[0] * m_arr[0][i] + src[1] * m_arr[1][i] + src[2] * m_arr[2][i] + src[3] * m_arr[3][i];
+            Vector3D v(arr[0], arr[1], arr[2]);
+            return v;
+        }
+
         Matrix44 Matrix44::transpose() const
         {
             Matrix44 m;
@@ -100,7 +110,6 @@ namespace Raytracer {
             for (uint8_t i = 0; i < 4; ++i)
                 for (uint8_t j = 0; j < 4; ++j)
                     m[i][j] = m_arr[j][i];
-
             return m;
         }
 
@@ -178,7 +187,6 @@ namespace Raytracer {
                     }
                 }
             }
-
             return s;
         }
 

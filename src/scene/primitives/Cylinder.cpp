@@ -12,11 +12,16 @@
 namespace Raytracer {
     BoundingBox Cylinder::getBoundingBox(void) const
     {
-        Math::Vector3D n_origin = getTMatrix() * m_origin;
+        // Math::Vector3D n_origin = getTMatrix() * m_origin;
+        // return BoundingBox(
+        //     Math::Vector3D(n_origin.getX() - m_radius * cos(getTMatrix().getRot().getYaw()), n_origin.getY() - m_height * sin(getTMatrix().getRot().getPitch()), n_origin.getZ() - m_radius * cos(getTMatrix().getRot().getRoll()) + 10),
+        //     Math::Vector3D(n_origin.getX() + m_radius * cos(getTMatrix().getRot().getYaw()), n_origin.getY() + m_height * cos(getTMatrix().getRot().getPitch()), n_origin.getZ() + m_radius * cos(getTMatrix().getRot().getRoll()))
+        //     );
+        float min = - (2 * m_radius) - 2 * m_height;
+        float max = (2 * m_radius) + 2 * m_height;
         return BoundingBox(
-            Math::Vector3D(n_origin.getX() - m_radius * cos(getTMatrix().getRot().getYaw()), n_origin.getY() - m_height * sin(getTMatrix().getRot().getPitch()), n_origin.getZ() - m_radius * cos(getTMatrix().getRot().getRoll())),
-            Math::Vector3D(n_origin.getX() + m_radius * cos(getTMatrix().getRot().getYaw()), n_origin.getY() + m_height * cos(getTMatrix().getRot().getPitch()), n_origin.getZ() + m_radius * cos(getTMatrix().getRot().getRoll()))
-            );
+            Math::Vector3D(m_origin.getX() + min, m_origin.getY() + min, m_origin.getZ() + min),
+            Math::Vector3D(m_origin.getX() + max, m_origin.getY() + max, m_origin.getZ() + max));
     }
 
     RayHit Cylinder::getNormal(double distance, const Math::Vector3D &hitPt, const Math::Vector3D &origin) const
@@ -65,8 +70,8 @@ namespace Raytracer {
     std::optional<RayHit> Cylinder::hitFace(
         const Math::Vector3D &dstOrigin, const Math::Vector3D &rayDir) const
     {
-        double t0 = -dstOrigin.getY() / rayDir.getY();
-        double t1 = (m_height - dstOrigin.getY()) / rayDir.getY();
+        double t0 = -(dstOrigin.getY() - m_origin.getY()) / rayDir.getY();
+        double t1 = (m_height - (dstOrigin.getY() - m_origin.getY())) / rayDir.getY();
 
         double t = (t0 < t1 && t0 > 1e-8) ? t0 : t1;
         if (t < -1e-8)
@@ -75,7 +80,7 @@ namespace Raytracer {
         Math::Vector3D hitPt
             = Math::Vector3D(dstOrigin.getX() + rayDir.getX() * t, 0,
                 dstOrigin.getZ() + rayDir.getZ() * t);
-        (t0 < t1 && t0 > 1e-8) ? hitPt.setY(0) : hitPt.setY(m_height);
+        (t0 < t1 && t0 > 1e-8) ? hitPt.setY(t1) : hitPt.setY(t0);
 
         if (hitPt.getX() * hitPt.getX() + hitPt.getZ() * hitPt.getZ()
             <= m_radius * m_radius) {
@@ -92,8 +97,8 @@ namespace Raytracer {
     std::optional<RayHit> Cylinder::hit(const Ray &ray) const
     {
         std::optional<RayHit> intersect;
-        Math::Vector3D dstOrigin = ray.getOrigin() - m_origin;
-        Math::Vector3D rayDir = ray.getDirection();
+        Math::Vector3D dstOrigin = getTMatrix() * (ray.getOrigin() - m_origin);
+        Math::Vector3D rayDir = (getTMatrix() * ray.getDirection());
 
         double a
             = rayDir.getX() * rayDir.getX() + rayDir.getZ() * rayDir.getZ();
@@ -108,7 +113,7 @@ namespace Raytracer {
 
         double t0 = (-b - sqrtDelta) / (2 * a);
         if (t0 > 0.001) {
-            Math::Vector3D hitPt = ray.getOrigin() + ray.getDirection() * t0;
+            Math::Vector3D hitPt = dstOrigin + (rayDir) * t0;
             if (std::isinf(m_height))
                 return getNormal(t0, hitPt, m_origin);
 
@@ -122,7 +127,7 @@ namespace Raytracer {
 
         double t1 = (-b + sqrtDelta) / (2 * a);
         if (t1 > 0.001) {
-            Math::Vector3D hitPt = ray.getOrigin() + ray.getDirection() * t1;
+            Math::Vector3D hitPt = ((dstOrigin) + (rayDir) * t1);
             if (hitPt.getY() >= m_origin.getY()
                 && hitPt.getY() <= m_origin.getY() + m_height)
                 return getNormal(t1, hitPt, m_origin);
