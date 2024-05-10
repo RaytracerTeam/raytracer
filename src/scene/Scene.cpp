@@ -305,4 +305,23 @@ namespace Raytracer {
         for (size_t x = 0; x < m_render.getSize().x; x++)
             m_render.setPixel(x, m_renderY + 1, m_render.getPixel(x, m_renderY + 1) * sf::Color(100, 100, 100));
     }
+
+    const IShape *Scene::getPrimitiveHit(sf::Vector2i mousePos) const
+    {
+        Camera &camera = getCurrentCamera();
+        Dimension dimension = camera.getDimension();
+        double scale = std::tan(Math::deg2rad(camera.getFov() * 0.5));
+        double imageAspectRatio = dimension.getWidthD() / dimension.getHeightD();
+
+        double rayX = (2 * (mousePos.x + 0.5) / dimension.getWidthD() - 1) * imageAspectRatio * scale;
+        double rayY = (1 - 2 * (mousePos.y + 0.5) / dimension.getHeightD()) * scale;
+        Math::Vector3D dir = Math::Vector3D(rayX, rayY, -1).normalize().rotate(camera.getAngle());
+        Ray ray = Ray(camera.getPos(), dir);
+
+        BVH::Intersection intersection;
+        auto result = BVH::readBVH(ray, *m_bvhTree, intersection);
+        if (!result)
+            return nullptr;
+        return intersection.primitve;
+    }
 } // namespace Raytracer

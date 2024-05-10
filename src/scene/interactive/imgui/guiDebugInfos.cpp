@@ -55,15 +55,26 @@ namespace Raytracer
                 m_needRendering = true;
             }
 
+            // Thread number
             int threadNumber = m_scene->getNbThreads();
             if (ImGui::SliderInt("Threads", &threadNumber, 1, m_scene->getMaxNbThreads())) {
                 m_scene->setNbThreads(threadNumber);
                 m_needRendering = true;
             }
 
+            // Ray Bounces
             int maxRayBounces = m_scene->getMaxRayBounces();
             if (ImGui::SliderInt("Ray Bounces", &maxRayBounces, 1, 10)) {
                 m_scene->setMaxRayBounces(maxRayBounces);
+                m_needRendering = true;
+            }
+
+            // BVH Max Prim Limit
+            int bvhMaxPrimLimit = m_scene->getBvhMaxPrimLimit();
+            if (ImGui::SliderInt("BVH Max Prim Limit", &bvhMaxPrimLimit, 1, 20,
+            "%d", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic)) {
+                m_scene->setBvhMaxPrimLimit(bvhMaxPrimLimit);
+                m_updateBVH = true;
                 m_needRendering = true;
             }
         }

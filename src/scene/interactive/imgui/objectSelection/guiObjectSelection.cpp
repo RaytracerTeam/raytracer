@@ -17,13 +17,14 @@ namespace Raytracer
         if (ImGui::BeginTabBar("Object Selection",
         ImGuiTabBarFlags_NoCloseWithMiddleMouseButton
         | ImGuiTabBarFlags_Reorderable)) {
-            if (ImGui::BeginTabItem("Primitives")) {
+            if (ImGui::BeginTabItem("Primitives", nullptr,
+            m_selectPrimitiveTab ? ImGuiTabItemFlags_SetSelected : 0)) {
                 if (m_objectSelection != ObjectSelection::PRIMITIVE)
                     m_selectedObject = -1;
                 m_objectSelection = ObjectSelection::PRIMITIVE;
+                guiAddPrimitive();
                 if (ImGui::BeginChild("primitive selection", ImVec2(m_leftPaneWidth,
                 m_imageHeight / 2 - 20), ImGuiChildFlags_Border)) {
-                    guiAddPrimitive();
                     int i = 0;
                     for (auto &prim : m_scene->getPrimitives()) {
                         std::string name = std::to_string(i) + " id" +
@@ -77,11 +78,11 @@ namespace Raytracer
                 if (m_objectSelection != ObjectSelection::CAMERA)
                     m_selectedObject = -1;
                 m_objectSelection = ObjectSelection::CAMERA;
+                if (ImGui::Button("Add Camera")) {
+                    m_scene->addCamera(std::make_unique<Camera>());
+                }
                 if (ImGui::BeginChild("camera selection", ImVec2(m_leftPaneWidth,
                 m_imageHeight / 2 - 20), ImGuiChildFlags_Border)) {
-                    if (ImGui::Button("Add Camera")) {
-                        m_scene->addCamera(std::make_unique<Camera>());
-                    }
                     int i = 0;
                     for (auto &camera : m_scene->getCameras()) {
                         (void)camera;
@@ -104,6 +105,7 @@ namespace Raytracer
             }
         }
         ImGui::EndTabBar();
+        m_selectPrimitiveTab = false;
         #endif
     }
 } // namespace Raytracer

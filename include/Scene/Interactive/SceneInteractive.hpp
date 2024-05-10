@@ -146,6 +146,7 @@ namespace Raytracer {
         size_t m_leftPaneWidth;
         bool m_alwaysRender = false;
         bool m_fullscreen = false;
+        bool m_selectPrimitiveTab = false;
 
         // Storing the result of the render
         std::unique_ptr<sf::Uint8 []> m_lastRender;

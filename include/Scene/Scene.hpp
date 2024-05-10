@@ -45,6 +45,7 @@ namespace Raytracer {
         void setRenderNbr(uint64_t nbr) { m_renderNbr = nbr; }
         void setNbThreads(size_t nbThreads) { m_nbThreads = nbThreads; }
         void setMaxRayBounces(size_t maxRayBounces) { m_maxRayBounces = maxRayBounces; }
+        void setBvhMaxPrimLimit(size_t maxPrimLimit) { m_bvhMaxPrimLimit = maxPrimLimit; }
 
         Camera &getCurrentCamera(void) const;
         const std::vector<std::unique_ptr<Camera>> &getCameras(void) const { return m_cameras; }
@@ -67,6 +68,7 @@ namespace Raytracer {
         size_t getNbThreadsAlive(void) const { return m_nbThreadsAlive; }
         size_t getRenderY(void) const { return m_renderY; }
         size_t getMaxRayBounces(void) const { return m_maxRayBounces; }
+        size_t getBvhMaxPrimLimit(void) const { return m_bvhMaxPrimLimit; }
 
         void resizeRender(unsigned int width, unsigned int height);
         void updatePrimitives(void);
@@ -75,6 +77,7 @@ namespace Raytracer {
         bool removeCamera(size_t index);
 
         void showCurrentRenderedLine(void);
+        const IShape *getPrimitiveHit(sf::Vector2i mousePos) const;
 
     private:
         Color castRayColor(const Ray &ray, const IPrimitive *primHit, const RayHit &rhitPrim) const;

@@ -104,10 +104,28 @@ namespace Raytracer {
             && event.mouseButton.button == sf::Mouse::Right) {
                 m_useSimpleMouse = false;
             }
-            if (event.type == sf::Event::MouseButtonPressed
-            && event.mouseButton.button == sf::Mouse::Right) {
-                m_useSimpleMouse = true;
-                m_lastMousePos = sf::Mouse::getPosition();
+            if (event.type == sf::Event::MouseButtonPressed) {
+                if (event.mouseButton.button == sf::Mouse::Right) {
+                    m_useSimpleMouse = true;
+                    m_lastMousePos = sf::Mouse::getPosition();
+                }
+                // Select primitive by aiming at it with the center of the screen
+                else if (event.mouseButton.button == sf::Mouse::Left && (m_useMouse || m_useSimpleMouse)) {
+                    const IShape *shape = m_scene->getPrimitiveHit(sf::Vector2i(
+                        m_dimension.getWidth() / 2, m_dimension.getHeight() / 2
+                    ));
+                    if (shape) {
+                        int i = 0;
+                        for (auto &prim : m_scene->getPrimitives()) {
+                            if (prim->getID() == shape->getID()) {
+                                m_selectedObject = i;
+                                m_selectPrimitiveTab = true;
+                                break;
+                            }
+                            i++;
+                        }
+                    }
+                }
             }
         }
         handleMouse();
