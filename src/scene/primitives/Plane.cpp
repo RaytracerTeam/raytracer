@@ -85,11 +85,11 @@ namespace Raytracer {
     {
         switch (m_axis) {
         case X:
-            return Math::Vector3D(1, 0, 0);
+            return (getTMatrix() * Math::Vector3D(1, 0, 0));
         case Y:
-            return Math::Vector3D(0, 1, 0);
+            return (getTMatrix() * Math::Vector3D(0, 1, 0));
         default:
-            return Math::Vector3D(0, 0, 1);
+            return (getTMatrix() * Math::Vector3D(0, 0, 1));
         }
     }
 

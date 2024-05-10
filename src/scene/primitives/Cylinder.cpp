@@ -115,11 +115,11 @@ namespace Raytracer {
         if (t0 > 0.001) {
             Math::Vector3D hitPt = dstOrigin + (rayDir) * t0;
             if (std::isinf(m_height))
-                return getNormal(t0, hitPt, m_origin);
+                return getNormal(t0, getTMatrix() * hitPt, m_origin);
 
             if (hitPt.getY() >= m_origin.getY()
                 && hitPt.getY() <= m_origin.getY() + m_height)
-                return getNormal(t0, hitPt, m_origin);
+                return getNormal(t0, getTMatrix() * hitPt, m_origin);
         }
 
         if ((intersect = hitFace(dstOrigin, rayDir)).has_value())
@@ -130,7 +130,7 @@ namespace Raytracer {
             Math::Vector3D hitPt = ((dstOrigin) + (rayDir) * t1);
             if (hitPt.getY() >= m_origin.getY()
                 && hitPt.getY() <= m_origin.getY() + m_height)
-                return getNormal(t1, hitPt, m_origin);
+                return getNormal(t1, getTMatrix() * hitPt, m_origin);
         }
 
         return std::nullopt;
