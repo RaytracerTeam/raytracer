@@ -62,8 +62,8 @@ namespace Raytracer {
     std::optional<RayHit> Plane::hit(const Ray &ray) const
     {
         double t;
-        auto rayOrigin = ray.getOrigin();
-        auto rayDir = ray.getDirection();
+        auto rayOrigin = getTMatrix() * ray.getOrigin();
+        auto rayDir = getTMatrix() * ray.getDirection();
 
         switch (m_axis) {
         case X:
