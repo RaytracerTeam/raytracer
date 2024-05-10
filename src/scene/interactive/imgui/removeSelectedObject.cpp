@@ -45,7 +45,6 @@ namespace Raytracer
         }
         m_selectedObject = -1;
         m_updateBVH = true;
-        m_renderBVH = true;
         m_needRendering = true;
     }
 } // namespace Raytracer
