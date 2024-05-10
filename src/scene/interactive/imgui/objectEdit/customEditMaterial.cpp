@@ -12,8 +12,6 @@
 
 namespace Raytracer
 {
-
-
     void SceneInteractive::customEditMaterial(IMaterial *material)
     {
         switch (material->getType()) {
@@ -52,6 +50,3 @@ namespace Raytracer
         }
     }
 } // namespace Raytracer
-
-
-

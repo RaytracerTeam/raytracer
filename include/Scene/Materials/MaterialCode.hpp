@@ -18,7 +18,7 @@ namespace Raytracer {
         MaterialType getType() const override { return MaterialType::CODE; }
 
         float getFactor() const { return m_factor; }
-        float setFactor(float factor) { m_factor = factor; }
+        void setFactor(float factor) { m_factor = factor; }
     protected:
         float m_factor;
     };
