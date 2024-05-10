@@ -11,12 +11,15 @@
 
 namespace Raytracer {
     class MaterialCode : public AMaterial {
-    protected:
-        MaterialCode(size_t factor);
+    public :
+        MaterialCode(float factor);
         ~MaterialCode() = default;
 
         MaterialType getType() const override { return MaterialType::CODE; }
 
-        size_t m_factor;
+        float getFactor() const { return m_factor; }
+        float setFactor(float factor) { m_factor = factor; }
+    protected:
+        float m_factor;
     };
 } // namespace Raytracer

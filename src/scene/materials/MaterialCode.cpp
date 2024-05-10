@@ -8,7 +8,7 @@
 #include "Scene/Materials/MaterialCode.hpp"
 
 namespace Raytracer {
-    MaterialCode::MaterialCode(size_t factor) : m_factor(factor)
+    MaterialCode::MaterialCode(float factor) : m_factor(factor)
     {
     }
 } // namespace Raytracer

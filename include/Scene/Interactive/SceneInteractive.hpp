@@ -35,7 +35,7 @@ namespace Raytracer {
     #define DEFAULT_HEIGHT_MIN 0.0f
     #define DEFAULT_HEIGHT_MAX 40.0f
     #define DEFAULT_INTENSITY_MIN 0.0f
-    #define DEFAULT_INTENSITY_MAX 3.0f
+    #define DEFAULT_INTENSITY_MAX 1.5f
 
     #define WINDOW_FPS 60
 
@@ -93,6 +93,7 @@ namespace Raytracer {
         void removeSelectedObject(void);
         void customEditPrimitives(std::unique_ptr<IPrimitive> &primitive);
         void customEditLights(ILight *light);
+        void customEditMaterial(IMaterial *material);
         void guiEditLights(void);
         void guiEditPrimitives(void);
         void guiEditCameras(void);

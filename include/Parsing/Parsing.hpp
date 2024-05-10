@@ -62,8 +62,9 @@ namespace Raytracer {
         #define CFG_TYPE "type"
         #define CFG_MATERIAL_SOLID_COLOR "solid_color"
         #define CFG_MATERIAL_TEXTURE "texture"
-        #define CFG_MATERIAL_CHECKBOARD "checkboard"
+        #define CFG_MATERIAL_CHECKERBOARD "checkerboard"
         #define CFG_COLOR_BIS "color_bis"
+        #define CFG_SIZE "size"
 
         bool parseArgv(int argc, char **argv, std::vector<std::string_view> &inputFiles); // return true if interactive mode
         void parse(std::unique_ptr<Scene> &scene, const std::vector<std::string_view> &inputFiles);

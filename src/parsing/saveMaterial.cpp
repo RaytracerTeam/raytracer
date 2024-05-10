@@ -9,7 +9,7 @@
 
 #include "Scene/Materials/MaterialSolid.hpp"
 #include "Scene/Materials/MaterialTexture.hpp"
-#include "Scene/Materials/MaterialCode/Checkboard.hpp"
+#include "Scene/Materials/MaterialCode/Checkerboard.hpp"
 
 namespace Raytracer
 {
@@ -30,15 +30,16 @@ namespace Raytracer
             setting.add(CFG_PATH, libconfig::Setting::TypeString) = materialTexture->getPathname();
         }
 
-        static void saveMaterialCheckboard(libconfig::Setting &setting, APrimitive *primitive)
+        static void saveMaterialCheckerboard(libconfig::Setting &setting, APrimitive *primitive)
         {
-            setting.add(CFG_TYPE, libconfig::Setting::TypeString) = CFG_MATERIAL_CHECKBOARD;
-            MaterialCheckBoard *materialCheckboard = dynamic_cast<MaterialCheckBoard *>(primitive->getMaterial());
-            Color color = materialCheckboard->getC1();
+            setting.add(CFG_TYPE, libconfig::Setting::TypeString) = CFG_MATERIAL_CHECKERBOARD;
+            MaterialCheckerBoard *materialCheckerboard = dynamic_cast<MaterialCheckerBoard *>(primitive->getMaterial());
+            Color color = materialCheckerboard->getC1();
             saveColor(setting, color);
             auto &colorBisSetting = setting.add(CFG_COLOR_BIS, libconfig::Setting::TypeGroup);
-            Color colorBis = materialCheckboard->getC2();
+            Color colorBis = materialCheckerboard->getC2();
             saveColor(colorBisSetting, colorBis);
+            setting.add(CFG_SIZE, libconfig::Setting::TypeFloat) = materialCheckerboard->getFactor();
         }
 
         void saveMaterial(libconfig::Setting &setting, APrimitive *primitive)
@@ -48,8 +49,8 @@ namespace Raytracer
                 saveMaterialSolid(materialSetting, primitive);
             else if (primitive->getMaterial()->getType() == MaterialType::TEXTURE)
                 saveMaterialTexture(materialSetting, primitive);
-            else if (primitive->getMaterial()->getType() == MaterialType::CHECKBOARD)
-                saveMaterialCheckboard(materialSetting, primitive);
+            else if (primitive->getMaterial()->getType() == MaterialType::CHECKERBOARD)
+                saveMaterialCheckerboard(materialSetting, primitive);
             else
                 throw Error("Unknown material type", "saveMaterial");
 

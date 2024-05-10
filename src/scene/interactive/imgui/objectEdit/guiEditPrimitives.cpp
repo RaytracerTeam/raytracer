@@ -39,6 +39,7 @@ namespace Raytracer
             break;
         }
     }
+
     void SceneInteractive::guiEditPrimitives(void)
     {
         #ifdef BONUS
@@ -68,8 +69,7 @@ namespace Raytracer
                     ImGui::SetNextItemWidth(200);
                     float *color = ((MaterialSolid *)primitive->getMaterial())->getColor();
                     if (ImGui::ColorEdit3("Color", color)) {
-                        Color newColor = Color(color);
-                        ((MaterialSolid *)primitive->getMaterial())->setColor(newColor);
+                        ((MaterialSolid *)primitive->getMaterial())->setColor(color);
                         m_needRendering = true;
                     }
                 }
@@ -90,6 +90,7 @@ namespace Raytracer
             }
 
             if (ImGui::BeginTabItem("Material")) {
+                customEditMaterial(primitive->getMaterial());
                 // Phong
                 bool hasPhong = primitive->getMaterial()->hasPhong();
                 if (ImGui::Checkbox("Phong", &hasPhong)) {

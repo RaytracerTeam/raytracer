@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2024
 ** B-OOP-400-LYN-4-1-raytracer-thomas.pommier
 ** File description:
-** Checkboard.hpp
+** Checkerboard.hpp
 */
 
 
@@ -11,12 +11,12 @@
 #include "Scene/Materials/MaterialCode.hpp"
 
 namespace Raytracer {
-    class MaterialCheckBoard : public MaterialCode {
+    class MaterialCheckerBoard : public MaterialCode {
     public:
-        MaterialCheckBoard(Color c1 = {255U, 255, 255}, Color c2 = {0U, 0, 0}, size_t factor = 3);
-        ~MaterialCheckBoard() = default;
+        MaterialCheckerBoard(Color c1 = {255U, 255, 255}, Color c2 = {0U, 0, 0}, float factor = 1);
+        ~MaterialCheckerBoard() = default;
 
-        MaterialType getType(void) const override { return MaterialType::CHECKBOARD; };
+        MaterialType getType(void) const override { return MaterialType::CHECKERBOARD; };
 
         Color getColor(const RayHit &rayhit) const override;
 

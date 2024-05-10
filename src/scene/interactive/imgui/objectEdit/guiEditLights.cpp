@@ -68,7 +68,7 @@ namespace Raytracer
         // Intensity
         float intensity = light->getIntensity();
         if (ImGui::SliderFloat("Intensity", &intensity, DEFAULT_INTENSITY_MIN,
-        DEFAULT_INTENSITY_MAX, "%.3f", ImGuiSliderFlags_Logarithmic)) {
+        DEFAULT_INTENSITY_MAX)) {
             light->setIntensity(intensity);
             m_needRendering = true;
         }
