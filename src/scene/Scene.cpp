@@ -216,7 +216,7 @@ namespace Raytracer {
             if (ray.getDepth() < m_maxRayBounces) {
                 auto rayScattered = primMaterial->getScatteredRay(ray, rhitPrim);
                 if (rayScattered != std::nullopt)
-                    primColor *= castRay(*rayScattered) * primMaterial->getAlbedo();
+                    primColor = primColor * (1 - primMaterial->getAlbedo()) + castRay(*rayScattered) * primMaterial->getAlbedo();
             }
         }
 
@@ -229,8 +229,7 @@ namespace Raytracer {
                 else
                     rayTransparency = primMaterial->getTransparencyRay(ray, rhitPrim);
                 if (rayTransparency != std::nullopt) {
-                    primColor *= castRay(*rayTransparency) * primMaterial->getTransparency();
-                    primColor = Color(primColor.getR(), primColor.getG(), primColor.getB());
+                    primColor = primColor * (1 - primMaterial->getTransparency()) + castRay(*rayTransparency) * primMaterial->getTransparency();
                     return primColor;
                 }
             }

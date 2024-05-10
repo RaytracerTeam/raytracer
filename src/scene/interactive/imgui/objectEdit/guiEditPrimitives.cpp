@@ -99,13 +99,13 @@ namespace Raytracer
                 }
                 // Albedo
                 float albedo = primitive->getMaterial()->getAlbedo();
-                if (ImGui::SliderFloat("Albedo", &albedo, 0.0f, 2.0f)) {
+                if (ImGui::SliderFloat("Albedo", &albedo, 0.0f, 1.0f)) {
                     primitive->getMaterial()->setAlbedo(albedo);
                     m_needRendering = true;
                 }
                 // Transparency
                 float transparency = primitive->getMaterial()->getTransparency();
-                if (ImGui::SliderFloat("Transparency", &transparency, 0.0f, 2.0f)) {
+                if (ImGui::SliderFloat("Transparency", &transparency, 0.0f, 1.0f)) {
                     primitive->getMaterial()->setTransparency(transparency);
                     m_needRendering = true;
                 }
