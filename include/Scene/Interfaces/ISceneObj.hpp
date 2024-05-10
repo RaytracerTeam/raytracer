@@ -13,6 +13,7 @@
 namespace Raytracer {
     class ISceneObj {
     public:
+        virtual ~ISceneObj() = default;
         virtual void setOrigin(const Math::Vector3D &origin) = 0;
         virtual const Math::Vector3D &getOrigin(void) const = 0;
 

@@ -17,9 +17,31 @@ namespace Raytracer
         ImGuiChildFlags_Border)) {
 
             // FPS
-            ImGui::Text("FPS: %.1f", getFramerate());
-            ImGui::PlotLines("Time/F", m_frameTimes.data(), m_frameTimes.size());
+            ImGui::Text("FPS: %.1f", m_framerate);
+            ImGui::SliderFloat("MIN FPS", &m_minFramerate, 1, 60, "%.1f",
+                ImGuiSliderFlags_AlwaysClamp);
+            ImGui::SliderFloat("MAX FPS", &m_maxFramerate, 10, WINDOW_FPS, "%.1f",
+                ImGuiSliderFlags_AlwaysClamp);
             ImGui::ProgressBar((float)m_scene->getRenderY() / m_dimension.getHeight());
+            // New Render
+            if (ImGui::Button("Render", ImVec2(60, 20)))
+                m_needRendering = true;
+            ImGui::SameLine(0, 20);
+            // Resize
+            if (ImGui::Button("Resize")) {
+                setupImageSize();
+            }
+            // Render lights
+            bool renderLights = m_scene->getRenderLights();
+            if (ImGui::Checkbox("Render Point Lights", &renderLights)) {
+                m_needRendering = true;
+                m_scene->setRenderLights(renderLights);
+            }
+            // Always Render
+            ImGui::Checkbox("Always Render", &m_alwaysRender);
+            // Fullscreen
+            if (ImGui::Checkbox("Fullscreen", &m_fullscreen))
+                setupImageSize();
             // Camera Pos
             float *pos = currentCamera->getPos();
             if (ImGui::InputFloat3("Pos", pos, "%.2f")) {
@@ -32,39 +54,29 @@ namespace Raytracer
                 currentCamera->setAngle(Math::Angle3D(angle[0], angle[1], angle[2]));
                 m_needRendering = true;
             }
-            // Render lights
-            bool renderLights = m_scene->getRenderLights();
-            if (ImGui::Checkbox("Render Point Lights", &renderLights))
-                m_needRendering = true;
-            m_scene->setRenderLights(renderLights);
-            // New Render
-            if (ImGui::Button("Render", ImVec2(60, 20)))
-                m_needRendering = true;
 
-            ImGui::SameLine(0, 20);
-            // Resize
-            if (ImGui::Button("Resize")) {
-                setupImageSize();
-            }
-
-            // Ambient light
-            float ambientLightIntensity = m_scene->getAmbientLightIntensity();
-            if (ImGui::SliderFloat("AL Intens", &ambientLightIntensity, 0, 1)) {
-                m_scene->setAmbientLightIntensity(ambientLightIntensity);
-                m_needRendering = true;
-            }
-            float *ambientLightColor = m_scene->getAmbientLightColor();
-            if (ImGui::ColorEdit3("AL", ambientLightColor)) {
-                m_scene->setAmbientLightColor(ambientLightColor);
-                m_needRendering = true;
-            }
-
+            // Thread number
             int threadNumber = m_scene->getNbThreads();
             if (ImGui::SliderInt("Threads", &threadNumber, 1, m_scene->getMaxNbThreads())) {
                 m_scene->setNbThreads(threadNumber);
                 m_needRendering = true;
             }
 
+            // Ray Bounces
+            int maxRayBounces = m_scene->getMaxRayBounces();
+            if (ImGui::SliderInt("Ray Bounces", &maxRayBounces, 1, 10)) {
+                m_scene->setMaxRayBounces(maxRayBounces);
+                m_needRendering = true;
+            }
+
+            // BVH Max Prim Limit
+            int bvhMaxPrimLimit = m_scene->getBvhMaxPrimLimit();
+            if (ImGui::SliderInt("BVH Max Prim Limit", &bvhMaxPrimLimit, 1, 20,
+            "%d", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic)) {
+                m_scene->setBvhMaxPrimLimit(bvhMaxPrimLimit);
+                m_updateBVH = true;
+                m_needRendering = true;
+            }
         }
         ImGui::EndChild();
         #endif

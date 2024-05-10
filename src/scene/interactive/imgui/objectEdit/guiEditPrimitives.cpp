@@ -39,6 +39,7 @@ namespace Raytracer
             break;
         }
     }
+
     void SceneInteractive::guiEditPrimitives(void)
     {
         #ifdef BONUS
@@ -62,15 +63,15 @@ namespace Raytracer
                     m_needRendering = true;
                 }
 
-                ImGui::SameLine(0, 20);
-
-                // Color
-                ImGui::SetNextItemWidth(200);
-                float *color = ((MaterialSolid *)primitive->getMaterial())->getColor();
-                if (ImGui::ColorEdit3("Color", color)) {
-                    Color newColor = Color(color);
-                    ((MaterialSolid *)primitive->getMaterial())->setColor(newColor);
-                    m_needRendering = true;
+                if (primitive->getMaterial()->getType() == MaterialType::SOLID) {
+                    ImGui::SameLine(0, 20);
+                    // Color
+                    ImGui::SetNextItemWidth(200);
+                    float *color = ((MaterialSolid *)primitive->getMaterial())->getColor();
+                    if (ImGui::ColorEdit3("Color", color)) {
+                        ((MaterialSolid *)primitive->getMaterial())->setColor(color);
+                        m_needRendering = true;
+                    }
                 }
 
                 // Position
@@ -89,28 +90,41 @@ namespace Raytracer
             }
 
             if (ImGui::BeginTabItem("Material")) {
+                customEditMaterial(primitive->getMaterial());
                 // Phong
-                bool hasPhong = ((MaterialSolid *)primitive->getMaterial())->hasPhong();
+                bool hasPhong = primitive->getMaterial()->hasPhong();
                 if (ImGui::Checkbox("Phong", &hasPhong)) {
-                    ((MaterialSolid *)primitive->getMaterial())->setHasPhong(hasPhong);
+                    primitive->getMaterial()->setHasPhong(hasPhong);
                     m_needRendering = true;
                 }
                 // Albedo
-                float albedo = ((MaterialSolid *)primitive->getMaterial())->getAlbedo();
-                if (ImGui::SliderFloat("Albedo", &albedo, 0.0f, 2.0f)) {
-                    ((MaterialSolid *)primitive->getMaterial())->setAlbedo(albedo);
+                float albedo = primitive->getMaterial()->getAlbedo();
+                if (ImGui::SliderFloat("Albedo", &albedo, 0.0f, 1.0f)) {
+                    primitive->getMaterial()->setAlbedo(albedo);
+                    m_needRendering = true;
+                }
+                // Transparency
+                float transparency = primitive->getMaterial()->getTransparency();
+                if (ImGui::SliderFloat("Transparency", &transparency, 0.0f, 1.0f)) {
+                    primitive->getMaterial()->setTransparency(transparency);
+                    m_needRendering = true;
+                }
+                // Refraction
+                float refraction = primitive->getMaterial()->getRefraction();
+                if (ImGui::SliderFloat("Refraction", &refraction, 0.0f, 2.0f)) {
+                    primitive->getMaterial()->setRefraction(refraction);
                     m_needRendering = true;
                 }
                 // Emissions
-                float emission = ((MaterialSolid *)primitive->getMaterial())->getEmission();
+                float emission = primitive->getMaterial()->getEmission();
                 if (ImGui::SliderFloat("Emission", &emission, 0.0f, 2.0f)) {
-                    ((MaterialSolid *)primitive->getMaterial())->setEmission(emission);
+                    primitive->getMaterial()->setEmission(emission);
                     m_needRendering = true;
                 }
                 // Fuzz
-                float fuzz = ((MaterialSolid *)primitive->getMaterial())->getFuzzFactor();
+                float fuzz = primitive->getMaterial()->getFuzzFactor();
                 if (ImGui::SliderFloat("Fuzz", &fuzz, 0.0f, 2.0f)) {
-                    ((MaterialSolid *)primitive->getMaterial())->setFuzzFactor(fuzz);
+                    primitive->getMaterial()->setFuzzFactor(fuzz);
                     m_needRendering = true;
                 }
                 ImGui::EndTabItem();
@@ -125,6 +139,8 @@ namespace Raytracer
                     m_updateBVH = true;
                     m_needRendering = true;
                 }
+                // Scale
+                // Translation
                 ImGui::EndTabItem();
             }
         }

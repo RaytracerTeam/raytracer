@@ -48,6 +48,7 @@ namespace Raytracer {
                 throw Error(e.getError(), "Parsing::parse");
             }
             parseGlobal(cfg, scene);
+            parseOptimization(cfg, scene);
             parseCameras(cfg, scene);
             parsePrimitives(cfg, scene);
             parseLights(cfg, scene);
