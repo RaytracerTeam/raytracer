@@ -6,19 +6,21 @@
 */
 
 #include "Parsing/Parsing.hpp"
-
-// temp
-#include "Scene/Primitives/Cylinder.hpp"
-#include "Scene/Primitives/Sphere.hpp"
-#include "Scene/Primitives/Plane.hpp"
-
 #include "Scene/Materials/MaterialSolid.hpp"
-
 #include "Scene/Lights/PointLight.hpp"
 
 #include <iostream>
 
 namespace Raytracer {
+    void printHelper(char *exec)
+    {
+        std::cout << "USAGE: " << exec << " [OPTIONS] [SCENES]" << std::endl;
+        std::cout << "OPTIONS:" << std::endl;
+        std::cout << "  -i, --interactive\tInteractive mode" << std::endl;
+        std::cout << "  -h, --help\t\tDisplay this help message" << std::endl;
+        std::exit(EXIT_SUCCESS);
+    }
+
     namespace Parsing {
         bool parseArgv(int argc, char **argv, std::vector<std::string_view> &inputFiles)
         {
@@ -26,12 +28,14 @@ namespace Raytracer {
             const std::vector<std::string_view> args(argv + 1, argv + argc);
 
             for (const auto& arg : args) {
+                if (arg == "-h" || arg == "--help")
+                    printHelper(argv[0]);
                 if (arg == "-i" || arg == "--interactive") {
                     interactiveMode = true;
                     continue;
                 }
                 if (!std::filesystem::exists(arg)) {
-                    throw std::runtime_error(std::string("raytracer: ") + std::string(arg) + ": No such file or directory");
+                    throw std::runtime_error(std::string(arg) + ": No such file or directory");
                 }
                 inputFiles.push_back(arg);
             }
