@@ -245,6 +245,8 @@ namespace Raytracer {
                 auto interMaterial = intersection.primitve->getMaterial();
                 dPenombraFactor = interMaterial->getColor(intersection.rayhit) * (1 - interMaterial->getTransparency())
                     + primColor * interMaterial->getTransparency() - (1 - interMaterial->getTransparency());
+                dPenombraFactor = Math::Algorithm::clampColor(dPenombraFactor);
+                dPenombraFactor = Math::Algorithm::clampColor(dPenombraFactor + primMaterial->getTransparency());
             }
 
             double dirLightDiffuse = Math::Algorithm::clampD(rhitPrim.getNormal().dot(dLight->getDirection()), 0., 1.);
@@ -267,6 +269,8 @@ namespace Raytracer {
                 auto interMaterial = intersection.primitve->getMaterial();
                 penombraFactor = interMaterial->getColor(intersection.rayhit) * (1 - interMaterial->getTransparency())
                     + primColor * interMaterial->getTransparency() - (1 - interMaterial->getTransparency());
+                penombraFactor = Math::Algorithm::clampColor(penombraFactor);
+                penombraFactor = Math::Algorithm::clampColor(penombraFactor + primMaterial->getTransparency());
             }
 
             double diffuse = Math::Algorithm::clampD(rhitPrim.getNormal().dot(lightDirection), 0., 1.);
@@ -334,25 +338,25 @@ namespace Raytracer {
 
     void Scene::killObjects(void)
     {
-        for (int i = 0; i < m_primitives.size(); i++) {
+        for (std::size_t i = 0; i < m_primitives.size(); i++) {
             if (m_primitives[i]->dieASAP()) {
                 removePrimitive(i);
                 i--;
             }
         }
-        for (int i = 0; i < m_lightSystem.getLights().size(); i++) {
+        for (std::size_t i = 0; i < m_lightSystem.getLights().size(); i++) {
             if (m_lightSystem.getLights()[i]->dieASAP()) {
                 m_lightSystem.removeLight(i);
                 i--;
             }
         }
-        for (int i = 0; i < m_lightSystem.getAmbientLights().size(); i++) {
+        for (std::size_t i = 0; i < m_lightSystem.getAmbientLights().size(); i++) {
             if (m_lightSystem.getAmbientLights()[i]->dieASAP()) {
                 m_lightSystem.removeAmbientLight(i);
                 i--;
             }
         }
-        for (int i = 0; i < m_lightSystem.getDirectionalLights().size(); i++) {
+        for (std::size_t i = 0; i < m_lightSystem.getDirectionalLights().size(); i++) {
             if (m_lightSystem.getDirectionalLights()[i]->dieASAP()) {
                 m_lightSystem.removeDirectionalLight(i);
                 i--;

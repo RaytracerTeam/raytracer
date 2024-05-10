@@ -12,6 +12,8 @@
 #include <cmath>
 #include <complex>
 
+#include "Color.hpp"
+
 #define TOLERANCE 1.0e-8
 
 namespace Raytracer {
@@ -21,6 +23,8 @@ namespace Raytracer {
         class Algorithm {
         public:
             static double clampD(double value, double min, double max);
+
+            static Color clampColor(const Color &color);
 
             static inline bool isZero(complex x)
             {
