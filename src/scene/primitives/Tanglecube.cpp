@@ -65,7 +65,7 @@ namespace Raytracer {
             - 5.
                 * (std::pow(dstOrigin.getX(), 2) + std::pow(dstOrigin.getY(), 2)
                     + std::pow(dstOrigin.getZ(), 2))
-            + 11.8;
+            + m_radius;
 
         // TODO remplacer par une std::array
         double roots[4] = { 0 };

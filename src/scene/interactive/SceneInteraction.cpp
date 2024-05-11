@@ -122,7 +122,6 @@ namespace Raytracer {
                             if (prim->getID() == shape->getID()) {
                                 m_selectedObject = i;
                                 m_selectPrimitiveTab = true;
-                                std::cout << "Object shininess: " << prim->getMaterial()->getShininess() << std::endl;
                                 break;
                             }
                             i++;
