@@ -26,9 +26,9 @@ namespace Raytracer {
                 if (skyboxSetting.exists(CFG_COLOR))
                     skybox.setSolidColor(getSettingColor(skyboxSetting));
             }
-            if (setting.exists(CFG_CAMERA)) {
-                scene->loadRealCamera();
-            }
+            // if (setting.exists(CFG_CAMERA)) {
+            scene->loadRealCamera();
+            // }
         }
     } // namespace Parsing
 } // namespace Raytracer

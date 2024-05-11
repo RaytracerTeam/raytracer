@@ -13,6 +13,9 @@
 #include <cstring>
 #include <thread>
 
+//todo : remove this when camera implementation done
+#include "Scene/Materials/MaterialTexture/SphereTexture.hpp"
+
 namespace Raytracer {
     SceneInteractive::SceneInteractive(Dimension &dimension, const std::string &title,
         const std::vector<std::string_view> &inputFiles)
@@ -176,6 +179,15 @@ namespace Raytracer {
         while (m_window.isOpen()) {
             handleEvents();
             handleImGui();
+
+            #ifdef BONUSCAMERA
+            for (auto &primitive : m_scene->getPrimitives()) {
+                if (primitive->getMaterial()->getType() == MaterialType::TEXTURE) {
+                    SphereTexture *cameraTexture = static_cast<SphereTexture *>(primitive->getMaterial().get());
+                    cameraTexture->setImage(m_scene->getRealCamera().getCurrentFrame());
+                }
+            }
+            #endif
 
             if (m_updateBVH) {
                 m_scene->setRenderNbr(m_scene->getRenderNbr() + 1);

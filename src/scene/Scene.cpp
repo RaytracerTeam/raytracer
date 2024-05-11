@@ -382,6 +382,8 @@ namespace Raytracer {
     }
     void Scene::loadRealCamera(void)
     {
-        
+        #ifdef BONUSCAMERA
+            m_realCamera.init();
+        #endif
     }
 } // namespace Raytracer

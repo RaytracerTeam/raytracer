@@ -69,19 +69,22 @@ MACSFMLLIB		=	-L$(MACBREWSFML)/lib -L$(MACBREWCONFIG)/lib \
 					-L$(MACBRWEOPENCV)/lib
 
 IMGUIFLAGS	=	-DBONUS -Ibonus/imgui
-CAMERAFLAGS	=	-DCAMERA
+CAMERAFLAGS	=	-DBONUSCAMERA -Ibonus/camera
 
 UNAME_S := $(shell uname -s)
 
 ifeq ($(UNAME_S),Darwin)
 	LDBONUSFLAGS += -framework OpenGL
-	CFLAGS += $(MACSFMLINCLUDE) -DMACOSTONIO $(IMGUIFLAGS)
+	CFLAGS += $(MACSFMLINCLUDE) -DMACOSTONIO $(IMGUIFLAGS) $(CAMERAFLAGS)
 	LDFLAGS += $(MACSFMLLIB)
 else
 	LDBONUSFLAGS += -lGL
 endif
 
 all: $(NAME)
+
+bonusbonusdbg: CFLAGS += $(DBGFLAGS)
+bonusbonusdbg: bonusbonus
 
 bonusbonus: $(CAMERAOBJ)
 bonusbonus: OBJ += $(CAMERAOBJ)

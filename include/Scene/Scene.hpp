@@ -21,6 +21,10 @@
 #include "Skybox.hpp"
 #include "Optimisation/BVH.hpp"
 
+#ifdef BONUSCAMERA
+    #include "RealCamera.hpp"
+#endif
+
 namespace Raytracer {
     #define DEFAULT_SKYBOX "assets/skyboxes/sky.jpg"
     #define SCREEN_RATIO 16.0f / 9.0f
@@ -83,7 +87,10 @@ namespace Raytracer {
         Color getDiffuseColor(const Ray &lightRay, const RayHit &rhitPrim,
             const ILight *light, const Math::Vector3D &lightOrigin,
             const std::unique_ptr<IMaterial> &primMaterial, const Color &primColor) const;
+        #ifdef BONUSCAMERA
         void loadRealCamera(void);
+        RealCamera &getRealCamera(void) { return m_realCamera; }
+        #endif
 
     private:
         Color castRayColor(const Ray &ray, const IPrimitive *primHit, const RayHit &rhitPrim) const;
@@ -117,5 +124,10 @@ namespace Raytracer {
         sf::Image m_render;
         uint64_t m_renderNbr = 0;
         size_t m_renderY;
+
+        // Bonus Real camera
+        #ifdef BONUSCAMERA
+            RealCamera m_realCamera;
+        #endif
     };
 }
