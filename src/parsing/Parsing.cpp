@@ -80,14 +80,15 @@ namespace Raytracer {
             parseLights(cfg, scene);
             parseObj(cfg, scene);
 
-            // #ifdef BONUSCAMERA
-            // for (auto &primitive : scene->getPrimitives()) {
-            //     if (primitive->getMaterial()->getType() == MaterialType::CAMERA) {
-            //         CameraTexture *cameraTexture = static_cast<CameraTexture *>(primitive->getMaterial().get());
-            //         cameraTexture->setCamera(scene->getRealCamera());
-            //     }
-            // }
-            // #endif
+            #ifdef BONUSCAMERA
+            std::cout << scene->getRealCamera().isCameraOpen() << std::endl;
+            for (auto &primitive : scene->getPrimitives()) {
+                if (primitive->getMaterial()->getType() == MaterialType::CAMERA) {
+                    MaterialTexture *cameraTexture = static_cast<MaterialTexture *>(primitive->getMaterial().get());
+                    cameraTexture->setImage(scene->getRealCamera().getImage());
+                }
+            }
+            #endif
         }
         void parse(std::unique_ptr<Scene> &scene, const std::string_view &file)
         {

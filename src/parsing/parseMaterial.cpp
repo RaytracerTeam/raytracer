@@ -49,7 +49,7 @@ namespace Raytracer {
                     parseFloat(materialSetting, CFG_SIZE, 1.0));
             }
             else if (materialType == CFG_CAMERA) {
-                material = std::make_unique<SphereTexture>();
+                material = std::make_unique<CameraTexture>();
             }
             else {
                 return std::make_unique<MaterialSolid>(Color(1., 0, 1));

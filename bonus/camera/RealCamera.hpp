@@ -20,23 +20,26 @@ namespace Raytracer
 
             void init(void);
 
-            sf::Image getCurrentFrame();
+            sf::Image update(void);
+
+            std::shared_ptr<sf::Image> getImage(void) const { return m_image; }
+            bool isCameraOpen(void) const { return m_isCameraOpen; }
 
             unsigned int getCamWidth() const { return m_camWidth; }
             unsigned int getCamHeight() const { return m_camHeight; }
 
-            void setFrameToImage(cv::Mat &frame, sf::Image &image);
-            void setEdgesToImage(cv::Mat &frame, sf::Image &image);
+            void setFrameToImage(void);
+            void setEdgesToImage(void);
 
         protected:
         private:
             cv::VideoCapture m_camera;
+            bool m_isCameraOpen = false;
             unsigned int m_camWidth;
             unsigned int m_camHeight;
-            sf::Image m_image;
+            std::shared_ptr<sf::Image> m_image;
             cv::Mat cameraFrame;
             cv::Mat edges;
-            sf::Uint8 *m_pixels;
     };
 } // namespace Raytracer
 

@@ -88,7 +88,8 @@ namespace Raytracer {
             const ILight *light, const Math::Vector3D &lightOrigin,
             const std::unique_ptr<IMaterial> &primMaterial, const Color &primColor) const;
         #ifdef BONUSCAMERA
-        void loadRealCamera(void);
+        void initRealCamera(void);
+        void updateRealCamera(void);
         RealCamera &getRealCamera(void) { return m_realCamera; }
         #endif
 
@@ -127,7 +128,7 @@ namespace Raytracer {
 
         // Bonus Real camera
         #ifdef BONUSCAMERA
-            RealCamera m_realCamera;
+        RealCamera m_realCamera;
         #endif
     };
 }

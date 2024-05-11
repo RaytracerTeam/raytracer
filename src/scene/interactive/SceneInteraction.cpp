@@ -181,12 +181,7 @@ namespace Raytracer {
             handleImGui();
 
             #ifdef BONUSCAMERA
-            for (auto &primitive : m_scene->getPrimitives()) {
-                if (primitive->getMaterial()->getType() == MaterialType::TEXTURE) {
-                    SphereTexture *cameraTexture = static_cast<SphereTexture *>(primitive->getMaterial().get());
-                    cameraTexture->setImage(m_scene->getRealCamera().getCurrentFrame());
-                }
-            }
+            m_scene->updateRealCamera();
             #endif
 
             if (m_updateBVH) {

@@ -27,10 +27,10 @@ namespace Raytracer {
         const std::string &getTexture(void) const { return m_pathname; }
         const std::string &getPathname(void) const { return m_pathname; }
 
-        void setImage(sf::Image image);
+        void setImage(std::shared_ptr<sf::Image> image) { m_image = image; }
         void setTexture(const std::string &pathname);
     protected:
-        sf::Image m_image;
+        std::shared_ptr<sf::Image> m_image;
         bool m_hasImage = false;
         std::string m_pathname;
     };

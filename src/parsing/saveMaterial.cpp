@@ -51,8 +51,12 @@ namespace Raytracer
                 saveMaterialTexture(materialSetting, primitive);
             else if (primitive->getMaterial()->getType() == MaterialType::CHECKERBOARD)
                 saveMaterialCheckerboard(materialSetting, primitive);
-            else
-                throw Error("Unknown material type", "saveMaterial");
+            else if (primitive->getMaterial()->getType() == MaterialType::CAMERA)
+                setting.add(CFG_TYPE, libconfig::Setting::TypeString) = CFG_CAMERA;
+            else {
+                std::cerr << "Unknown material type in saveMaterial" << std::endl;
+                return;
+            }
 
             std::unique_ptr<IMaterial> &material = primitive->getMaterial();
             if (material) {
