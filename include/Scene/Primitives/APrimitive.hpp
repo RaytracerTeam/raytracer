@@ -33,7 +33,8 @@ namespace Raytracer {
 
         const Math::Vector3D &getOrigin(void) const override final { return m_origin; }
         const Math::Matrix44 &getTMatrix(void) const override final { return m_mat; }
-        IMaterial *getMaterial(void) const override final { return m_material.get(); };
+        std::unique_ptr<IMaterial> &getMaterial(void) override final { return m_material; };
+        const std::unique_ptr<IMaterial> &getMaterial(void) const override { return m_material; };
         PrimitiveType getType(void) const override { return PrimitiveType::NONE; };
         const std::string getTypeString(void) const override { return PrimitiveTypeStrings[static_cast<int>(getType())]; };
         int getID(void) const override { return m_id; }

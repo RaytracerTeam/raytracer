@@ -44,6 +44,7 @@ namespace Raytracer
     {
         #ifdef BONUS
         std::unique_ptr<IPrimitive> &primitive = m_scene->getPrimitives()[m_selectedObject];
+        std::unique_ptr<IMaterial> &material = primitive->getMaterial();
 
         if (ImGui::BeginTabBar("Edit Primitives")) {
             if (ImGui::BeginTabItem("Base")) {
@@ -63,13 +64,14 @@ namespace Raytracer
                     m_needRendering = true;
                 }
 
-                if (primitive->getMaterial()->getType() == MaterialType::SOLID) {
+                if (material->getType() == MaterialType::SOLID) {
                     ImGui::SameLine(0, 20);
                     // Color
                     ImGui::SetNextItemWidth(200);
-                    float *color = ((MaterialSolid *)primitive->getMaterial())->getColor();
+                    MaterialSolid *materialSolid = static_cast<MaterialSolid *>(material.get());
+                    float *color = materialSolid->getColor();
                     if (ImGui::ColorEdit3("Color", color)) {
-                        ((MaterialSolid *)primitive->getMaterial())->setColor(color);
+                        materialSolid->setColor(color);
                         m_needRendering = true;
                     }
                 }
@@ -90,41 +92,65 @@ namespace Raytracer
             }
 
             if (ImGui::BeginTabItem("Material")) {
-                customEditMaterial(primitive->getMaterial());
-                // Phong
-                bool hasPhong = primitive->getMaterial()->hasPhong();
-                if (ImGui::Checkbox("Phong", &hasPhong)) {
-                    primitive->getMaterial()->setHasPhong(hasPhong);
+                customEditMaterial(material);
+                // Diffuse
+                float diffuse = material->getDiffuse();
+                if (ImGui::SliderFloat("Diffuse", &diffuse, 0.0f, 1.0f)) {
+                    material->setDiffuse(diffuse);
                     m_needRendering = true;
                 }
-                // Albedo
-                float albedo = primitive->getMaterial()->getAlbedo();
-                if (ImGui::SliderFloat("Albedo", &albedo, 0.0f, 1.0f)) {
-                    primitive->getMaterial()->setAlbedo(albedo);
+                // Specular
+                float specular = material->getSpecular();
+                if (ImGui::SliderFloat("Specular", &specular, 0.0f, 1.0f)) {
+                    material->setSpecular(specular);
+                    m_needRendering = true;
+                }
+                // Shininess
+                if (specular > 0) {
+                    float shininess = material->getShininess();
+                    if (ImGui::SliderFloat("Shininess", &shininess, 1.0f, 100.0f,
+                    "%.1f", ImGuiSliderFlags_Logarithmic)) {
+                        material->setShininess(shininess);
+                        m_needRendering = true;
+                    }
+                }
+                // Reflection
+                float reflection = material->getReflection();
+                if (ImGui::SliderFloat("Reflection", &reflection, 0.0f, 1.0f)) {
+                    material->setReflection(reflection);
                     m_needRendering = true;
                 }
                 // Transparency
-                float transparency = primitive->getMaterial()->getTransparency();
+                float transparency = material->getTransparency();
                 if (ImGui::SliderFloat("Transparency", &transparency, 0.0f, 1.0f)) {
-                    primitive->getMaterial()->setTransparency(transparency);
+                    material->setTransparency(transparency);
                     m_needRendering = true;
                 }
                 // Refraction
-                float refraction = primitive->getMaterial()->getRefraction();
-                if (ImGui::SliderFloat("Refraction", &refraction, 0.0f, 2.0f)) {
-                    primitive->getMaterial()->setRefraction(refraction);
+                if (transparency > 0) {
+                    float refraction = material->getRefraction();
+                    if (ImGui::SliderFloat("Refraction", &refraction, 0.0f, 3.0f)) {
+                        material->setRefraction(refraction);
+                        m_needRendering = true;
+                    }
+                }
+                ImGui::Text("Deprecated:");
+                // Phong
+                bool hasPhong = material->hasPhong();
+                if (ImGui::Checkbox("Phong", &hasPhong)) {
+                    material->setHasPhong(hasPhong);
                     m_needRendering = true;
                 }
                 // Emissions
-                float emission = primitive->getMaterial()->getEmission();
+                float emission = material->getEmission();
                 if (ImGui::SliderFloat("Emission", &emission, 0.0f, 2.0f)) {
-                    primitive->getMaterial()->setEmission(emission);
+                    material->setEmission(emission);
                     m_needRendering = true;
                 }
                 // Fuzz
-                float fuzz = primitive->getMaterial()->getFuzzFactor();
+                float fuzz = material->getFuzzFactor();
                 if (ImGui::SliderFloat("Fuzz", &fuzz, 0.0f, 2.0f)) {
-                    primitive->getMaterial()->setFuzzFactor(fuzz);
+                    material->setFuzzFactor(fuzz);
                     m_needRendering = true;
                 }
                 ImGui::EndTabItem();

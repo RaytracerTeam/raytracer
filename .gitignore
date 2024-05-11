@@ -36,8 +36,9 @@ assets/obj/local/*.png
 assets/textures/local/*.jpg
 assets/textures/local/*.png
 
-
 scenes/local/*.cfg
 scenes/quick_save.cfg
 scenes/temp.cfg
 config/keys.cfg
+
+bonus/camera

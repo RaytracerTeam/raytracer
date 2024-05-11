@@ -43,7 +43,8 @@ namespace Raytracer {
     class IPrimitive : public IShape {
     public:
         virtual void setMaterial(std::unique_ptr<IMaterial> material) = 0;
-        virtual IMaterial *getMaterial(void) const = 0;
+        virtual std::unique_ptr<IMaterial> &getMaterial(void) = 0;
+        virtual const std::unique_ptr<IMaterial> &getMaterial(void) const = 0;
 
         virtual BoundingBox getBoundingBox(void) const = 0;
 

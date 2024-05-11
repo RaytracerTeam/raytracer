@@ -80,6 +80,10 @@ namespace Raytracer {
         const IShape *getPrimitiveHit(sf::Vector2i mousePos) const;
 
         void killObjects(void);
+        Color getDiffuseColor(const Ray &lightRay, const RayHit &rhitPrim,
+            const ILight *light, const Math::Vector3D &lightOrigin,
+            const std::unique_ptr<IMaterial> &primMaterial, const Color &primColor) const;
+        void loadRealCamera(void);
 
     private:
         Color castRayColor(const Ray &ray, const IPrimitive *primHit, const RayHit &rhitPrim) const;
