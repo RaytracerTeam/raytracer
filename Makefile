@@ -136,6 +136,8 @@ clean:
 	rm -f $(DEPS)
 	rm -f $(TESTOBJ)
 	rm -f $(TESTCOV)
+	rm -f $(IMGUIOBJ)
+	rm -f $(IMGUIDEPS)
 
 fclean: clean
 	rm -f $(NAME)
