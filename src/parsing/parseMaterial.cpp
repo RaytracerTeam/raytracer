@@ -48,17 +48,23 @@ namespace Raytracer {
                 return std::make_unique<MaterialSolid>(Color(1., 0, 1));
             }
 
-            if (materialSetting.exists(CFG_HAS_PHONG))
-                material->setHasPhong(materialSetting.lookup(CFG_HAS_PHONG));
+            if (materialSetting.exists(CFG_DIFFUSE))
+                material->setDiffuse(parseFloat(materialSetting, CFG_DIFFUSE, 0.0));
+            if (materialSetting.exists(CFG_SPECULAR))
+                material->setSpecular(parseFloat(materialSetting, CFG_SPECULAR, 0.0));
+            if (materialSetting.exists(CFG_SHININESS))
+                material->setShininess(parseFloat(materialSetting, CFG_SHININESS, 0.0));
 
-            if (materialSetting.exists(CFG_ALBEDO))
-                material->setAlbedo(parseFloat(materialSetting, CFG_ALBEDO, 0.0));
+            if (materialSetting.exists(CFG_REFLECTION))
+                material->setReflection(parseFloat(materialSetting, CFG_REFLECTION, 0.0));
 
             if (materialSetting.exists(CFG_TRANSPARENCY))
                 material->setTransparency(parseFloat(materialSetting, CFG_TRANSPARENCY, 0.0));
-
             if (materialSetting.exists(CFG_REFRACTION))
                 material->setRefraction(parseFloat(materialSetting, CFG_REFRACTION, 1.3));
+
+            if (materialSetting.exists(CFG_HAS_PHONG))
+                material->setHasPhong(materialSetting.lookup(CFG_HAS_PHONG));
 
             if (materialSetting.exists(CFG_FUZZ))
                 material->setFuzzFactor(parseFloat(materialSetting, CFG_FUZZ, 0.3));

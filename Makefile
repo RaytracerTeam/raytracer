@@ -24,6 +24,7 @@ CORESRC	=	$(wildcard ./src/*.cpp) \
 			$(wildcard ./src/scene/interactive/imgui/objectSelection/*.cpp) \
 
 IMGUISRC	=	$(wildcard ./bonus/imgui/*.cpp)
+CAMERASRC	=	$(wildcard ./bonus/camera/*.cpp)
 
 SRC		=	./src/main/main.cpp \
 			$(CORESRC)
@@ -35,6 +36,7 @@ CC		=	g++
 OBJ		=	$(SRC:.cpp=.o)
 DEPS	=	$(SRC:.cpp=.d)
 IMGUIOBJ=	$(IMGUISRC:.cpp=.o)
+CAMERAOBJ=	$(CAMERASRC:.cpp=.o)
 TESTOBJ	=	$(TESTSRC:.cpp=.o)
 
 TESTCOV	=	$(TESTSRC:.cpp=.gcno)
@@ -50,18 +52,24 @@ DEPSFLAGS	=	-MMD -MP
 
 LDFLAGS		=	-lconfig++ -lsfml-graphics -lsfml-window -lsfml-system
 LDBONUSFLAGS=	-lGLEW -lglfw
+LDCAMERAFLAGS	=	$(shell pkg-config --libs opencv4)
 TESTSFLAGS	=	$(LDFLAGS) -lcriterion
 
 MACBREWSFML		= 	/opt/homebrew/Cellar/sfml/2.6.1
 MACBREWCONFIG	=	/opt/homebrew/Cellar/libconfig/1.7.3
 MACBREWGLFW		=	/opt/homebrew/Cellar/glfw/3.4
 MACBREWGLEW		=	/opt/homebrew/Cellar/glew/2.2.0_1
+MACBRWEOPENCV	=	/opt/homebrew/Cellar/opencv/4.9.0_8
+
 MACSFMLINCLUDE	=	-I$(MACBREWSFML)/include -I$(MACBREWCONFIG)/include \
-					-I$(MACBREWGLFW)/include -I$(MACBREWGLEW)/include
+					-I$(MACBREWGLFW)/include -I$(MACBREWGLEW)/include \
+					-I$(MACBRWEOPENCV)/include/opencv4
 MACSFMLLIB		=	-L$(MACBREWSFML)/lib -L$(MACBREWCONFIG)/lib \
-					-L$(MACBREWGLFW)/lib -L$(MACBREWGLEW)/lib
+					-L$(MACBREWGLFW)/lib -L$(MACBREWGLEW)/lib \
+					-L$(MACBRWEOPENCV)/lib
 
 IMGUIFLAGS	=	-DBONUS -Ibonus/imgui
+CAMERAFLAGS	=	-DCAMERA
 
 UNAME_S := $(shell uname -s)
 
@@ -74,6 +82,12 @@ else
 endif
 
 all: $(NAME)
+
+bonusbonus: $(CAMERAOBJ)
+bonusbonus: OBJ += $(CAMERAOBJ)
+bonusbonus: LDFLAGS += $(LDCAMERAFLAGS)
+bonusbonus: CFLAGS += $(CAMERAFLAGS)
+bonusbonus: bonus
 
 bonusdbg: CFLAGS += $(DBGFLAGS)
 bonusdbg: bonus

@@ -92,7 +92,7 @@
         "future": "cpp",
         "stdfloat": "cpp",
         "valarray": "cpp",
-        "text_encoding": "cpp"
+        "queue": "cpp"
     },
     "editor.formatOnSave": false,
     "[cpp]": {

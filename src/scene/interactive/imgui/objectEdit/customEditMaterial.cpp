@@ -12,7 +12,7 @@
 
 namespace Raytracer
 {
-    void SceneInteractive::customEditMaterial(IMaterial *material)
+    void SceneInteractive::customEditMaterial(std::unique_ptr<IMaterial> &material)
     {
         (void)material;
         #ifdef BONUS
@@ -20,7 +20,7 @@ namespace Raytracer
         case MaterialType::SOLID:
             break;
         case MaterialType::CHECKERBOARD: {
-            MaterialCheckerBoard *checkerBoard = static_cast<MaterialCheckerBoard *>(material);
+            MaterialCheckerBoard *checkerBoard = static_cast<MaterialCheckerBoard *>(material.get());
             // Color
             ImGui::SetNextItemWidth(200);
             float *color = checkerBoard->getC1();

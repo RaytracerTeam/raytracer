@@ -25,6 +25,7 @@ namespace Raytracer {
         #define CFG_SKYBOX "skybox"
         #define CFG_PATH "path"
         #define CFG_HASTEXTURE "hasTexture"
+        #define CFG_CAMERA "camera"
 
         #define CFG_AMBIENT_LIGHT "ambientLight"
         #define CFG_OBJ "obj"
@@ -40,7 +41,10 @@ namespace Raytracer {
         #define CFG_WIDTH "width"
         #define CFG_DISTANCE "distance"
         #define CFG_INTENSITY "intensity"
-        #define CFG_ALBEDO "albedo"
+        #define CFG_DIFFUSE "diffuse"
+        #define CFG_SPECULAR "specular"
+        #define CFG_SHININESS "shininess"
+        #define CFG_REFLECTION "reflection"
         #define CFG_FUZZ "fuzz"
         #define CFG_EMISSION "emission"
         #define CFG_TRANSPARENCY "transparency"
@@ -93,6 +97,7 @@ namespace Raytracer {
         void parseToruses(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene);
         void parseTanglecubes(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene);
         void parseTriangles(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene);
+        void parseCubes(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene);
 
         void parseGlobal(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
         void parseOptimization(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
@@ -117,6 +122,7 @@ namespace Raytracer {
         void saveTanglecube(libconfig::Setting &list, Tanglecube *tanglecube);
         void saveTriangle(libconfig::Setting &list, Triangle *triangle);
         void savePlane(libconfig::Setting &list, Plane *plane);
+        void saveCube(libconfig::Setting &list, Cube *cube);
 
         Math::Angle3D getSettingRotation(const libconfig::Setting &setting);
         Color getSettingColor(const libconfig::Setting &setting);

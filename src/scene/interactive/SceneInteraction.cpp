@@ -81,7 +81,7 @@ namespace Raytracer {
             resetActions();
         while (m_window.pollEvent(event)) {
             #ifdef BONUS
-                ImGui::SFML::ProcessEvent(event);
+                ImGui::SFML::ProcessEvent(m_window, event);
             #endif
 
             if (event.type == sf::Event::Closed) {
@@ -122,6 +122,7 @@ namespace Raytracer {
                             if (prim->getID() == shape->getID()) {
                                 m_selectedObject = i;
                                 m_selectPrimitiveTab = true;
+                                std::cout << "Object shininess: " << prim->getMaterial()->getShininess() << std::endl;
                                 break;
                             }
                             i++;

@@ -66,7 +66,7 @@ namespace Raytracer {
         double a = 1. / rayDir.getX();
 
         if (a > TOLERANCE) {
-            tMin.setX(v0.getX() - dstOrigin.getX() * a);
+            tMin.setX((v0.getX() - dstOrigin.getX()) * a);
             tMax.setX((v1.getX() - dstOrigin.getX()) * a);
         } else {
             tMin.setX((v1.getX() - dstOrigin.getX()) * a);
