@@ -13,8 +13,6 @@ namespace Raytracer
 {
     void SceneInteractive::editDirectionalLight(DirectionalLight *light)
     {
-        (void)light;
-        #ifdef BONUS
         float direction[3] = {
             (float)light->getDirection().getX(),
             (float)light->getDirection().getY(),
@@ -23,6 +21,5 @@ namespace Raytracer
             light->setDirection(Math::Vector3D(direction[0], direction[1], direction[2]));
             m_needRendering = true;
         }
-        #endif
     }
 } // namespace Raytracer

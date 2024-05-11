@@ -17,13 +17,14 @@ CORESRC	=	$(wildcard ./src/*.cpp) \
 			$(wildcard ./src/scene/materials/texture/*.cpp) \
 			$(wildcard ./src/scene/lights/*.cpp) \
 			$(wildcard ./src/scene/interactive/*.cpp) \
-			$(wildcard ./src/scene/interactive/imgui/*.cpp) \
-			$(wildcard ./src/scene/interactive/imgui/objectEdit/*.cpp) \
-			$(wildcard ./src/scene/interactive/imgui/objectEdit/primitives/*.cpp) \
-			$(wildcard ./src/scene/interactive/imgui/objectEdit/lights/*.cpp) \
-			$(wildcard ./src/scene/interactive/imgui/objectSelection/*.cpp) \
 
-IMGUISRC	=	$(wildcard ./bonus/imgui/*.cpp)
+IMGUISRC	=	$(wildcard ./bonus/imgui/*.cpp) \
+				$(wildcard ./src/scene/interactive/imgui/*.cpp) \
+				$(wildcard ./src/scene/interactive/imgui/objectEdit/*.cpp) \
+				$(wildcard ./src/scene/interactive/imgui/objectEdit/primitives/*.cpp) \
+				$(wildcard ./src/scene/interactive/imgui/objectEdit/lights/*.cpp) \
+				$(wildcard ./src/scene/interactive/imgui/objectSelection/*.cpp)
+
 CAMERASRC	=	$(wildcard ./bonus/camera/*.cpp)
 
 SRC		=	./src/main/main.cpp \
@@ -36,6 +37,7 @@ CC		=	g++
 OBJ		=	$(SRC:.cpp=.o)
 DEPS	=	$(SRC:.cpp=.d)
 IMGUIOBJ=	$(IMGUISRC:.cpp=.o)
+IMGUIDEPS=	$(IMGUISRC:.cpp=.d)
 CAMERAOBJ=	$(CAMERASRC:.cpp=.o)
 TESTOBJ	=	$(TESTSRC:.cpp=.o)
 
@@ -69,19 +71,22 @@ MACSFMLLIB		=	-L$(MACBREWSFML)/lib -L$(MACBREWCONFIG)/lib \
 					-L$(MACBRWEOPENCV)/lib
 
 IMGUIFLAGS	=	-DBONUS -Ibonus/imgui
-CAMERAFLAGS	=	-DCAMERA
+CAMERAFLAGS	=	-DBONUSCAMERA -Ibonus/camera
 
 UNAME_S := $(shell uname -s)
 
 ifeq ($(UNAME_S),Darwin)
 	LDBONUSFLAGS += -framework OpenGL
-	CFLAGS += $(MACSFMLINCLUDE) -DMACOSTONIO $(IMGUIFLAGS)
+	CFLAGS += $(MACSFMLINCLUDE) -DMACOSTONIO
 	LDFLAGS += $(MACSFMLLIB)
 else
 	LDBONUSFLAGS += -lGL
 endif
 
 all: $(NAME)
+
+bonusbonusdbg: CFLAGS += $(DBGFLAGS)
+bonusbonusdbg: bonusbonus
 
 bonusbonus: $(CAMERAOBJ)
 bonusbonus: OBJ += $(CAMERAOBJ)
@@ -92,6 +97,8 @@ bonusbonus: bonus
 bonusdbg: CFLAGS += $(DBGFLAGS)
 bonusdbg: bonus
 
+bonus: $(IMGUIDEPS)
+bonus: DEPS += $(IMGUIDEPS)
 bonus: $(IMGUIOBJ)
 bonus: OBJ += $(IMGUIOBJ)
 bonus: LDFLAGS += $(LDBONUSFLAGS)
@@ -106,6 +113,7 @@ tests_compile: CFLAGS += -g3 --coverage
 tests_compile: $(TESTNAME)
 
 -include $(DEPS)
+-include $(IMGUIDEPS)
 
 %.o: %.cpp
 	$(CC) $(CFLAGS) $(DEPSFLAGS) -c $< -o $@

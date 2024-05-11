@@ -21,6 +21,10 @@
 #include "Skybox.hpp"
 #include "Optimisation/BVH.hpp"
 
+#ifdef BONUSCAMERA
+    #include "RealCamera.hpp"
+#endif
+
 namespace Raytracer {
     #define DEFAULT_SKYBOX "assets/skyboxes/sky.jpg"
     #define SCREEN_RATIO 16.0f / 9.0f
@@ -46,6 +50,7 @@ namespace Raytracer {
         void setNbThreads(size_t nbThreads) { m_nbThreads = nbThreads; }
         void setMaxRayBounces(size_t maxRayBounces) { m_maxRayBounces = maxRayBounces; }
         void setBvhMaxPrimLimit(size_t maxPrimLimit) { m_bvhMaxPrimLimit = maxPrimLimit; }
+        void setAlwaysRender(bool alwaysRender) { m_alwaysRender = alwaysRender; }
 
         Camera &getCurrentCamera(void) const;
         const std::vector<std::unique_ptr<Camera>> &getCameras(void) const { return m_cameras; }
@@ -69,12 +74,14 @@ namespace Raytracer {
         size_t getRenderY(void) const { return m_renderY; }
         size_t getMaxRayBounces(void) const { return m_maxRayBounces; }
         size_t getBvhMaxPrimLimit(void) const { return m_bvhMaxPrimLimit; }
+        bool getAlwaysRender(void) const { return m_alwaysRender; }
 
         void resizeRender(unsigned int width, unsigned int height);
         void updatePrimitives(void);
         void removePrimitive(size_t index);
         void removeLight(size_t index);
         bool removeCamera(size_t index);
+        void reset(void);
 
         void showCurrentRenderedLine(void);
         const IShape *getPrimitiveHit(sf::Vector2i mousePos) const;
@@ -83,7 +90,11 @@ namespace Raytracer {
         Color getDiffuseColor(const Ray &lightRay, const RayHit &rhitPrim,
             const ILight *light, const Math::Vector3D &lightOrigin,
             const std::unique_ptr<IMaterial> &primMaterial, const Color &primColor) const;
-        void loadRealCamera(void);
+        #ifdef BONUSCAMERA
+        void initRealCamera(void);
+        void updateRealCamera(void);
+        RealCamera &getRealCamera(void) { return m_realCamera; }
+        #endif
 
     private:
         Color castRayColor(const Ray &ray, const IPrimitive *primHit, const RayHit &rhitPrim) const;
@@ -117,5 +128,12 @@ namespace Raytracer {
         sf::Image m_render;
         uint64_t m_renderNbr = 0;
         size_t m_renderY;
+
+        bool m_alwaysRender = false;
+
+        // Bonus Real camera
+        #ifdef BONUSCAMERA
+        RealCamera m_realCamera;
+        #endif
     };
 }

@@ -275,10 +275,14 @@ namespace Raytracer
             break;
         case SceneReleaseActions::TOGGLE_FULLSCREEN:
             m_fullscreen = !m_fullscreen;
+            #ifdef BONUS
             setupImageSize();
+            #endif
             break;
         case SceneReleaseActions::REMOVE_OBJECT:
+            #ifdef BONUS
             removeSelectedObject();
+            #endif
             break;
         case SceneReleaseActions::TOGGLE_MOUSE:
             m_useMouse = !m_useMouse;

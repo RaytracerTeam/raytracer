@@ -45,7 +45,6 @@ namespace Raytracer
 
     void SceneInteractive::guiEditPrimitives(void)
     {
-        #ifdef BONUS
         std::unique_ptr<IPrimitive> &primitive = m_scene->getPrimitives()[m_selectedObject];
         std::unique_ptr<IMaterial> &material = primitive->getMaterial();
 
@@ -174,6 +173,5 @@ namespace Raytracer
             }
         }
         ImGui::EndTabBar();
-        #endif
     }
 } // namespace Raytracer

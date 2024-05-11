@@ -11,7 +11,6 @@ namespace Raytracer
 {
     void SceneInteractive::guiDebugInfos(void)
     {
-        #ifdef BONUS
         Camera *currentCamera = m_interacCam.getCamera();
         if (ImGui::BeginChild("Debug Infos", ImVec2(m_leftPaneWidth, m_imageHeight / 2 - 50),
         ImGuiChildFlags_Border)) {
@@ -38,7 +37,8 @@ namespace Raytracer
                 m_scene->setRenderLights(renderLights);
             }
             // Always Render
-            ImGui::Checkbox("Always Render", &m_alwaysRender);
+            if (ImGui::Checkbox("Always Render", &m_alwaysRender))
+                m_scene->setAlwaysRender(m_alwaysRender);
             // Fullscreen
             if (ImGui::Checkbox("Fullscreen", &m_fullscreen))
                 setupImageSize();
@@ -79,6 +79,5 @@ namespace Raytracer
             }
         }
         ImGui::EndChild();
-        #endif
     }
 } // namespace Raytracer

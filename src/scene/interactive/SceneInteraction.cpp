@@ -13,6 +13,9 @@
 #include <cstring>
 #include <thread>
 
+//todo : remove this when camera implementation done
+#include "Scene/Materials/MaterialTexture/SphereTexture.hpp"
+
 namespace Raytracer {
     SceneInteractive::SceneInteractive(Dimension &dimension, const std::string &title,
         const std::vector<std::string_view> &inputFiles)
@@ -23,9 +26,14 @@ namespace Raytracer {
         setScenes(inputFiles);
         setupCamera();
         m_scene->updatePrimitives();
+        m_alwaysRender = m_scene->getAlwaysRender();
 
         if (inputFiles.size() > 0)
             strcpy(m_loadFileBuf, inputFiles[0].data());
+
+        Camera *camera = m_interacCam.getCamera();
+        m_window.setSize(sf::Vector2u(camera->getDimension().getWidth(),
+            camera->getDimension().getHeight()));
 
         #ifdef BONUS
             #ifdef MACOSTONIO
@@ -47,16 +55,6 @@ namespace Raytracer {
     {
         #ifdef BONUS
             ImGui::SFML::Shutdown();
-        #endif
-    }
-
-    void SceneInteractive::setupImageSize()
-    {
-        #ifdef BONUS
-        m_imageWidth = ImGui::GetIO().DisplaySize.x - 20;
-        if (!m_fullscreen)
-            m_imageWidth -= m_leftPaneWidth + 30;
-        m_imageHeight = m_imageWidth / (SCREEN_RATIO);
         #endif
     }
 
@@ -122,7 +120,6 @@ namespace Raytracer {
                             if (prim->getID() == shape->getID()) {
                                 m_selectedObject = i;
                                 m_selectPrimitiveTab = true;
-                                std::cout << "Object shininess: " << prim->getMaterial()->getShininess() << std::endl;
                                 break;
                             }
                             i++;
@@ -147,7 +144,7 @@ namespace Raytracer {
     void SceneInteractive::setScene(const std::string &filename)
     {
         if (!m_addToCurrentScene)
-            m_scene = std::make_unique<Scene>();
+            m_scene->reset();
         Parsing::parse(m_scene, {filename});
         int i = 0;
         for (const auto &primitive : m_scene->getPrimitives()) {
@@ -168,14 +165,18 @@ namespace Raytracer {
         m_interacCam.setCamera(&currentCamera);
         updateDimension(currentCamera.getDimension().getWidth(),
             currentCamera.getDimension().getHeight());
-        // updateDimension(DEFAULT_CAMERA_RESOLUTION * SCREEN_RATIO, DEFAULT_CAMERA_RESOLUTION);
     }
 
     void SceneInteractive::loop(void)
     {
         while (m_window.isOpen()) {
             handleEvents();
+            #ifdef BONUS
             handleImGui();
+            #endif
+            #ifdef BONUSCAMERA
+            m_scene->updateRealCamera();
+            #endif
 
             if (m_updateBVH) {
                 m_scene->setRenderNbr(m_scene->getRenderNbr() + 1);
@@ -215,5 +216,4 @@ namespace Raytracer {
         }
         m_scene->setRenderNbr(m_scene->getRenderNbr() + 1);
     }
-
 } // namespace Raytracer

@@ -28,7 +28,6 @@ namespace Raytracer {
 
     Color SphereTexture::getColor(double u, double v) const
     {
-        // return Color((double)v, (double)u, u + v);
         auto size = m_image->getSize();
         auto x = u * size.x;
         auto y = v * size.y;

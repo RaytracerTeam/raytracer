@@ -19,7 +19,7 @@ namespace Raytracer {
         const Math::Vector3D &getOrigin(void) const override { return m_origin; }
         const Math::Matrix44 &getTMatrix(void) const override { return m_mat; };
         double getIntensity(void) const override { return m_intensity; }
-        bool dieASAP(void) const override { return m_dieASAP; }
+        bool getDieASAP(void) const override { return m_dieASAP; }
 
         void setID(int id) override { m_id = id; }
         void setIsShown(bool isShown) override { m_isShown = isShown; }
@@ -28,7 +28,9 @@ namespace Raytracer {
         void setColor(const Color &color) override { m_color = color; }
         void setOrigin(const Math::Vector3D &origin) override { m_origin = origin; }
         void setIntensity(double intensity) override { m_intensity = intensity; }
-        void setdieASAP(bool dieASAP) override { m_dieASAP = dieASAP; }
+        void setDieASAP(bool dieASAP) override { m_dieASAP = dieASAP; }
+
+        void dieASAP(void) override { m_dieASAP = true; }
 
     protected:
         AShapeLight(const Math::Vector3D &origin, const Color &color = { 255U, 255U, 255U }, double intensity = 1.)

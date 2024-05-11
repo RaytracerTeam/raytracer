@@ -10,6 +10,7 @@
 #include "Scene/Materials/MaterialSolid.hpp"
 #include "Scene/Materials/MaterialTexture/SphereTexture.hpp"
 #include "Scene/Materials/MaterialCode/Checkerboard.hpp"
+#include "Scene/Materials/MaterialTexture/CameraTexture.hpp"
 
 namespace Raytracer {
     namespace Parsing
@@ -35,15 +36,21 @@ namespace Raytracer {
 
             std::unique_ptr<IMaterial> material;
             std::string materialType = materialSetting.lookup(CFG_TYPE);
-            if (materialType == CFG_MATERIAL_SOLID_COLOR)
+            if (materialType == CFG_MATERIAL_SOLID_COLOR) {
                 material = std::make_unique<MaterialSolid>(getSettingColor(materialSetting));
-            else if (materialType == CFG_MATERIAL_TEXTURE)
+            }
+            else if (materialType == CFG_MATERIAL_TEXTURE) {
                 material = parseMaterialTexture(materialSetting, primType);
-            else if (materialType == CFG_MATERIAL_CHECKERBOARD && materialSetting.exists("color_bis"))
+            }
+            else if (materialType == CFG_MATERIAL_CHECKERBOARD && materialSetting.exists("color_bis")) {
                 material = std::make_unique<MaterialCheckerBoard>(
                     getSettingColor(materialSetting),
                     getSettingColor(materialSetting.lookup("color_bis")),
                     parseFloat(materialSetting, CFG_SIZE, 1.0));
+            }
+            else if (materialType == CFG_CAMERA) {
+                material = std::make_unique<CameraTexture>();
+            }
             else {
                 return std::make_unique<MaterialSolid>(Color(1., 0, 1));
             }

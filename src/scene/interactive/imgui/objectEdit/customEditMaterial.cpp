@@ -14,8 +14,6 @@ namespace Raytracer
 {
     void SceneInteractive::customEditMaterial(std::unique_ptr<IMaterial> &material)
     {
-        (void)material;
-        #ifdef BONUS
         switch (material->getType()) {
         case MaterialType::SOLID:
             break;
@@ -50,6 +48,5 @@ namespace Raytracer
         default:
             break;
         }
-        #endif
     }
 } // namespace Raytracer

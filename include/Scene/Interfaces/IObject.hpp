@@ -13,8 +13,9 @@ namespace Raytracer {
         virtual ~IObject() = default;
 
         virtual void setIsShown(bool isShown) = 0;
-        virtual void setdieASAP(bool dieASAP) = 0;
+        virtual void setDieASAP(bool dieASAP) = 0;
         virtual bool isShown(void) const = 0;
-        virtual bool dieASAP(void) const = 0;
+        virtual bool getDieASAP(void) const = 0;
+        virtual void dieASAP(void) = 0;
     };
 } // namespace Raytracer

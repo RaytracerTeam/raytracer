@@ -25,6 +25,9 @@ namespace Raytracer {
                 if (!useMultithreading)
                     scene->setNbThreads(1);
             }
+            if (setting.exists(CFG_ALWAYS_RENDER)) {
+                scene->setAlwaysRender(setting.lookup(CFG_ALWAYS_RENDER));
+            }
         }
     } // namespace Parsing
 } // namespace Raytracer
