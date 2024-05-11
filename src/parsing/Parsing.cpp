@@ -81,7 +81,6 @@ namespace Raytracer {
             parseObj(cfg, scene);
 
             #ifdef BONUSCAMERA
-            std::cout << scene->getRealCamera().isCameraOpen() << std::endl;
             for (auto &primitive : scene->getPrimitives()) {
                 if (primitive->getMaterial()->getType() == MaterialType::CAMERA) {
                     MaterialTexture *cameraTexture = static_cast<MaterialTexture *>(primitive->getMaterial().get());

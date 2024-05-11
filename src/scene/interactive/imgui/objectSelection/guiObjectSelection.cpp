@@ -13,7 +13,6 @@
 namespace Raytracer
 {
     void SceneInteractive::guiObjectSelection(void) {
-        #ifdef BONUS
         if (ImGui::BeginTabBar("Object Selection",
         ImGuiTabBarFlags_NoCloseWithMiddleMouseButton
         | ImGuiTabBarFlags_Reorderable)) {
@@ -107,6 +106,5 @@ namespace Raytracer
         }
         ImGui::EndTabBar();
         m_selectPrimitiveTab = false;
-        #endif
     }
 } // namespace Raytracer

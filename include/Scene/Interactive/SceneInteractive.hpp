@@ -87,6 +87,7 @@ namespace Raytracer {
         void handleEvents(void);
 
         // -- ImGui --
+        #ifdef BONUS
         void setupImageSize(void);
         void handleImGui(void);
         void guiMenuBar(void);
@@ -117,6 +118,7 @@ namespace Raytracer {
         void addSelectableScene(const std::filesystem::directory_entry &entry);
 
         void guiColoredSquare(const Color &color);
+        #endif
 
         /////////////////////////////////
 

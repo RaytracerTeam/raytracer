@@ -11,11 +11,9 @@ namespace Raytracer
 {
     void SceneInteractive::guiEditCameras(void)
     {
-        #ifdef BONUS
         if (ImGui::Button("Delete Camera")) {
             removeSelectedObject();
             return;
         }
-        #endif
     }
 } // namespace Raytracer

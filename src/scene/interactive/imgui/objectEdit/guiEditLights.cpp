@@ -28,7 +28,6 @@ namespace Raytracer
     }
     void SceneInteractive::guiEditLights(void)
     {
-        #ifdef BONUS
         if (m_selectedObject < 0)
             return;
         SceneLightning &lightSystem = m_scene->getLightSystem();
@@ -82,7 +81,5 @@ namespace Raytracer
         }
 
         customEditLights(light);
-
-        #endif
     }
 } // namespace Raytracer

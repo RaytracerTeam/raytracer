@@ -15,8 +15,6 @@ namespace Raytracer
 {
     void SceneInteractive::editCylinder(Cylinder *cylinder)
     {
-        (void)cylinder;
-        #ifdef BONUS
         // Radius
         float radius = cylinder->getRadius();
         if (ImGui::SliderFloat("Radius", &radius, DEFAULT_RADIUS_MIN,
@@ -34,7 +32,6 @@ namespace Raytracer
             m_updateBVH = true;
             m_needRendering = true;
         }
-        #endif
     }
 } // namespace Raytracer
 

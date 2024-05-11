@@ -356,30 +356,43 @@ namespace Raytracer {
     void Scene::killObjects(void)
     {
         for (std::size_t i = 0; i < m_primitives.size(); i++) {
-            if (m_primitives[i]->dieASAP()) {
+            if (m_primitives[i]->getDieASAP()) {
                 removePrimitive(i);
                 i--;
             }
         }
         for (std::size_t i = 0; i < m_lightSystem.getLights().size(); i++) {
-            if (m_lightSystem.getLights()[i]->dieASAP()) {
+            if (m_lightSystem.getLights()[i]->getDieASAP()) {
                 m_lightSystem.removeLight(i);
                 i--;
             }
         }
         for (std::size_t i = 0; i < m_lightSystem.getAmbientLights().size(); i++) {
-            if (m_lightSystem.getAmbientLights()[i]->dieASAP()) {
+            if (m_lightSystem.getAmbientLights()[i]->getDieASAP()) {
                 m_lightSystem.removeAmbientLight(i);
                 i--;
             }
         }
         for (std::size_t i = 0; i < m_lightSystem.getDirectionalLights().size(); i++) {
-            if (m_lightSystem.getDirectionalLights()[i]->dieASAP()) {
+            if (m_lightSystem.getDirectionalLights()[i]->getDieASAP()) {
                 m_lightSystem.removeDirectionalLight(i);
                 i--;
             }
         }
     }
+    void Scene::reset(void)
+    {
+        for (auto &prim : m_primitives)
+            prim->dieASAP();
+        for (auto &light : m_lightSystem.getLights())
+            light->dieASAP();
+        for (auto &ambientLight : m_lightSystem.getAmbientLights())
+            ambientLight->dieASAP();
+        for (auto &dirLight : m_lightSystem.getDirectionalLights())
+            dirLight->dieASAP();
+        m_cameras.clear();
+    }
+
     #ifdef BONUSCAMERA
     void Scene::initRealCamera(void)
     {

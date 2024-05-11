@@ -13,8 +13,6 @@ namespace Raytracer
 {
     void SceneInteractive::editPointLight(PointLight *light)
     {
-        (void)light;
-        #ifdef BONUS
         // Position
         float pos[3] = {(float)light->getOrigin().getX(),
                 (float)light->getOrigin().getY(),
@@ -32,6 +30,5 @@ namespace Raytracer
             light->setRadius(pointLightRadius);
             m_needRendering = true;
         }
-        #endif
     }
 } // namespace Raytracer

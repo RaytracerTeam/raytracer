@@ -24,8 +24,9 @@ namespace Raytracer {
 
         bool isShown(void) const override { return m_isShown; }
         void setIsShown(bool isShown) override { m_isShown = isShown; }
-        bool dieASAP(void) const override { return m_dieASAP; }
-        void setdieASAP(bool dieASAP) override { m_dieASAP = dieASAP; }
+        bool getDieASAP(void) const override { return m_dieASAP; }
+        void setDieASAP(bool dieASAP) override { m_dieASAP = dieASAP; }
+        void dieASAP(void) override { m_dieASAP = true; }
 
     protected:
         ALight(const Color &color = {255U, 255U, 255U}, double intensity = 1.)

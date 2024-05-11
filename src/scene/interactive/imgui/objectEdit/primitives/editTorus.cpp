@@ -15,8 +15,6 @@ namespace Raytracer
 {
     void SceneInteractive::editTorus(Torus *torus)
     {
-        (void)torus;
-        #ifdef BONUS
         // Radius
         float radius = torus->getRadius();
         if (ImGui::SliderFloat("Radius", &radius, DEFAULT_RADIUS_MIN,
@@ -34,7 +32,6 @@ namespace Raytracer
             m_updateBVH = true;
             m_needRendering = true;
         }
-        #endif
     }
 } // namespace Raytracer
 

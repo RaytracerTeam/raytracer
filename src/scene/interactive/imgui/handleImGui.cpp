@@ -15,7 +15,6 @@ namespace Raytracer
 {
     void SceneInteractive::handleImGui()
     {
-        #ifdef BONUS
         ImGui::SFML::Update(m_window, m_deltaClock.restart());
 
         ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f));
@@ -66,6 +65,13 @@ namespace Raytracer
 
         ImGui::End();
         ImGui::PopStyleVar();
-        #endif
+    }
+
+    void SceneInteractive::setupImageSize()
+    {
+        m_imageWidth = ImGui::GetIO().DisplaySize.x - 20;
+        if (!m_fullscreen)
+            m_imageWidth -= m_leftPaneWidth + 30;
+        m_imageHeight = m_imageWidth / (SCREEN_RATIO);
     }
 } // namespace Raytracer

@@ -15,9 +15,6 @@ namespace Raytracer
 {
     void SceneInteractive::editPlane(Plane *plane)
     {
-        (void)plane;
-        #ifdef BONUS
-
         // Axis
         Plane::Axis axis = plane->getAxis();
         if (ImGui::Combo("Axis", (int *)&axis, "X\0Y\0Z\0\0")) {
@@ -25,8 +22,6 @@ namespace Raytracer
             m_updateBVH = true;
             m_needRendering = true;
         }
-
-        #endif
     }
 } // namespace Raytracer
 

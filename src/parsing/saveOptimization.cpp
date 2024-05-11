@@ -15,6 +15,7 @@ namespace Raytracer
         setting.add(CFG_MAX_RAY_BOUNCES, libconfig::Setting::TypeInt) = (int)scene.getMaxRayBounces();
         setting.add(CFG_BVH_MAX_PRIM, libconfig::Setting::TypeInt) = (int)scene.getBvhMaxPrimLimit();
         setting.add(CFG_USE_MULTITHREADING, libconfig::Setting::TypeBoolean) = scene.getNbThreads() > 1;
+        setting.add(CFG_ALWAYS_RENDER, libconfig::Setting::TypeBoolean) = scene.getAlwaysRender();
     }
 } // namespace Raytracer
 

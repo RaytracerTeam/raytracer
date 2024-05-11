@@ -13,8 +13,6 @@ namespace Raytracer
 {
     void SceneInteractive::guiAddPrimitive(void)
     {
-        #ifdef BONUS
-
         if (ImGui::BeginCombo(" ", "Add Primitive")) {
             if (ImGui::Selectable("Sphere")) {
                 auto sphere = std::make_unique<Sphere>(
@@ -98,6 +96,5 @@ namespace Raytracer
             }
             ImGui::EndCombo();
         }
-        #endif
     }
 } // namespace Raytracer

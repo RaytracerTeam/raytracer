@@ -58,6 +58,7 @@ namespace Raytracer {
         #define CFG_MAX_RAY_BOUNCES "maxRayBounces"
         #define CFG_BVH_MAX_PRIM "maxPrimitivesPerBvhBox"
         #define CFG_USE_MULTITHREADING "useMultithreading"
+        #define CFG_ALWAYS_RENDER "alwaysRender"
 
         #define CFG_V0 "v0"
         #define CFG_V1 "v1"
