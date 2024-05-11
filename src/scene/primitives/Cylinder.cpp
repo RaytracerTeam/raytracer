@@ -17,8 +17,10 @@ namespace Raytracer {
         //     Math::Vector3D(n_origin.getX() - m_radius * cos(getTMatrix().getRot().getYaw()), n_origin.getY() - m_height * sin(getTMatrix().getRot().getPitch()), n_origin.getZ() - m_radius * cos(getTMatrix().getRot().getRoll()) + 10),
         //     Math::Vector3D(n_origin.getX() + m_radius * cos(getTMatrix().getRot().getYaw()), n_origin.getY() + m_height * cos(getTMatrix().getRot().getPitch()), n_origin.getZ() + m_radius * cos(getTMatrix().getRot().getRoll()))
         //     );
-        float min = - (2 * m_radius) - 2 * m_height;
-        float max = (2 * m_radius) + 2 * m_height;
+        auto _max = std::max(getTMatrix().getScaling()[0],
+            std::max(getTMatrix().getScaling()[1], getTMatrix().getScaling()[2]));
+        float min = (- (2 * m_radius) - 2 * m_height) * _max * _max;
+        float max = ((2 * m_radius) + 2 * m_height) * _max * _max;
         return BoundingBox(
             Math::Vector3D(m_origin.getX() + min, m_origin.getY() + min, m_origin.getZ() + min),
             Math::Vector3D(m_origin.getX() + max, m_origin.getY() + max, m_origin.getZ() + max));
@@ -115,11 +117,11 @@ namespace Raytracer {
         if (t0 > 0.001) {
             Math::Vector3D hitPt = dstOrigin + (rayDir) * t0;
             if (std::isinf(m_height))
-                return getNormal(t0, getTMatrix() * hitPt, m_origin);
+                return getNormal(t0, hitPt, m_origin);
 
             if (hitPt.getY() >= m_origin.getY()
                 && hitPt.getY() <= m_origin.getY() + m_height)
-                return getNormal(t0, getTMatrix() * hitPt, m_origin);
+                return getNormal(t0, hitPt, m_origin);
         }
 
         if ((intersect = hitFace(dstOrigin, rayDir)).has_value())
@@ -130,7 +132,7 @@ namespace Raytracer {
             Math::Vector3D hitPt = ((dstOrigin) + (rayDir) * t1);
             if (hitPt.getY() >= m_origin.getY()
                 && hitPt.getY() <= m_origin.getY() + m_height)
-                return getNormal(t1, getTMatrix() * hitPt, m_origin);
+                return getNormal(t1, hitPt, m_origin);
         }
 
         return std::nullopt;

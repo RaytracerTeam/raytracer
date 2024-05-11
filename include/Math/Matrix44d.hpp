@@ -25,6 +25,8 @@ namespace Raytracer {
             Matrix44 &operator=(const Matrix44 &m);
 
             Math::Angle3D getRot() const { return m_rot; }
+            Math::Vector3D getScaling() const { return m_scaling;}
+            void setScaling(Math::Vector3D scaling);
 
             double operator()(uint8_t x, uint8_t y) const
             {
@@ -44,13 +46,14 @@ namespace Raytracer {
             Vector3D operator^(const Vector3D &src) const;
             Vector3D operator*(const std::array<double, 4> &src) const;
 
-
             Matrix44 transpose() const;
             Matrix44 inverse() const;
+
         private:
             std::array<std::array<double, 4>, 4> m_arr;
             Math::Angle3D m_rot;
-        };
+            Vector3D m_scaling = { 1, 1, 1 };
+    };
     } // namespace Math
 
 } // namespace Raytracer

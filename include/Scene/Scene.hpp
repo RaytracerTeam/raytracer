@@ -105,7 +105,7 @@ namespace Raytracer {
 
         bool m_renderLights = false;
 
-        const size_t m_maxNbThreads = 1; //std::thread::hardware_concurrency();
+        const size_t m_maxNbThreads = std::thread::hardware_concurrency();
         size_t m_nbThreads = m_maxNbThreads;
         size_t m_nbThreadsAlive = 0;
         std::mutex m_mutex;

@@ -12,9 +12,12 @@
 namespace Raytracer {
     BoundingBox Tanglecube::getBoundingBox(void) const
     {
+        auto max = std::max(getTMatrix().getScaling()[0],
+            std::max(getTMatrix().getScaling()[1], getTMatrix().getScaling()[2]));
         return BoundingBox(
-            Math::Vector3D(m_origin - 3.), Math::Vector3D(m_origin + 3.));
-    }
+            Math::Vector3D((m_origin - max * 5)),
+            Math::Vector3D(m_origin + max * 5));
+            }
 
     RayHit Tanglecube::getNormal(double distance, const Math::Vector3D &hitPt,
         const Math::Vector3D &origin) const
@@ -80,7 +83,7 @@ namespace Raytracer {
                     = ray.getOrigin() + ray.getDirection() * roots[i];
                 return getNormal(roots[i], hitPt, m_origin);
             }
-        }
+        }   
 
         return std::nullopt;
     }

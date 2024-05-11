@@ -12,8 +12,10 @@
 namespace Raytracer {
     BoundingBox Torus::getBoundingBox(void) const
     {
-        return BoundingBox(Math::Vector3D(m_origin - m_distance - m_radius),
-            Math::Vector3D(m_origin + m_distance + m_radius));
+        auto max = std::max(getTMatrix().getScaling()[0],
+            std::max(getTMatrix().getScaling()[1], getTMatrix().getScaling()[2]));
+        return BoundingBox(Math::Vector3D(m_origin - max - (m_distance - m_radius)),
+            Math::Vector3D(m_origin + max + (m_distance + m_radius)));
     }
 
     RayHit Torus::getNormal(double distance, const Math::Vector3D &hitPt,

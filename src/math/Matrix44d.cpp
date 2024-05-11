@@ -46,18 +46,26 @@ namespace Raytracer {
                     { 0, 0, 1, 0 },
                     { 0, 0, 0, 1 } } });
             Matrix44 m12 = m1 * m2;
-            *this = m12 * m3;
+            Matrix44 m123 = m12 * m3;
+            Matrix44 scale(
+                { { { 1 / m_scaling[0], 0, 0, 0 },
+                    { 0, 1 / m_scaling[1], 0, 0 },
+                    { 0, 0, 1 / m_scaling[2], 0 },
+                    { 0, 0, 0, 1 } } });
+            *this = m123 * scale;
             this->m_rot = Math::Angle3D(rotX, rotY, rotZ);
         }
 
         Matrix44::Matrix44(const Matrix44 &m)
         {
+            m_scaling = m.m_scaling;
             m_arr = m.m_arr;
             m_rot = m.m_rot;
         }
 
         Matrix44 &Matrix44::operator=(const Matrix44 &m)
         {
+            m_scaling = m.m_scaling;
             m_arr = m.m_arr;
             m_rot = m.m_rot;
             return *this;
@@ -111,6 +119,37 @@ namespace Raytracer {
                 for (uint8_t j = 0; j < 4; ++j)
                     m[i][j] = m_arr[j][i];
             return m;
+        }
+    
+        void Matrix44::setScaling(Math::Vector3D scaling)
+        {
+            m_scaling = scaling;
+            double rotXRad = m_rot.getYaw() * M_PI / 180;
+            double rotYRad = m_rot.getPitch() * M_PI / 180;
+            double rotZRad = m_rot.getRoll() * M_PI / 180;
+            Matrix44 m1(
+                { { { 1, 0, 0, 0 },
+                    { 0, cos(rotXRad), sin(rotXRad), 0 },
+                    { 0, -sin(rotXRad), cos(rotXRad), 0 },
+                    { 0, 0, 0, 1 } } });
+            Matrix44 m2(
+                { { { cos(rotYRad), 0, sin(rotYRad), 0 },
+                    { 0, 1, 0, 0 },
+                    { -sin(rotYRad), 0, cos(rotYRad), 0 },
+                    { 0, 0, 0, 1 } } });
+            Matrix44 m3(
+                { { { cos(rotZRad), sin(rotZRad), 0, 0 },
+                    { -sin(rotZRad), cos(rotZRad), 0, 0 },
+                    { 0, 0, 1, 0 },
+                    { 0, 0, 0, 1 } } });
+            Matrix44 m12 = m1 * m2;
+            Matrix44 m123 = m12 * m3;
+            Matrix44 scale(
+                { { { 1 / scaling[0], 0, 0, 0 },
+                    { 0, 1 / scaling[1], 0, 0 },
+                    { 0, 0, 1 / scaling[2], 0 },
+                    { 0, 0, 0, 1 } } });
+            *this = m123 * scale;
         }
 
         Matrix44 Matrix44::inverse() const

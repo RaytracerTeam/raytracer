@@ -12,9 +12,11 @@
 namespace Raytracer {
     BoundingBox Cone::getBoundingBox(void) const
     {
+        auto max = std::max(getTMatrix().getScaling()[0],
+            std::max(getTMatrix().getScaling()[1], getTMatrix().getScaling()[2]));
         return BoundingBox(
-            Math::Vector3D(m_origin.getX() - m_radius, m_origin.getY(), m_origin.getZ() - m_radius),
-            Math::Vector3D(m_origin.getX() + m_radius, m_origin.getY() + m_height, m_origin.getZ() + m_radius));
+            Math::Vector3D(m_origin.getX() - max * max - m_radius, m_origin.getY() - max * max, m_origin.getZ() - max * max - m_radius),
+            Math::Vector3D(m_origin.getX() + max * max + m_radius, m_origin.getY() + max * max + m_height, m_origin.getZ() + max * max + m_radius));
     }
 
     RayHit Cone::getNormal(double distance, const Math::Vector3D &hitPt, const Math::Vector3D &origin) const
@@ -53,8 +55,8 @@ namespace Raytracer {
     std::optional<RayHit> Cone::hit(const Ray &ray) const
     {
         std::optional<RayHit> intersect;
-        Math::Vector3D dstOrigin = ray.getOrigin() - m_origin;
-        Math::Vector3D rayDir = ray.getDirection();
+        Math::Vector3D dstOrigin = (getTMatrix() * ray.getOrigin() - m_origin);
+        Math::Vector3D rayDir = getTMatrix() * ray.getDirection();
 
         double tan = (m_radius / m_height) * (m_radius / m_height);
 
@@ -73,7 +75,7 @@ namespace Raytracer {
 
         double t0 = (-b - sqrtDelta) / (2 * a);
         if (t0 > 0.001) {
-            Math::Vector3D hitPt = ray.getOrigin() + ray.getDirection() * t0;
+            Math::Vector3D hitPt = getTMatrix() * ray.getOrigin() + rayDir * t0;
             if (std::isinf(m_height))
                 return getNormal(t0, hitPt, m_origin);
 
@@ -87,7 +89,7 @@ namespace Raytracer {
 
         double t1 = (-b + sqrtDelta) / (2 * a);
         if (t1 > 0.001) {
-            Math::Vector3D hitPt = ray.getOrigin() + ray.getDirection() * t1;
+            Math::Vector3D hitPt = getTMatrix() * ray.getOrigin() + rayDir * t1;
             if (hitPt.getY() >= m_origin.getY()
                 && hitPt.getY() <= m_origin.getY() + m_height)
                 return getNormal(t1, hitPt, m_origin);

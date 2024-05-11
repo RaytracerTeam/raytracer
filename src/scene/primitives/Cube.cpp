@@ -13,13 +13,13 @@ namespace Raytracer {
     BoundingBox Cube::getBoundingBox(void) const
     {
         Math::Vector3D min = Math::Vector3D(
-            std::min(m_origin.getX(), m_v1.getX()),
-            std::min(m_origin.getY(), m_v1.getY()),
-            std::min(m_origin.getZ(), m_v1.getZ()));
+            std::min(m_origin.getX(), m_v1.getX()) - getTMatrix().getScaling()[0],
+            std::min(m_origin.getY(), m_v1.getY()) - getTMatrix().getScaling()[1],
+            std::min(m_origin.getZ(), m_v1.getZ()) - getTMatrix().getScaling()[2]);
         Math::Vector3D max = Math::Vector3D(
-            std::max(m_origin.getX(), m_v1.getX()),
-            std::max(m_origin.getY(), m_v1.getY()),
-            std::max(m_origin.getZ(), m_v1.getZ()));
+            std::max(m_origin.getX(), m_v1.getX()) + getTMatrix().getScaling()[0],
+            std::max(m_origin.getY(), m_v1.getY()) + getTMatrix().getScaling()[1],
+            std::max(m_origin.getZ(), m_v1.getZ()) + getTMatrix().getScaling()[2]);
         return BoundingBox(min, max);
     }
 
@@ -53,8 +53,8 @@ namespace Raytracer {
 
     std::optional<RayHit> Cube::hit(const Ray &ray) const
     {
-        Math::Vector3D dstOrigin = ray.getOrigin();
-        Math::Vector3D rayDir = ray.getDirection();
+        Math::Vector3D dstOrigin = getTMatrix() * ray.getOrigin();
+        Math::Vector3D rayDir = getTMatrix() * ray.getDirection();
 
         BoundingBox box = getBoundingBox();
         Math::Vector3D v0 = box.min;
