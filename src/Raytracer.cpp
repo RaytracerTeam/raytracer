@@ -25,7 +25,7 @@ namespace Raytracer {
         return 0;
     }
 
-    static int imageOutput(std::vector<std::string_view> inputFiles)
+    static int imageOutput(std::vector<std::string_view> inputFiles, WriteFile::WriteType type)
     {
         std::unique_ptr<Scene> scene = std::make_unique<Scene>();
         Parsing::parse(scene, inputFiles);
@@ -37,7 +37,7 @@ namespace Raytracer {
         scene->resizeRender(dim.getWidth(), dim.getHeight());
         scene->render();
 
-        WriteFile::writeImage(WriteFile::PPM, scene->getRender(), dim);
+        WriteFile::writeImage(type, scene->getRender(), dim);
         return 0;
     }
 
@@ -47,11 +47,13 @@ namespace Raytracer {
 
         try {
             std::vector<std::string_view> inputFiles;
-            bool interactiveMode = Parsing::parseArgv(argc, argv, inputFiles);
+            WriteFile::WriteType type = WriteFile::WriteType::PPM;
+
+            bool interactiveMode = Parsing::parseArgv(argc, argv, inputFiles, type);
             if (interactiveMode)
                 return interactive(windowDimensions, inputFiles);
 
-            return imageOutput(inputFiles);
+            return imageOutput(inputFiles, type);
         } catch (Error &error) {
             std::cerr << "Error: " << error.what() << ". (" << error.where() << ")" << std::endl;
             return EXIT_FAILURE_EPITECH;
