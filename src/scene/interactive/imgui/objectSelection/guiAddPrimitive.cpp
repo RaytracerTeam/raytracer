@@ -86,13 +86,24 @@ namespace Raytracer
             }
             if (ImGui::Selectable("Triangle")) {
                 auto triangle = std::make_unique<Triangle>(
+                    Math::Vector3D(1, 0, 0),
+                    std::make_unique<MaterialSolid>(
+                        Color((unsigned int)255, 255, 255)),
+                    Math::Vector3D(0, 1, 0),
+                    Math::Vector3D(0, 0, 1));
+                triangle->setID(m_scene->getPrimitives().size() + 1);
+                m_scene->addPrimitive(std::move(triangle));
+                m_needRendering = true;
+                m_updateBVH = true;
+            }
+            if (ImGui::Selectable("Cube")) {
+                auto cube = std::make_unique<Cube>(
                     Math::Vector3D(0, 0, 0),
                     std::make_unique<MaterialSolid>(
                         Color((unsigned int)255, 255, 255)),
-                    Math::Vector3D(0, 0, 0),
-                    Math::Vector3D(0, 0, 0));
-                triangle->setID(m_scene->getPrimitives().size() + 1);
-                m_scene->addPrimitive(std::move(triangle));
+                    Math::Vector3D(1, 1, 1));
+                cube->setID(m_scene->getPrimitives().size() + 1);
+                m_scene->addPrimitive(std::move(cube));
                 m_needRendering = true;
                 m_updateBVH = true;
             }

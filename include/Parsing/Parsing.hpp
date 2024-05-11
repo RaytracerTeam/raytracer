@@ -93,6 +93,7 @@ namespace Raytracer {
         void parseToruses(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene);
         void parseTanglecubes(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene);
         void parseTriangles(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene);
+        void parseCubes(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene);
 
         void parseGlobal(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
         void parseOptimization(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
@@ -117,6 +118,7 @@ namespace Raytracer {
         void saveTanglecube(libconfig::Setting &list, Tanglecube *tanglecube);
         void saveTriangle(libconfig::Setting &list, Triangle *triangle);
         void savePlane(libconfig::Setting &list, Plane *plane);
+        void saveCube(libconfig::Setting &list, Cube *cube);
 
         Math::Angle3D getSettingRotation(const libconfig::Setting &setting);
         Color getSettingColor(const libconfig::Setting &setting);

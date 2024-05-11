@@ -24,6 +24,7 @@ namespace Raytracer {
             parseToruses(primitiveSetting, scene);
             parseTanglecubes(primitiveSetting, scene);
             parseTriangles(primitiveSetting, scene);
+            parseCubes(primitiveSetting, scene);
         }
     } // namespace Parsing
 } // namespace Raytracer
