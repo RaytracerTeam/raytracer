@@ -25,6 +25,22 @@ namespace Raytracer {
         return 0;
     }
 
+    static void displayLoadingBar(const std::unique_ptr<Scene> &scene)
+    {
+        int percent = (scene->getRenderY() / scene->getCurrentCamera().getDimension().getHeightD()) * 100;
+
+        std::cout << "Rendering... ";
+
+        std::cout << "\033[1;37m[";
+        for (int i = 0; i < percent / 4; i++)
+            std::cout << "\033[1;32m=";
+        for (int i = percent / 4; i < 25; i++)
+            std::cout << "\033[1;37m ";
+        std::cout << "\033[1;37m] ";
+
+        std::cout << "\033[1;36m" << percent << "%\r\033[0m" << std::flush;
+    }
+
     static int imageOutput(std::vector<std::string_view> inputFiles, WriteFile::WriteType type)
     {
         std::unique_ptr<Scene> scene = std::make_unique<Scene>();
@@ -36,6 +52,9 @@ namespace Raytracer {
         const Dimension &dim = scene->getCurrentCamera().getDimension();
         scene->resizeRender(dim.getWidth(), dim.getHeight());
         scene->render();
+
+        while (scene->getNbThreadsAlive() > 0)
+            displayLoadingBar(scene);
 
         WriteFile::writeImage(type, scene->getRender(), dim);
         return 0;
