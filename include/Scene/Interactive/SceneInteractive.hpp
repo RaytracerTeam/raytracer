@@ -109,6 +109,7 @@ namespace Raytracer {
         void editTorus(Torus *torus);
         void editTanglecube(Tanglecube *tanglecube);
         void editTriangle(Triangle *triangle);
+        void editCube(Cube *cube);
 
         void editPointLight(PointLight *light);
         void editDirectionalLight(DirectionalLight *light);

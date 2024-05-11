@@ -14,3 +14,4 @@
 #include "Scene/Primitives/Torus.hpp"
 #include "Scene/Primitives/Tanglecube.hpp"
 #include "Scene/Primitives/Triangle.hpp"
+#include "Scene/Primitives/Cube.hpp"
