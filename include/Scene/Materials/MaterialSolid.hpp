@@ -13,7 +13,10 @@ namespace Raytracer {
     class MaterialSolid : public AMaterial {
     public:
         MaterialSolid(const Color &color);
+        MaterialSolid(const MaterialSolid &src);
         ~MaterialSolid() = default;
+
+        MaterialType getType() const override { return MaterialType::SOLID; }
 
         Color getColor(const RayHit &rayhit) const override;
         Color getColor() const { return m_color; };

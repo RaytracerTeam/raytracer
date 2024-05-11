@@ -15,12 +15,6 @@
 #include <cmath>
 
 namespace Raytracer {
-    // todo : direction should be in parsing
-    Scene::Scene()
-        : m_lightSystem({ -1, 1, -1 }, { 200U, 200, 200 })
-    {
-    }
-
     void Scene::addPrimitive(std::unique_ptr<IPrimitive> obj)
     {
         m_primitives.push_back(std::move(obj));
@@ -200,6 +194,27 @@ namespace Raytracer {
         return nbShadowRays / m_maxDropShadowsRay;
     }
 
+    Color Scene::getDiffuseColor(const Ray &lightRay, const RayHit &rhitPrim,
+        const ILight *light, const Math::Vector3D &lightOrigin,
+        const std::unique_ptr<IMaterial> &primMaterial, const Color &primColor) const
+    {
+        Color penombraFactor = Color(1., 1., 1.);
+        BVH::Intersection intersection;
+
+        bool hasLightHit = BVH::readBVH(lightRay, *m_bvhTree, intersection);
+        if (hasLightHit && hit(intersection.rayhit, rhitPrim.getHitPoint(), lightOrigin)) {
+            auto &interMaterial = intersection.primitve->getMaterial();
+            penombraFactor = interMaterial->getColor(intersection.rayhit) * (1 - interMaterial->getTransparency())
+                + primColor * interMaterial->getTransparency() - (1 - interMaterial->getTransparency());
+            penombraFactor = Math::Algorithm::clampColor(penombraFactor);
+            penombraFactor = Math::Algorithm::clampColor(penombraFactor + primMaterial->getTransparency());
+        }
+
+        double diffuse = Math::Algorithm::clampD(rhitPrim.getNormal().dot(lightRay.getDirection()), 0., 1.);
+        diffuse = Math::Algorithm::clampD(diffuse + primMaterial->getTransparency(), 0., 1.);
+        return primColor * light->getColor() * light->getIntensity() * diffuse * primMaterial->getDiffuse() * penombraFactor;
+    }
+
     bool Scene::hit(const std::optional<RayHit> &rayHit, const Math::Vector3D &objOrigin, const Math::Vector3D &objTarget) const
     {
         if (rayHit == std::nullopt)
@@ -213,27 +228,60 @@ namespace Raytracer {
 
     Color Scene::castRayColor(const Ray &ray, const IPrimitive *primHit, const RayHit &rhitPrim) const
     {
-        Color color;
-        IMaterial *primMaterial = primHit->getMaterial();
-        auto &dirLight = m_lightSystem.getDirectionLight();
+        const std::unique_ptr<IMaterial> &primMaterial = primHit->getMaterial();
 
-        // Reflections
+        // Reflection
         Color primColor = primMaterial->getColor(rhitPrim);
-        if (primMaterial->getAlbedo() > 0) {
+        if (primMaterial->getReflection() > 0) {
             if (ray.getDepth() < m_maxRayBounces) {
                 auto rayScattered = primMaterial->getScatteredRay(ray, rhitPrim);
                 if (rayScattered != std::nullopt)
-                    primColor *= castRay(*rayScattered) * primMaterial->getAlbedo();
+                    primColor = primColor * (1 - primMaterial->getReflection()) +
+                        castRay(*rayScattered) * primMaterial->getReflection();
             }
         }
 
+        // Transparency
+        if (primMaterial->getTransparency() > 0) {
+            if (ray.getDepth() < m_maxRayBounces) {
+                std::optional<Ray> rayTransparency;
+                if (primMaterial->getRefraction() != 0)
+                    rayTransparency = primMaterial->getTransparencyRefractionRay(ray, rhitPrim);
+                else
+                    rayTransparency = primMaterial->getTransparencyRay(ray, rhitPrim);
+                if (rayTransparency != std::nullopt)
+                    primColor = primColor * (1 - primMaterial->getTransparency()) +
+                        castRay(*rayTransparency) * primMaterial->getTransparency();
+                else
+                    primColor = Color(1., 0, 1);
+            }
+        }
+
+        // -- Ambient Light --
+        Color ambientColor(0., 0, 0);
+        for (const auto &ambientLight : m_lightSystem.getAmbientLights()) {
+            if (!ambientLight->isShown())
+                continue;
+            ambientColor += primColor * ambientLight->getColor() * ambientLight->getIntensity();
+        }
+
+        // -- Diffuse Light -- && -- Specular Light --
+        Color diffuseColor(0., 0, 0);
+        Color specularColor(0., 0, 0);
+
         // Directional light
-        auto dirRay = Ray(rhitPrim.getHitPoint(), (dirLight.getDirection()));
-        BVH::Intersection intersection;
-        auto hasLightHit = BVH::readBVH(dirRay, *m_bvhTree, intersection);
-        if (!hasLightHit) {
-            auto dirLightDiffuse = Math::Algorithm::clampD(rhitPrim.getNormal().dot(dirLight.getDirection()), 0., 1.);
-            color += primColor * (dirLight.getColor() * dirLightDiffuse * dirLight.getIntensity());
+        for (const auto &dLight : m_lightSystem.getDirectionalLights()) {
+            if (!dLight->isShown())
+                continue;
+            Ray dirRay = Ray(rhitPrim.getHitPoint(), dLight->getDirection());
+            Color dPenombraFactor = Color(1., 1., 1.);
+
+            diffuseColor += getDiffuseColor(dirRay, rhitPrim, dLight.get(),
+                Math::Vector3D(0, 0, 0), primMaterial, primColor);
+            if (primMaterial->getSpecular() > 0) {
+                specularColor += primMaterial->getSpecular(dLight.get(),
+                    rhitPrim.getNormal(), dLight->getDirection(), ray);
+            }
         }
 
         // Point lights
@@ -243,26 +291,16 @@ namespace Raytracer {
             auto lightVec = light->getOrigin() - rhitPrim.getHitPoint();
             auto lightDirection = lightVec.normalize();
             Ray lightRay = Ray(rhitPrim.getHitPoint(), lightDirection);
-            double penombraFactor = 1.;
 
-            BVH::Intersection intersection;
-            auto hasLightHit = BVH::readBVH(lightRay, *m_bvhTree, intersection);
-            if (hasLightHit && hit(intersection.rayhit, rhitPrim.getHitPoint(), light->getOrigin())) {
-                if (m_maxDropShadowsRay > 1)
-                    penombraFactor = shadowPenombra(lightRay, primHit, *light);
-                else
-                    penombraFactor = 0;
-                break;
+            diffuseColor += getDiffuseColor(lightRay, rhitPrim, light.get(),
+                light->getOrigin(), primMaterial, primColor);
+            if (primMaterial->getSpecular() > 0) {
+                specularColor += primMaterial->getSpecular(light.get(),
+                    rhitPrim.getNormal(), lightDirection, ray);
             }
-
-            auto diffuse = Math::Algorithm::clampD(rhitPrim.getNormal().dot(lightDirection), 0., 1.);
-            if (primMaterial->hasPhong()) {
-                primColor += primMaterial->getSpecular(light.get(), rhitPrim, lightDirection);
-            }
-            color += primColor * (light->getColor() * diffuse * penombraFactor * light->getIntensity());
         }
-        color += primColor * m_ambientLightColor * m_ambientLightIntensity;
-        return color;
+
+        return ambientColor + diffuseColor + specularColor;
     }
     void Scene::setSkyboxPath(const std::string &path)
     {
@@ -286,5 +324,64 @@ namespace Raytracer {
             return false;
         m_cameras.erase(m_cameras.begin() + index);
         return true;
+    }
+
+    void Scene::showCurrentRenderedLine(void)
+    {
+        if (m_renderY >= m_render.getSize().y)
+            return;
+        for (size_t x = 0; x < m_render.getSize().x; x++)
+            m_render.setPixel(x, m_renderY + 1, m_render.getPixel(x, m_renderY + 1) * sf::Color(100, 100, 100));
+    }
+
+    const IShape *Scene::getPrimitiveHit(sf::Vector2i mousePos) const
+    {
+        Camera &camera = getCurrentCamera();
+        Dimension dimension = camera.getDimension();
+        double scale = std::tan(Math::deg2rad(camera.getFov() * 0.5));
+        double imageAspectRatio = dimension.getWidthD() / dimension.getHeightD();
+
+        double rayX = (2 * (mousePos.x + 0.5) / dimension.getWidthD() - 1) * imageAspectRatio * scale;
+        double rayY = (1 - 2 * (mousePos.y + 0.5) / dimension.getHeightD()) * scale;
+        Math::Vector3D dir = Math::Vector3D(rayX, rayY, -1).normalize().rotate(camera.getAngle());
+        Ray ray = Ray(camera.getPos(), dir);
+
+        BVH::Intersection intersection;
+        auto result = BVH::readBVH(ray, *m_bvhTree, intersection);
+        if (!result)
+            return nullptr;
+        return intersection.primitve;
+    }
+
+    void Scene::killObjects(void)
+    {
+        for (std::size_t i = 0; i < m_primitives.size(); i++) {
+            if (m_primitives[i]->dieASAP()) {
+                removePrimitive(i);
+                i--;
+            }
+        }
+        for (std::size_t i = 0; i < m_lightSystem.getLights().size(); i++) {
+            if (m_lightSystem.getLights()[i]->dieASAP()) {
+                m_lightSystem.removeLight(i);
+                i--;
+            }
+        }
+        for (std::size_t i = 0; i < m_lightSystem.getAmbientLights().size(); i++) {
+            if (m_lightSystem.getAmbientLights()[i]->dieASAP()) {
+                m_lightSystem.removeAmbientLight(i);
+                i--;
+            }
+        }
+        for (std::size_t i = 0; i < m_lightSystem.getDirectionalLights().size(); i++) {
+            if (m_lightSystem.getDirectionalLights()[i]->dieASAP()) {
+                m_lightSystem.removeDirectionalLight(i);
+                i--;
+            }
+        }
+    }
+    void Scene::loadRealCamera(void)
+    {
+        
     }
 } // namespace Raytracer

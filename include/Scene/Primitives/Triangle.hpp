@@ -21,7 +21,6 @@ namespace Raytracer {
         ~Triangle() = default;
 
         PrimitiveType getType(void) const override { return PrimitiveType::TRIANGLE; };
-        const std::string getTypeString(void) const override { return "Triangle"; };
 
         const Math::Vector3D &getVec1() const { return m_v1; }
         const Math::Vector3D &getVec2() const { return m_v2; }

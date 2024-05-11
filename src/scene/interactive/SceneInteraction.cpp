@@ -18,7 +18,6 @@ namespace Raytracer {
         const std::vector<std::string_view> &inputFiles)
         : m_dimension(dimension)
         , m_window(sf::VideoMode(dimension.getWidth(), dimension.getHeight()), title)
-        , m_previousTime(m_clock.getElapsedTime())
     {
         m_scene = std::make_unique<Scene>();
         setScenes(inputFiles);
@@ -38,10 +37,10 @@ namespace Raytracer {
             m_window.setPosition(sf::Vector2i(0, 0));
             if (!ImGui::SFML::Init(m_window))
                 throw std::runtime_error("Failed to initialize ImGui");
-            m_leftPaneWidth = 230;
+            m_leftPaneWidth = 270;
             setupImageSize();
         #endif
-        m_window.setFramerateLimit(60);
+        m_window.setFramerateLimit(WINDOW_FPS);
         setupActions();
     }
     SceneInteractive::~SceneInteractive()
@@ -82,11 +81,13 @@ namespace Raytracer {
             resetActions();
         while (m_window.pollEvent(event)) {
             #ifdef BONUS
-                ImGui::SFML::ProcessEvent(event);
+                ImGui::SFML::ProcessEvent(m_window, event);
             #endif
 
-            if (event.type == sf::Event::Closed)
+            if (event.type == sf::Event::Closed) {
+                Parsing::saveScene(*m_scene, TEMP_CFG_FILE);
                 return m_window.close();
+            }
             if (event.type == sf::Event::Resized) {
                 sf::FloatRect visibleArea(0.f, 0.f, event.size.width, event.size.height);
                 #ifndef BONUS
@@ -99,17 +100,35 @@ namespace Raytracer {
             }
             if (!m_isWriting && event.type == sf::Event::KeyReleased)
                 applyKeyReleasedActions(event.key.code);
-            if (!m_isWriting && m_interacCam.handleInput(event, m_window, m_actions)) {
-                
+            if (!m_isWriting && m_interacCam.handleInput(event, m_actions)) {
             }
             if (event.type == sf::Event::MouseButtonReleased
             && event.mouseButton.button == sf::Mouse::Right) {
                 m_useSimpleMouse = false;
             }
-            if (event.type == sf::Event::MouseButtonPressed
-            && event.mouseButton.button == sf::Mouse::Right) {
-                m_useSimpleMouse = true;
-                m_lastMousePos = sf::Mouse::getPosition();
+            if (event.type == sf::Event::MouseButtonPressed) {
+                if (event.mouseButton.button == sf::Mouse::Right) {
+                    m_useSimpleMouse = true;
+                    m_lastMousePos = sf::Mouse::getPosition();
+                }
+                // Select primitive by aiming at it with the center of the screen
+                else if (event.mouseButton.button == sf::Mouse::Left && (m_useMouse || m_useSimpleMouse)) {
+                    const IShape *shape = m_scene->getPrimitiveHit(sf::Vector2i(
+                        m_dimension.getWidth() / 2, m_dimension.getHeight() / 2
+                    ));
+                    if (shape) {
+                        int i = 0;
+                        for (auto &prim : m_scene->getPrimitives()) {
+                            if (prim->getID() == shape->getID()) {
+                                m_selectedObject = i;
+                                m_selectPrimitiveTab = true;
+                                std::cout << "Object shininess: " << prim->getMaterial()->getShininess() << std::endl;
+                                break;
+                            }
+                            i++;
+                        }
+                    }
+                }
             }
         }
         handleMouse();
@@ -161,18 +180,26 @@ namespace Raytracer {
             if (m_updateBVH) {
                 m_scene->setRenderNbr(m_scene->getRenderNbr() + 1);
                 m_updateBVH = false;
-                m_renderBVH = true;
+                m_waitThread = true;
             }
-            if (m_renderBVH && m_scene->getNbThreadsAlive() == 0) {
-                m_renderBVH = false;
+            if (m_waitThread && m_scene->getNbThreadsAlive() == 0) {
+                m_waitThread = false;
+                m_scene->killObjects();
                 m_scene->updatePrimitives();
             }
-            if ((m_needRendering || m_alwaysRender) && !m_renderBVH) {
-                m_needRendering = false;
-                if (m_scene->getNbThreads() < 2)
-                    m_scene->renderWhitoutThread();
-                else
-                    std::thread(&Scene::render, m_scene.get()).detach();
+            if ((m_needRendering || m_alwaysRender) && !m_waitThread) {
+                float timeSinceLastFrame = m_renderClock.getElapsedTime().asSeconds();
+                bool renderDone = m_scene->getRenderY() >= m_dimension.getHeight();
+                if ((renderDone && timeSinceLastFrame > 1 / m_maxFramerate)
+                || timeSinceLastFrame > 1 / m_minFramerate) {
+                    m_framerate = 1 / timeSinceLastFrame;
+                    m_needRendering = false;
+                    m_renderClock.restart();
+                    if (m_scene->getNbThreads() < 2)
+                        m_scene->renderWhitoutThread();
+                    else
+                        std::thread(&Scene::render, m_scene.get()).detach();
+                }
             }
 
             m_texture.update(m_scene->getRender());
@@ -189,15 +216,4 @@ namespace Raytracer {
         m_scene->setRenderNbr(m_scene->getRenderNbr() + 1);
     }
 
-    float SceneInteractive::getFramerate(void)
-    {
-        m_currentTime = m_clock.getElapsedTime();
-        float frameTime = m_currentTime.asSeconds() - m_previousTime.asSeconds();
-        m_frameTimes.push_back(frameTime);
-        if (m_frameTimes.size() > 200)
-            m_frameTimes.erase(m_frameTimes.begin());
-        auto fps = 1.0f / frameTime;
-        m_previousTime = m_currentTime;
-        return fps;
-    }
 } // namespace Raytracer

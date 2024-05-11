@@ -14,6 +14,7 @@
 
 #include "Scene/Materials/MaterialSolid.hpp"
 #include "Scene/Primitives/AllPrimitives.hpp"
+#include "Writer.hpp"
 
 namespace Raytracer {
     namespace Parsing {
@@ -24,6 +25,7 @@ namespace Raytracer {
         #define CFG_SKYBOX "skybox"
         #define CFG_PATH "path"
         #define CFG_HASTEXTURE "hasTexture"
+        #define CFG_CAMERA "camera"
 
         #define CFG_AMBIENT_LIGHT "ambientLight"
         #define CFG_OBJ "obj"
@@ -39,13 +41,23 @@ namespace Raytracer {
         #define CFG_WIDTH "width"
         #define CFG_DISTANCE "distance"
         #define CFG_INTENSITY "intensity"
-        #define CFG_ALBEDO "albedo"
+        #define CFG_DIFFUSE "diffuse"
+        #define CFG_SPECULAR "specular"
+        #define CFG_SHININESS "shininess"
+        #define CFG_REFLECTION "reflection"
         #define CFG_FUZZ "fuzz"
         #define CFG_EMISSION "emission"
+        #define CFG_TRANSPARENCY "transparency"
+        #define CFG_REFRACTION "refraction"
         #define CFG_HAS_PHONG "hasPhong"
         #define CFG_POINT_LIGHTS "pointLights"
         #define CFG_DIRECTIONAL_LIGHTS "directionalLights"
         #define CFG_DIRECTION "direction"
+        #define CFG_TRANSFORMATIONS "transformations"
+        #define CFG_OPTIMIZATION "optimization"
+        #define CFG_MAX_RAY_BOUNCES "maxRayBounces"
+        #define CFG_BVH_MAX_PRIM "maxPrimitivesPerBvhBox"
+        #define CFG_USE_MULTITHREADING "useMultithreading"
 
         #define CFG_V0 "v0"
         #define CFG_V1 "v1"
@@ -55,8 +67,13 @@ namespace Raytracer {
         #define CFG_TYPE "type"
         #define CFG_MATERIAL_SOLID_COLOR "solid_color"
         #define CFG_MATERIAL_TEXTURE "texture"
+        #define CFG_MATERIAL_CHECKERBOARD "checkerboard"
+        #define CFG_COLOR_BIS "color_bis"
+        #define CFG_SIZE "size"
 
-        bool parseArgv(int argc, char **argv, std::vector<std::string_view> &inputFiles); // return true if interactive mode
+        WriteFile::WriteType parseFormat(const std::string_view &format);
+        bool parseArgv(int argc, char **argv,
+            std::vector<std::string_view> &inputFiles, WriteFile::WriteType &type); // return true if interactive mode
         void parse(std::unique_ptr<Scene> &scene, const std::vector<std::string_view> &inputFiles);
 
         float parseFloat(const libconfig::Setting &setting, const std::string &key, float defaultValue);
@@ -80,8 +97,10 @@ namespace Raytracer {
         void parseToruses(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene);
         void parseTanglecubes(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene);
         void parseTriangles(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene);
+        void parseCubes(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene);
 
         void parseGlobal(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
+        void parseOptimization(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
         void parseCameras(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
         void parseLights(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
         void parseObj(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
@@ -92,7 +111,7 @@ namespace Raytracer {
 
         void saveScene(const Scene &scene, const std::string &outputFile);
         void saveGlobal(const Scene &scene, libconfig::Setting &root);
-        void saveObj(const Scene &scene, libconfig::Setting &root);
+        void saveOptimization(const Scene &scene, libconfig::Setting &root);
         void saveCameras(const Scene &scene, libconfig::Setting &root);
         void saveLights(const Scene &scene, libconfig::Setting &root);
         void savePrimitives(const Scene &scene, libconfig::Setting &root);
@@ -103,6 +122,7 @@ namespace Raytracer {
         void saveTanglecube(libconfig::Setting &list, Tanglecube *tanglecube);
         void saveTriangle(libconfig::Setting &list, Triangle *triangle);
         void savePlane(libconfig::Setting &list, Plane *plane);
+        void saveCube(libconfig::Setting &list, Cube *cube);
 
         Math::Angle3D getSettingRotation(const libconfig::Setting &setting);
         Color getSettingColor(const libconfig::Setting &setting);

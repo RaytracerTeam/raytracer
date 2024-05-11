@@ -34,7 +34,7 @@ namespace Raytracer
 
                 // Left Pane
                 if (ImGui::BeginChild("left pane", ImVec2(m_leftPaneWidth, m_imageHeight),
-                ImGuiChildFlags_Border)) {
+                ImGuiChildFlags_Border, ImGuiWindowFlags_NoScrollbar)) {
 
                     //* -- Object Selection --
                     guiObjectSelection();

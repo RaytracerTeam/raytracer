@@ -10,9 +10,6 @@
 #include "Scene/Materials/MaterialSolid.hpp"
 #include "Scene/Lights/PointLight.hpp"
 
-// todo: remove this when real adding primitives is implemented
-#include "Scene/Primitives/Sphere.hpp"
-
 namespace Raytracer
 {
     void SceneInteractive::guiObjectSelection(void) {
@@ -20,13 +17,14 @@ namespace Raytracer
         if (ImGui::BeginTabBar("Object Selection",
         ImGuiTabBarFlags_NoCloseWithMiddleMouseButton
         | ImGuiTabBarFlags_Reorderable)) {
-            if (ImGui::BeginTabItem("Primitives")) {
+            if (ImGui::BeginTabItem("Primitives", nullptr,
+            m_selectPrimitiveTab ? ImGuiTabItemFlags_SetSelected : 0)) {
                 if (m_objectSelection != ObjectSelection::PRIMITIVE)
                     m_selectedObject = -1;
                 m_objectSelection = ObjectSelection::PRIMITIVE;
+                guiAddPrimitive();
                 if (ImGui::BeginChild("primitive selection", ImVec2(m_leftPaneWidth,
                 m_imageHeight / 2 - 20), ImGuiChildFlags_Border)) {
-                    guiAddPrimitive();
                     int i = 0;
                     for (auto &prim : m_scene->getPrimitives()) {
                         std::string name = std::to_string(i) + " id" +
@@ -34,11 +32,10 @@ namespace Raytracer
 
                         if (ImGui::Selectable(name.c_str(), m_selectedObject == i))
                             m_selectedObject = i;
-                        ImGui::SameLine();
-                        Color color = ((MaterialSolid *)prim->getMaterial())->getColor();
-                        ImGui::ColorButton(" ", ImVec4(color.getR(),
-                            color.getG(), color.getB(), 1.0f),
-                            ImGuiColorEditFlags_InputRGB);
+                        if (prim->getMaterial()->getType() == MaterialType::SOLID) {
+                            ImGui::SameLine();
+                            guiColoredSquare(static_cast<MaterialSolid *>(prim->getMaterial().get())->getColor());
+                        }
                         i++;
                     }
                 }
@@ -50,28 +47,27 @@ namespace Raytracer
                 if (m_objectSelection != ObjectSelection::LIGHT)
                     m_selectedObject = -1;
                 m_objectSelection = ObjectSelection::LIGHT;
+                guiAddLight();
+                SceneLightning &lightSystem = m_scene->getLightSystem();
                 if (ImGui::BeginChild("light selection", ImVec2(m_leftPaneWidth,
                 m_imageHeight / 2 - 20), ImGuiChildFlags_Border)) {
-                    if (ImGui::Button("Add Light")) {
-                        std::unique_ptr<PointLight> light = std::make_unique<PointLight>(
-                            Math::Vector3D(0, 0, 0), DEFAULT_POINTLIGHT_RADIUS,
-                            Color((unsigned int)255, 255, 255),
-                            1.0);
-                        light->setID(m_scene->getLights().size() + 1);
-                        m_scene->addLight(std::move(light));
-                    }
                     int i = 0;
-                    for (auto &light : m_scene->getLights()) {
-                        std::string name = std::to_string(i) + " id" +
-                            std::to_string(light->getID()) + " PointLight";
+                    // Create a vector with all the lights
+                    std::vector<ILight *> lightVector;
+                    for (auto &aLight : lightSystem.getAmbientLights())
+                        lightVector.push_back(aLight.get());
+                    for (auto &dLight : lightSystem.getDirectionalLights())
+                        lightVector.push_back(dLight.get());
+                    for (auto &pLight : lightSystem.getLights())
+                        lightVector.push_back(pLight.get());
+
+                    for (auto &light : lightVector) {
+                        std::string name = std::to_string(i) + " " + light->getTypeString();
 
                         if (ImGui::Selectable(name.c_str(), m_selectedObject == i))
                             m_selectedObject = i;
                         ImGui::SameLine();
-                        Color color = light->getColor();
-                        ImGui::ColorButton(" ", ImVec4(color.getR(),
-                            color.getG(), color.getB(), 1.0f),
-                            ImGuiColorEditFlags_InputRGB);
+                        guiColoredSquare(light->getColor());
                         i++;
                     }
                 }
@@ -83,13 +79,14 @@ namespace Raytracer
                 if (m_objectSelection != ObjectSelection::CAMERA)
                     m_selectedObject = -1;
                 m_objectSelection = ObjectSelection::CAMERA;
+                if (ImGui::Button("Add Camera")) {
+                    m_scene->addCamera(std::make_unique<Camera>());
+                }
                 if (ImGui::BeginChild("camera selection", ImVec2(m_leftPaneWidth,
                 m_imageHeight / 2 - 20), ImGuiChildFlags_Border)) {
-                    if (ImGui::Button("Add Camera")) {
-                        m_scene->addCamera(std::make_unique<Camera>());
-                    }
                     int i = 0;
                     for (auto &camera : m_scene->getCameras()) {
+                        (void)camera;
                         std::string name = std::to_string(i) + " Camera";
 
                         if (ImGui::Selectable(name.c_str(), m_selectedObject == i)) {
@@ -109,6 +106,7 @@ namespace Raytracer
             }
         }
         ImGui::EndTabBar();
+        m_selectPrimitiveTab = false;
         #endif
     }
 } // namespace Raytracer

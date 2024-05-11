@@ -17,7 +17,7 @@ namespace Raytracer
         libconfig::Config cfg;
         libconfig::Setting &root = cfg.getRoot();
         saveGlobal(scene, root);
-        saveObj(scene, root);
+        saveOptimization(scene, root);
         saveCameras(scene, root);
         savePrimitives(scene, root);
         saveLights(scene, root);

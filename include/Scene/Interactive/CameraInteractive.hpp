@@ -24,7 +24,7 @@ namespace Raytracer {
 
         Camera *getCamera(void) const { return m_camera; }
 
-        bool handleInput(const sf::Event &event, sf::Window &window, std::vector<std::pair<sf::Keyboard::Key, bool>> &actions);
+        bool handleInput(const sf::Event &event, std::vector<std::pair<sf::Keyboard::Key, bool>> &actions);
 
     private:
         void updatePos(SceneAction action);

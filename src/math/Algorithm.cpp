@@ -18,6 +18,11 @@ namespace Raytracer {
             return value;
         }
 
+        Color Algorithm::clampColor(const Color &color)
+        {
+            return Color(color.getR(), color.getG(), color.getB());
+        }
+
         void Algorithm::sortRoots(double *roots, int n)
         {
             for (int i = 0; i < n; i++)

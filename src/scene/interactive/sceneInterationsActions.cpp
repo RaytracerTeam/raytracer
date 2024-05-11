@@ -259,6 +259,7 @@ namespace Raytracer
             break;
         }
         case SceneReleaseActions::EXIT:
+            Parsing::saveScene(*m_scene, TEMP_CFG_FILE);
             m_window.close();
             break;
         case SceneReleaseActions::SAVE_CURRENT_AND_EXIT:
@@ -266,7 +267,7 @@ namespace Raytracer
             m_window.close();
             break;
         case SceneReleaseActions::QUICK_SAVE_AND_EXIT:
-            Parsing::saveScene(*m_scene, "scenes/quick_save.cfg");
+            Parsing::saveScene(*m_scene, QUICK_SAVE_CFG_FILE);
             m_window.close();
             break;
         case SceneReleaseActions::SHOW_DEBUG:

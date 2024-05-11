@@ -35,9 +35,14 @@ namespace Raytracer {
     #define DEFAULT_HEIGHT_MIN 0.0f
     #define DEFAULT_HEIGHT_MAX 40.0f
     #define DEFAULT_INTENSITY_MIN 0.0f
-    #define DEFAULT_INTENSITY_MAX 100.0f
+    #define DEFAULT_INTENSITY_MAX 1.5f
+
+    #define WINDOW_FPS 60
 
     #define MOUSE_CENTER sf::Vector2i(700, 500)
+
+    #define TEMP_CFG_FILE "scenes/temp.cfg"
+    #define QUICK_SAVE_CFG_FILE "scenes/quick_save.cfg"
 
     enum class ObjectSelection {
         PRIMITIVE,
@@ -80,7 +85,6 @@ namespace Raytracer {
 
         void setRColorToImg(const std::vector<Raytracer::Color> &vectorRes);
         void handleEvents(void);
-        float getFramerate(void);
 
         // -- ImGui --
         void setupImageSize(void);
@@ -91,10 +95,13 @@ namespace Raytracer {
         void guiObjectSelection(void);
         void removeSelectedObject(void);
         void customEditPrimitives(std::unique_ptr<IPrimitive> &primitive);
+        void customEditLights(ILight *light);
+        void customEditMaterial(std::unique_ptr<IMaterial> &material);
         void guiEditLights(void);
         void guiEditPrimitives(void);
         void guiEditCameras(void);
         void guiAddPrimitive(void);
+        void guiAddLight(void);
         void editSphere(Sphere *sphere);
         void editPlane(Plane *plane);
         void editCylinder(Cylinder *cylinder);
@@ -102,8 +109,15 @@ namespace Raytracer {
         void editTorus(Torus *torus);
         void editTanglecube(Tanglecube *tanglecube);
         void editTriangle(Triangle *triangle);
+        void editCube(Cube *cube);
+
+        void editPointLight(PointLight *light);
+        void editDirectionalLight(DirectionalLight *light);
+
         void addSelectableSkybox(const std::filesystem::directory_entry &entry);
         void addSelectableScene(const std::filesystem::directory_entry &entry);
+
+        void guiColoredSquare(const Color &color);
 
         /////////////////////////////////
 
@@ -115,8 +129,11 @@ namespace Raytracer {
         sf::Texture m_texture;
 
         sf::Clock m_clock;
-        sf::Time m_currentTime;
-        sf::Time m_previousTime;
+
+        sf::Clock m_renderClock;
+        float m_minFramerate = 10;
+        float m_maxFramerate = WINDOW_FPS;
+        float m_framerate = 0;
 
         // ImGui
         sf::Clock m_deltaClock;
@@ -132,9 +149,9 @@ namespace Raytracer {
         size_t m_imageHeight;
         size_t m_imageWidth;
         size_t m_leftPaneWidth;
-        std::vector<float> m_frameTimes;
         bool m_alwaysRender = false;
         bool m_fullscreen = false;
+        bool m_selectPrimitiveTab = false;
 
         // Storing the result of the render
         std::unique_ptr<sf::Uint8 []> m_lastRender;
@@ -143,7 +160,7 @@ namespace Raytracer {
         std::vector<std::pair<sf::Keyboard::Key, bool>> m_actions;
         std::vector<sf::Keyboard::Key> m_releaseActions;
         bool m_updateBVH = true;
-        bool m_renderBVH = false;
+        bool m_waitThread = false;
         bool m_needRendering = true;
         float m_movementSpeed = DEFAULT_MOVEMENT_SPEED;
         float m_defaultMovementSpeed = DEFAULT_MOVEMENT_SPEED;

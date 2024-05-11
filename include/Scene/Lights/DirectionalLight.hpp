@@ -19,6 +19,8 @@ namespace Raytracer {
         }
         ~DirectionalLight() = default;
 
+        LightType getType(void) const override { return LightType::DIRECTIONAL; }
+
         const Math::Vector3D &getDirection(void) const { return m_direction; }
         void setDirection(const Math::Vector3D &direction) { m_direction = direction; }
 

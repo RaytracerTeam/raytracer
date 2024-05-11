@@ -37,6 +37,7 @@ namespace Raytracer {
         Color &operator+=(const Color &right);
         Color &operator+=(const Math::Vector3D &right);
         Color &operator+=(double scalar);
+        Color &operator-=(double scalar);
         Color &operator*=(const Color &right);
         Color &operator*=(const Math::Vector3D &right);
         Color &operator*=(double scalar);
@@ -44,6 +45,7 @@ namespace Raytracer {
         Color operator+(const Color &right) const;
         Color operator+(const Math::Vector3D &right) const;
         Color operator+(double scalar) const;
+        Color operator-(double scalar) const;
         Color operator*(const Math::Vector3D &right) const;
         Color operator*(const Color &right) const;
         Color operator*(double scalar) const;

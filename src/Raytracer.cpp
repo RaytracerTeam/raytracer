@@ -25,7 +25,23 @@ namespace Raytracer {
         return 0;
     }
 
-    static int imageOutput(std::vector<std::string_view> inputFiles)
+    static void displayLoadingBar(const std::unique_ptr<Scene> &scene)
+    {
+        int percent = (scene->getRenderY() / scene->getCurrentCamera().getDimension().getHeightD()) * 100;
+
+        std::cout << "Rendering... ";
+
+        std::cout << "\033[1;37m[";
+        for (int i = 0; i < percent / 4; i++)
+            std::cout << "\033[1;32m=";
+        for (int i = percent / 4; i < 25; i++)
+            std::cout << "\033[1;37m ";
+        std::cout << "\033[1;37m] ";
+
+        std::cout << "\033[1;36m" << percent << "%\r\033[0m" << std::flush;
+    }
+
+    static int imageOutput(std::vector<std::string_view> inputFiles, WriteFile::WriteType type)
     {
         std::unique_ptr<Scene> scene = std::make_unique<Scene>();
         Parsing::parse(scene, inputFiles);
@@ -37,7 +53,10 @@ namespace Raytracer {
         scene->resizeRender(dim.getWidth(), dim.getHeight());
         scene->render();
 
-        WriteFile::writeImage(WriteFile::PPM, scene->getRender(), dim);
+        while (scene->getNbThreadsAlive() > 0)
+            displayLoadingBar(scene);
+
+        WriteFile::writeImage(type, scene->getRender(), dim);
         return 0;
     }
 
@@ -47,13 +66,18 @@ namespace Raytracer {
 
         try {
             std::vector<std::string_view> inputFiles;
-            bool interactiveMode = Parsing::parseArgv(argc, argv, inputFiles);
+            WriteFile::WriteType type = WriteFile::WriteType::PPM;
+
+            bool interactiveMode = Parsing::parseArgv(argc, argv, inputFiles, type);
             if (interactiveMode)
                 return interactive(windowDimensions, inputFiles);
 
-            return imageOutput(inputFiles);
+            return imageOutput(inputFiles, type);
         } catch (Error &error) {
-            std::cerr << "Error : " << error.what() << ". (" << error.where() << ")" << std::endl;
+            std::cerr << "Error: " << error.what() << ". (" << error.where() << ")" << std::endl;
+            return EXIT_FAILURE_EPITECH;
+        } catch (const std::runtime_error &error) {
+            std::cerr << "Error: " << error.what() << std::endl;
             return EXIT_FAILURE_EPITECH;
         }
     }
