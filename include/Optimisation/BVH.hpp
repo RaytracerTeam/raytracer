@@ -45,7 +45,7 @@ namespace Raytracer {
             std::vector<const IPrimitive *> &primitives,
             double (*seperateFunc)(double (Math::Vector3D::*biggestAxisM)() const,
             std::vector<const IPrimitive *> &primitives));
-        bool readBVH(const Ray &ray, const Node &node, Intersection &intersection, bool isLight);
+        bool readBVH(const Ray &ray, const Node &node, Intersection &intersection);
 
         // Algorithms
 

@@ -6,34 +6,56 @@
 */
 
 #include "Parsing/Parsing.hpp"
-
-// temp
-#include "Scene/Primitives/Cylinder.hpp"
-#include "Scene/Primitives/Sphere.hpp"
-#include "Scene/Primitives/Plane.hpp"
-
 #include "Scene/Materials/MaterialSolid.hpp"
-
 #include "Scene/Lights/PointLight.hpp"
 
 #include <iostream>
 
 namespace Raytracer {
+    void printHelper(const std::string_view &exec)
+    {
+        std::cout << "USAGE: " << exec << " [OPTIONS] [SCENES]" << std::endl;
+        std::cout << "OPTIONS:" << std::endl;
+        std::cout << "  -i, --interactive\tInteractive mode" << std::endl;
+        std::cout << "  -f, --format\t\tOutput format (ppm, jpg, png)" << std::endl;
+        std::cout << "  -h, --help\t\tDisplay this help message" << std::endl;
+        std::exit(EXIT_SUCCESS);
+    }
+
     namespace Parsing {
-        bool parseArgv(int argc, char **argv, std::vector<std::string_view> &inputFiles)
+        WriteFile::WriteType parseFormat(const std::string_view &format)
+        {
+            if (format == "ppm")
+                return WriteFile::WriteType::PPM;
+            else if (format == "jpg")
+                return WriteFile::WriteType::JPG;
+            else if (format == "png")
+                return WriteFile::WriteType::PNG;
+
+            throw std::runtime_error("Invalid format: " + std::string(format));
+        }
+
+        bool parseArgv(int argc, char **argv,
+            std::vector<std::string_view> &inputFiles, WriteFile::WriteType &type)
         {
             bool interactiveMode = false;
-            const std::vector<std::string_view> args(argv + 1, argv + argc);
+            const std::vector<std::string_view> args(argv, argv + argc);
 
-            for (const auto& arg : args) {
-                if (arg == "-i" || arg == "--interactive") {
+            for (size_t i = 1; i < args.size(); i++) {
+                if (args[i] == "-h" || args[i] == "--help")
+                    printHelper(args[0]);
+                if (args[i] == "-i" || args[i] == "--interactive") {
                     interactiveMode = true;
                     continue;
                 }
-                if (!std::filesystem::exists(arg)) {
-                    throw std::runtime_error(std::string("raytracer: ") + std::string(arg) + ": No such file or directory");
+                if (args[i] == "-f" || args[i] == "--format") {
+                    type = parseFormat(args[++i]);
+                    continue;
                 }
-                inputFiles.push_back(arg);
+                if (!std::filesystem::exists(args[i])) {
+                    throw std::runtime_error(std::string(args[i]) + ": No such file or directory");
+                }
+                inputFiles.push_back(args[i]);
             }
 
             return interactiveMode;

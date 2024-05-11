@@ -10,6 +10,7 @@
 #include "Color.hpp"
 #include "Math/Matrix44d.hpp"
 #include "Math/Vector3D.hpp"
+#include "IObject.hpp"
 
 namespace Raytracer {
 
@@ -27,7 +28,7 @@ namespace Raytracer {
         "Spot",
         "None"
     };
-    class ILight {
+    class ILight : public IObject {
     public:
         virtual ~ILight() = default;
 

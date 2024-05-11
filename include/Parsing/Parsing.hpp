@@ -14,6 +14,7 @@
 
 #include "Scene/Materials/MaterialSolid.hpp"
 #include "Scene/Primitives/AllPrimitives.hpp"
+#include "Writer.hpp"
 
 namespace Raytracer {
     namespace Parsing {
@@ -66,7 +67,9 @@ namespace Raytracer {
         #define CFG_COLOR_BIS "color_bis"
         #define CFG_SIZE "size"
 
-        bool parseArgv(int argc, char **argv, std::vector<std::string_view> &inputFiles); // return true if interactive mode
+        WriteFile::WriteType parseFormat(const std::string_view &format);
+        bool parseArgv(int argc, char **argv,
+            std::vector<std::string_view> &inputFiles, WriteFile::WriteType &type); // return true if interactive mode
         void parse(std::unique_ptr<Scene> &scene, const std::vector<std::string_view> &inputFiles);
 
         float parseFloat(const libconfig::Setting &setting, const std::string &key, float defaultValue);

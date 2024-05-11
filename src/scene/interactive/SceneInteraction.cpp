@@ -37,7 +37,7 @@ namespace Raytracer {
             m_window.setPosition(sf::Vector2i(0, 0));
             if (!ImGui::SFML::Init(m_window))
                 throw std::runtime_error("Failed to initialize ImGui");
-            m_leftPaneWidth = 230;
+            m_leftPaneWidth = 270;
             setupImageSize();
         #endif
         m_window.setFramerateLimit(WINDOW_FPS);
@@ -183,6 +183,7 @@ namespace Raytracer {
             }
             if (m_waitThread && m_scene->getNbThreadsAlive() == 0) {
                 m_waitThread = false;
+                m_scene->killObjects();
                 m_scene->updatePrimitives();
             }
             if ((m_needRendering || m_alwaysRender) && !m_waitThread) {
@@ -200,7 +201,6 @@ namespace Raytracer {
                 }
             }
 
-            // m_scene->showCurrentRenderedLine();
             m_texture.update(m_scene->getRender());
 
             m_window.clear();

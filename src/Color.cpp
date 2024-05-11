@@ -123,6 +123,14 @@ namespace Raytracer {
         return *this;
     }
 
+    Color &Color::operator-=(double scalar)
+    {
+        m_r -= scalar;
+        m_g -= scalar;
+        m_b -= scalar;
+        return *this;
+    }
+
     Color Color::operator*(double scalar) const
     {
         Color color = *this;
@@ -134,6 +142,13 @@ namespace Raytracer {
     {
         Color color = *this;
         color += scalar;
+        return color;
+    }
+
+    Color Color::operator-(double scalar) const
+    {
+        Color color = *this;
+        color -= scalar;
         return color;
     }
 
