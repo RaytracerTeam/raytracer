@@ -234,8 +234,17 @@ namespace Raytracer {
             }
         }
 
+        // Ambient Light
+        for (const auto &ambientLight : m_lightSystem.getAmbientLights()) {
+            if (!ambientLight->isShown())
+                continue;
+            color += primColor * ambientLight->getColor() * ambientLight->getIntensity();
+        }
+
         // Directional light
         for (const auto &dLight : m_lightSystem.getDirectionalLights()) {
+            if (!dLight->isShown())
+                continue;
             Ray dirRay = Ray(rhitPrim.getHitPoint(), dLight->getDirection());
             Color dPenombraFactor = Color(1., 1., 1.);
 
@@ -279,9 +288,6 @@ namespace Raytracer {
                 primColor += primMaterial->getSpecular(light.get(), rhitPrim, lightDirection);
             }
             color += primColor * (light->getColor() * diffuse * penombraFactor * light->getIntensity());
-        }
-        for (const auto &ambientLight : m_lightSystem.getAmbientLights()) {
-            color += primColor * ambientLight->getColor() * ambientLight->getIntensity();
         }
         return color;
     }

@@ -20,7 +20,6 @@ namespace Raytracer {
         ~Cube() = default;
 
         PrimitiveType getType(void) const override { return PrimitiveType::CUBE; };
-        const std::string getTypeString(void) const override { return "Cube"; };
 
         const Math::Vector3D &getVec1() const { return m_v1; }
 
