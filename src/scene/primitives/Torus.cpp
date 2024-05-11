@@ -35,8 +35,8 @@ namespace Raytracer {
 
     std::optional<RayHit> Torus::hit(const Ray &ray) const
     {
-        Math::Vector3D dstOrigin = ray.getOrigin() - m_origin;
-        Math::Vector3D rayDir = ray.getDirection();
+        Math::Vector3D dstOrigin = getTMatrix() * (ray.getOrigin() - m_origin);
+        Math::Vector3D rayDir = getTMatrix() * ray.getDirection();
 
         double g = 4. * m_distance * m_distance
             * (rayDir.getX() * rayDir.getX() + rayDir.getY() * rayDir.getY());

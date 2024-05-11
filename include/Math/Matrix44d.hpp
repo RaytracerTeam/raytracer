@@ -42,6 +42,8 @@ namespace Raytracer {
             Vector3D operator*(const Vector3D &src) const;
             Matrix44 operator*(const Matrix44 &src) const;
             Vector3D operator^(const Vector3D &src) const;
+            Vector3D operator*(const std::array<double, 4> &src) const;
+
 
             Matrix44 transpose() const;
             Matrix44 inverse() const;

@@ -65,7 +65,7 @@ namespace Raytracer
                     Math::Vector3D(0, 0, 0),
                     std::make_unique<MaterialSolid>(
                         Color((unsigned int)255, 255, 255)),
-                    1.0,
+                    0.5,
                     1.0);
                 torus->setID(m_scene->getPrimitives().size() + 1);
                 m_scene->addPrimitive(std::move(torus));
@@ -76,7 +76,8 @@ namespace Raytracer
                 auto tanglecube = std::make_unique<Tanglecube>(
                     Math::Vector3D(0, 0, 0),
                     std::make_unique<MaterialSolid>(
-                        Color((unsigned int)255, 255, 255)));
+                        Color((unsigned int)255, 255, 255)),
+                    11.8);
                 tanglecube->setID(m_scene->getPrimitives().size() + 1);
                 m_scene->addPrimitive(std::move(tanglecube));
                 m_needRendering = true;

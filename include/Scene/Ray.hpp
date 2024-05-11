@@ -8,6 +8,7 @@
 #pragma once
 
 #include "Math/Vector3D.hpp"
+#include "Math/Matrix44d.hpp"
 
 #include <limits>
 
@@ -20,6 +21,9 @@ namespace Raytracer {
         Math::Vector3D getOrigin(void) const { return m_origin; }
         Math::Vector3D getDirection(void) const { return m_direction; }
         size_t getDepth(void) const { return m_depth; }
+        void applyTranslate(Math::Vector3D vec) {
+            m_origin = vec + m_origin;
+        }
     private:
         Math::Vector3D m_origin = Math::Vector3D(0, 0, 0);
         Math::Vector3D m_direction = Math::Vector3D(0, 0, 0);
@@ -39,7 +43,10 @@ namespace Raytracer {
             Math::Vector3D getHitPoint(void) const { return m_hitPt; }
             Math::Vector3D getRelativeHitPoint(void) const { return m_relativeHitPt; }
             Math::Vector3D getNormal(void) const { return m_normal; }
-
+            void applyTranslate(Math::Vector3D vec) {
+                m_hitPt = vec + m_hitPt;
+                m_relativeHitPt = vec + m_relativeHitPt;
+            }
         private:
             double m_distance = std::numeric_limits<double>::infinity();
             Math::Vector3D m_hitPt;

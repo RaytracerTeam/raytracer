@@ -31,8 +31,8 @@ namespace Raytracer {
 
     std::optional<RayHit> Tanglecube::hit(const Ray &ray) const
     {
-        Math::Vector3D dstOrigin = ray.getOrigin() - m_origin;
-        Math::Vector3D rayDir = ray.getDirection();
+        Math::Vector3D dstOrigin = getTMatrix() * (ray.getOrigin() - m_origin);
+        Math::Vector3D rayDir = getTMatrix() * ray.getDirection();
 
         double a = std::pow(rayDir.getX(), 4) + std::pow(rayDir.getY(), 4)
             + std::pow(rayDir.getZ(), 4);
@@ -65,7 +65,7 @@ namespace Raytracer {
             - 5.
                 * (std::pow(dstOrigin.getX(), 2) + std::pow(dstOrigin.getY(), 2)
                     + std::pow(dstOrigin.getZ(), 2))
-            + 11.8;
+            + m_radius;
 
         // TODO remplacer par une std::array
         double roots[4] = { 0 };
