@@ -18,8 +18,9 @@ CORESRC	=	$(wildcard ./src/*.cpp) \
 			$(wildcard ./src/scene/lights/*.cpp) \
 			$(wildcard ./src/scene/interactive/*.cpp) \
 
-IMGUISRC	=	$(wildcard ./bonus/imgui/*.cpp) \
-				$(wildcard ./src/scene/interactive/imgui/*.cpp) \
+LIBIMGUISRC	=	$(wildcard ./bonus/imgui/*.cpp)
+
+IMGUISRC	=	$(wildcard ./src/scene/interactive/imgui/*.cpp) \
 				$(wildcard ./src/scene/interactive/imgui/objectEdit/*.cpp) \
 				$(wildcard ./src/scene/interactive/imgui/objectEdit/primitives/*.cpp) \
 				$(wildcard ./src/scene/interactive/imgui/objectEdit/lights/*.cpp) \
@@ -38,6 +39,7 @@ OBJ		=	$(SRC:.cpp=.o)
 DEPS	=	$(SRC:.cpp=.d)
 IMGUIOBJ=	$(IMGUISRC:.cpp=.o)
 IMGUIDEPS=	$(IMGUISRC:.cpp=.d)
+LIBIMGUIOBJ=$(LIBIMGUISRC:.cpp=.o)
 CAMERAOBJ=	$(CAMERASRC:.cpp=.o)
 TESTOBJ	=	$(TESTSRC:.cpp=.o)
 
@@ -97,8 +99,8 @@ bonusbonus: bonus
 bonusdbg: CFLAGS += $(DBGFLAGS)
 bonusdbg: bonus
 
-bonus: $(IMGUIDEPS)
-bonus: DEPS += $(IMGUIDEPS)
+bonus: $(LIBIMGUIOBJ)
+bonus: OBJ += $(LIBIMGUIOBJ)
 bonus: $(IMGUIOBJ)
 bonus: OBJ += $(IMGUIOBJ)
 bonus: LDFLAGS += $(LDBONUSFLAGS)
@@ -112,8 +114,8 @@ dbgs: $(NAME)
 tests_compile: CFLAGS += -g3 --coverage
 tests_compile: $(TESTNAME)
 
--include $(DEPS)
 -include $(IMGUIDEPS)
+-include $(DEPS)
 
 %.o: %.cpp
 	$(CC) $(CFLAGS) $(DEPSFLAGS) -c $< -o $@

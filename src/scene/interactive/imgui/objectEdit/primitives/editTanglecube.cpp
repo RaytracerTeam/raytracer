@@ -15,7 +15,7 @@ namespace Raytracer
 {
     void SceneInteractive::editTanglecube(Tanglecube *tanglecube)
     {
-
+        (void)tanglecube;
     }
 } // namespace Raytracer
 
