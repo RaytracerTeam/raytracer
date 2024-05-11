@@ -96,7 +96,7 @@ namespace Raytracer {
         void removeSelectedObject(void);
         void customEditPrimitives(std::unique_ptr<IPrimitive> &primitive);
         void customEditLights(ILight *light);
-        void customEditMaterial(IMaterial *material);
+        void customEditMaterial(std::unique_ptr<IMaterial> &material);
         void guiEditLights(void);
         void guiEditPrimitives(void);
         void guiEditCameras(void);

@@ -194,6 +194,27 @@ namespace Raytracer {
         return nbShadowRays / m_maxDropShadowsRay;
     }
 
+    Color Scene::getDiffuseColor(const Ray &lightRay, const RayHit &rhitPrim,
+        const ILight *light, const Math::Vector3D &lightOrigin,
+        const std::unique_ptr<IMaterial> &primMaterial, const Color &primColor) const
+    {
+        Color penombraFactor = Color(1., 1., 1.);
+        BVH::Intersection intersection;
+
+        bool hasLightHit = BVH::readBVH(lightRay, *m_bvhTree, intersection);
+        if (hasLightHit && hit(intersection.rayhit, rhitPrim.getHitPoint(), lightOrigin)) {
+            auto &interMaterial = intersection.primitve->getMaterial();
+            penombraFactor = interMaterial->getColor(intersection.rayhit) * (1 - interMaterial->getTransparency())
+                + primColor * interMaterial->getTransparency() - (1 - interMaterial->getTransparency());
+            penombraFactor = Math::Algorithm::clampColor(penombraFactor);
+            penombraFactor = Math::Algorithm::clampColor(penombraFactor + primMaterial->getTransparency());
+        }
+
+        double diffuse = Math::Algorithm::clampD(rhitPrim.getNormal().dot(lightRay.getDirection()), 0., 1.);
+        diffuse = Math::Algorithm::clampD(diffuse + primMaterial->getTransparency(), 0., 1.);
+        return primColor * light->getColor() * light->getIntensity() * diffuse * primMaterial->getDiffuse() * penombraFactor;
+    }
+
     bool Scene::hit(const std::optional<RayHit> &rayHit, const Math::Vector3D &objOrigin, const Math::Vector3D &objTarget) const
     {
         if (rayHit == std::nullopt)
@@ -207,16 +228,16 @@ namespace Raytracer {
 
     Color Scene::castRayColor(const Ray &ray, const IPrimitive *primHit, const RayHit &rhitPrim) const
     {
-        Color color;
-        IMaterial *primMaterial = primHit->getMaterial();
+        const std::unique_ptr<IMaterial> &primMaterial = primHit->getMaterial();
 
-        // Refelctions
+        // Reflection
         Color primColor = primMaterial->getColor(rhitPrim);
-        if (primMaterial->getAlbedo() > 0) {
+        if (primMaterial->getReflection() > 0) {
             if (ray.getDepth() < m_maxRayBounces) {
                 auto rayScattered = primMaterial->getScatteredRay(ray, rhitPrim);
                 if (rayScattered != std::nullopt)
-                    primColor = primColor * (1 - primMaterial->getAlbedo()) + castRay(*rayScattered) * primMaterial->getAlbedo();
+                    primColor = primColor * (1 - primMaterial->getReflection()) +
+                        castRay(*rayScattered) * primMaterial->getReflection();
             }
         }
 
@@ -231,15 +252,22 @@ namespace Raytracer {
                 if (rayTransparency != std::nullopt)
                     primColor = primColor * (1 - primMaterial->getTransparency()) +
                         castRay(*rayTransparency) * primMaterial->getTransparency();
+                else
+                    primColor = Color(1., 0, 1);
             }
         }
 
-        // Ambient Light
+        // -- Ambient Light --
+        Color ambientColor(0., 0, 0);
         for (const auto &ambientLight : m_lightSystem.getAmbientLights()) {
             if (!ambientLight->isShown())
                 continue;
-            color += primColor * ambientLight->getColor() * ambientLight->getIntensity();
+            ambientColor += primColor * ambientLight->getColor() * ambientLight->getIntensity();
         }
+
+        // -- Diffuse Light -- && -- Specular Light --
+        Color diffuseColor(0., 0, 0);
+        Color specularColor(0., 0, 0);
 
         // Directional light
         for (const auto &dLight : m_lightSystem.getDirectionalLights()) {
@@ -248,19 +276,12 @@ namespace Raytracer {
             Ray dirRay = Ray(rhitPrim.getHitPoint(), dLight->getDirection());
             Color dPenombraFactor = Color(1., 1., 1.);
 
-            BVH::Intersection intersection;
-            bool hasLightHit = BVH::readBVH(dirRay, *m_bvhTree, intersection);
-            if (hasLightHit && hit(intersection.rayhit, rhitPrim.getHitPoint(), Math::Vector3D(0, 0, 0))) {
-                auto interMaterial = intersection.primitve->getMaterial();
-                dPenombraFactor = interMaterial->getColor(intersection.rayhit) * (1 - interMaterial->getTransparency())
-                    + primColor * interMaterial->getTransparency() - (1 - interMaterial->getTransparency());
-                dPenombraFactor = Math::Algorithm::clampColor(dPenombraFactor);
-                dPenombraFactor = Math::Algorithm::clampColor(dPenombraFactor + primMaterial->getTransparency());
+            diffuseColor += getDiffuseColor(dirRay, rhitPrim, dLight.get(),
+                Math::Vector3D(0, 0, 0), primMaterial, primColor);
+            if (primMaterial->getSpecular() > 0) {
+                specularColor += primMaterial->getSpecular(dLight.get(),
+                    rhitPrim.getNormal(), dLight->getDirection(), ray);
             }
-
-            double dirLightDiffuse = Math::Algorithm::clampD(rhitPrim.getNormal().dot(dLight->getDirection()), 0., 1.);
-            dirLightDiffuse = Math::Algorithm::clampD(dirLightDiffuse + primMaterial->getTransparency(), 0., 1.);
-            color += primColor * (dLight->getColor() * dirLightDiffuse * dPenombraFactor * dLight->getIntensity());
         }
 
         // Point lights
@@ -270,26 +291,16 @@ namespace Raytracer {
             auto lightVec = light->getOrigin() - rhitPrim.getHitPoint();
             auto lightDirection = lightVec.normalize();
             Ray lightRay = Ray(rhitPrim.getHitPoint(), lightDirection);
-            Color penombraFactor = Color(1., 1., 1.);
 
-            BVH::Intersection intersection;
-            bool hasLightHit = BVH::readBVH(lightRay, *m_bvhTree, intersection);
-            if (hasLightHit && hit(intersection.rayhit, rhitPrim.getHitPoint(), light->getOrigin())) {
-                auto interMaterial = intersection.primitve->getMaterial();
-                penombraFactor = interMaterial->getColor(intersection.rayhit) * (1 - interMaterial->getTransparency())
-                    + primColor * interMaterial->getTransparency() - (1 - interMaterial->getTransparency());
-                penombraFactor = Math::Algorithm::clampColor(penombraFactor);
-                penombraFactor = Math::Algorithm::clampColor(penombraFactor + primMaterial->getTransparency());
+            diffuseColor += getDiffuseColor(lightRay, rhitPrim, light.get(),
+                light->getOrigin(), primMaterial, primColor);
+            if (primMaterial->getSpecular() > 0) {
+                specularColor += primMaterial->getSpecular(light.get(),
+                    rhitPrim.getNormal(), lightDirection, ray);
             }
-
-            double diffuse = Math::Algorithm::clampD(rhitPrim.getNormal().dot(lightDirection), 0., 1.);
-            diffuse = Math::Algorithm::clampD(diffuse + primMaterial->getTransparency(), 0., 1.);
-            if (primMaterial->hasPhong()) {
-                primColor += primMaterial->getSpecular(light.get(), rhitPrim, lightDirection);
-            }
-            color += primColor * (light->getColor() * diffuse * penombraFactor * light->getIntensity());
         }
-        return color;
+
+        return ambientColor + diffuseColor + specularColor;
     }
     void Scene::setSkyboxPath(const std::string &path)
     {
@@ -368,5 +379,9 @@ namespace Raytracer {
                 i--;
             }
         }
+    }
+    void Scene::loadRealCamera(void)
+    {
+        
     }
 } // namespace Raytracer
