@@ -21,6 +21,7 @@ namespace Raytracer {
         CHECKERBOARD,
         TEXTURE_SPHERE,
         TEXTURE_TRIANGLE,
+        TEXTURE_CUBE,
         TEXTURE_PLANE,
         NONE
     };
@@ -31,6 +32,7 @@ namespace Raytracer {
         "Checkerboard",
         "TextureSphere",
         "TextureTriangle",
+        "TextureCube",
         "TexturePlane",
         "None"
     };

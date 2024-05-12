@@ -125,14 +125,18 @@ namespace Raytracer {
         if (!(t0 < t1 && t1 > TOLERANCE))
             return std::nullopt;
 
+        RayHit hitReturn;
+
         if (t0 > TOLERANCE) {
             Math::Vector3D hit = ray.getOrigin() + ray.getDirection() * t0;
-            return getNormal(t0, hit, faceIn);
+            hitReturn = getNormal(t0, hit, faceIn);
         } else {
             Math::Vector3D hit = ray.getOrigin() + ray.getDirection() * t1;
-            return getNormal(t1, hit, faceOut);
+            hitReturn = getNormal(t1, hit, faceOut);
         }
 
-        return std::nullopt;
+        hitReturn.setRelativeHitPoint(hitReturn.getHitPoint() - m_origin);
+
+        return hitReturn;
     }
 } // namespace Raytracer
