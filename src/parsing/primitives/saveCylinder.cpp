@@ -26,5 +26,6 @@ namespace Raytracer
         height = cylinder->getHeight();
 
         saveMaterial(setting, cylinder);
+        saveTransformations(setting, cylinder);
     }
 } // namespace Raytracer

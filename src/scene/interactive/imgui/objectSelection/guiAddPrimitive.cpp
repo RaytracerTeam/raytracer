@@ -19,6 +19,7 @@ namespace Raytracer
                     Math::Vector3D(0, 0, 0),
                     std::make_unique<MaterialSolid>(
                         Color((unsigned int)255, 255, 255)),
+                    Transformations(),
                     1.0);
                 sphere->setID(m_scene->getPrimitives().size() + 1);
                 m_scene->addPrimitive(std::move(sphere));
@@ -30,6 +31,7 @@ namespace Raytracer
                     -10.0,
                     std::make_unique<MaterialSolid>(
                         Color((unsigned int)255, 255, 255)),
+                    Transformations(),
                     Plane::Axis::Y);
                 plane->setID(m_scene->getPrimitives().size() + 1);
                 m_scene->addPrimitive(std::move(plane));
@@ -41,6 +43,7 @@ namespace Raytracer
                     Math::Vector3D(0, 0, 0),
                     std::make_unique<MaterialSolid>(
                         Color((unsigned int)255, 255, 255)),
+                    Transformations(),
                     1.0,
                     1.0);
                 cylinder->setID(m_scene->getPrimitives().size() + 1);
@@ -53,6 +56,7 @@ namespace Raytracer
                     Math::Vector3D(0, 0, 0),
                     std::make_unique<MaterialSolid>(
                         Color((unsigned int)255, 255, 255)),
+                    Transformations(),
                     1.0,
                     1.0);
                 cone->setID(m_scene->getPrimitives().size() + 1);
@@ -65,6 +69,7 @@ namespace Raytracer
                     Math::Vector3D(0, 0, 0),
                     std::make_unique<MaterialSolid>(
                         Color((unsigned int)255, 255, 255)),
+                    Transformations(),
                     0.5,
                     1.0);
                 torus->setID(m_scene->getPrimitives().size() + 1);
@@ -77,6 +82,7 @@ namespace Raytracer
                     Math::Vector3D(0, 0, 0),
                     std::make_unique<MaterialSolid>(
                         Color((unsigned int)255, 255, 255)),
+                    Transformations(),
                     11.8);
                 tanglecube->setID(m_scene->getPrimitives().size() + 1);
                 m_scene->addPrimitive(std::move(tanglecube));
@@ -88,6 +94,7 @@ namespace Raytracer
                     Math::Vector3D(1, 0, 0),
                     std::make_unique<MaterialSolid>(
                         Color((unsigned int)255, 255, 255)),
+                    Transformations(),
                     Math::Vector3D(0, 1, 0),
                     Math::Vector3D(0, 0, 1));
                 triangle->setID(m_scene->getPrimitives().size() + 1);
@@ -100,6 +107,7 @@ namespace Raytracer
                     Math::Vector3D(0, 0, 0),
                     std::make_unique<MaterialSolid>(
                         Color((unsigned int)255, 255, 255)),
+                    Transformations(),
                     Math::Vector3D(1, 1, 1));
                 cube->setID(m_scene->getPrimitives().size() + 1);
                 m_scene->addPrimitive(std::move(cube));

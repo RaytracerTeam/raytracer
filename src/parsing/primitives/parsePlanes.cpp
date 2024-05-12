@@ -31,7 +31,7 @@ void Raytracer::Parsing::parsePlanes(const libconfig::Setting &primitiveSetting,
                 axis = Plane::Z;
         }
         auto plane = std::make_unique<Plane>(planePos,
-            parseMaterial(config),
+            parseMaterial(config), parseTransformations(config),
             axis);
         scene->addPrimitive(std::move(plane));
     }
