@@ -5,7 +5,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/raytracer",
-            "args": ["-i", "scenes/config_example.cfg"],
+            "args": ["-i", "scenes/cameras.cfg"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],

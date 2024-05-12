@@ -17,10 +17,16 @@ namespace Raytracer {
             if (setting.exists(CFG_MAX_RAY_BOUNCES)) {
                 scene->setMaxRayBounces((int)setting.lookup(CFG_MAX_RAY_BOUNCES));
             }
+            if (setting.exists(CFG_BVH_MAX_PRIM)) {
+                scene->setBvhMaxPrimLimit((int)setting.lookup(CFG_BVH_MAX_PRIM));
+            }
             if (setting.exists(CFG_USE_MULTITHREADING)) {
                 bool useMultithreading = setting.lookup(CFG_USE_MULTITHREADING);
                 if (!useMultithreading)
                     scene->setNbThreads(1);
+            }
+            if (setting.exists(CFG_ALWAYS_RENDER)) {
+                scene->setAlwaysRender(setting.lookup(CFG_ALWAYS_RENDER));
             }
         }
     } // namespace Parsing

@@ -91,7 +91,8 @@
         "format": "cpp",
         "future": "cpp",
         "stdfloat": "cpp",
-        "valarray": "cpp"
+        "valarray": "cpp",
+        "queue": "cpp"
     },
     "editor.formatOnSave": false,
     "[cpp]": {

@@ -13,7 +13,6 @@ namespace Raytracer
 {
     void SceneInteractive::addSelectableSkybox(const std::filesystem::directory_entry &entry)
     {
-        #ifdef BONUS
         std::string path = entry.path().string();
         if (path.ends_with(".jpg") &&
         ImGui::Selectable(path.c_str())) {
@@ -22,27 +21,24 @@ namespace Raytracer
             strcpy(m_skyboxPathBuf, path.c_str());
             ImGui::CloseCurrentPopup();
         }
-        #endif
     }
 
     void SceneInteractive::addSelectableScene(const std::filesystem::directory_entry &entry)
     {
-        #ifdef BONUS
         std::string path = entry.path().string();
         if (path.ends_with(".cfg") &&
         ImGui::Selectable(path.c_str())) {
-            setScene(entry.path().string());
+            setScene(path);
             setupCamera();
             m_needRendering = true;
+            m_updateBVH = true;
             strcpy(m_loadFileBuf, path.c_str());
             ImGui::CloseCurrentPopup();
         }
-        #endif
     }
 
     void SceneInteractive::guiMenuBar(void)
     {
-        #ifdef BONUS
         m_isWriting = false;
         if (ImGui::BeginMenuBar()) {
             // Save scene to .cfg
@@ -55,6 +51,8 @@ namespace Raytracer
                     Parsing::saveScene(*m_scene, m_saveFileBuf);
                     ImGui::CloseCurrentPopup();
                 }
+                ImGui::SameLine(0, 20);
+                ImGui::Checkbox("Save OBJ as Primitives (WIP)", &m_saveObjAsPrimitives);
                 ImGui::EndMenu();
             }
 
@@ -67,6 +65,7 @@ namespace Raytracer
                         setScene(m_loadFileBuf);
                         setupCamera();
                         m_needRendering = true;
+                        m_updateBVH = true;
                     }
                     ImGui::CloseCurrentPopup();
                 }
@@ -126,6 +125,5 @@ namespace Raytracer
             }
         }
         ImGui::EndMenuBar();
-        #endif
     }
 } // namespace Raytracer

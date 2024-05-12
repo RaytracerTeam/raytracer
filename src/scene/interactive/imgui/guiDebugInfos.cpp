@@ -11,17 +11,16 @@ namespace Raytracer
 {
     void SceneInteractive::guiDebugInfos(void)
     {
-        #ifdef BONUS
         Camera *currentCamera = m_interacCam.getCamera();
-        if (ImGui::BeginChild("Debug Infos", ImVec2(m_leftPaneWidth, m_imageHeight / 2 - 30),
+        if (ImGui::BeginChild("Debug Infos", ImVec2(m_leftPaneWidth, m_imageHeight / 2 - 50),
         ImGuiChildFlags_Border)) {
 
             // FPS
             ImGui::Text("FPS: %.1f", m_framerate);
             ImGui::SliderFloat("MIN FPS", &m_minFramerate, 1, 60, "%.1f",
                 ImGuiSliderFlags_AlwaysClamp);
-            ImGui::SliderFloat("MAX FPS", &m_maxFramerate, 10, 1000, "%.1f",
-                ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
+            ImGui::SliderFloat("MAX FPS", &m_maxFramerate, 10, WINDOW_FPS, "%.1f",
+                ImGuiSliderFlags_AlwaysClamp);
             ImGui::ProgressBar((float)m_scene->getRenderY() / m_dimension.getHeight());
             // New Render
             if (ImGui::Button("Render", ImVec2(60, 20)))
@@ -38,7 +37,8 @@ namespace Raytracer
                 m_scene->setRenderLights(renderLights);
             }
             // Always Render
-            ImGui::Checkbox("Always Render", &m_alwaysRender);
+            if (ImGui::Checkbox("Always Render", &m_alwaysRender))
+                m_scene->setAlwaysRender(m_alwaysRender);
             // Fullscreen
             if (ImGui::Checkbox("Fullscreen", &m_fullscreen))
                 setupImageSize();
@@ -55,19 +55,29 @@ namespace Raytracer
                 m_needRendering = true;
             }
 
+            // Thread number
             int threadNumber = m_scene->getNbThreads();
             if (ImGui::SliderInt("Threads", &threadNumber, 1, m_scene->getMaxNbThreads())) {
                 m_scene->setNbThreads(threadNumber);
                 m_needRendering = true;
             }
 
+            // Ray Bounces
             int maxRayBounces = m_scene->getMaxRayBounces();
             if (ImGui::SliderInt("Ray Bounces", &maxRayBounces, 1, 10)) {
                 m_scene->setMaxRayBounces(maxRayBounces);
                 m_needRendering = true;
             }
+
+            // BVH Max Prim Limit
+            int bvhMaxPrimLimit = m_scene->getBvhMaxPrimLimit();
+            if (ImGui::SliderInt("BVH Max Prim Limit", &bvhMaxPrimLimit, 1, 20,
+            "%d", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic)) {
+                m_scene->setBvhMaxPrimLimit(bvhMaxPrimLimit);
+                m_updateBVH = true;
+                m_needRendering = true;
+            }
         }
         ImGui::EndChild();
-        #endif
     }
 } // namespace Raytracer

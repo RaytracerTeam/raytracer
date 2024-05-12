@@ -23,10 +23,11 @@ namespace Raytracer {
 
         // Ambient light
         if (lightsSetting.exists(CFG_AMBIENT_LIGHT)) {
-            auto &ambientLightSetting = lightsSetting[CFG_AMBIENT_LIGHT];
-            lightSystem.addAmbientLight(std::make_unique<AmbientLight>(
-                getSettingColor(ambientLightSetting),
-                parseFloat(ambientLightSetting, CFG_INTENSITY, 0.1)));
+            for (const auto &aLightSetting : lightsSetting[CFG_AMBIENT_LIGHT]) {
+                lightSystem.addAmbientLight(std::make_unique<AmbientLight>(
+                    getSettingColor(aLightSetting),
+                    parseFloat(aLightSetting, CFG_INTENSITY, 0.1)));
+            }
         }
 
         // Point lights

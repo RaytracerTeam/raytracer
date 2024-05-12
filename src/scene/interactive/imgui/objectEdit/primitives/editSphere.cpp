@@ -14,8 +14,6 @@ namespace Raytracer
 {
     void SceneInteractive::editSphere(Sphere *sphere)
     {
-        (void)sphere;
-        #ifdef BONUS
         float sphereRadius = sphere->getRadius();
         if (ImGui::SliderFloat("Radius", &sphereRadius, DEFAULT_RADIUS_MIN,
         DEFAULT_RADIUS_MAX, "%.3f", ImGuiSliderFlags_Logarithmic)) {
@@ -23,7 +21,6 @@ namespace Raytracer
             m_updateBVH = true;
             m_needRendering = true;
         }
-        #endif
     }
 } // namespace Raytracer
 

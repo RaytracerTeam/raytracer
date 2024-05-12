@@ -259,14 +259,18 @@ namespace Raytracer
             break;
         }
         case SceneReleaseActions::EXIT:
+            Parsing::saveScene(*m_scene, TEMP_CFG_FILE);
             m_window.close();
             break;
+        #ifdef BONUS
         case SceneReleaseActions::SAVE_CURRENT_AND_EXIT:
+            if (strcmp(m_loadFileBuf, "scenes/") == 0)
+                strcpy(m_loadFileBuf, TEMP_CFG_FILE);
             Parsing::saveScene(*m_scene, m_loadFileBuf);
             m_window.close();
             break;
         case SceneReleaseActions::QUICK_SAVE_AND_EXIT:
-            Parsing::saveScene(*m_scene, "scenes/quick_save.cfg");
+            Parsing::saveScene(*m_scene, QUICK_SAVE_CFG_FILE);
             m_window.close();
             break;
         case SceneReleaseActions::SHOW_DEBUG:
@@ -279,6 +283,7 @@ namespace Raytracer
         case SceneReleaseActions::REMOVE_OBJECT:
             removeSelectedObject();
             break;
+        #endif
         case SceneReleaseActions::TOGGLE_MOUSE:
             m_useMouse = !m_useMouse;
             if (m_useMouse) {

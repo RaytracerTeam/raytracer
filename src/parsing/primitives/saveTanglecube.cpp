@@ -18,6 +18,10 @@ namespace Raytracer
         libconfig::Setting &setting = list.add(libconfig::Setting::TypeGroup);
 
         savePos(setting, tanglecube->getOrigin());
+
+        libconfig::Setting &radius = setting.add(CFG_RADIUS, libconfig::Setting::TypeFloat);
+        radius = tanglecube->getRadius();
+
         saveMaterial(setting, tanglecube);
     }
 } // namespace Raytracer

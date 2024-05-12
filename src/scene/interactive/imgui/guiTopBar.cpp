@@ -12,7 +12,6 @@ namespace Raytracer
 {
     void SceneInteractive::guiTopBar(void)
     {
-        #ifdef BONUS
         Camera &currentCamera = m_scene->getCurrentCamera();
 
         if (ImGui::BeginChild("TopBar", ImVec2(ImGui::GetIO().DisplaySize.x, 30),
@@ -50,6 +49,5 @@ namespace Raytracer
             }
         }
         ImGui::EndChild();
-        #endif
     }
 } // namespace Raytracer

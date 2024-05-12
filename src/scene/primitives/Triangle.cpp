@@ -27,14 +27,14 @@ namespace Raytracer {
     {
         Math::Vector3D edge1 = m_v1 - m_origin;
         Math::Vector3D edge2 = m_v2 - m_origin;
-        Math::Vector3D ray_cross_e2 = ray.getDirection().cross(edge2);
+        Math::Vector3D ray_cross_e2 = getTMatrix() * ray.getDirection().cross(edge2);
         float det = edge1.dot(ray_cross_e2);
 
         if (det > -TOLERANCE && det < TOLERANCE)
             return std::nullopt;
 
         float inv_det = 1.0 / det;
-        Math::Vector3D s = ray.getOrigin() - m_origin;
+        Math::Vector3D s = getTMatrix() * (ray.getOrigin() - m_origin);
         float u = inv_det * s.dot(ray_cross_e2);
 
         if (u < 0 || u > 1)
@@ -49,13 +49,32 @@ namespace Raytracer {
         float t = inv_det * edge2.dot(s_cross_e1);
 
         if (t > TOLERANCE) {
-            Math::Vector3D hit = ray.getOrigin() + ray.getDirection() * t;
+            Math::Vector3D hit = getTMatrix() * ray.getOrigin() + getTMatrix() * ray.getDirection() * t;
             Math::Vector3D normal = edge1.cross(edge2);
-            if (normal.dot(ray.getDirection()) > 0)
+            if (normal.dot(getTMatrix() * ray.getDirection()) > 0)
                 normal = -normal;
-            return RayHit(t, hit, normal.normalize());
+            return RayHit(t, hit, normal.normalize(), getBarycentricCoordinates(hit));
         }
 
         return std::nullopt;
+    }
+
+    Math::Vector3D Triangle::getBarycentricCoordinates(const Math::Vector3D &point) const
+    {
+        if (this->getMaterial()->getType() != MaterialType::TEXTURE_TRIANGLE)
+            return Math::Vector3D(0, 0, 0);
+        Math::Vector3D edge1 = m_v1 - m_origin;
+        Math::Vector3D edge2 = m_v2 - m_origin;
+        Math::Vector3D edge3 = point - m_origin;
+        float d00 = edge1.dot(edge1);
+        float d01 = edge1.dot(edge2);
+        float d11 = edge2.dot(edge2);
+        float d20 = edge3.dot(edge1);
+        float d21 = edge3.dot(edge2);
+        float denom = d00 * d11 - d01 * d01;
+        float w0 = (d11 * d20 - d01 * d21) / denom;
+        float w1 = (d00 * d21 - d01 * d20) / denom;
+        float w2 = 1.0f - w0 - w1;
+        return Math::Vector3D(w0, w1, w2);
     }
 } // namespace Raytracer

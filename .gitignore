@@ -23,8 +23,6 @@ scores
 
 .vscode/c_cpp_properties.json
 a.out
-test.cpp
-test
 
 imgui.ini
 todo
@@ -35,8 +33,9 @@ assets/obj/local/*.obj
 assets/obj/local/*.png
 assets/textures/local/*.jpg
 assets/textures/local/*.png
-
+assets/obj/local/*
 
 scenes/local/*.cfg
 scenes/quick_save.cfg
+scenes/temp.cfg
 config/keys.cfg

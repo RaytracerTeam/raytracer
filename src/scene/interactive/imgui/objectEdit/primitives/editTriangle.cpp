@@ -14,8 +14,6 @@ namespace Raytracer
 {
     void SceneInteractive::editTriangle(Triangle *triangle)
     {
-        (void)triangle;
-        #ifdef BONUS
         float v1[3] = { (float)triangle->getVec1().getX(), (float)triangle->getVec1().getY(),
             (float)triangle->getVec1().getZ() };
         if (ImGui::SliderFloat3("Vector1", v1, DEFAULT_POS_MIN,
@@ -33,6 +31,5 @@ namespace Raytracer
             m_updateBVH = true;
             m_needRendering = true;
         }
-        #endif
     }
 } // namespace Raytracer

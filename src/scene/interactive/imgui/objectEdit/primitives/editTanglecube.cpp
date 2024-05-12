@@ -15,10 +15,14 @@ namespace Raytracer
 {
     void SceneInteractive::editTanglecube(Tanglecube *tanglecube)
     {
-        (void)tanglecube;
-        #ifdef BONUS
-
-        #endif
+        // Radius
+        float radius = tanglecube->getRadius();
+        if (ImGui::SliderFloat("Radius", &radius, DEFAULT_RADIUS_MIN,
+        18.8, "%.3f")) {
+            tanglecube->setRadius(radius);
+            m_updateBVH = true;
+            m_needRendering = true;
+        }
     }
 } // namespace Raytracer
 

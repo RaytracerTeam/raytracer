@@ -28,7 +28,6 @@ namespace Raytracer
     }
     void SceneInteractive::guiEditLights(void)
     {
-        #ifdef BONUS
         if (m_selectedObject < 0)
             return;
         SceneLightning &lightSystem = m_scene->getLightSystem();
@@ -55,6 +54,14 @@ namespace Raytracer
             removeSelectedObject();
             return;
         }
+        ImGui::SameLine(0, 20);
+        // isShown
+        bool isShown = light->isShown();
+        if (ImGui::Checkbox("Is Shown", &isShown)) {
+            light->setIsShown(isShown);
+            m_updateBVH = true;
+            m_needRendering = true;
+        }
 
         // Color
         ImGui::SetNextItemWidth(200);
@@ -68,13 +75,11 @@ namespace Raytracer
         // Intensity
         float intensity = light->getIntensity();
         if (ImGui::SliderFloat("Intensity", &intensity, DEFAULT_INTENSITY_MIN,
-        DEFAULT_INTENSITY_MAX, "%.3f", ImGuiSliderFlags_Logarithmic)) {
+        DEFAULT_INTENSITY_MAX)) {
             light->setIntensity(intensity);
             m_needRendering = true;
         }
 
         customEditLights(light);
-
-        #endif
     }
 } // namespace Raytracer

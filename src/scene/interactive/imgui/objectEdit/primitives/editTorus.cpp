@@ -2,39 +2,36 @@
 ** EPITECH PROJECT, 2024
 ** Raytracer
 ** File description:
-** editCylinder
+** editTorus
 */
 
 
 #include "Scene/Interactive/SceneInteractive.hpp"
 
-#include "Scene/Primitives/Cylinder.hpp"
+#include "Scene/Primitives/Torus.hpp"
 #include "Scene/Materials/MaterialSolid.hpp"
 
 namespace Raytracer
 {
-    void SceneInteractive::editCylinder(Cylinder *cylinder)
+    void SceneInteractive::editTorus(Torus *torus)
     {
-        (void)cylinder;
-        #ifdef BONUS
         // Radius
-        float radius = cylinder->getRadius();
+        float radius = torus->getRadius();
         if (ImGui::SliderFloat("Radius", &radius, DEFAULT_RADIUS_MIN,
         DEFAULT_RADIUS_MAX, "%.3f", ImGuiSliderFlags_Logarithmic)) {
-            cylinder->setRadius(radius);
+            torus->setRadius(radius);
             m_updateBVH = true;
             m_needRendering = true;
         }
 
-        // Height
-        float height = cylinder->getHeight();
-        if (ImGui::SliderFloat("Height", &height, DEFAULT_RADIUS_MIN,
+        // Distance
+        float distance = torus->getDistance();
+        if (ImGui::SliderFloat("Distance", &distance, DEFAULT_RADIUS_MIN,
         DEFAULT_RADIUS_MAX, "%.3f", ImGuiSliderFlags_Logarithmic)) {
-            cylinder->setHeight(height);
+            torus->setDistance(distance);
             m_updateBVH = true;
             m_needRendering = true;
         }
-        #endif
     }
 } // namespace Raytracer
 

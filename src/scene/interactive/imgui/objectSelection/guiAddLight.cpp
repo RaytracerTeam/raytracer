@@ -11,7 +11,6 @@ namespace Raytracer
 {
     void SceneInteractive::guiAddLight(void)
     {
-        #ifdef BONUS
         SceneLightning &lightSystem = m_scene->getLightSystem();
 
         if (ImGui::BeginCombo(" ", "Add Light")) {
@@ -44,6 +43,5 @@ namespace Raytracer
             }
             ImGui::EndCombo();
         }
-        #endif
     }
 } // namespace Raytracer

@@ -13,8 +13,6 @@ namespace Raytracer
 {
     void SceneInteractive::guiAddPrimitive(void)
     {
-        #ifdef BONUS
-
         if (ImGui::BeginCombo(" ", "Add Primitive")) {
             if (ImGui::Selectable("Sphere")) {
                 auto sphere = std::make_unique<Sphere>(
@@ -67,7 +65,7 @@ namespace Raytracer
                     Math::Vector3D(0, 0, 0),
                     std::make_unique<MaterialSolid>(
                         Color((unsigned int)255, 255, 255)),
-                    1.0,
+                    0.5,
                     1.0);
                 torus->setID(m_scene->getPrimitives().size() + 1);
                 m_scene->addPrimitive(std::move(torus));
@@ -78,7 +76,8 @@ namespace Raytracer
                 auto tanglecube = std::make_unique<Tanglecube>(
                     Math::Vector3D(0, 0, 0),
                     std::make_unique<MaterialSolid>(
-                        Color((unsigned int)255, 255, 255)));
+                        Color((unsigned int)255, 255, 255)),
+                    11.8);
                 tanglecube->setID(m_scene->getPrimitives().size() + 1);
                 m_scene->addPrimitive(std::move(tanglecube));
                 m_needRendering = true;
@@ -86,18 +85,28 @@ namespace Raytracer
             }
             if (ImGui::Selectable("Triangle")) {
                 auto triangle = std::make_unique<Triangle>(
-                    Math::Vector3D(0, 0, 0),
+                    Math::Vector3D(1, 0, 0),
                     std::make_unique<MaterialSolid>(
                         Color((unsigned int)255, 255, 255)),
-                    Math::Vector3D(0, 0, 0),
-                    Math::Vector3D(0, 0, 0));
+                    Math::Vector3D(0, 1, 0),
+                    Math::Vector3D(0, 0, 1));
                 triangle->setID(m_scene->getPrimitives().size() + 1);
                 m_scene->addPrimitive(std::move(triangle));
                 m_needRendering = true;
                 m_updateBVH = true;
             }
+            if (ImGui::Selectable("Cube")) {
+                auto cube = std::make_unique<Cube>(
+                    Math::Vector3D(0, 0, 0),
+                    std::make_unique<MaterialSolid>(
+                        Color((unsigned int)255, 255, 255)),
+                    Math::Vector3D(1, 1, 1));
+                cube->setID(m_scene->getPrimitives().size() + 1);
+                m_scene->addPrimitive(std::move(cube));
+                m_needRendering = true;
+                m_updateBVH = true;
+            }
             ImGui::EndCombo();
         }
-        #endif
     }
 } // namespace Raytracer

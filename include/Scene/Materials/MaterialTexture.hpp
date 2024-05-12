@@ -17,7 +17,9 @@
 namespace Raytracer {
     class MaterialTexture : public AMaterial {
     public:
+        MaterialTexture() = default;
         MaterialTexture(const std::string &pathname);
+        MaterialTexture(std::shared_ptr<sf::Image> image);
 
         MaterialType getType() const override { return MaterialType::TEXTURE; }
 
@@ -26,9 +28,10 @@ namespace Raytracer {
         const std::string &getTexture(void) const { return m_pathname; }
         const std::string &getPathname(void) const { return m_pathname; }
 
+        void setImage(std::shared_ptr<sf::Image> image) { m_image = image; }
         void setTexture(const std::string &pathname);
     protected:
-        std::unique_ptr<sf::Image> m_image;
+        std::shared_ptr<sf::Image> m_image;
         std::string m_pathname;
     };
 } // namespace Raytracer
