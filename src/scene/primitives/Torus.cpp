@@ -23,13 +23,13 @@ namespace Raytracer {
     {
         Math::Vector3D dstOrigin = hitPt - origin;
 
-        double a = 1.
-            - (m_distance
-                / std::sqrt(dstOrigin.getX() * dstOrigin.getX()
-                    + dstOrigin.getY() * dstOrigin.getY()));
+        double a = 1
+            - (m_distance)
+                / std::sqrt((dstOrigin.getX() * dstOrigin.getX()
+                    + dstOrigin.getY() * dstOrigin.getY() + (dstOrigin.getZ() * dstOrigin.getZ()) + m_radius * m_radius));
 
-        auto normal = Math::Vector3D(
-            a * dstOrigin.getX(), a * dstOrigin.getY(), dstOrigin.getZ())
+        auto normal = (Math::Vector3D(
+            a * dstOrigin.getX(), a * dstOrigin.getY(), - a * dstOrigin.getZ() + m_radius))
                           .normalize();
 
         return RayHit(distance, hitPt, normal);
