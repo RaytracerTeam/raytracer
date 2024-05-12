@@ -15,7 +15,7 @@ namespace Raytracer {
         if (m_image.get() == nullptr)
             return Color(1., 0, 1);
 
-        auto d = ray.getHitPoint();
+        auto d = ray.getRelativeHitPoint();
 
         float u = std::fmod(std::abs(d.getX()), m_factor) / m_factor;
         float v = std::fmod(std::abs(d.getZ()), m_factor) / m_factor;

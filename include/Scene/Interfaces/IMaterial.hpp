@@ -28,10 +28,10 @@ namespace Raytracer {
         "Solid",
         "Code",
         "Texture",
+        "Checkerboard",
         "TextureSphere",
         "TextureTriangle",
         "TexturePlane",
-        "Checkerboard",
         "None"
     };
 

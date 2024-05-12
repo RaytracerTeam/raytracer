@@ -103,6 +103,7 @@ namespace Raytracer {
         void customEditMaterial(std::unique_ptr<IMaterial> &material);
         void guiEditLights(void);
         void guiEditPrimitives(void);
+        void guiEditMaterial(std::unique_ptr<IMaterial> &material);
         void guiEditCameras(void);
         void guiAddPrimitive(void);
         void guiAddLight(void);

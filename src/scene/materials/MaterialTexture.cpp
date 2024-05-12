@@ -22,17 +22,16 @@ namespace Raytracer {
 
     void MaterialTexture::setTexture(const std::string &pathname)
     {
-        if (m_image.get() == nullptr)
-            m_image = std::make_shared<sf::Image>();
+        m_image = std::make_shared<sf::Image>();
         if (!m_image->loadFromFile(pathname))
-            throw Error("Texture can't be loaded", "MaterialTexture::setTexture");
+            std::cerr << "Texture can't be loaded MaterialTexture::setTexture" << std::endl;
         m_pathname = pathname;
     }
 
     /* todo : implement */
     Color MaterialTexture::getColor(const RayHit &) const
     {
-        return Color(255U, 0, 0);
+        return Color(1., 0, 1);
     }
 
     Color MaterialTexture::getColor(double u, double v) const

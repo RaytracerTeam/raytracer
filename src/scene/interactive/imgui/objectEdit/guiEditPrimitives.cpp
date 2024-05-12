@@ -46,7 +46,6 @@ namespace Raytracer
     void SceneInteractive::guiEditPrimitives(void)
     {
         std::unique_ptr<IPrimitive> &primitive = m_scene->getPrimitives()[m_selectedObject];
-        std::unique_ptr<IMaterial> &material = primitive->getMaterial();
 
         if (ImGui::BeginTabBar("Edit Primitives")) {
             if (ImGui::BeginTabItem("Base")) {
@@ -66,11 +65,11 @@ namespace Raytracer
                     m_needRendering = true;
                 }
 
-                if (material->getType() == MaterialType::SOLID) {
+                if (primitive->getMaterial()->getType() == MaterialType::SOLID) {
                     ImGui::SameLine(0, 20);
                     // Color
                     ImGui::SetNextItemWidth(200);
-                    MaterialSolid *materialSolid = static_cast<MaterialSolid *>(material.get());
+                    MaterialSolid *materialSolid = static_cast<MaterialSolid *>(primitive->getMaterial().get());
                     float *color = materialSolid->getColor();
                     if (ImGui::ColorEdit3("Color", color)) {
                         materialSolid->setColor(color);
@@ -93,51 +92,7 @@ namespace Raytracer
                 ImGui::EndTabItem();
             }
 
-            if (ImGui::BeginTabItem("Material")) {
-                customEditMaterial(material);
-                // Diffuse
-                float diffuse = material->getDiffuse();
-                if (ImGui::SliderFloat("Diffuse", &diffuse, 0.0f, 1.0f)) {
-                    material->setDiffuse(diffuse);
-                    m_needRendering = true;
-                }
-                // Specular
-                float specular = material->getSpecular();
-                if (ImGui::SliderFloat("Specular", &specular, 0.0f, 1.0f)) {
-                    material->setSpecular(specular);
-                    m_needRendering = true;
-                }
-                // Shininess
-                if (specular > 0) {
-                    float shininess = material->getShininess();
-                    if (ImGui::SliderFloat("Shininess", &shininess, 1.0f, 100.0f,
-                    "%.1f", ImGuiSliderFlags_Logarithmic)) {
-                        material->setShininess(shininess);
-                        m_needRendering = true;
-                    }
-                }
-                // Reflection
-                float reflection = material->getReflection();
-                if (ImGui::SliderFloat("Reflection", &reflection, 0.0f, 1.0f)) {
-                    material->setReflection(reflection);
-                    m_needRendering = true;
-                }
-                // Transparency
-                float transparency = material->getTransparency();
-                if (ImGui::SliderFloat("Transparency", &transparency, 0.0f, 1.0f)) {
-                    material->setTransparency(transparency);
-                    m_needRendering = true;
-                }
-                // Refraction
-                if (transparency > 0) {
-                    float refraction = material->getRefraction();
-                    if (ImGui::SliderFloat("Refraction", &refraction, 0.0f, 3.0f)) {
-                        material->setRefraction(refraction);
-                        m_needRendering = true;
-                    }
-                }
-                ImGui::EndTabItem();
-            }
+            guiEditMaterial(primitive->getMaterial());
 
             if (ImGui::BeginTabItem("Transformations")) {
                 // Rotation
