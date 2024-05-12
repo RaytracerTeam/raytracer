@@ -20,7 +20,6 @@ namespace Raytracer {
     SceneInteractive::SceneInteractive(Dimension &dimension, const std::string &title,
         const std::vector<std::string_view> &inputFiles)
         : m_dimension(dimension)
-        , m_window(sf::VideoMode(dimension.getWidth(), dimension.getHeight()), title)
     {
         m_scene = std::make_unique<Scene>();
         setScenes(inputFiles);
@@ -31,23 +30,32 @@ namespace Raytracer {
         if (inputFiles.size() > 0)
             strcpy(m_loadFileBuf, inputFiles[0].data());
 
-        Camera *camera = m_interacCam.getCamera();
-        m_window.setSize(sf::Vector2u(camera->getDimension().getWidth(),
-            camera->getDimension().getHeight()));
+        sf::Vector2u windowSize;
+        sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
 
         #ifdef BONUS
             #ifdef MACOSTONIO
-                m_window.setSize(sf::Vector2u(1440, 850));
+                windowSize = sf::Vector2u(1440, 850);
             #else
-                m_window.setSize(sf::Vector2u(sf::VideoMode::getDesktopMode().width,
-                    sf::VideoMode::getDesktopMode().height));
+                windowSize = sf::Vector2u(desktop.width, desktop.height);
             #endif
-            m_window.setPosition(sf::Vector2i(0, 0));
+        #else
+            Camera *camera = m_interacCam.getCamera();
+            windowSize = sf::Vector2u(camera->getDimension().getWidth(),
+                camera->getDimension().getHeight());
+        #endif
+
+        m_window.create(sf::VideoMode(windowSize.x, windowSize.y), title);
+        m_window.setPosition(sf::Vector2i(desktop.width / 2, desktop.height / 2)
+            - sf::Vector2i(windowSize.x / 2, windowSize.y / 2));
+
+        #ifdef BONUS
             if (!ImGui::SFML::Init(m_window))
                 throw std::runtime_error("Failed to initialize ImGui");
             m_leftPaneWidth = 270;
             setupImageSize();
         #endif
+
         m_window.setFramerateLimit(WINDOW_FPS);
         setupActions();
     }
