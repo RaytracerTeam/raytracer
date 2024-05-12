@@ -120,13 +120,13 @@ namespace Raytracer {
                 #ifdef BONUS
                 // Select primitive by aiming at it with the center of the screen
                 else if (event.mouseButton.button == sf::Mouse::Left && (m_useMouse || m_useSimpleMouse)) {
-                    const IShape *shape = m_scene->getPrimitiveHit(sf::Vector2i(
+                    auto shape = m_scene->getPrimitiveHit(sf::Vector2i(
                         m_dimension.getWidth() / 2, m_dimension.getHeight() / 2
                     ));
-                    if (shape) {
+                    if (shape != std::nullopt) {
                         int i = 0;
                         for (auto &prim : m_scene->getPrimitives()) {
-                            if (prim->getID() == shape->getID()) {
+                            if (prim->getID() == (*shape)->getID()) {
                                 m_selectedObject = i;
                                 m_selectPrimitiveTab = true;
                                 break;

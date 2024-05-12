@@ -156,46 +156,14 @@ namespace Raytracer {
             }
         }
         BVH::Intersection intersection;
-        auto result = BVH::readBVH(ray, *m_bvhTree, intersection);
+        bool result = BVH::readBVH(ray, *m_bvhTree, intersection);
         if (!result)
             return m_skybox.getAmbientColor(ray);
-        return castRayColor(ray, intersection.primitve, intersection.rayhit);
-    }
-
-    double Scene::shadowPenombra(const Ray &lightRay, const IPrimitive *primHit, const PointLight &pointLight) const
-    {
-        double nbShadowRays = 0;
-        double radius = pointLight.getRadius();
-        const double offset = 1 / m_maxDropShadowsRay;
-
-        for (double i = -0.5; i <= 0.5; i += offset) {
-            double val = i * radius;
-            auto ray = Ray(lightRay.getOrigin(), (lightRay.getDirection() + val));
-            bool shadowed = false;
-
-            for (const auto &prim : m_primitives) {
-                if (primHit == prim.get())
-                    continue;
-                auto shadowHit = prim->hit(ray);
-                if (shadowHit != std::nullopt) {
-                    if (shadowHit->getDistance() * shadowHit->getDistance() < 0.001)
-                        continue;
-                    if (
-                        Math::Vector3D::gDist(ray.getOrigin(), shadowHit->getHitPoint())
-                        >= Math::Vector3D::gDist(ray.getOrigin(), pointLight.getOrigin()))
-                        continue;
-                    shadowed = true;
-                    break;
-                }
-            }
-            if (!shadowed && pointLight.hit(ray) != std::nullopt)
-                nbShadowRays++;
-        }
-        return nbShadowRays / m_maxDropShadowsRay;
+        return castRayColor(ray, *intersection.primitve, intersection.rayhit);
     }
 
     Color Scene::getDiffuseColor(const Ray &lightRay, const RayHit &rhitPrim,
-        const ILight *light, const Math::Vector3D &lightOrigin,
+        const ILight &light, const Math::Vector3D &lightOrigin,
         const std::unique_ptr<IMaterial> &primMaterial, const Color &primColor) const
     {
         Color penombraFactor = Color(1., 1., 1.);
@@ -212,7 +180,7 @@ namespace Raytracer {
 
         double diffuse = Math::Algorithm::clampD(rhitPrim.getNormal().dot(lightRay.getDirection()), 0., 1.);
         diffuse = Math::Algorithm::clampD(diffuse + primMaterial->getTransparency(), 0., 1.);
-        return primColor * light->getColor() * light->getIntensity() * diffuse * primMaterial->getDiffuse() * penombraFactor;
+        return primColor * light.getColor() * light.getIntensity() * diffuse * primMaterial->getDiffuse() * penombraFactor;
     }
 
     bool Scene::hit(const std::optional<RayHit> &rayHit, const Math::Vector3D &objOrigin, const Math::Vector3D &objTarget) const
@@ -226,9 +194,9 @@ namespace Raytracer {
         return false;
     }
 
-    Color Scene::castRayColor(const Ray &ray, const IPrimitive *primHit, const RayHit &rhitPrim) const
+    Color Scene::castRayColor(const Ray &ray, const IPrimitive &primHit, const RayHit &rhitPrim) const
     {
-        const std::unique_ptr<IMaterial> &primMaterial = primHit->getMaterial();
+        const std::unique_ptr<IMaterial> &primMaterial = primHit.getMaterial();
 
         // Reflection
         Color primColor = primMaterial->getColor(rhitPrim);
@@ -276,7 +244,7 @@ namespace Raytracer {
             Ray dirRay = Ray(rhitPrim.getHitPoint(), dLight->getDirection());
             Color dPenombraFactor = Color(1., 1., 1.);
 
-            diffuseColor += getDiffuseColor(dirRay, rhitPrim, dLight.get(),
+            diffuseColor += getDiffuseColor(dirRay, rhitPrim, *dLight,
                 Math::Vector3D(0, 0, 0), primMaterial, primColor);
             if (primMaterial->getSpecular() > 0) {
                 specularColor += primMaterial->getSpecular(dLight.get(),
@@ -292,7 +260,7 @@ namespace Raytracer {
             auto lightDirection = lightVec.normalize();
             Ray lightRay = Ray(rhitPrim.getHitPoint(), lightDirection);
 
-            diffuseColor += getDiffuseColor(lightRay, rhitPrim, light.get(),
+            diffuseColor += getDiffuseColor(lightRay, rhitPrim, *light,
                 light->getOrigin(), primMaterial, primColor);
             if (primMaterial->getSpecular() > 0) {
                 specularColor += primMaterial->getSpecular(light.get(),
@@ -334,7 +302,7 @@ namespace Raytracer {
             m_render.setPixel(x, m_renderY + 1, m_render.getPixel(x, m_renderY + 1) * sf::Color(100, 100, 100));
     }
 
-    const IShape *Scene::getPrimitiveHit(sf::Vector2i mousePos) const
+    std::optional<const IShape *> Scene::getPrimitiveHit(sf::Vector2i mousePos) const
     {
         Camera &camera = getCurrentCamera();
         Dimension dimension = camera.getDimension();
@@ -349,7 +317,7 @@ namespace Raytracer {
         BVH::Intersection intersection;
         auto result = BVH::readBVH(ray, *m_bvhTree, intersection);
         if (!result)
-            return nullptr;
+            return std::nullopt;
         return intersection.primitve;
     }
 
