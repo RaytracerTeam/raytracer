@@ -12,10 +12,13 @@
 namespace Raytracer {
     class Cylinder : public APrimitive {
     public:
-        Cylinder(const Math::Vector3D &origin,  std::unique_ptr<IMaterial> material, double radius, double height)
-            : APrimitive(origin, std::move(material))
+        Cylinder(const Math::Vector3D &origin, std::unique_ptr<IMaterial> material,
+            const Transformations &transformations, double radius, double height)
+            : APrimitive(origin, std::move(material), transformations)
             , m_radius(radius)
-            , m_height(height) {}
+            , m_height(height)
+        {
+        }
         ~Cylinder() = default;
 
         PrimitiveType getType(void) const override { return PrimitiveType::CYLINDER; };

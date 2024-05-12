@@ -12,8 +12,9 @@
 namespace Raytracer {
     class Cube : public APrimitive {
     public:
-        Cube(const Math::Vector3D &origin, std::unique_ptr<IMaterial> material, const Math::Vector3D &v1)
-            : APrimitive(origin, std::move(material))
+        Cube(const Math::Vector3D &origin, std::unique_ptr<IMaterial> material,
+            const Transformations &transformations, const Math::Vector3D &v1)
+            : APrimitive(origin, std::move(material), transformations)
             , m_v1(v1)
         {
         }

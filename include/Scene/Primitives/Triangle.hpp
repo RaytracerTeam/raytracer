@@ -12,8 +12,10 @@
 namespace Raytracer {
     class Triangle : public APrimitive {
     public:
-        Triangle(const Math::Vector3D &origin, std::unique_ptr<IMaterial> material, const Math::Vector3D &v1, const Math::Vector3D &v2)
-            : APrimitive(origin, std::move(material))
+        Triangle(const Math::Vector3D &origin, std::unique_ptr<IMaterial> material,
+            const Transformations &transformationsn, const Math::Vector3D &v1,
+            const Math::Vector3D &v2)
+            : APrimitive(origin, std::move(material), transformationsn)
             , m_v1(v1)
             , m_v2(v2)
         {

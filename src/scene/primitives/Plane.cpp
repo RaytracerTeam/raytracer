@@ -11,7 +11,10 @@
 #include <cmath>
 
 namespace Raytracer {
-    Plane::Plane(const Math::Vector3D &origin,  std::unique_ptr<IMaterial> material) : APrimitive(origin, std::move(material)) {
+    Plane::Plane(const Math::Vector3D &origin,  std::unique_ptr<IMaterial> material,
+        const Transformations &transformations)
+        : APrimitive(origin, std::move(material), transformations)
+    {
         switch (m_axis) {
         case X: m_pos = origin.getX(); break;
         case Y: m_pos = origin.getY(); break;
@@ -19,8 +22,9 @@ namespace Raytracer {
         default: break;
         }
     }
-    Plane::Plane(double pos,  std::unique_ptr<IMaterial> material, const Axis &axis)
-        : APrimitive({}, std::move(material))
+    Plane::Plane(double pos,  std::unique_ptr<IMaterial> material,
+        const Transformations &transformations, const Axis &axis)
+        : APrimitive({}, std::move(material), transformations)
         , m_pos(pos)
         , m_axis(axis)
     {
@@ -62,8 +66,8 @@ namespace Raytracer {
     std::optional<RayHit> Plane::hit(const Ray &ray) const
     {
         double t;
-        auto rayOrigin = getTMatrix() * ray.getOrigin();
-        auto rayDir = getTMatrix() * ray.getDirection();
+        Math::Vector3D rayOrigin = ray.getOrigin();
+        Math::Vector3D rayDir = ray.getDirection();
 
         switch (m_axis) {
         case X:
@@ -85,11 +89,11 @@ namespace Raytracer {
     {
         switch (m_axis) {
         case X:
-            return (getTMatrix() * Math::Vector3D(1, 0, 0));
+            return Math::Vector3D(1, 0, 0);
         case Y:
-            return (getTMatrix() * Math::Vector3D(0, 1, 0));
+            return Math::Vector3D(0, 1, 0);
         default:
-            return (getTMatrix() * Math::Vector3D(0, 0, 1));
+            return Math::Vector3D(0, 0, 1);
         }
     }
 

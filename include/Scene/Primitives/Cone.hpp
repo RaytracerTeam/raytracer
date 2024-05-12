@@ -12,8 +12,9 @@
 namespace Raytracer {
     class Cone : public APrimitive {
     public:
-        Cone(const Math::Vector3D &origin, std::unique_ptr<IMaterial> material, double radius, double height)
-            : APrimitive(origin, std::move(material))
+        Cone(const Math::Vector3D &origin, std::unique_ptr<IMaterial> material,
+            const Transformations &transformations, double radius, double height)
+            : APrimitive(origin, std::move(material), transformations)
             , m_radius(radius)
             , m_height(height)
         {

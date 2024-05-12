@@ -18,8 +18,8 @@ namespace Raytracer {
             Y,
             Z
         };
-        Plane(const Math::Vector3D &origin,  std::unique_ptr<IMaterial> material);
-        Plane(double pos, std::unique_ptr<IMaterial> material, const Axis &axis);
+        Plane(const Math::Vector3D &origin,  std::unique_ptr<IMaterial> material, const Transformations &transformations);
+        Plane(double pos, std::unique_ptr<IMaterial> material, const Transformations &transformations, const Axis &axis);
         ~Plane() = default;
 
         PrimitiveType getType(void) const override { return PrimitiveType::PLANE; };
