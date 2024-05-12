@@ -12,6 +12,7 @@
 #include "Scene/Materials/MaterialTexture/SphereTexture.hpp"
 #include "Scene/Materials/MaterialTexture/TriangleTexture.hpp"
 #include "Scene/Materials/MaterialTexture/PlaneTexture.hpp"
+#include "Scene/Materials/MaterialTexture/CubeTexture.hpp"
 
 namespace Raytracer
 {
@@ -107,6 +108,8 @@ namespace Raytracer
                                 material = std::make_unique<PlaneTexture>();
                             } else if (strcmp(entry, "TextureSphere") == 0) {
                                 material = std::make_unique<SphereTexture>();
+                            } else if (strcmp(entry, "TextureCube") == 0) {
+                                material = std::make_unique<CubeTexture>();
                             }
                             #ifdef BONUSCAMERA
                             material->setIsCamera(false);
@@ -120,7 +123,8 @@ namespace Raytracer
                 case MaterialType::TEXTURE:
                 case MaterialType::TEXTURE_PLANE:
                 case MaterialType::TEXTURE_SPHERE:
-                case MaterialType::TEXTURE_TRIANGLE: {
+                case MaterialType::TEXTURE_TRIANGLE:
+                case MaterialType::TEXTURE_CUBE: {
                     if (!std::filesystem::exists("assets/textures/local")) {
                         break;
                     }

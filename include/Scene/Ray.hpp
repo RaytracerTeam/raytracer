@@ -39,6 +39,8 @@ namespace Raytracer {
             RayHit(const RayHit &rhit);
             RayHit &operator=(const RayHit &ray);
 
+            void setRelativeHitPoint(Math::Vector3D relativeHitPt) { m_relativeHitPt = relativeHitPt; }
+
             double getDistance(void) const { return m_distance; }
             Math::Vector3D getHitPoint(void) const { return m_hitPt; }
             Math::Vector3D getRelativeHitPoint(void) const { return m_relativeHitPt; }

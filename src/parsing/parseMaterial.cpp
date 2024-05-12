@@ -11,6 +11,7 @@
 #include "Scene/Materials/MaterialTexture/SphereTexture.hpp"
 #include "Scene/Materials/MaterialTexture/TriangleTexture.hpp"
 #include "Scene/Materials/MaterialTexture/PlaneTexture.hpp"
+#include "Scene/Materials/MaterialTexture/CubeTexture.hpp"
 
 #include "Scene/Materials/MaterialCode/Checkerboard.hpp"
 
@@ -30,6 +31,8 @@ namespace Raytracer {
             }
             case PrimitiveType::PLANE:
                 return std::make_unique<PlaneTexture>(setting.lookup(CFG_PATH));
+            case PrimitiveType::CUBE:
+                return std::make_unique<CubeTexture>(setting.lookup(CFG_PATH));
             default:
                 return std::make_unique<MaterialTexture>(setting.lookup(CFG_PATH));
             }
@@ -42,6 +45,10 @@ namespace Raytracer {
                 return std::make_unique<SphereTexture>();
             case PrimitiveType::TRIANGLE:
                 return std::make_unique<TriangleTexture>();
+            case PrimitiveType::PLANE:
+                return std::make_unique<PlaneTexture>();
+            case PrimitiveType::CUBE:
+                return std::make_unique<CubeTexture>();
             default:
                 break;
             }

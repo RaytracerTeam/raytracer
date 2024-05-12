@@ -53,10 +53,11 @@ namespace Raytracer
             libconfig::Setting &materialSetting = setting.add(CFG_MATERIAL, libconfig::Setting::TypeGroup);
             switch (primitive->getMaterial()->getType()) {
             case MaterialType::SOLID: saveMaterialSolid(materialSetting, primitive); break;
+            case MaterialType::TEXTURE_SPHERE:
+            case MaterialType::TEXTURE_TRIANGLE:
+            case MaterialType::TEXTURE_PLANE:
+            case MaterialType::TEXTURE_CUBE:
             case MaterialType::TEXTURE: saveMaterialTexture(materialSetting, primitive); break;
-            case MaterialType::TEXTURE_SPHERE: saveMaterialTexture(materialSetting, primitive); break;
-            case MaterialType::TEXTURE_TRIANGLE: saveMaterialTexture(materialSetting, primitive); break;
-            case MaterialType::TEXTURE_PLANE: saveMaterialTexture(materialSetting, primitive); break;
             case MaterialType::CHECKERBOARD: saveMaterialCheckerboard(materialSetting, primitive); break;
             default:
                 break;
