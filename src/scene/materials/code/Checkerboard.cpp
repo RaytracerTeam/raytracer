@@ -22,7 +22,8 @@ namespace Raytracer {
         auto point = rayhit.getHitPoint();
 
         if ((int)(std::floor(point.getX() / m_factor)
-        + std::floor(point.getZ() / m_factor)) % 2 == 0)
+        + std::floor(point.getZ() / m_factor) + std::floor(point.getY() / m_factor)
+        ) % 2 == 0)
             return m_c1;
         else
             return m_c2;

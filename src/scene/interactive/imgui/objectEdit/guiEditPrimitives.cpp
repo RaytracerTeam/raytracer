@@ -136,19 +136,6 @@ namespace Raytracer
                         m_needRendering = true;
                     }
                 }
-                ImGui::Text("Deprecated:");
-                // Emissions
-                float emission = material->getEmission();
-                if (ImGui::SliderFloat("Emission", &emission, 0.0f, 2.0f)) {
-                    material->setEmission(emission);
-                    m_needRendering = true;
-                }
-                // Fuzz
-                float fuzz = material->getFuzzFactor();
-                if (ImGui::SliderFloat("Fuzz", &fuzz, 0.0f, 2.0f)) {
-                    material->setFuzzFactor(fuzz);
-                    m_needRendering = true;
-                }
                 ImGui::EndTabItem();
             }
 

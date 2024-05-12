@@ -25,7 +25,7 @@ namespace Raytracer {
             }
         ~TriangleTexture() = default;
 
-        MaterialType getType() const override { return MaterialType::TRIANGLE; }
+        MaterialType getType() const override { return MaterialType::TEXTURE_TRIANGLE; }
 
         Math::Vector3D getVT1() const { return m_vt1; }
         Math::Vector3D getVT2() const { return m_vt2; }
@@ -36,7 +36,6 @@ namespace Raytracer {
         void setVT3(const Math::Vector3D &vt3) { m_vt3 = vt3; }
 
         Color getColor(const RayHit &rayhit) const override final;
-        Color getColor(double u, double v) const override final;
     private:
         Math::Vector3D m_vt1 = Math::Vector3D(0, 0, 0);
         Math::Vector3D m_vt2 = Math::Vector3D(0, 1, 0);

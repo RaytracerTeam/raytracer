@@ -69,8 +69,6 @@ namespace Raytracer {
         #define CFG_SPECULAR "specular"
         #define CFG_SHININESS "shininess"
         #define CFG_REFLECTION "reflection"
-        #define CFG_FUZZ "fuzz"
-        #define CFG_EMISSION "emission"
         // Interactive
         #define CFG_INTERACTIVE "interactive"
         #define CFG_SPEED "speed"

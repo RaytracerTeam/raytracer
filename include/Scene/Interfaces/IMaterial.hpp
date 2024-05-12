@@ -19,13 +19,18 @@ namespace Raytracer {
         CODE, // algorithm
         TEXTURE,
         CHECKERBOARD,
-        TRIANGLE,
+        TEXTURE_SPHERE,
+        TEXTURE_TRIANGLE,
+        TEXTURE_PLANE,
         NONE
     };
     char const *const MaterialTypeStrings[] = {
         "Solid",
         "Code",
         "Texture",
+        "TextureSphere",
+        "TextureTriangle",
+        "TexturePlane",
         "Checkerboard",
         "None"
     };
@@ -40,8 +45,6 @@ namespace Raytracer {
         virtual double getReflection(void) const = 0;
         virtual double getTransparency(void) const = 0;
         virtual double getRefraction(void) const = 0;
-        virtual double getFuzzFactor(void) const = 0;
-        virtual double getEmission(void) const = 0;
         virtual float getDiffuse(void) const = 0;
         virtual float getSpecular(void) const = 0;
         virtual float getShininess(void) const = 0;
@@ -49,8 +52,6 @@ namespace Raytracer {
         virtual void setReflection(double reflection) = 0;
         virtual void setTransparency(double transparency) = 0;
         virtual void setRefraction(double refraction) = 0;
-        virtual void setFuzzFactor(double fuzz) = 0;
-        virtual void setEmission(double emission) = 0;
         virtual void setDiffuse(float diffuse) = 0;
         virtual void setSpecular(float specular) = 0;
         virtual void setShininess(float shininess) = 0;

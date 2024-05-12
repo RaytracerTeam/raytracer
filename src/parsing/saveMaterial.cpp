@@ -25,6 +25,12 @@ namespace Raytracer
 
         static void saveMaterialTexture(libconfig::Setting &setting, APrimitive *primitive)
         {
+            #ifdef BONUSCAMERA
+            if (primitive->getMaterial()->isCamera()) {
+                setting.add(CFG_TYPE, libconfig::Setting::TypeString) = CFG_CAMERA;
+                return;
+            }
+            #endif
             setting.add(CFG_TYPE, libconfig::Setting::TypeString) = CFG_MATERIAL_TEXTURE;
             MaterialTexture *materialTexture = static_cast<MaterialTexture *>(primitive->getMaterial().get());
             setting.add(CFG_PATH, libconfig::Setting::TypeString) = materialTexture->getPathname();
@@ -48,14 +54,13 @@ namespace Raytracer
             switch (primitive->getMaterial()->getType()) {
             case MaterialType::SOLID: saveMaterialSolid(materialSetting, primitive); break;
             case MaterialType::TEXTURE: saveMaterialTexture(materialSetting, primitive); break;
+            case MaterialType::TEXTURE_SPHERE: saveMaterialTexture(materialSetting, primitive); break;
+            case MaterialType::TEXTURE_TRIANGLE: saveMaterialTexture(materialSetting, primitive); break;
+            case MaterialType::TEXTURE_PLANE: saveMaterialTexture(materialSetting, primitive); break;
             case MaterialType::CHECKERBOARD: saveMaterialCheckerboard(materialSetting, primitive); break;
             default:
                 break;
             }
-            #ifdef BONUSCAMERA
-            if (primitive->getMaterial()->isCamera())
-                materialSetting.add(CFG_TYPE, libconfig::Setting::TypeString) = CFG_CAMERA;
-            #endif
 
             std::unique_ptr<IMaterial> &material = primitive->getMaterial();
             if (material) {
@@ -65,8 +70,6 @@ namespace Raytracer
                 materialSetting.add(CFG_REFLECTION, libconfig::Setting::TypeFloat) = material->getReflection();
                 materialSetting.add(CFG_TRANSPARENCY, libconfig::Setting::TypeFloat) = material->getTransparency();
                 materialSetting.add(CFG_REFRACTION, libconfig::Setting::TypeFloat) = material->getRefraction();
-                materialSetting.add(CFG_FUZZ, libconfig::Setting::TypeFloat) = material->getFuzzFactor();
-                materialSetting.add(CFG_EMISSION, libconfig::Setting::TypeFloat) = material->getEmission();
             }
         }
     } // namespace Parsing

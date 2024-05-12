@@ -46,7 +46,7 @@ namespace Raytracer
             }
             break;
         }
-        case MaterialType::TRIANGLE: {
+        case MaterialType::TEXTURE_TRIANGLE: {
             TriangleTexture *triangleTexture = static_cast<TriangleTexture *>(material.get());
             // VT1
             float *vt1 = triangleTexture->getVT1();

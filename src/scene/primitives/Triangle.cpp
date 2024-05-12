@@ -61,6 +61,8 @@ namespace Raytracer {
 
     Math::Vector3D Triangle::getBarycentricCoordinates(const Math::Vector3D &point) const
     {
+        if (this->getMaterial()->getType() != MaterialType::TEXTURE_TRIANGLE)
+            return Math::Vector3D(0, 0, 0);
         Math::Vector3D edge1 = m_v1 - m_origin;
         Math::Vector3D edge2 = m_v2 - m_origin;
         Math::Vector3D edge3 = point - m_origin;

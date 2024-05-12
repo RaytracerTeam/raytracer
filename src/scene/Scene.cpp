@@ -280,7 +280,7 @@ namespace Raytracer {
                 Math::Vector3D(0, 0, 0), primMaterial, primColor);
             if (primMaterial->getSpecular() > 0) {
                 specularColor += primMaterial->getSpecular(dLight.get(),
-                    rhitPrim.getNormal(), dLight->getDirection(), ray);
+                    rhitPrim.getNormal(), dLight->getDirection().normalize(), ray);
             }
         }
 

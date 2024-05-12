@@ -16,8 +16,6 @@ namespace Raytracer {
             const std::string getTypeString(void) const override { return MaterialTypeStrings[static_cast<int>(getType())]; };
 
             double getReflection(void) const override { return m_reflection; }
-            double getEmission(void) const override { return m_emission; }
-            double getFuzzFactor(void) const override { return m_fuzz; }
             double getTransparency(void) const override { return m_transparency; }
             double getRefraction(void) const override { return m_refractionIndex; }
             float getDiffuse(void) const override { return m_diffuse; }
@@ -25,8 +23,6 @@ namespace Raytracer {
             float getShininess(void) const override { return m_shininess; }
 
             void setReflection(double reflection) override { m_reflection = reflection; }
-            void setEmission(double emission) override { m_emission = emission; }
-            void setFuzzFactor(double fuzz) override { m_fuzz = fuzz; }
             void setTransparency(double transparency) override { m_transparency = transparency; }
             void setRefraction(double refraction) override { m_refractionIndex = refraction; }
             void setDiffuse(float diffuse) override { m_diffuse = diffuse; }
@@ -57,9 +53,5 @@ namespace Raytracer {
             #ifdef BONUSCAMERA
             bool m_isCamera = false;
             #endif
-
-            // todo : remove these one
-            double m_emission = 0;
-            double m_fuzz = 0;
     };
 } // namespace Raytracer
