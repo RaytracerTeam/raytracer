@@ -10,6 +10,7 @@
 #include "Scene/Materials/MaterialSolid.hpp"
 #include "Scene/Materials/MaterialCode/Checkerboard.hpp"
 #include "Scene/Materials/MaterialTexture/TriangleTexture.hpp"
+#include "Scene/Materials/MaterialTexture/PlaneTexture.hpp"
 
 namespace Raytracer
 {
@@ -67,6 +68,17 @@ namespace Raytracer
             if (ImGui::SliderFloat3("VT3", vt3, 0, 1, "%.2f",
             ImGuiSliderFlags_AlwaysClamp)) {
                 triangleTexture->setVT3(vt3);
+                m_needRendering = true;
+            }
+            break;
+        }
+        case MaterialType::TEXTURE_PLANE: {
+            PlaneTexture *planeTexture = static_cast<PlaneTexture *>(material.get());
+            // Size
+            float size = planeTexture->getFactor();
+            if (ImGui::SliderFloat("Size", &size, 0.01f, 1000.0f, "%.2f",
+            ImGuiSliderFlags_Logarithmic)) {
+                planeTexture->setFactor(size);
                 m_needRendering = true;
             }
             break;
