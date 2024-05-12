@@ -108,6 +108,9 @@ namespace Raytracer
                             } else if (strcmp(entry, "TextureSphere") == 0) {
                                 material = std::make_unique<SphereTexture>();
                             }
+                            #ifdef BONUSCAMERA
+                            material->setIsCamera(false);
+                            #endif
                             m_needRendering = true;
                         }
                     }
@@ -125,12 +128,15 @@ namespace Raytracer
                     ImGui::SetNextItemWidth(300);
                     MaterialTexture *materialTexture = static_cast<MaterialTexture *>(material.get());
                     if (ImGui::BeginCombo("Scene Path", materialTexture->getPathname().c_str())) {
-                        for (const auto &entry : std::filesystem::directory_iterator("assets/textures/local"))
+                        for (const auto &entry : std::filesystem::directory_iterator("assets/textures/local")) {
                             if (ImGui::Selectable(entry.path().filename().string().c_str())) {
                                 materialTexture->setTexture(entry.path().string());
+                                #ifdef BONUSCAMERA
+                                materialTexture->setIsCamera(false);
+                                #endif
                                 m_needRendering = true;
                             }
-                        
+                        }
                         #ifdef BONUSCAMERA
                         if (ImGui::Selectable("Camera")) {
                             materialTexture->setIsCamera(true);
