@@ -86,6 +86,9 @@ namespace Raytracer {
         void setRColorToImg(const std::vector<Raytracer::Color> &vectorRes);
         void handleEvents(void);
 
+        // void parseInteractive(const std::string &filename);
+        // void saveInteractive(const std::string &filename);
+
         // -- ImGui --
         #ifdef BONUS
         void setupImageSize(void);
@@ -138,22 +141,27 @@ namespace Raytracer {
         float m_framerate = 0;
 
         // ImGui
+        #ifdef BONUS
         sf::Clock m_deltaClock;
-        size_t m_renderResolution;
         char m_saveFileBuf[FILE_BUF_SIZE] = "scenes/";
         char m_skyboxPathBuf[FILE_BUF_SIZE] = DEFAULT_SKYBOX;
         char m_loadFileBuf[FILE_BUF_SIZE] = "scenes/";
-        bool m_isWriting = false;
         bool m_showDebug = false;
-        bool m_addToCurrentScene = false;
         int m_selectedObject = -1;
         ObjectSelection m_objectSelection = ObjectSelection::PRIMITIVE;
-        size_t m_imageHeight;
-        size_t m_imageWidth;
         size_t m_leftPaneWidth;
-        bool m_alwaysRender = false;
         bool m_fullscreen = false;
         bool m_selectPrimitiveTab = false;
+        bool m_saveObjAsPrimitives = false;
+        // libconfig::Config m_cfg;
+        // bool m_objFound = false;
+        #endif
+        bool m_addToCurrentScene = false;
+        bool m_isWriting = false;
+        size_t m_renderResolution;
+        size_t m_imageHeight;
+        size_t m_imageWidth;
+        bool m_alwaysRender = false;
 
         // Storing the result of the render
         std::unique_ptr<sf::Uint8 []> m_lastRender;

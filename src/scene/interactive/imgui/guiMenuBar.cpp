@@ -51,6 +51,8 @@ namespace Raytracer
                     Parsing::saveScene(*m_scene, m_saveFileBuf);
                     ImGui::CloseCurrentPopup();
                 }
+                ImGui::SameLine(0, 20);
+                ImGui::Checkbox("Save OBJ as Primitives (WIP)", &m_saveObjAsPrimitives);
                 ImGui::EndMenu();
             }
 

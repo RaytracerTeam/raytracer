@@ -53,9 +53,26 @@ namespace Raytracer {
             Math::Vector3D normal = edge1.cross(edge2);
             if (normal.dot(getTMatrix() * ray.getDirection()) > 0)
                 normal = -normal;
-            return RayHit(t, hit, normal.normalize());
+            return RayHit(t, hit, normal.normalize(), getBarycentricCoordinates(hit));
         }
 
         return std::nullopt;
+    }
+
+    Math::Vector3D Triangle::getBarycentricCoordinates(const Math::Vector3D &point) const
+    {
+        Math::Vector3D edge1 = m_v1 - m_origin;
+        Math::Vector3D edge2 = m_v2 - m_origin;
+        Math::Vector3D edge3 = point - m_origin;
+        float d00 = edge1.dot(edge1);
+        float d01 = edge1.dot(edge2);
+        float d11 = edge2.dot(edge2);
+        float d20 = edge3.dot(edge1);
+        float d21 = edge3.dot(edge2);
+        float denom = d00 * d11 - d01 * d01;
+        float w0 = (d11 * d20 - d01 * d21) / denom;
+        float w1 = (d00 * d21 - d01 * d20) / denom;
+        float w2 = 1.0f - w0 - w1;
+        return Math::Vector3D(w0, w1, w2);
     }
 } // namespace Raytracer

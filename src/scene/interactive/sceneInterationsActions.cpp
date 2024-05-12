@@ -262,7 +262,10 @@ namespace Raytracer
             Parsing::saveScene(*m_scene, TEMP_CFG_FILE);
             m_window.close();
             break;
+        #ifdef BONUS
         case SceneReleaseActions::SAVE_CURRENT_AND_EXIT:
+            if (strcmp(m_loadFileBuf, "scenes/") == 0)
+                strcpy(m_loadFileBuf, TEMP_CFG_FILE);
             Parsing::saveScene(*m_scene, m_loadFileBuf);
             m_window.close();
             break;
@@ -275,15 +278,12 @@ namespace Raytracer
             break;
         case SceneReleaseActions::TOGGLE_FULLSCREEN:
             m_fullscreen = !m_fullscreen;
-            #ifdef BONUS
             setupImageSize();
-            #endif
             break;
         case SceneReleaseActions::REMOVE_OBJECT:
-            #ifdef BONUS
             removeSelectedObject();
-            #endif
             break;
+        #endif
         case SceneReleaseActions::TOGGLE_MOUSE:
             m_useMouse = !m_useMouse;
             if (m_useMouse) {

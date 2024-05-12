@@ -10,24 +10,41 @@
 #include "Scene/Materials/MaterialSolid.hpp"
 #include "Scene/Materials/MaterialTexture/SphereTexture.hpp"
 #include "Scene/Materials/MaterialCode/Checkerboard.hpp"
-#include "Scene/Materials/MaterialTexture/CameraTexture.hpp"
+#include "Scene/Materials/MaterialTexture/TriangleTexture.hpp"
 
 namespace Raytracer {
-    namespace Parsing
-    {
+    namespace Parsing {
         static std::unique_ptr<MaterialTexture> parseMaterialTexture(const libconfig::Setting &setting, PrimitiveType primType)
         {
-            if (!setting.exists(CFG_PATH))
-                return std::make_unique<MaterialTexture>("");
+            // if (!setting.exists(CFG_PATH))
+            //     return std::make_unique<MaterialTexture>("");
             switch (primType) {
             case PrimitiveType::SPHERE:
                 return std::make_unique<SphereTexture>(setting.lookup(CFG_PATH));
+            case PrimitiveType::TRIANGLE: {
+                if (!setting.exists(CFG_PATH))
+                    return std::make_unique<TriangleTexture>();
+                return std::make_unique<TriangleTexture>(setting.lookup(CFG_PATH));
+            }
             default:
                 return std::make_unique<MaterialTexture>(setting.lookup(CFG_PATH));
             }
         }
 
-        std::unique_ptr<IMaterial> parseMaterial(const libconfig::Setting &setting, PrimitiveType primType) {
+        static std::unique_ptr<MaterialTexture> parseMaterialCamera(const libconfig::Setting &setting, PrimitiveType primType)
+        {
+            switch (primType) {
+            case PrimitiveType::SPHERE:
+                return std::make_unique<SphereTexture>();
+            case PrimitiveType::TRIANGLE:
+                return std::make_unique<TriangleTexture>();
+            default:
+                break;
+            }
+        }
+
+        std::unique_ptr<IMaterial> parseMaterial(const libconfig::Setting &setting,
+        PrimitiveType primType) {
             if (!setting.exists(CFG_MATERIAL))
                 return std::make_unique<MaterialSolid>(Color(1., 0, 1));
             libconfig::Setting &materialSetting = setting.lookup("material");
@@ -49,7 +66,10 @@ namespace Raytracer {
                     parseFloat(materialSetting, CFG_SIZE, 1.0));
             }
             else if (materialType == CFG_CAMERA) {
-                material = std::make_unique<CameraTexture>();
+                material = parseMaterialCamera(materialSetting, primType);
+                #ifdef BONUSCAMERA
+                material->setIsCamera(true);
+                #endif
             }
             else {
                 return std::make_unique<MaterialSolid>(Color(1., 0, 1));
@@ -69,9 +89,6 @@ namespace Raytracer {
                 material->setTransparency(parseFloat(materialSetting, CFG_TRANSPARENCY, 0.0));
             if (materialSetting.exists(CFG_REFRACTION))
                 material->setRefraction(parseFloat(materialSetting, CFG_REFRACTION, 1.3));
-
-            if (materialSetting.exists(CFG_HAS_PHONG))
-                material->setHasPhong(materialSetting.lookup(CFG_HAS_PHONG));
 
             if (materialSetting.exists(CFG_FUZZ))
                 material->setFuzzFactor(parseFloat(materialSetting, CFG_FUZZ, 0.3));

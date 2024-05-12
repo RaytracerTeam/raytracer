@@ -15,6 +15,11 @@ namespace Raytracer {
         setTexture(pathname);
     }
 
+    MaterialTexture::MaterialTexture(std::shared_ptr<sf::Image> image)
+        : m_image(image)
+    {
+    }
+
     void MaterialTexture::setTexture(const std::string &pathname)
     {
         if (m_image.get() == nullptr)
@@ -22,7 +27,6 @@ namespace Raytracer {
         if (!m_image->loadFromFile(pathname))
             throw Error("Texture can't be loaded", "MaterialTexture::setTexture");
         m_pathname = pathname;
-        m_hasImage = true;
     }
 
     /* todo : implement */

@@ -35,6 +35,7 @@ assets/obj/local/*.obj
 assets/obj/local/*.png
 assets/textures/local/*.jpg
 assets/textures/local/*.png
+assets/obj/local/*
 
 scenes/local/*.cfg
 scenes/quick_save.cfg

@@ -9,10 +9,6 @@
 #include "Scene/Materials/MaterialSolid.hpp"
 #include "Scene/Lights/PointLight.hpp"
 
-#ifdef BONUSCAMERA
-#include "Scene/Materials/MaterialTexture/CameraTexture.hpp"
-#endif
-
 #include <iostream>
 
 namespace Raytracer {
@@ -82,7 +78,7 @@ namespace Raytracer {
 
             #ifdef BONUSCAMERA
             for (auto &primitive : scene->getPrimitives()) {
-                if (primitive->getMaterial()->getType() == MaterialType::CAMERA) {
+                if (primitive->getMaterial()->isCamera()) {
                     MaterialTexture *cameraTexture = static_cast<MaterialTexture *>(primitive->getMaterial().get());
                     cameraTexture->setImage(scene->getRealCamera().getImage());
                 }
@@ -93,11 +89,10 @@ namespace Raytracer {
         {
             parseFile(scene, file);
         }
-        void parse(std::unique_ptr<Scene> &scene, const std::vector<std::string_view> &inputFiles)
+        void parse(std::unique_ptr<Scene> &scene, const std::vector<std::string_view> &files)
         {
-            for (const auto& file : inputFiles) {
+            for (const auto &file : files)
                 parseFile(scene, file);
-            }
         }
     } // namespace Parsing
 } // namespace Raytracer

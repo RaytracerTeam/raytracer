@@ -15,6 +15,8 @@ namespace Raytracer
 {
     void Parsing::saveTriangle(libconfig::Setting &list, Triangle *triangle)
     {
+        if (triangle->isPartOfObj())
+            return;
         libconfig::Setting &setting = list.add(libconfig::Setting::TypeGroup);
 
         savePos(setting, triangle->getOrigin());

@@ -137,12 +137,6 @@ namespace Raytracer
                     }
                 }
                 ImGui::Text("Deprecated:");
-                // Phong
-                bool hasPhong = material->hasPhong();
-                if (ImGui::Checkbox("Phong", &hasPhong)) {
-                    material->setHasPhong(hasPhong);
-                    m_needRendering = true;
-                }
                 // Emissions
                 float emission = material->getEmission();
                 if (ImGui::SliderFloat("Emission", &emission, 0.0f, 2.0f)) {

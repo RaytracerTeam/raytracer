@@ -5,11 +5,9 @@
 ** SceneInteraction.cpp
 */
 
-#include "Scene/Interactive/CameraInteractive.hpp"
 #include "Scene/Interactive/SceneInteractive.hpp"
-#include <cstring>
-
 #include "Parsing/Parsing.hpp"
+
 #include <cstring>
 #include <thread>
 
@@ -27,11 +25,12 @@ namespace Raytracer {
         m_scene->updatePrimitives();
         m_alwaysRender = m_scene->getAlwaysRender();
 
+        #ifdef BONUS
         if (inputFiles.size() > 0)
             strcpy(m_loadFileBuf, inputFiles[0].data());
+        #endif
 
         sf::Vector2u windowSize;
-        sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
 
         #ifdef BONUS
             #ifdef MACOSTONIO
@@ -46,8 +45,11 @@ namespace Raytracer {
         #endif
 
         m_window.create(sf::VideoMode(windowSize.x, windowSize.y), title);
+        #ifndef MACOSTONIO
+        sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
         m_window.setPosition(sf::Vector2i(desktop.width / 2, desktop.height / 2)
             - sf::Vector2i(windowSize.x / 2, windowSize.y / 2));
+        #endif
 
         #ifdef BONUS
             if (!ImGui::SFML::Init(m_window))
@@ -82,7 +84,6 @@ namespace Raytracer {
     void SceneInteractive::handleEvents(void)
     {
         sf::Event event;
-
         if (m_isWriting)
             resetActions();
         while (m_window.pollEvent(event)) {
@@ -117,6 +118,7 @@ namespace Raytracer {
                     m_useSimpleMouse = true;
                     m_lastMousePos = sf::Mouse::getPosition();
                 }
+                #ifdef BONUS
                 // Select primitive by aiming at it with the center of the screen
                 else if (event.mouseButton.button == sf::Mouse::Left && (m_useMouse || m_useSimpleMouse)) {
                     const IShape *shape = m_scene->getPrimitiveHit(sf::Vector2i(
@@ -134,6 +136,7 @@ namespace Raytracer {
                         }
                     }
                 }
+                #endif
             }
         }
         handleMouse();
@@ -153,7 +156,8 @@ namespace Raytracer {
     {
         if (!m_addToCurrentScene)
             m_scene->reset();
-        Parsing::parse(m_scene, {filename});
+        Parsing::parse(m_scene, filename);
+        // parseInteractive(filename);
         int i = 0;
         for (const auto &primitive : m_scene->getPrimitives()) {
             primitive->setID(++i);
