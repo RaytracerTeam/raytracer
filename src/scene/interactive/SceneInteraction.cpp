@@ -11,9 +11,6 @@
 #include <cstring>
 #include <thread>
 
-//todo : remove this when camera implementation done
-#include "Scene/Materials/MaterialTexture/SphereTexture.hpp"
-
 namespace Raytracer {
     SceneInteractive::SceneInteractive(Dimension &dimension, const std::string &title,
         const std::vector<std::string_view> &inputFiles)
