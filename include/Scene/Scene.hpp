@@ -84,11 +84,11 @@ namespace Raytracer {
         void reset(void);
 
         void showCurrentRenderedLine(void);
-        const IShape *getPrimitiveHit(sf::Vector2i mousePos) const;
+        std::optional<const IShape *> getPrimitiveHit(sf::Vector2i mousePos) const;
 
         void killObjects(void);
         Color getDiffuseColor(const Ray &lightRay, const RayHit &rhitPrim,
-            const ILight *light, const Math::Vector3D &lightOrigin,
+            const ILight &light, const Math::Vector3D &lightOrigin,
             const std::unique_ptr<IMaterial> &primMaterial, const Color &primColor) const;
         #ifdef BONUSCAMERA
         void initRealCamera(void);
@@ -97,9 +97,8 @@ namespace Raytracer {
         #endif
 
     private:
-        Color castRayColor(const Ray &ray, const IPrimitive *primHit, const RayHit &rhitPrim) const;
+        Color castRayColor(const Ray &ray, const IPrimitive &primHit, const RayHit &rhitPrim) const;
         Color castRay(const Ray &ray) const;
-        double shadowPenombra(const Ray &lightRay, const IPrimitive *primHit, const PointLight &pointLight) const;
         bool hit(const std::optional<RayHit> &rayHit, const Math::Vector3D &objOrigin, const Math::Vector3D &objTarget) const;
 
         std::vector<std::unique_ptr<IPrimitive>> m_primitives;
