@@ -82,6 +82,7 @@ ifeq ($(UNAME_S),Darwin)
 	CFLAGS += $(MACSFMLINCLUDE) -DMACOSTONIO
 	LDFLAGS += $(MACSFMLLIB)
 else
+	CFLAGS += $(shell pkg-config --cflags opencv4)
 	LDBONUSFLAGS += -lGL
 endif
 
