@@ -31,6 +31,9 @@ namespace Raytracer {
         #endif
 
         sf::Vector2u windowSize;
+        #ifndef MACOSTONIO
+        sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
+        #endif
 
         #ifdef BONUS
             #ifdef MACOSTONIO
@@ -46,7 +49,6 @@ namespace Raytracer {
 
         m_window.create(sf::VideoMode(windowSize.x, windowSize.y), title);
         #ifndef MACOSTONIO
-        sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
         m_window.setPosition(sf::Vector2i(desktop.width / 2, desktop.height / 2)
             - sf::Vector2i(windowSize.x / 2, windowSize.y / 2));
         #endif
