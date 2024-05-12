@@ -106,7 +106,12 @@ namespace Raytracer
                         if (std::filesystem::exists("assets/skyboxes/local"))
                             for (const auto &entry : std::filesystem::directory_iterator("assets/skyboxes/local"))
                                 addSelectableSkybox(entry);
-
+                        #ifdef BONUSCAMERA
+                        if (ImGui::Selectable("Use camera")) {
+                            m_scene->getSkybox().getTexture()->setImage(m_scene->getRealCamera().getImage());
+                            m_needRendering = true;
+                        }
+                        #endif
                         ImGui::EndCombo();
                     }
                     bool useSphere = skybox.getSkyboxUVTypee() == SPHERE;
