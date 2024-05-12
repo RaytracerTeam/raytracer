@@ -15,7 +15,7 @@ namespace Raytracer {
         if (m_image.get() == nullptr)
             return Color(1., 0, 1);
 
-        auto d = ray.getHitPoint();
+        // auto d = ray.getHitPoint();
         float u = 2;
         float v = 2;
 
