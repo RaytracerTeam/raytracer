@@ -23,8 +23,6 @@ scores
 
 .vscode/c_cpp_properties.json
 a.out
-test.cpp
-test
 
 imgui.ini
 todo
