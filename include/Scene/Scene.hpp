@@ -115,7 +115,7 @@ namespace Raytracer {
 
         Skybox m_skybox = Skybox(std::make_unique<MaterialTexture>(DEFAULT_SKYBOX), SPHERE);
         size_t m_maxRayBounces = 5;
-        double m_maxDropShadowsRay = 1;
+        // double m_maxDropShadowsRay = 1;
 
         bool m_renderLights = false;
 
