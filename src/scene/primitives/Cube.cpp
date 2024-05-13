@@ -135,7 +135,7 @@ namespace Raytracer {
             hitReturn = getNormal(t1, hit, faceOut);
         }
 
-        hitReturn.setRelativeHitPoint(hitReturn.getHitPoint() - m_origin);
+        hitReturn.setRelativeHitPoint((hitReturn.getHitPoint() - m_origin) / (m_v1 - m_origin));
 
         return hitReturn;
     }
