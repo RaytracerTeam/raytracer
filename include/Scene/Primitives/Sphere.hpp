@@ -17,7 +17,6 @@ namespace Raytracer {
             : APrimitive(origin, std::move(material), transformations)
             , m_radius(radius)
         {
-            updateTransformations();
         }
         ~Sphere() = default;
 
@@ -29,17 +28,7 @@ namespace Raytracer {
         BoundingBox getBoundingBox(void) const override;
         std::optional<RayHit> hit(const Ray &ray) const override;
 
-        void setOrigin(const Math::Vector3D &v) override
-        {
-            m_origin = v;
-            updateTransformations();
-        }
-
-        void updateTransformations(void) override;
-
     private:
         double m_radius;
-        Math::Vector3D m_bckOrigin;
-        Math::Vector3D m_fwdOrigin;
     };
 } // namespace Raytracer
