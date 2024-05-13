@@ -9,7 +9,6 @@
 
 #include <array>
 #include <cstdint>
-#include <stddef.h>
 
 #include "Vector3D.hpp"
 
@@ -21,10 +20,7 @@ namespace Raytracer {
             ~Matrix44() = default;
             Matrix44(const Matrix44 &m);
             Matrix44(std::array<std::array<double, 4>, 4> arr);
-            Matrix44(double rotX, double rotY, double rotZ);
             Matrix44 &operator=(const Matrix44 &m);
-
-            Math::Angle3D getRot() const { return m_rot; }
 
             double operator()(uint8_t x, uint8_t y) const
             {
@@ -44,12 +40,10 @@ namespace Raytracer {
             Vector3D operator^(const Vector3D &src) const;
             Vector3D operator*(const std::array<double, 4> &src) const;
 
-
             Matrix44 transpose() const;
             Matrix44 inverse() const;
         private:
             std::array<std::array<double, 4>, 4> m_arr;
-            Math::Angle3D m_rot;
         };
     } // namespace Math
 
