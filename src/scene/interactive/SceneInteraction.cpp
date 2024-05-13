@@ -108,9 +108,20 @@ namespace Raytracer {
                 applyKeyReleasedActions(event.key.code);
             if (!m_isWriting && m_interacCam.handleInput(event, m_actions)) {
             }
-            if (event.type == sf::Event::MouseButtonReleased
-            && event.mouseButton.button == sf::Mouse::Right) {
-                m_useSimpleMouse = false;
+            if (event.type == sf::Event::MouseButtonReleased) {
+                #ifdef BONUS
+                if (m_selectedPrimitive) {
+                    IMaterial *mat = m_selectedPrimitive->getMaterial().get();
+                    mat->setSpecular(m_selectedPrimitiveSpecular);
+                    mat->setShininess(m_selectedPrimitiveShininess);
+                    mat->setTransparency(m_selectedPrimitiveTransparency);
+                    m_selectedPrimitive = nullptr;
+                    m_needRendering = true;
+                }
+                #endif
+                if (event.mouseButton.button == sf::Mouse::Right) {
+                    m_useSimpleMouse = false;
+                }
             }
             if (event.type == sf::Event::MouseButtonPressed) {
                 if (event.mouseButton.button == sf::Mouse::Right) {
@@ -127,8 +138,17 @@ namespace Raytracer {
                         int i = 0;
                         for (auto &prim : m_scene->getPrimitives()) {
                             if (prim->getID() == (*shape)->getID()) {
+                                m_selectedPrimitive = prim.get();
+                                IMaterial *mat = prim->getMaterial().get();
+                                m_selectedPrimitiveSpecular = mat->getSpecular();
+                                m_selectedPrimitiveShininess = mat->getShininess();
+                                m_selectedPrimitiveTransparency = mat->getTransparency();
+                                mat->setSpecular(2);
+                                mat->setShininess(30);
+                                mat->setTransparency(0.3);
                                 m_selectedObject = i;
                                 m_selectPrimitiveTab = true;
+                                m_needRendering = true;
                                 break;
                             }
                             i++;

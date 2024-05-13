@@ -154,6 +154,10 @@ namespace Raytracer {
         bool m_fullscreen = false;
         bool m_selectPrimitiveTab = false;
         bool m_saveObjAsPrimitives = false;
+        IPrimitive *m_selectedPrimitive = nullptr;
+        float m_selectedPrimitiveSpecular;
+        float m_selectedPrimitiveShininess;
+        float m_selectedPrimitiveTransparency;
         // libconfig::Config m_cfg;
         // bool m_objFound = false;
         #endif

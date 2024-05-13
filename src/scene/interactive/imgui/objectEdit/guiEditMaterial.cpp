@@ -165,7 +165,7 @@ namespace Raytracer
                 }
                 // Specular
                 float specular = material->getSpecular();
-                if (ImGui::SliderFloat("Specular", &specular, 0.0f, 1.0f)) {
+                if (ImGui::SliderFloat("Specular", &specular, 0.0f, 1.5f)) {
                     material->setSpecular(specular);
                     m_needRendering = true;
                 }

@@ -79,7 +79,7 @@ UNAME_S := $(shell uname -s)
 
 ifeq ($(UNAME_S),Darwin)
 	LDBONUSFLAGS += -framework OpenGL
-	CFLAGS += $(MACSFMLINCLUDE) -DMACOSTONIO
+	CFLAGS += $(MACSFMLINCLUDE) -DMACOSTONIO $(IMGUIFLAGS)
 	LDFLAGS += $(MACSFMLLIB)
 else
 	CFLAGS += $(shell pkg-config --cflags opencv4)
