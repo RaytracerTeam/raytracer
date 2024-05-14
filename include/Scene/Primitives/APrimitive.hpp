@@ -29,7 +29,7 @@ namespace Raytracer {
         {
             m_material = std::move(material);
         }
-        void setIsShown(bool isShown) override final { m_isShown = isShown; }
+        void setIsShown(bool isShown) override { m_isShown = isShown; }
 
         const Math::Vector3D &getOrigin(void) const override final { return m_origin; }
         const Math::Matrix44 &getTMatrix(void) const override final { return m_mat; }

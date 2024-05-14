@@ -27,6 +27,7 @@ namespace Raytracer {
         const Math::Vector3D &getVec1() const { return m_v1; }
         const Math::Vector3D &getVec2() const { return m_v2; }
         bool isPartOfObj() const { return m_isPartOfObj; }
+        void setIsPartOfObj(bool isPartOfObj) { m_isPartOfObj = isPartOfObj; }
 
         void setVec1(const Math::Vector3D &v1) { m_v1 = v1; }
         void setVec2(const Math::Vector3D &v2) { m_v2 = v2; }

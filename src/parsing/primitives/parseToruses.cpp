@@ -7,7 +7,6 @@
 
 #include "Parsing/Parsing.hpp"
 
-#include "Scene/Materials/MaterialSolid.hpp"
 #include "Scene/Primitives/Torus.hpp"
 
 void Raytracer::Parsing::parseToruses(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene)

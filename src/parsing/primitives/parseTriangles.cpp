@@ -7,7 +7,6 @@
 
 #include "Parsing/Parsing.hpp"
 
-#include "Scene/Materials/MaterialSolid.hpp"
 #include "Scene/Primitives/Triangle.hpp"
 
 void Raytracer::Parsing::parseTriangles(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene)

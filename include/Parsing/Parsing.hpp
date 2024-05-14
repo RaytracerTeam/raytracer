@@ -30,7 +30,7 @@ namespace Raytracer {
         #define CFG_INTENSITY "intensity"
         // Camera
         #define CFG_CAMERA "camera"
-        #define CFG_OBJ "obj"
+        #define CFG_OBJ "objs"
         #define CFG_FOV "fov"
         #define CFG_RESOLUTION "resolution"
         // Primitives
@@ -109,8 +109,9 @@ namespace Raytracer {
         void parseOptimization(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
         void parseCameras(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
         void parseLights(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
-        void parseObj(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
+        void parseObjs(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
 
+        void saveVector3D(libconfig::Setting &setting, const std::string &key, const Math::Vector3D vec);
         void savePos(libconfig::Setting &setting, const Math::Vector3D pos);
         void saveColor(libconfig::Setting &setting, const Color color);
         void saveMaterial(libconfig::Setting &setting, APrimitive *primitive);
@@ -120,6 +121,7 @@ namespace Raytracer {
         void saveOptimization(const Scene &scene, libconfig::Setting &root);
         void saveCameras(const Scene &scene, libconfig::Setting &root);
         void saveLights(const Scene &scene, libconfig::Setting &root);
+        void saveObjs(const Scene &scene, libconfig::Setting &root);
         void savePrimitives(const Scene &scene, libconfig::Setting &root);
         void saveSphere(libconfig::Setting &list, Sphere *sphere);
         void saveCylinder(libconfig::Setting &list, Cylinder *cylinder);

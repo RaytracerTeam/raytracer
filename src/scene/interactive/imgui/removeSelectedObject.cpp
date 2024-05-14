@@ -40,10 +40,15 @@ namespace Raytracer
             }
             break;
         }
-        case ObjectSelection::CAMERA:
+        case ObjectSelection::CAMERA: {
             m_scene->removeCamera(m_selectedObject);
             setupCamera();
             break;
+        }
+        case ObjectSelection::OBJ: {
+            m_scene->removeObj(m_selectedObject);
+            break;
+        }
         default:
             break;
         }

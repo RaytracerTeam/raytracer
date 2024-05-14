@@ -47,7 +47,8 @@ namespace Raytracer {
     enum class ObjectSelection {
         PRIMITIVE,
         LIGHT,
-        CAMERA
+        CAMERA,
+        OBJ
     };
 
     class SceneInteractive {
@@ -101,8 +102,10 @@ namespace Raytracer {
         void customEditPrimitives(std::unique_ptr<IPrimitive> &primitive);
         void customEditLights(ILight *light);
         void customEditMaterial(std::unique_ptr<IMaterial> &material);
+        void changeMaterialType(std::unique_ptr<IMaterial> &material);
         void guiEditLights(void);
         void guiEditPrimitives(void);
+        void guiEditObjs(void);
         void guiEditMaterial(std::unique_ptr<IMaterial> &material);
         void guiEditCameras(void);
         void guiAddPrimitive(void);
