@@ -6,6 +6,7 @@
 */
 
 #include "Raytracer.hpp"
+#include "Scene/Animation.hpp"
 #include "Parsing/Parsing.hpp"
 #include "Scene/Interactive/SceneInteractive.hpp"
 #include "Scene/Scene.hpp"
@@ -41,7 +42,7 @@ namespace Raytracer {
         std::cout << "\033[1;36m" << percent << "%\r\033[0m" << std::flush;
     }
 
-    static int imageOutput(std::vector<std::string_view> inputFiles, WriteFile::WriteType type)
+    static int imageOutput(const std::string &path, std::vector<std::string_view> inputFiles, WriteFile::WriteType type, bool animationMode)
     {
         std::unique_ptr<Scene> scene = std::make_unique<Scene>();
         Parsing::parse(scene, inputFiles);
@@ -51,12 +52,18 @@ namespace Raytracer {
 
         const Dimension &dim = scene->getCurrentCamera().getDimension();
         scene->resizeRender(dim.getWidth(), dim.getHeight());
-        scene->render();
 
+        if (animationMode) {
+            auto animation = std::make_unique<Animation>(path, std::move(scene), dim);
+            animation->render(type);
+            return 0;
+        }
+
+        scene->render();
         while (scene->getNbThreadsAlive() > 0)
             displayLoadingBar(scene);
 
-        WriteFile::writeImage(type, scene->getRender(), dim);
+        WriteFile::writeImage(type, path, scene->getRender(), dim);
         return 0;
     }
 
@@ -68,11 +75,11 @@ namespace Raytracer {
             std::vector<std::string_view> inputFiles;
             WriteFile::WriteType type = WriteFile::WriteType::PPM;
 
-            bool interactiveMode = Parsing::parseArgv(argc, argv, inputFiles, type);
-            if (interactiveMode)
+            Parsing::ParsingResult parsingRes = Parsing::parseArgv(argc, argv, inputFiles, type);
+            if (parsingRes.interactiveMode)
                 return interactive(windowDimensions, inputFiles);
 
-            return imageOutput(inputFiles, type);
+            return imageOutput(parsingRes.path, inputFiles, type, parsingRes.animationMode);
         } catch (Error &error) {
             std::cerr << "Error: " << error.what() << ". (" << error.where() << ")" << std::endl;
             return EXIT_FAILURE_EPITECH;

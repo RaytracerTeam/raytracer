@@ -48,7 +48,7 @@
             "program": "${workspaceFolder}/raytracer",
             "args": [
                 "-i",
-                "./scenes/thomas.cfg"
+                "./scenes/config_example.cfg"
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

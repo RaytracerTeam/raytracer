@@ -16,6 +16,13 @@ namespace Raytracer {
             // Angle3D &operator=(const Angle3D &angle);
             operator float *();
 
+            Angle3D &operator+=(const Angle3D &right);
+            Angle3D operator+(const Angle3D &right) const;
+            Angle3D &operator-=(const Angle3D &right);
+            Angle3D operator-(const Angle3D &right) const;
+            Angle3D &operator*=(double scalar);
+            Angle3D operator*(double scalar) const;
+
             double getYaw(void) const { return m_yaw; }
             double getPitch(void) const { return m_pitch; }
             double getRoll(void) const { return m_roll; }

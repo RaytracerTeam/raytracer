@@ -75,7 +75,7 @@ namespace Raytracer {
                 material = std::make_unique<MaterialCheckerBoard>(
                     getSettingColor(materialSetting),
                     getSettingColor(materialSetting.lookup("color_bis")),
-                    parseFloat(materialSetting, CFG_SIZE, 1.0));
+                    parseNumber<float>(materialSetting, CFG_SIZE, 1.0));
             }
             else if (materialType == CFG_CAMERA) {
                 material = parseMaterialCamera(primType);
@@ -88,19 +88,19 @@ namespace Raytracer {
             }
 
             if (materialSetting.exists(CFG_DIFFUSE))
-                material->setDiffuse(parseFloat(materialSetting, CFG_DIFFUSE, 0.0));
+                material->setDiffuse(parseNumber<float>(materialSetting, CFG_DIFFUSE, 0.0));
             if (materialSetting.exists(CFG_SPECULAR))
-                material->setSpecular(parseFloat(materialSetting, CFG_SPECULAR, 0.0));
+                material->setSpecular(parseNumber<float>(materialSetting, CFG_SPECULAR, 0.0));
             if (materialSetting.exists(CFG_SHININESS))
-                material->setShininess(parseFloat(materialSetting, CFG_SHININESS, 0.0));
+                material->setShininess(parseNumber<float>(materialSetting, CFG_SHININESS, 0.0));
 
             if (materialSetting.exists(CFG_REFLECTION))
-                material->setReflection(parseFloat(materialSetting, CFG_REFLECTION, 0.0));
+                material->setReflection(parseNumber<float>(materialSetting, CFG_REFLECTION, 0.0));
 
             if (materialSetting.exists(CFG_TRANSPARENCY))
-                material->setTransparency(parseFloat(materialSetting, CFG_TRANSPARENCY, 0.0));
+                material->setTransparency(parseNumber<float>(materialSetting, CFG_TRANSPARENCY, 0.0));
             if (materialSetting.exists(CFG_REFRACTION))
-                material->setRefraction(parseFloat(materialSetting, CFG_REFRACTION, 1.3));
+                material->setRefraction(parseNumber<float>(materialSetting, CFG_REFRACTION, 1.3));
 
             return material;
         }

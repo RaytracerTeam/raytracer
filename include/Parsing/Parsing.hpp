@@ -31,6 +31,7 @@ namespace Raytracer {
         // Camera
         #define CFG_CAMERA "camera"
         #define CFG_OBJ "obj"
+        #define CFG_ANIMATIONS "animations"
         #define CFG_FOV "fov"
         #define CFG_RESOLUTION "resolution"
         // Primitives
@@ -74,15 +75,32 @@ namespace Raytracer {
         #define CFG_SPEED "speed"
         #define CFG_SENSITIVITY "sensitivity"
         #define CFG_ALWAYS_RENDER "alwaysRender"
-        
+
+        class ParsingResult {
+            public:
+                bool interactiveMode;
+                bool animationMode;
+                std::string path;
+        };
 
         WriteFile::WriteType parseFormat(const std::string_view &format);
-        bool parseArgv(int argc, char **argv,
+        ParsingResult parseArgv(int argc, char **argv,
             std::vector<std::string_view> &inputFiles, WriteFile::WriteType &type); // return true if interactive mode
         void parse(std::unique_ptr<Scene> &scene, const std::string_view &file);
         void parse(std::unique_ptr<Scene> &scene, const std::vector<std::string_view> &file);
 
-        float parseFloat(const libconfig::Setting &setting, const std::string &key, float defaultValue);
+        template <typename T>
+        T parseNumber(const libconfig::Setting &setting, const std::string &key, T defaultValue = 0)
+        {
+            if (setting.exists(key.c_str())) {
+                if (setting.lookup(key.c_str()).getType() == libconfig::Setting::TypeInt)
+                    return (T)((int)setting.lookup(key.c_str()));
+                return setting.lookup(key.c_str());
+            }
+            return defaultValue;
+        }
+
+
         Math::Vector3D parsePosition(const libconfig::Setting &setting);
         Math::Angle3D parseRotation(const libconfig::Setting &setting);
         MaterialSolid parseMaterialColor(const libconfig::Setting &setting);
@@ -110,6 +128,7 @@ namespace Raytracer {
         void parseCameras(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
         void parseLights(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
         void parseObj(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
+        void parseAnimations(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
 
         void savePos(libconfig::Setting &setting, const Math::Vector3D pos);
         void saveColor(libconfig::Setting &setting, const Color color);

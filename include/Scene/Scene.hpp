@@ -20,6 +20,7 @@
 #include "Scene/SceneLightning.hpp"
 #include "Skybox.hpp"
 #include "Optimisation/BVH.hpp"
+#include "Scene/Keyframe.hpp"
 
 #ifdef BONUSCAMERA
     #include "RealCamera.hpp"
@@ -76,6 +77,11 @@ namespace Raytracer {
         size_t getBvhMaxPrimLimit(void) const { return m_bvhMaxPrimLimit; }
         bool getAlwaysRender(void) const { return m_alwaysRender; }
 
+        const std::vector<Keyframe> &getCameraKeyframes(void) const { return m_vecKeyframes; }
+        size_t getKeyframesTick(void) const { return m_tickKeyframes; }
+        void addKeyframe(const Keyframe &keyframe) { m_vecKeyframes.push_back(keyframe); }
+        void setKeyframesTick(size_t tickrate) { m_tickKeyframes = tickrate; }
+
         void resizeRender(unsigned int width, unsigned int height);
         void updatePrimitives(void);
         void removePrimitive(size_t index);
@@ -129,6 +135,9 @@ namespace Raytracer {
         size_t m_renderY;
 
         bool m_alwaysRender = false;
+
+        std::vector<Keyframe> m_vecKeyframes;
+        size_t m_tickKeyframes;
 
         // Bonus Real camera
         #ifdef BONUSCAMERA

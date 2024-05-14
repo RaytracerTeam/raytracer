@@ -23,11 +23,11 @@ namespace Raytracer {
             JPG,
             PNG
         };
-        static void writeImage(WriteType type, const sf::Image &buffer, const Dimension &dimension);
+        static void writeImage(WriteType type, const std::string &path, const sf::Image &buffer, const Dimension &dimension);
 
     private:
-        static void writeImagePPM(const sf::Image &buffer, const Dimension &dimension);
-        static void writeImageJPG(const sf::Image &buffer);
-        static void writeImagePNG(const sf::Image &buffer);
+        static void writeImagePPM(const std::string &path, const sf::Image &buffer, const Dimension &dimension);
+        static void writeImageJPG(const std::string &path, const sf::Image &buffer);
+        static void writeImagePNG(const std::string &path, const sf::Image &buffer);
     };
 } // namespace Raytracer

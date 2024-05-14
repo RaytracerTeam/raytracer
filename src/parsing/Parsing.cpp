@@ -6,8 +6,8 @@
 */
 
 #include "Parsing/Parsing.hpp"
-#include "Scene/Materials/MaterialSolid.hpp"
 #include "Scene/Lights/PointLight.hpp"
+#include "Scene/Materials/MaterialSolid.hpp"
 
 #include <iostream>
 
@@ -35,10 +35,12 @@ namespace Raytracer {
             throw std::runtime_error("Invalid format: " + std::string(format));
         }
 
-        bool parseArgv(int argc, char **argv,
+        ParsingResult parseArgv(int argc, char **argv,
             std::vector<std::string_view> &inputFiles, WriteFile::WriteType &type)
         {
             bool interactiveMode = false;
+            bool animationMode = false;
+            std::string path = "./out";
             const std::vector<std::string_view> args(argv, argv + argc);
 
             for (size_t i = 1; i < args.size(); i++) {
@@ -46,19 +48,28 @@ namespace Raytracer {
                     printHelper(args[0]);
                 if (args[i] == "-i" || args[i] == "--interactive") {
                     interactiveMode = true;
+                    animationMode = false;
                     continue;
                 }
                 if (args[i] == "-f" || args[i] == "--format") {
                     type = parseFormat(args[++i]);
                     continue;
                 }
-                if (!std::filesystem::exists(args[i])) {
-                    throw std::runtime_error(std::string(args[i]) + ": No such file or directory");
+                if (args[i] == "-a" || args[i] == "--animation") {
+                    animationMode = true;
+                    interactiveMode = false;
+                    continue;
                 }
+                if (args[i] == "-o" || args[i] == "--output") {
+                    path = args[++i];
+                    continue;
+                }
+                if (!std::filesystem::exists(args[i]))
+                    throw std::runtime_error(std::string(args[i]) + ": No such file or directory");
                 inputFiles.push_back(args[i]);
             }
 
-            return interactiveMode;
+            return { interactiveMode, animationMode, path };
         }
 
         static void parseFile(std::unique_ptr<Scene> &scene, const std::string_view &file)
@@ -75,15 +86,16 @@ namespace Raytracer {
             parsePrimitives(cfg, scene);
             parseLights(cfg, scene);
             parseObj(cfg, scene);
+            parseAnimations(cfg, scene);
 
-            #ifdef BONUSCAMERA
+#ifdef BONUSCAMERA
             for (auto &primitive : scene->getPrimitives()) {
                 if (primitive->getMaterial()->isCamera()) {
                     MaterialTexture *cameraTexture = static_cast<MaterialTexture *>(primitive->getMaterial().get());
                     cameraTexture->setImage(scene->getRealCamera().getImage());
                 }
             }
-            #endif
+#endif
         }
         void parse(std::unique_ptr<Scene> &scene, const std::string_view &file)
         {
