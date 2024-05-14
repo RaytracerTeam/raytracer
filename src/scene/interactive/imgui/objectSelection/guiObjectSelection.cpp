@@ -104,12 +104,11 @@ namespace Raytracer
                 ImGui::EndTabItem();
             }
 
-            if (ImGui::BeginTabItem("Obj", nullptr,
-            m_selectPrimitiveTab ? ImGuiTabItemFlags_SetSelected : 0)) {
+            if (ImGui::BeginTabItem("Obj")) {
                 if (m_objectSelection != ObjectSelection::OBJ)
                     m_selectedObject = -1;
                 m_objectSelection = ObjectSelection::OBJ;
-                // guiAddPrimitive();
+                guiAddObj();
                 if (ImGui::BeginChild("obj selection", ImVec2(m_leftPaneWidth,
                 m_imageHeight / 2 - 20), ImGuiChildFlags_Border)) {
                     int i = 0;

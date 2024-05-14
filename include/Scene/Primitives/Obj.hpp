@@ -17,7 +17,7 @@ namespace Raytracer {
     public:
         Obj(const std::string &obj_path, std::unique_ptr<IMaterial> material,
             const Math::Vector3D &position = Math::Vector3D(0, 0, 0),
-            Math::Vector3D scale = Math::Vector3D(0, 0, 0));
+            Math::Vector3D scale = Math::Vector3D(1, 1, 1));
         ~Obj() = default;
 
         PrimitiveType getType(void) const override { return PrimitiveType::OBJ; };

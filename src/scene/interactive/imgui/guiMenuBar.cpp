@@ -72,7 +72,7 @@ namespace Raytracer
                 ImGui::SameLine(0, 20),
                 ImGui::Checkbox("Add to current scene", &m_addToCurrentScene);
                 if (ImGui::BeginCombo("Scene Path", m_loadFileBuf)) {
-                    for (const auto &entry : std::filesystem::directory_iterator("scenes/"))
+                    for (const auto &entry : std::filesystem::directory_iterator("SCENE_PATH"))
                         addSelectableScene(entry);
                     if (std::filesystem::exists("scenes/local"))
                         for (const auto &entry : std::filesystem::directory_iterator("scenes/local"))
@@ -103,8 +103,8 @@ namespace Raytracer
                     if (ImGui::BeginCombo("Skybox Path", m_skyboxPathBuf)) {
                         for (const auto &entry : std::filesystem::directory_iterator("assets/skyboxes"))
                             addSelectableSkybox(entry);
-                        if (std::filesystem::exists("assets/skyboxes/local"))
-                            for (const auto &entry : std::filesystem::directory_iterator("assets/skyboxes/local"))
+                        if (std::filesystem::exists(SKYBOX_PATH))
+                            for (const auto &entry : std::filesystem::directory_iterator(SKYBOX_PATH))
                                 addSelectableSkybox(entry);
                         #ifdef BONUSCAMERA
                         if (ImGui::Selectable("Use camera")) {

@@ -133,14 +133,14 @@ namespace Raytracer
         case MaterialType::TEXTURE_SPHERE:
         case MaterialType::TEXTURE_TRIANGLE:
         case MaterialType::TEXTURE_CUBE: {
-            if (!std::filesystem::exists("assets/textures/local")) {
+            if (!std::filesystem::exists(TEXTURE_PATH)) {
                 break;
             }
             ImGui::SameLine(0, 20);
             ImGui::SetNextItemWidth(300);
             MaterialTexture *materialTexture = static_cast<MaterialTexture *>(material.get());
-            if (ImGui::BeginCombo("Scene Path", materialTexture->getPathname().c_str())) {
-                for (const auto &entry : std::filesystem::directory_iterator("assets/textures/local")) {
+            if (ImGui::BeginCombo("Texture Path", materialTexture->getPathname().c_str())) {
+                for (const auto &entry : std::filesystem::directory_iterator(TEXTURE_PATH)) {
                     if (ImGui::Selectable(entry.path().filename().string().c_str())) {
                         materialTexture->setTexture(entry.path().string());
                         #ifdef BONUSCAMERA
