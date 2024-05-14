@@ -24,7 +24,7 @@ namespace Raytracer {
         private:
             void screenshot(Camera &camera, const Keyframe &keyframe,
                 const Math::Vector3D &curVec, const Math::Angle3D &angle, double tick,
-                size_t iteration, WriteFile::WriteType type);
+                size_t &iteration, WriteFile::WriteType type);
 
             const std::string m_path;
             std::unique_ptr<Scene> m_scene;

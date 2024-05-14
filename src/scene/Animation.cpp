@@ -40,19 +40,20 @@ namespace Raytracer {
     {
     }
 
-    void Animation::screenshot(Camera &camera, const Keyframe &keyframe, const Math::Vector3D &curVec, const Math::Angle3D &curAngle, double tick, size_t iteration, WriteFile::WriteType type)
+    void Animation::screenshot(Camera &camera, const Keyframe &keyframe, const Math::Vector3D &curVec, const Math::Angle3D &curAngle, double tick, size_t &iteration, WriteFile::WriteType type)
     {
         auto vecIt = keyframe.interpolationVecFunc.second(curVec, keyframe.pos, tick);
         auto angleIt = keyframe.interpolationAngleFunc.second(curAngle, keyframe.angle, tick);
-        // curVec += vecIt;
-        // curAngle += angleIt;
         camera.setPos(vecIt);
-        camera.setAngle(curAngle);
+        camera.setAngle(angleIt);
+
         m_scene->render();
+        m_scene->waitRendering();
 
         std::stringstream ss;
         ss << iteration;
         WriteFile::writeImage(type, m_path + ss.str(), m_scene->getRender(), m_dim);
+        iteration++;
     }
 
     void Animation::render(WriteFile::WriteType type)
@@ -71,10 +72,10 @@ namespace Raytracer {
                 screenshot(camera, keyframe, curVec, curAngle, tickIter, i, type);
                 curVec = keyframe.pos;
                 curAngle = keyframe.angle;
-                break;
+                continue;
             }
             for (double tick = 0; tick <= 1.; tick += tickIter)
-                screenshot(camera, keyframe, curVec, curAngle, tickIter, i, type);
+                screenshot(camera, keyframe, curVec, curAngle, tick, i, type);
             curVec = keyframe.pos;
             curAngle = keyframe.angle;
         }

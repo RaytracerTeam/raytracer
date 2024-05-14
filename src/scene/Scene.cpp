@@ -361,6 +361,27 @@ namespace Raytracer {
         m_cameras.clear();
     }
 
+    void Scene::waitRendering(bool showProgressbar)
+    {
+        while (getNbThreadsAlive() > 0) {
+            if (showProgressbar) {
+                int percent = (getRenderY() / getCurrentCamera().getDimension().getHeightD()) * 100;
+
+                std::cout << "Rendering... ";
+
+                std::cout << "\033[1;37m[";
+                for (int i = 0; i < percent / 4; i++)
+                    std::cout << "\033[1;32m=";
+                for (int i = percent / 4; i < 25; i++)
+                    std::cout << "\033[1;37m ";
+                std::cout << "\033[1;37m] ";
+
+                std::cout << "\033[1;36m" << percent << "%\r\033[0m" << std::flush;
+            }
+            std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        }
+    }
+
     #ifdef BONUSCAMERA
     void Scene::initRealCamera(void)
     {

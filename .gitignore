@@ -8,6 +8,7 @@
 *.ppm
 *.png
 *.jpg
+*.mp4
 
 !assets/*.png
 !assets/skyboxes/*.jpg
