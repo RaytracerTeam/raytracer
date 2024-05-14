@@ -88,18 +88,14 @@ namespace Raytracer {
                     }
                     m_triangles.push_back(std::make_unique<Triangle>(
                         origin,
-                        std::make_unique<TriangleTexture>(image, vt3, vt2, vt1),
+                        std::make_unique<TriangleTexture>(image, vt2, vt3, vt1),
                         v1, v2, true));
-                    // scene->addPrimitive(std::make_unique<Triangle>(
-                    //     origin,
-                    //     std::make_unique<TriangleTexture>(image, vt3, vt2, vt1),
-                    //     v1, v2, true));
-                    // if (isQuad) {
-                    //     scene->addPrimitive(std::make_unique<Triangle>(
-                    //         v1,
-                    //         std::make_unique<TriangleTexture>(image, vt1, vt2, vt3),
-                    //         v3, v2, true));
-                    // }
+                    if (isQuad) {
+                        m_triangles.push_back(std::make_unique<Triangle>(
+                            v2,
+                            std::make_unique<TriangleTexture>(image, vt1, vt4, vt3),
+                            origin, v3, true));
+                    }
                 } else {
                     m_triangles.push_back(std::make_unique<Triangle>(
                         origin,
@@ -111,7 +107,6 @@ namespace Raytracer {
                             std::make_unique<MaterialSolid>(static_cast<MaterialSolid &>(*m_material)),
                             v3, origin, true));
                     }
-                    
                     // scene->addPrimitive(std::make_unique<Triangle>(
                     //     origin,
                     //     std::make_unique<MaterialSolid>(static_cast<MaterialSolid &>(*m_material)),
@@ -141,6 +136,51 @@ namespace Raytracer {
         m_isShown = isShown;
         for (auto &triangle : m_triangles) {
             triangle->setIsShown(isShown);
+        }
+    }
+
+    void Obj::setOrigin(const Math::Vector3D &v)
+    {
+        Math::Vector3D diff = v - m_origin;
+        for (auto &triangle : m_triangles) {
+            triangle->setOrigin(triangle->getOrigin() + diff);
+            triangle->setVec1(triangle->getVec1() + diff);
+            triangle->setVec2(triangle->getVec2() + diff);
+        }
+        m_origin = v;
+    }
+
+    void Obj::setScale(const Math::Vector3D &scale)
+    {
+        for (auto &triangle : m_triangles) {
+            triangle->setOrigin(triangle->getOrigin() / m_scale * scale);
+            triangle->setVec1(triangle->getVec1() / m_scale * scale);
+            triangle->setVec2(triangle->getVec2() / m_scale * scale);
+        }
+        m_scale = scale;
+    }
+
+    void Obj::setMaterial(std::unique_ptr<IMaterial> material)
+    {
+        m_material = std::move(material);
+        applyMaterialToTriangles();
+    }
+
+    void Obj::applyMaterialToTriangles(void)
+    {
+        for (auto &triangle : m_triangles) {
+            switch (m_material->getType()) {
+            case MaterialType::SOLID:
+                triangle->setMaterial(std::make_unique<MaterialSolid>(
+                    static_cast<MaterialSolid &>(*m_material)));
+                break;
+            case MaterialType::TEXTURE_TRIANGLE:
+                triangle->setMaterial(std::make_unique<TriangleTexture>(
+                    static_cast<TriangleTexture &>(*m_material)));
+                break;
+            default:
+                break;
+            }
         }
     }
 } // namespace Raytracer

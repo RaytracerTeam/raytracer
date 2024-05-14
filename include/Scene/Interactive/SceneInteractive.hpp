@@ -106,12 +106,12 @@ namespace Raytracer {
         void removeSelectedObject(void);
         void customEditPrimitives(std::unique_ptr<IPrimitive> &primitive);
         void customEditLights(ILight *light);
-        void customEditMaterial(std::unique_ptr<IMaterial> &material);
-        void changeMaterialType(std::unique_ptr<IMaterial> &material);
+        bool customEditMaterial(std::unique_ptr<IMaterial> &material);
+        bool changeMaterialType(std::unique_ptr<IMaterial> &material);
+        bool guiEditMaterial(std::unique_ptr<IMaterial> &material);
         void guiEditLights(void);
         void guiEditPrimitives(void);
         void guiEditObjs(void);
-        void guiEditMaterial(std::unique_ptr<IMaterial> &material);
         void guiEditCameras(void);
         void guiAddPrimitive(void);
         void guiAddObj(void);
@@ -132,6 +132,8 @@ namespace Raytracer {
         void addSelectableScene(const std::filesystem::directory_entry &entry);
 
         void guiColoredSquare(const Color &color);
+
+        void showCrosshair(void);
         #endif
 
         /////////////////////////////////

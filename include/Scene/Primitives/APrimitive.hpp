@@ -12,11 +12,11 @@
 namespace Raytracer {
     class APrimitive : public IPrimitive {
     public:
-        void setOrigin(const Math::Vector3D &v) override final
+        void setOrigin(const Math::Vector3D &v) override
         {
             m_origin = v;
         }
-        void setTMatrix(const Math::Matrix44 &mat) override final
+        void setTMatrix(const Math::Matrix44 &mat) override
         {
             m_mat = mat;
         }
@@ -25,7 +25,7 @@ namespace Raytracer {
             m_mat = Math::Matrix44(rotX, rotY, rotZ);
         }
 
-        void setMaterial(std::unique_ptr<IMaterial> material) override final
+        void setMaterial(std::unique_ptr<IMaterial> material) override
         {
             m_material = std::move(material);
         }

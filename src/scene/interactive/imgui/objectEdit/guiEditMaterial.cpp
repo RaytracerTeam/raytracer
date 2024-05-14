@@ -16,8 +16,9 @@
 
 namespace Raytracer
 {
-    void SceneInteractive::customEditMaterial(std::unique_ptr<IMaterial> &material)
+    bool SceneInteractive::customEditMaterial(std::unique_ptr<IMaterial> &material)
     {
+        bool materialChanged = false;
         switch (material->getType()) {
         case MaterialType::SOLID: {
             ImGui::SameLine(0, 20);
@@ -27,7 +28,7 @@ namespace Raytracer
             float *color = materialSolid->getColor();
             if (ImGui::ColorEdit3("Color", color)) {
                 materialSolid->setColor(color);
-                m_needRendering = true;
+                materialChanged = true;
             }
             break;
         }
@@ -38,7 +39,7 @@ namespace Raytracer
             float *color = checkerBoard->getC1();
             if (ImGui::ColorEdit3("Color", color)) {
                 checkerBoard->setC1(color);
-                m_needRendering = true;
+                materialChanged = true;
             }
             ImGui::SameLine(0, 20);
             // Color bis
@@ -46,7 +47,7 @@ namespace Raytracer
             float *colorBis = checkerBoard->getC2();
             if (ImGui::ColorEdit3("Color bis", colorBis)) {
                 checkerBoard->setC2(colorBis);
-                m_needRendering = true;
+                materialChanged = true;
             }
             ImGui::SameLine(0, 20);
             // Size
@@ -55,7 +56,7 @@ namespace Raytracer
             if (ImGui::SliderFloat("Size", &size, 0.01f, 1000.0f, "%.2f",
             ImGuiSliderFlags_Logarithmic)) {
                 checkerBoard->setFactor(size);
-                m_needRendering = true;
+                materialChanged = true;
             }
             break;
         }
@@ -66,21 +67,21 @@ namespace Raytracer
             if (ImGui::SliderFloat3("VT1", vt1, 0, 1, "%.2f",
             ImGuiSliderFlags_AlwaysClamp)) {
                 triangleTexture->setVT1(vt1);
-                m_needRendering = true;
+                materialChanged = true;
             }
             // VT2
             float *vt2 = triangleTexture->getVT2();
             if (ImGui::SliderFloat3("VT2", vt2, 0, 1, "%.2f",
             ImGuiSliderFlags_AlwaysClamp)) {
                 triangleTexture->setVT2(vt2);
-                m_needRendering = true;
+                materialChanged = true;
             }
             // VT3
             float *vt3 = triangleTexture->getVT3();
             if (ImGui::SliderFloat3("VT3", vt3, 0, 1, "%.2f",
             ImGuiSliderFlags_AlwaysClamp)) {
                 triangleTexture->setVT3(vt3);
-                m_needRendering = true;
+                materialChanged = true;
             }
             break;
         }
@@ -91,17 +92,19 @@ namespace Raytracer
             if (ImGui::SliderFloat("Size", &size, 0.01f, 1000.0f, "%.2f",
             ImGuiSliderFlags_Logarithmic)) {
                 planeTexture->setFactor(size);
-                m_needRendering = true;
+                materialChanged = true;
             }
             break;
         }
         default:
             break;
         }
+        return materialChanged;
     }
 
-    void SceneInteractive::changeMaterialType(std::unique_ptr<IMaterial> &material)
+    bool SceneInteractive::changeMaterialType(std::unique_ptr<IMaterial> &material)
     {
+        bool materialChanged = false;
         ImGui::SetNextItemWidth(200);
         if (ImGui::BeginCombo("Type", material->getTypeString().c_str())) {
             for (const auto &entry : MaterialTypeStrings) {
@@ -122,7 +125,7 @@ namespace Raytracer
                     #ifdef BONUSCAMERA
                     material->setIsCamera(false);
                     #endif
-                    m_needRendering = true;
+                    materialChanged = true;
                 }
             }
             ImGui::EndCombo();
@@ -146,14 +149,14 @@ namespace Raytracer
                         #ifdef BONUSCAMERA
                         materialTexture->setIsCamera(false);
                         #endif
-                        m_needRendering = true;
+                        materialChanged = true;
                     }
                 }
                 #ifdef BONUSCAMERA
                 if (ImGui::Selectable("Camera")) {
                     materialTexture->setIsCamera(true);
                     materialTexture->setImage(m_scene->getRealCamera().getImage());
-                    m_needRendering = true;
+                    materialChanged = true;
                 }
                 #endif
 
@@ -164,24 +167,28 @@ namespace Raytracer
         default:
             break;
         }
+        return materialChanged;
     }
 
-    void SceneInteractive::guiEditMaterial(std::unique_ptr<IMaterial> &material)
+    bool SceneInteractive::guiEditMaterial(std::unique_ptr<IMaterial> &material)
     {
+        bool materialChanged = false;
         if (ImGui::BeginTabItem("Material")) {
-            changeMaterialType(material);
-            customEditMaterial(material);
+            if (changeMaterialType(material))
+                materialChanged = true;
+            if (customEditMaterial(material))
+                materialChanged = true;
             // Diffuse
             float diffuse = material->getDiffuse();
             if (ImGui::SliderFloat("Diffuse", &diffuse, 0.0f, 1.0f)) {
                 material->setDiffuse(diffuse);
-                m_needRendering = true;
+                materialChanged = true;
             }
             // Specular
             float specular = material->getSpecular();
             if (ImGui::SliderFloat("Specular", &specular, 0.0f, 1.5f)) {
                 material->setSpecular(specular);
-                m_needRendering = true;
+                materialChanged = true;
             }
             // Shininess
             if (specular > 0) {
@@ -189,30 +196,31 @@ namespace Raytracer
                 if (ImGui::SliderFloat("Shininess", &shininess, 1.0f, 100.0f,
                 "%.1f", ImGuiSliderFlags_Logarithmic)) {
                     material->setShininess(shininess);
-                    m_needRendering = true;
+                    materialChanged = true;
                 }
             }
             // Reflection
             float reflection = material->getReflection();
             if (ImGui::SliderFloat("Reflection", &reflection, 0.0f, 1.0f)) {
                 material->setReflection(reflection);
-                m_needRendering = true;
+                materialChanged = true;
             }
             // Transparency
             float transparency = material->getTransparency();
             if (ImGui::SliderFloat("Transparency", &transparency, 0.0f, 1.0f)) {
                 material->setTransparency(transparency);
-                m_needRendering = true;
+                materialChanged = true;
             }
             // Refraction
             if (transparency > 0) {
                 float refraction = material->getRefraction();
                 if (ImGui::SliderFloat("Refraction", &refraction, 0.0f, 3.0f)) {
                     material->setRefraction(refraction);
-                    m_needRendering = true;
+                    materialChanged = true;
                 }
             }
             ImGui::EndTabItem();
         }
+        return materialChanged;
     }
 } // namespace Raytracer

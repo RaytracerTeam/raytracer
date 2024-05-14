@@ -92,7 +92,8 @@ namespace Raytracer
                 ImGui::EndTabItem();
             }
 
-            guiEditMaterial(primitive->getMaterial());
+            if (guiEditMaterial(primitive->getMaterial()))
+                m_needRendering = true;
 
             if (ImGui::BeginTabItem("Transformations")) {
                 // Rotation

@@ -364,6 +364,12 @@ namespace Raytracer {
                 i--;
             }
         }
+        for (std::size_t i = 0; i < m_objs.size(); i++) {
+            if (m_objs[i]->getDieASAP()) {
+                removeObj(i);
+                i--;
+            }
+        }
     }
     void Scene::reset(void)
     {
@@ -375,6 +381,8 @@ namespace Raytracer {
             ambientLight->dieASAP();
         for (auto &dirLight : m_lightSystem.getDirectionalLights())
             dirLight->dieASAP();
+        for (auto &obj : m_objs)
+            obj->dieASAP();
         m_cameras.clear();
     }
 

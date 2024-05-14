@@ -81,6 +81,10 @@ namespace Raytracer {
         std::vector<std::unique_ptr<Obj>> &getObjs(void) { return m_objs; }
         const std::vector<std::unique_ptr<Obj>> &getObjs(void) const { return m_objs; }
 
+        void setRenderPixel(size_t x, size_t y, const Color &color) {
+            m_render.setPixel(x, y, sf::Color(color.getR() * 255, color.getG() * 255, color.getB() * 255));
+        }
+
         void resizeRender(unsigned int width, unsigned int height);
         void updatePrimitives(void);
         void removePrimitive(size_t index);

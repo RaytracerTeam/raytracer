@@ -28,6 +28,11 @@ namespace Raytracer {
         std::vector<std::unique_ptr<Triangle>> &getTriangles(void) { return m_triangles; };
 
         void setIsShown(bool isShown) override;
+        void setOrigin(const Math::Vector3D &v) override;
+        void setMaterial(std::unique_ptr<IMaterial> material) override;
+        void setScale(const Math::Vector3D &scale);
+
+        void applyMaterialToTriangles(void);
 
         BoundingBox getBoundingBox(void) const override { return BoundingBox(Math::Vector3D(0, 0, 0), Math::Vector3D(0, 0, 0)); };
         std::optional<RayHit> hit(const Ray &ray) const override { (void)ray; return std::nullopt; };

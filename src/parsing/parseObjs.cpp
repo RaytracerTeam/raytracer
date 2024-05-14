@@ -9,7 +9,6 @@
 
 #include "Scene/Primitives/Obj.hpp"
 
-
 namespace Raytracer {
     namespace Parsing {
         void parseObjs(const libconfig::Config &config, std::unique_ptr<Scene> &scene)
