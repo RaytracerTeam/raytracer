@@ -29,6 +29,8 @@ imgui.ini
 todo
 screenshots/*.png
 
+test.*
+
 assets/skyboxes/local/*.jpg
 assets/obj/local/*.obj
 assets/obj/local/*.png

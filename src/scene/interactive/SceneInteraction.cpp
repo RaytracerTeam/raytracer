@@ -149,6 +149,7 @@ namespace Raytracer {
                                 m_selectedObject = i;
                                 m_selectPrimitiveTab = true;
                                 m_needRendering = true;
+                                m_objectSelection = ObjectSelection::PRIMITIVE;
                                 break;
                             }
                             i++;
@@ -158,6 +159,8 @@ namespace Raytracer {
                 #endif
             }
         }
+        if (m_useMouse || m_useSimpleMouse)
+            showCrosshair();
         handleMouse();
         applyActions();
     }

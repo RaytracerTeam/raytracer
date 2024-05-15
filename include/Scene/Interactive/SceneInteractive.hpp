@@ -44,10 +44,16 @@ namespace Raytracer {
     #define TEMP_CFG_FILE "scenes/temp.cfg"
     #define QUICK_SAVE_CFG_FILE "scenes/quick_save.cfg"
 
+    #define OBJ_PATH "assets/obj/local/"
+    #define TEXTURE_PATH "assets/textures/local/"
+    #define SCENE_PATH "scenes/"
+    #define SKYBOX_PATH "assets/skyboxes/local"
+
     enum class ObjectSelection {
         PRIMITIVE,
         LIGHT,
-        CAMERA
+        CAMERA,
+        OBJ
     };
 
     class SceneInteractive {
@@ -100,12 +106,15 @@ namespace Raytracer {
         void removeSelectedObject(void);
         void customEditPrimitives(std::unique_ptr<IPrimitive> &primitive);
         void customEditLights(ILight *light);
-        void customEditMaterial(std::unique_ptr<IMaterial> &material);
+        bool customEditMaterial(std::unique_ptr<IMaterial> &material);
+        bool changeMaterialType(std::unique_ptr<IMaterial> &material);
+        bool guiEditMaterial(std::unique_ptr<IMaterial> &material);
         void guiEditLights(void);
         void guiEditPrimitives(void);
-        void guiEditMaterial(std::unique_ptr<IMaterial> &material);
+        void guiEditObjs(void);
         void guiEditCameras(void);
         void guiAddPrimitive(void);
+        void guiAddObj(void);
         void guiAddLight(void);
         void editSphere(Sphere *sphere);
         void editPlane(Plane *plane);
@@ -123,6 +132,8 @@ namespace Raytracer {
         void addSelectableScene(const std::filesystem::directory_entry &entry);
 
         void guiColoredSquare(const Color &color);
+
+        void showCrosshair(void);
         #endif
 
         /////////////////////////////////
@@ -144,9 +155,9 @@ namespace Raytracer {
         // ImGui
         #ifdef BONUS
         sf::Clock m_deltaClock;
-        char m_saveFileBuf[FILE_BUF_SIZE] = "scenes/";
+        char m_saveFileBuf[FILE_BUF_SIZE] = SCENE_PATH;
         char m_skyboxPathBuf[FILE_BUF_SIZE] = DEFAULT_SKYBOX;
-        char m_loadFileBuf[FILE_BUF_SIZE] = "scenes/";
+        char m_loadFileBuf[FILE_BUF_SIZE] = SCENE_PATH;
         bool m_showDebug = false;
         int m_selectedObject = -1;
         ObjectSelection m_objectSelection = ObjectSelection::PRIMITIVE;

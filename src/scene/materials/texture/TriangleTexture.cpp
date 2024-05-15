@@ -16,10 +16,9 @@ namespace Raytracer {
             return Color(1., 0, 1);
 
         auto d = ray.getRelativeHitPoint();
-        // std::cout << "d: " << d.getX() << " " << d.getY() << " " << d.getZ() << std::endl;
-        float u = d.dot(m_vt2 - m_vt1) / (m_vt2 - m_vt1).length();
-        float v = d.dot(m_vt3 - m_vt1) / (m_vt3 - m_vt1).length();
 
-        return MaterialTexture::getColor(u, 1 - v);
+        Math::Vector3D uv = m_vt1 * d.getX() + m_vt2 * d.getY() + m_vt3 * d.getZ();
+
+        return MaterialTexture::getColor(uv.getX(), 1 - uv.getY());
     }
 } // namespace Raytracer

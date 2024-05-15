@@ -264,7 +264,7 @@ namespace Raytracer
             break;
         #ifdef BONUS
         case SceneReleaseActions::SAVE_CURRENT_AND_EXIT:
-            if (strcmp(m_loadFileBuf, "scenes/") == 0)
+            if (strcmp(m_loadFileBuf, SCENE_PATH) == 0)
                 strcpy(m_loadFileBuf, TEMP_CFG_FILE);
             Parsing::saveScene(*m_scene, m_loadFileBuf);
             m_window.close();

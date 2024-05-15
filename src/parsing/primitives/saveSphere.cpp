@@ -9,8 +9,6 @@
 
 #include "Scene/Primitives/Sphere.hpp"
 
-#include "Scene/Materials/MaterialSolid.hpp"
-
 namespace Raytracer
 {
     void Parsing::saveSphere(libconfig::Setting &list, Sphere *sphere)

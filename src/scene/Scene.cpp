@@ -20,6 +20,11 @@ namespace Raytracer {
         m_primitives.push_back(std::move(obj));
     }
 
+    void Scene::addObj(std::unique_ptr<Obj> obj)
+    {
+        m_objs.push_back(std::move(obj));
+    }
+
     void Scene::addCamera(std::unique_ptr<Camera> obj)
     {
         m_cameras.push_back(std::move(obj));
@@ -138,6 +143,11 @@ namespace Raytracer {
         m_readonlyPrimitives.reserve(m_primitives.size());
         for (const auto &prim : m_primitives)
             m_readonlyPrimitives.push_back(static_cast<const IPrimitive *>(prim.get()));
+
+        for (const auto &obj : m_objs) {
+            for (const auto &tri : obj->getTriangles())
+                m_readonlyPrimitives.push_back(static_cast<const IPrimitive *>(tri.get()));
+        }
 
         m_bvhTree = BVH::createBVH(m_bvhMaxPrimLimit, m_readonlyPrimitives, BVH::axisAligned);
     }
@@ -294,6 +304,13 @@ namespace Raytracer {
         return true;
     }
 
+    void Scene::removeObj(size_t index)
+    {
+        if (index >= m_objs.size())
+            return;
+        m_objs.erase(m_objs.begin() + index);
+    }
+
     void Scene::showCurrentRenderedLine(void)
     {
         if (m_renderY >= m_render.getSize().y)
@@ -347,6 +364,12 @@ namespace Raytracer {
                 i--;
             }
         }
+        for (std::size_t i = 0; i < m_objs.size(); i++) {
+            if (m_objs[i]->getDieASAP()) {
+                removeObj(i);
+                i--;
+            }
+        }
     }
     void Scene::reset(void)
     {
@@ -358,6 +381,8 @@ namespace Raytracer {
             ambientLight->dieASAP();
         for (auto &dirLight : m_lightSystem.getDirectionalLights())
             dirLight->dieASAP();
+        for (auto &obj : m_objs)
+            obj->dieASAP();
         m_cameras.clear();
     }
 

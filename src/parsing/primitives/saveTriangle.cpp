@@ -9,8 +9,6 @@
 
 #include "Scene/Primitives/Triangle.hpp"
 
-#include "Scene/Materials/MaterialSolid.hpp"
-
 namespace Raytracer
 {
     void Parsing::saveTriangle(libconfig::Setting &list, Triangle *triangle)

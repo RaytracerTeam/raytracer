@@ -48,7 +48,7 @@ namespace Raytracer {
     Color Skybox::getAmbientColorUVSphere(const Ray &ray) const
     {
         if (m_texture.get() == nullptr || m_methodAmbientColor == nullptr)
-            return Color();
+            return Color(1., 0, 1);
 
         auto d = ray.getDirection();
         float u = (0.5 + std::atan2(d.getZ(), d.getX()) / (2 * M_PI));

@@ -22,6 +22,8 @@
 #include "Optimisation/BVH.hpp"
 #include "Scene/Keyframe.hpp"
 
+#include "Scene/Primitives/Obj.hpp"
+
 #ifdef BONUSCAMERA
     #include "RealCamera.hpp"
 #endif
@@ -35,6 +37,7 @@ namespace Raytracer {
         ~Scene() = default;
 
         void addPrimitive(std::unique_ptr<IPrimitive> obj);
+        void addObj(std::unique_ptr<Obj> obj);
         void addCamera(std::unique_ptr<Camera> obj);
         void addLight(std::unique_ptr<PointLight> obj);
 
@@ -76,6 +79,12 @@ namespace Raytracer {
         size_t getMaxRayBounces(void) const { return m_maxRayBounces; }
         size_t getBvhMaxPrimLimit(void) const { return m_bvhMaxPrimLimit; }
         bool getAlwaysRender(void) const { return m_alwaysRender; }
+        std::vector<std::unique_ptr<Obj>> &getObjs(void) { return m_objs; }
+        const std::vector<std::unique_ptr<Obj>> &getObjs(void) const { return m_objs; }
+
+        void setRenderPixel(size_t x, size_t y, const Color &color) {
+            m_render.setPixel(x, y, sf::Color(color.getR() * 255, color.getG() * 255, color.getB() * 255));
+        }
 
         const std::vector<Keyframe> &getCameraKeyframes(void) const { return m_vecKeyframes; }
         size_t getKeyframesTick(void) const { return m_tickKeyframes; }
@@ -87,6 +96,7 @@ namespace Raytracer {
         void removePrimitive(size_t index);
         void removeLight(size_t index);
         bool removeCamera(size_t index);
+        void removeObj(size_t index);
         void reset(void);
 
         void showCurrentRenderedLine(void);
@@ -112,6 +122,8 @@ namespace Raytracer {
         std::vector<std::unique_ptr<IPrimitive>> m_primitives;
         // useful to copy the vector around.
         std::vector<const IPrimitive *> m_readonlyPrimitives;
+
+        std::vector<std::unique_ptr<Obj>> m_objs;
 
         std::unique_ptr<BVH::Node> m_bvhTree;
         size_t m_bvhMaxPrimLimit = 5; // temp : get via optimisation

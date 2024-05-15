@@ -9,8 +9,6 @@
 
 #include "Scene/Primitives/Plane.hpp"
 
-#include "Scene/Materials/MaterialSolid.hpp"
-
 namespace Raytracer
 {
     void Parsing::savePlane(libconfig::Setting &list, Plane *plane)
