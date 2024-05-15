@@ -13,14 +13,16 @@
 namespace Raytracer {
     BoundingBox Sphere::getBoundingBox(void) const
     {
-        Math::Vector3D minOrigin = Math::Algorithm::minOfVector3D(m_origin, m_transformations.getTranslation());
-        Math::Vector3D maxOrigin = Math::Algorithm::maxOfVector3D(m_origin, m_transformations.getTranslation());
+        Math::Vector3D minOrigin =
+            Math::Algorithm::minOfVector3D(m_origin, m_transformations.getTranslation());
+        Math::Vector3D maxOrigin =
+            Math::Algorithm::maxOfVector3D(m_origin, m_transformations.getTranslation());
 
         double biggestScale = Math::Algorithm::maxOfThree(m_transformations.getScale().getX(),
             m_transformations.getScale().getY(), m_transformations.getScale().getZ());
 
-        Math::Vector3D min = minOrigin * 5 - biggestScale * m_radius;
-        Math::Vector3D max = maxOrigin * 5 + biggestScale * m_radius;
+        Math::Vector3D min = minOrigin * 2 - biggestScale * m_radius;
+        Math::Vector3D max = maxOrigin * 2 + biggestScale * m_radius;
 
         return BoundingBox(min, max);
     }
