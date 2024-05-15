@@ -23,8 +23,13 @@ namespace Raytracer {
         class Algorithm {
         public:
             static double clampD(double value, double min, double max);
-
             static Color clampColor(const Color &color);
+
+            static double minOfThree(double a, double b, double c);
+            static double maxOfThree(double a, double b, double c);
+
+            static Vector3D minOfVector3D(const Vector3D &v1, const Vector3D &v2);
+            static Vector3D maxOfVector3D(const Vector3D &v1, const Vector3D &v2);
 
             static inline bool isZero(complex x)
             {

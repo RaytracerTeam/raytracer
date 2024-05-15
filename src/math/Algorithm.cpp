@@ -23,6 +23,28 @@ namespace Raytracer {
             return Color(color.getR(), color.getG(), color.getB());
         }
 
+        double Algorithm::minOfThree(double a, double b, double c)
+        {
+            return std::min(std::min(a, b), c);
+        }
+
+        double Algorithm::maxOfThree(double a, double b, double c)
+        {
+            return std::max(std::max(a, b), c);
+        }
+
+        Vector3D Algorithm::minOfVector3D(const Vector3D &v1, const Vector3D &v2)
+        {
+            return Vector3D(std::min(v1.getX(), v2.getX()), std::min(v1.getY(), v2.getY()),
+                std::min(v1.getZ(), v2.getZ()));
+        }
+
+        Vector3D Algorithm::maxOfVector3D(const Vector3D &v1, const Vector3D &v2)
+        {
+            return Vector3D(std::max(v1.getX(), v2.getX()), std::max(v1.getY(), v2.getY()),
+                std::max(v1.getZ(), v2.getZ()));
+        }
+
         void Algorithm::sortRoots(double *roots, int n)
         {
             for (int i = 0; i < n; i++)
