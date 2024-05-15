@@ -8,8 +8,8 @@
 #include "Scene/Scene.hpp"
 #include "Error.hpp"
 #include "Math/Algorithm.hpp"
-#include "Math/Utils.hpp"
 #include "Math/Matrix44d.hpp"
+#include "Math/Utils.hpp"
 
 #include <algorithm>
 #include <cmath>
@@ -144,10 +144,9 @@ namespace Raytracer {
         for (const auto &prim : m_primitives)
             m_readonlyPrimitives.push_back(static_cast<const IPrimitive *>(prim.get()));
 
-        for (const auto &obj : m_objs) {
+        for (const auto &obj : m_objs)
             for (const auto &tri : obj->getTriangles())
                 m_readonlyPrimitives.push_back(static_cast<const IPrimitive *>(tri.get()));
-        }
 
         m_bvhTree = BVH::createBVH(m_bvhMaxPrimLimit, m_readonlyPrimitives, BVH::axisAligned);
     }
@@ -214,8 +213,7 @@ namespace Raytracer {
             if (ray.getDepth() < m_maxRayBounces) {
                 auto rayScattered = primMaterial->getScatteredRay(ray, rhitPrim);
                 if (rayScattered != std::nullopt)
-                    primColor = primColor * (1 - primMaterial->getReflection()) +
-                        castRay(*rayScattered) * primMaterial->getReflection();
+                    primColor = primColor * (1 - primMaterial->getReflection()) + castRay(*rayScattered) * primMaterial->getReflection();
             }
         }
 
@@ -228,8 +226,7 @@ namespace Raytracer {
                 else
                     rayTransparency = primMaterial->getTransparencyRay(ray, rhitPrim);
                 if (rayTransparency != std::nullopt)
-                    primColor = primColor * (1 - primMaterial->getTransparency()) +
-                        castRay(*rayTransparency) * primMaterial->getTransparency();
+                    primColor = primColor * (1 - primMaterial->getTransparency()) + castRay(*rayTransparency) * primMaterial->getTransparency();
                 else
                     primColor = Color(1., 0, 1);
             }
@@ -256,10 +253,9 @@ namespace Raytracer {
 
             diffuseColor += getDiffuseColor(dirRay, rhitPrim, *dLight,
                 Math::Vector3D(0, 0, 0), primMaterial, primColor);
-            if (primMaterial->getSpecular() > 0) {
+            if (primMaterial->getSpecular() > 0)
                 specularColor += primMaterial->getSpecular(dLight.get(),
                     rhitPrim.getNormal(), dLight->getDirection().normalize(), ray);
-            }
         }
 
         // Point lights
@@ -272,10 +268,9 @@ namespace Raytracer {
 
             diffuseColor += getDiffuseColor(lightRay, rhitPrim, *light,
                 light->getOrigin(), primMaterial, primColor);
-            if (primMaterial->getSpecular() > 0) {
+            if (primMaterial->getSpecular() > 0)
                 specularColor += primMaterial->getSpecular(light.get(),
                     rhitPrim.getNormal(), lightDirection, ray);
-            }
         }
 
         return ambientColor + diffuseColor + specularColor;
@@ -386,28 +381,29 @@ namespace Raytracer {
         m_cameras.clear();
     }
 
-    void Scene::waitRendering(bool showProgressbar)
+    void Scene::waitRendering(size_t nbImages, size_t maxImage)
     {
+        if (maxImage != 0)
+            std::cout << "Image n°" << nbImages + 1 << "/" << maxImage << '\n';
         while (getNbThreadsAlive() > 0) {
-            if (showProgressbar) {
-                int percent = (getRenderY() / getCurrentCamera().getDimension().getHeightD()) * 100;
+            int percent = (getRenderY() / getCurrentCamera().getDimension().getHeightD()) * 100;
 
-                std::cout << "Rendering... ";
+            std::cout << "Rendering... ";
+            std::cout << "\033[1;37m[";
+            for (int i = 0; i < percent / 4; i++)
+                std::cout << "\033[1;32m=";
+            for (int i = percent / 4; i < 25; i++)
+                std::cout << "\033[1;37m ";
+            std::cout << "\033[1;37m] ";
 
-                std::cout << "\033[1;37m[";
-                for (int i = 0; i < percent / 4; i++)
-                    std::cout << "\033[1;32m=";
-                for (int i = percent / 4; i < 25; i++)
-                    std::cout << "\033[1;37m ";
-                std::cout << "\033[1;37m] ";
-
-                std::cout << "\033[1;36m" << percent << "%\r\033[0m" << std::flush;
-            }
+            std::cout << "\033[1;36m" << percent << "%\r\033[0m" << std::flush;
             std::this_thread::sleep_for(std::chrono::milliseconds(1));
         }
+        std::cout << "\033[1A";
+        std::cout << "\033[K";
     }
 
-    #ifdef BONUSCAMERA
+#ifdef BONUSCAMERA
     void Scene::initRealCamera(void)
     {
         m_realCamera.init();
@@ -417,5 +413,5 @@ namespace Raytracer {
     {
         m_realCamera.update();
     }
-    #endif
+#endif
 } // namespace Raytracer

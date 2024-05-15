@@ -40,7 +40,7 @@ namespace Raytracer {
     {
     }
 
-    void Animation::screenshot(Camera &camera, const Keyframe &keyframe, const Math::Vector3D &curVec, const Math::Angle3D &curAngle, double tick, size_t &iteration, WriteFile::WriteType type)
+    void Animation::screenshot(Camera &camera, const Keyframe &keyframe, const Math::Vector3D &curVec, const Math::Angle3D &curAngle, double tick, size_t &iteration, WriteFile::WriteType type, size_t maxImages)
     {
         auto vecIt = keyframe.interpolationVecFunc.second(curVec, keyframe.pos, tick);
         auto angleIt = keyframe.interpolationAngleFunc.second(curAngle, keyframe.angle, tick);
@@ -48,7 +48,7 @@ namespace Raytracer {
         camera.setAngle(angleIt);
 
         m_scene->render();
-        m_scene->waitRendering();
+        m_scene->waitRendering(iteration, maxImages);
 
         std::stringstream ss;
         ss << iteration;
@@ -66,16 +66,25 @@ namespace Raytracer {
         Math::Vector3D curVec = camera.getDefaultPos();
         Math::Angle3D curAngle = camera.getDefaultAngle();
 
+        size_t maxImages = 0;
+        for (const auto &keyframe : keyframes) {
+            if (keyframe.interpolationVecFunc.first == Keyframe::INSTANT
+                && keyframe.interpolationAngleFunc.first == Keyframe::INSTANT)
+                maxImages++;
+            else
+                maxImages += nbTicks;
+        }
+
         for (size_t i = 0; const auto &keyframe : keyframes) {
             if (keyframe.interpolationVecFunc.first == Keyframe::INSTANT
                 && keyframe.interpolationAngleFunc.first == Keyframe::INSTANT) {
-                screenshot(camera, keyframe, curVec, curAngle, tickIter, i, type);
+                screenshot(camera, keyframe, curVec, curAngle, tickIter, i, type, maxImages);
                 curVec = keyframe.pos;
                 curAngle = keyframe.angle;
                 continue;
             }
             for (double tick = 0; tick <= 1.; tick += tickIter)
-                screenshot(camera, keyframe, curVec, curAngle, tick, i, type);
+                screenshot(camera, keyframe, curVec, curAngle, tick, i, type, maxImages);
             curVec = keyframe.pos;
             curAngle = keyframe.angle;
         }

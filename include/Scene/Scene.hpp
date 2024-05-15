@@ -112,7 +112,7 @@ namespace Raytracer {
         RealCamera &getRealCamera(void) { return m_realCamera; }
         #endif
 
-        void waitRendering(bool showProgressbar = true);
+        void waitRendering(size_t nbImages = 0, size_t maxImage = 0);
 
     private:
         Color castRayColor(const Ray &ray, const IPrimitive &primHit, const RayHit &rhitPrim) const;
