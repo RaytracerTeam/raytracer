@@ -12,8 +12,18 @@
 namespace Raytracer {
     BoundingBox Tanglecube::getBoundingBox(void) const
     {
-        return BoundingBox(
-            Math::Vector3D(m_origin - 3.), Math::Vector3D(m_origin + 3.));
+        Math::Vector3D minOrigin =
+            Math::Algorithm::minOfVector3D(m_origin, m_transformations.getTranslation());
+        Math::Vector3D maxOrigin =
+            Math::Algorithm::maxOfVector3D(m_origin, m_transformations.getTranslation());
+
+        double biggestScale = Math::Algorithm::maxOfThree(m_transformations.getScale().getX(),
+            m_transformations.getScale().getY(), m_transformations.getScale().getZ());
+
+        Math::Vector3D min = minOrigin * 2 - biggestScale * 3;
+        Math::Vector3D max = maxOrigin * 2 + biggestScale * 3;
+
+        return BoundingBox(min, max);
     }
 
     RayHit Tanglecube::getNormal(double distance, const Math::Vector3D &hitPt,
@@ -31,8 +41,10 @@ namespace Raytracer {
 
     std::optional<RayHit> Tanglecube::hit(const Ray &ray) const
     {
-        Math::Vector3D dstOrigin = getTMatrix() * (ray.getOrigin() - m_origin);
-        Math::Vector3D rayDir = getTMatrix() * ray.getDirection();
+        Ray bckRay = m_matrixT.applyBackward(ray);
+
+        Math::Vector3D dstOrigin = bckRay.getOrigin() - m_bckOrigin - m_bckTranslation;
+        Math::Vector3D rayDir = bckRay.getDirection();
 
         double a = std::pow(rayDir.getX(), 4) + std::pow(rayDir.getY(), 4)
             + std::pow(rayDir.getZ(), 4);
@@ -76,9 +88,9 @@ namespace Raytracer {
 
         for (int i = 0; i < 4; i++) {
             if (roots[i] > TOLERANCE) {
-                Math::Vector3D hitPt
-                    = ray.getOrigin() + ray.getDirection() * roots[i];
-                return getNormal(roots[i], hitPt, m_origin);
+                Math::Vector3D bckHitPt = bckRay.getOrigin() + bckRay.getDirection() * roots[i];
+                Math::Vector3D hitPt = m_matrixT.applyForward(bckHitPt);
+                return getNormal(roots[i], hitPt, m_fwdOrigin - m_fwdTranslation);
             }
         }
 
