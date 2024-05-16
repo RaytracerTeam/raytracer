@@ -17,6 +17,7 @@ CORESRC	=	$(wildcard ./src/*.cpp) \
 			$(wildcard ./src/scene/materials/texture/*.cpp) \
 			$(wildcard ./src/scene/lights/*.cpp) \
 			$(wildcard ./src/scene/interactive/*.cpp) \
+			$(wildcard ./src/scene/interactive/actions/*.cpp)
 
 LIBIMGUISRC	=	$(wildcard ./bonus/imgui/*.cpp)
 

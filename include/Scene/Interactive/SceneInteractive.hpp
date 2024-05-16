@@ -84,6 +84,8 @@ namespace Raytracer {
         void applyActions(void);
         void applyKeyReleasedActions(sf::Keyboard::Key key);
         void applyKeyReleasedAction(SceneReleaseActions action);
+        void applyKeyPressedActions(sf::Keyboard::Key key);
+        void applyKeyPressedAction(SceneReleaseActions action);
         void handleMouse(void);
 
         void updateDimension(unsigned int width, unsigned int height);
@@ -92,8 +94,11 @@ namespace Raytracer {
         void setRColorToImg(const std::vector<Raytracer::Color> &vectorRes);
         void handleEvents(void);
 
-        // void parseInteractive(const std::string &filename);
-        // void saveInteractive(const std::string &filename);
+        void selectShootedPrimitive(void);
+        void releaseSelectedPrimitive(void);
+
+        void minecraftPlaceBlock(void);
+        void minecraftDestroyBlock(void);
 
         // -- ImGui --
         #ifdef BONUS
@@ -134,6 +139,7 @@ namespace Raytracer {
         void guiColoredSquare(const Color &color);
 
         void showCrosshair(void);
+
         #endif
 
         /////////////////////////////////
@@ -169,8 +175,6 @@ namespace Raytracer {
         float m_selectedPrimitiveSpecular;
         float m_selectedPrimitiveShininess;
         float m_selectedPrimitiveTransparency;
-        // libconfig::Config m_cfg;
-        // bool m_objFound = false;
         #endif
         bool m_addToCurrentScene = false;
         bool m_isWriting = false;

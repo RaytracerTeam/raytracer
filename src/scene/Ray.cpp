@@ -17,7 +17,8 @@ namespace Raytracer {
 
     ////////////////////////////////////////:
 
-    RayHit::RayHit(double distance, Math::Vector3D hitPt, Math::Vector3D normal, Math::Vector3D relativeHitPt)
+    RayHit::RayHit(double distance, Math::Vector3D hitPt, Math::Vector3D normal,
+    Math::Vector3D relativeHitPt)
         : m_distance(distance)
         , m_hitPt(hitPt)
         , m_relativeHitPt(relativeHitPt)

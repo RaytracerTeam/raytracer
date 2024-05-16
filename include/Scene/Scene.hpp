@@ -100,7 +100,8 @@ namespace Raytracer {
         void reset(void);
 
         void showCurrentRenderedLine(void);
-        std::optional<const IShape *> getPrimitiveHit(sf::Vector2i mousePos) const;
+        std::optional<BVH::Intersection> getIntersectionHit(sf::Vector2i mousePos) const;
+        std::optional<const IPrimitive *> getPrimitiveHit(sf::Vector2i mousePos) const;
 
         void killObjects(void);
         Color getDiffuseColor(const Ray &lightRay, const RayHit &rhitPrim,

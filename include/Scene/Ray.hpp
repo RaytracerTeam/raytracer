@@ -11,6 +11,7 @@
 #include "Math/Matrix44d.hpp"
 
 #include <limits>
+#include <vector>
 
 namespace Raytracer {
     class Ray {
@@ -35,7 +36,8 @@ namespace Raytracer {
             RayHit() = default;
             ~RayHit() = default;
 
-            RayHit(double distance, Math::Vector3D hitPt, Math::Vector3D normal, Math::Vector3D relativeHitPt = Math::Vector3D(0, 0, 0));
+            RayHit(double distance, Math::Vector3D hitPt, Math::Vector3D normal,
+                Math::Vector3D relativeHitPt = Math::Vector3D(0, 0, 0));
             RayHit(const RayHit &rhit);
             RayHit &operator=(const RayHit &ray);
 

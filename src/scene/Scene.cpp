@@ -314,8 +314,7 @@ namespace Raytracer {
             m_render.setPixel(x, m_renderY + 1, m_render.getPixel(x, m_renderY + 1) * sf::Color(100, 100, 100));
     }
 
-    std::optional<const IShape *> Scene::getPrimitiveHit(sf::Vector2i mousePos) const
-    {
+    std::optional<BVH::Intersection> Scene::getIntersectionHit(sf::Vector2i mousePos) const {
         Camera &camera = getCurrentCamera();
         Dimension dimension = camera.getDimension();
         double scale = std::tan(Math::deg2rad(camera.getFov() * 0.5));
@@ -330,7 +329,16 @@ namespace Raytracer {
         auto result = BVH::readBVH(ray, *m_bvhTree, intersection);
         if (!result)
             return std::nullopt;
-        return intersection.primitve;
+        return intersection;
+    }
+
+    std::optional<const IPrimitive *> Scene::getPrimitiveHit(sf::Vector2i mousePos) const
+    {
+        std::optional<BVH::Intersection> intersection = getIntersectionHit(mousePos);
+        if (!intersection.has_value())
+            return std::nullopt;
+        return intersection->primitve;
+
     }
 
     void Scene::killObjects(void)
