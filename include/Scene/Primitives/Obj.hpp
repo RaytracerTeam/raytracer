@@ -15,22 +15,22 @@
 namespace Raytracer {
     class Obj : public APrimitive {
     public:
-        Obj(const std::string &obj_path, std::unique_ptr<IMaterial> material,
-            const Math::Vector3D &position = Math::Vector3D(0, 0, 0),
-            Math::Vector3D scale = Math::Vector3D(1, 1, 1));
+        Obj(const Math::Vector3D &origin, std::unique_ptr<IMaterial> material,
+            Transformations transformations, const std::string &objPath);
         ~Obj() = default;
 
         PrimitiveType getType(void) const override { return PrimitiveType::OBJ; };
 
         std::string getTexturePath() const;
         const std::string &getObjPath(void) const { return m_objPath; };
-        Math::Vector3D getScale(void) const { return m_scale; };
         std::vector<std::unique_ptr<Triangle>> &getTriangles(void) { return m_triangles; };
 
         void setIsShown(bool isShown) override;
         void setOrigin(const Math::Vector3D &v) override;
         void setMaterial(std::unique_ptr<IMaterial> material) override;
-        void setScale(const Math::Vector3D &scale);
+        void setTranslation(const Math::Vector3D &translation) override;
+        void setRotation(const Math::Vector3D &rotation) override;
+        void setScale(const Math::Vector3D &scale) override;
 
         void applyMaterialToTriangles(void);
 
@@ -39,10 +39,6 @@ namespace Raytracer {
 
     private:
         std::string m_objPath;
-
-        Math::Vector3D m_scale;
-
         std::vector<std::unique_ptr<Triangle>> m_triangles;
     };
 } // namespace Raytracer
-

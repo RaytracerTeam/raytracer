@@ -27,19 +27,19 @@ namespace Raytracer {
             m_isShown = isShown;
         }
 
-        void setTranslation(const Math::Vector3D &translation) override final
+        void setTranslation(const Math::Vector3D &translation) override
         {
             m_transformations.setTranslation(translation);
             m_matrixT.setTransform(m_transformations);
             updateTransformations();
         }
-        void setRotation(const Math::Vector3D &rotation) override final
+        void setRotation(const Math::Vector3D &rotation) override
         {
             m_transformations.setRotation(rotation);
             m_matrixT.setTransform(m_transformations);
             updateTransformations();
         }
-        void setScale(const Math::Vector3D &scale) override final
+        void setScale(const Math::Vector3D &scale) override
         {
             m_transformations.setScale(scale);
             m_matrixT.setTransform(m_transformations);
