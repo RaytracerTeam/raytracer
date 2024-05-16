@@ -11,6 +11,7 @@
 *.mp4
 
 !assets/*.png
+!assets/textures/minecraft/*.png
 !assets/skyboxes/*.jpg
 
 raytracer
