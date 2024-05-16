@@ -26,6 +26,7 @@ namespace Raytracer {
     #define DEFAULT_ROTATION_SPEED 3
     #define DEFAULT_CAMERA_RESOLUTION 240
     #define FILE_BUF_SIZE 100
+    #define LEFT_PANE_PADDING 30
 
     // ImGui default slider values
     #define DEFAULT_POS_MIN -60.0f
@@ -53,7 +54,8 @@ namespace Raytracer {
         PRIMITIVE,
         LIGHT,
         CAMERA,
-        OBJ
+        OBJ,
+        INVENTORY
     };
 
     class SceneInteractive {
@@ -102,6 +104,9 @@ namespace Raytracer {
         void minecraftPlaceBlock(void);
         void minecraftDestroyBlock(void);
 
+        Math::Vector3D getCameraFrontPos(void);
+        std::unique_ptr<IMaterial> copyMaterial(IMaterial *material);
+
         // -- ImGui --
         #ifdef BONUS
         void setupImageSize(void);
@@ -110,6 +115,12 @@ namespace Raytracer {
         void guiTopBar(void);
         void guiDebugInfos(void);
         void guiObjectSelection(void);
+        void guiPrimitiveTab(void);
+        void guiLightTab(void);
+        void guiCameraTab(void);
+        void guiObjTab(void);
+        void guiInventoryTab(void);
+
         void removeSelectedObject(void);
         void customEditPrimitives(std::unique_ptr<IPrimitive> &primitive);
         void customEditLights(ILight *light);
@@ -139,8 +150,6 @@ namespace Raytracer {
         void addSelectableScene(const std::filesystem::directory_entry &entry);
 
         void guiColoredSquare(const Color &color);
-
-        Math::Vector3D getCameraFrontPos(void);
         #endif
 
         /////////////////////////////////
@@ -176,7 +185,6 @@ namespace Raytracer {
         float m_selectedPrimitiveSpecular;
         float m_selectedPrimitiveShininess;
         float m_selectedPrimitiveTransparency;
-        std::unique_ptr<IMaterial> m_selectedMaterial;
         #endif
         bool m_addToCurrentScene = false;
         bool m_isWriting = false;

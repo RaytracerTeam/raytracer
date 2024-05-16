@@ -75,6 +75,8 @@ namespace Raytracer {
         #define CFG_SPEED "speed"
         #define CFG_SENSITIVITY "sensitivity"
         #define CFG_ALWAYS_RENDER "alwaysRender"
+        // Inventory
+        #define CFG_INVENTORY "inventory"
 
         class ParsingResult {
             public:

@@ -10,7 +10,6 @@
 
 #include "Scene/Materials/MaterialSolid.hpp"
 
-
 namespace Raytracer
 {
     void SceneInteractive::applyActions(void)
@@ -73,8 +72,7 @@ namespace Raytracer
         if (m_actions[SceneAction::PAINT].second) {
             auto sphere = std::make_unique<Sphere>(
                 getCameraFrontPos(),
-                std::make_unique<MaterialSolid>(
-                    Color((unsigned int)255, 255, 255)),
+                copyMaterial(m_scene->getInventory().getCurrentMaterial().get()),
                 1.0);
             sphere->setID(m_scene->getPrimitives().size() + 1);
             m_scene->addPrimitive(std::move(sphere));

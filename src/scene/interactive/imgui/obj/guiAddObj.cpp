@@ -15,7 +15,7 @@ namespace Raytracer
         if (!std::filesystem::exists(OBJ_PATH)) {
             return;
         }
-        ImGui::SetNextItemWidth(200);
+        ImGui::SetNextItemWidth(150);
         if (ImGui::BeginCombo("Obj Path", "Add an Obj")) {
             for (const auto &entry : std::filesystem::directory_iterator(OBJ_PATH)) {
                 if (ImGui::Selectable(entry.path().filename().string().c_str())) {

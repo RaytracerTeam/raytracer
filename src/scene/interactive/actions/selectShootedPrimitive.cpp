@@ -55,7 +55,6 @@ namespace Raytracer
         m_needRendering = true;
         #endif
     }
-    #ifdef BONUS
     Math::Vector3D SceneInteractive::getCameraFrontPos(void)
     {
         Camera &currentCamera = m_scene->getCurrentCamera();
@@ -66,5 +65,4 @@ namespace Raytracer
             -cos(angle.getYaw()) * cos(angle.getPitch()));
         return currentCamera.getPos() + cameraAngle * 10;
     }
-    #endif
 } // namespace Raytracer

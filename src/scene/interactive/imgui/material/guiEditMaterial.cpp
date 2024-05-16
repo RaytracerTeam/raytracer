@@ -7,12 +7,7 @@
 
 #include "Scene/Interactive/SceneInteractive.hpp"
 
-#include "Scene/Materials/MaterialSolid.hpp"
-#include "Scene/Materials/MaterialCode/Checkerboard.hpp"
-#include "Scene/Materials/MaterialTexture/SphereTexture.hpp"
-#include "Scene/Materials/MaterialTexture/TriangleTexture.hpp"
-#include "Scene/Materials/MaterialTexture/PlaneTexture.hpp"
-#include "Scene/Materials/MaterialTexture/CubeTexture.hpp"
+#include "Scene/Materials/AllMaterials.hpp"
 
 namespace Raytracer
 {

@@ -25,24 +25,17 @@ namespace Raytracer
         if (ImGui::Begin("What a nice tool, Thank you Mister Pommier", nullptr,
         ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDecoration)) {
             if (!m_fullscreen) {
-                //* -- Menu Bar --
                 guiMenuBar();
-
-                //* -- Top Bar --
                 guiTopBar();
-
                 // Left Pane
-                if (ImGui::BeginChild("left pane", ImVec2(m_leftPaneWidth, m_imageHeight),
-                ImGuiChildFlags_Border, ImGuiWindowFlags_NoScrollbar)) {
-
-                    //* -- Object Selection --
+                if (ImGui::BeginChild("left pane", ImVec2(m_leftPaneWidth +
+                LEFT_PANE_PADDING, m_imageHeight), ImGuiChildFlags_Border
+                | ImGuiChildFlags_AutoResizeX | ImGuiChildFlags_AlwaysAutoResize,
+                ImGuiWindowFlags_NoScrollbar)) {
                     guiObjectSelection();
-
-                    //* -- Debug Infos --
                     guiDebugInfos();
                 }
                 ImGui::EndChild();
-
                 ImGui::SameLine();
             }
 
@@ -70,7 +63,7 @@ namespace Raytracer
 
     void SceneInteractive::setupImageSize()
     {
-        m_imageWidth = ImGui::GetIO().DisplaySize.x - 20;
+        m_imageWidth = ImGui::GetIO().DisplaySize.x - LEFT_PANE_PADDING;
         if (!m_fullscreen)
             m_imageWidth -= m_leftPaneWidth + 30;
         m_imageHeight = m_imageWidth / (SCREEN_RATIO);
