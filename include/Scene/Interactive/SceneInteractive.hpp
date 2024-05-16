@@ -97,6 +97,8 @@ namespace Raytracer {
         void selectShootedPrimitive(void);
         void releaseSelectedPrimitive(void);
 
+        // Welcome in Minecraft
+        void showCrosshair(void);
         void minecraftPlaceBlock(void);
         void minecraftDestroyBlock(void);
 
@@ -138,8 +140,7 @@ namespace Raytracer {
 
         void guiColoredSquare(const Color &color);
 
-        void showCrosshair(void);
-
+        Math::Vector3D getCameraFrontPos(void);
         #endif
 
         /////////////////////////////////
@@ -175,6 +176,7 @@ namespace Raytracer {
         float m_selectedPrimitiveSpecular;
         float m_selectedPrimitiveShininess;
         float m_selectedPrimitiveTransparency;
+        std::unique_ptr<IMaterial> m_selectedMaterial;
         #endif
         bool m_addToCurrentScene = false;
         bool m_isWriting = false;

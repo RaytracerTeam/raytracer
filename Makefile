@@ -25,7 +25,7 @@ IMGUISRC	=	$(wildcard ./src/scene/interactive/imgui/*.cpp) \
 				$(wildcard ./src/scene/interactive/imgui/objectEdit/*.cpp) \
 				$(wildcard ./src/scene/interactive/imgui/objectEdit/primitives/*.cpp) \
 				$(wildcard ./src/scene/interactive/imgui/objectEdit/lights/*.cpp) \
-				$(wildcard ./src/scene/interactive/imgui/objectSelection/*.cpp)
+				$(wildcard ./src/scene/interactive/imgui/objectSelectAndAdd/*.cpp)
 
 CAMERASRC	=	$(wildcard ./bonus/camera/*.cpp)
 

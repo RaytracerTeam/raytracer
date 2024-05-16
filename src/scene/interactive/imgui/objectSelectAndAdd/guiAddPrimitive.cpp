@@ -16,7 +16,7 @@ namespace Raytracer
         if (ImGui::BeginCombo(" ", "Add Primitive")) {
             if (ImGui::Selectable("Sphere")) {
                 auto sphere = std::make_unique<Sphere>(
-                    Math::Vector3D(0, 0, 0),
+                    getCameraFrontPos(),
                     std::make_unique<MaterialSolid>(
                         Color((unsigned int)255, 255, 255)),
                     1.0);

@@ -31,6 +31,7 @@ namespace Raytracer
         m_actions.push_back(std::make_pair(sf::Keyboard::H, false));        // ROTATE_LEFT
         m_actions.push_back(std::make_pair(sf::Keyboard::K, false));        // ROTATE_RIGHT
         m_actions.push_back(std::make_pair(sf::Keyboard::LControl, false)); // SPRINT
+        m_actions.push_back(std::make_pair(sf::Keyboard::R, false));        // PAINT
 
         m_releaseActions.push_back(sf::Keyboard::Escape);          // EXIT
         m_releaseActions.push_back(sf::Keyboard::C);               // SAVE_CURRENT_AND_EXIT
@@ -42,7 +43,7 @@ namespace Raytracer
         m_releaseActions.push_back(sf::Keyboard::M);               // TOGGLE_MOUSE
         m_releaseActions.push_back(sf::Keyboard::N);               // TOGGLE_SIMPLE_MOUSE
         m_releaseActions.push_back(sf::Keyboard::O);               // RESET
-        m_releaseActions.push_back(sf::Keyboard::R);               // SELECT_PRIMITIVE
+        m_releaseActions.push_back(sf::Keyboard::G);               // SELECT_PRIMITIVE
         parseConfigFile("config/keys.cfg");
     }
 
@@ -106,6 +107,8 @@ namespace Raytracer
             return SceneAction::ROTATE_RIGHT;
         else if (action == "SPRINT")
             return SceneAction::SPRINT;
+        else if (action == "PAINT")
+            return SceneAction::PAINT;
         else
             throw std::invalid_argument("keys.cfg: Invalid action name: " + action);
     }

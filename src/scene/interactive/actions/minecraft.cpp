@@ -51,7 +51,6 @@ namespace Raytracer
         const IPrimitive *prim = (*optPrim).primitve;
         if (prim->getType() != PrimitiveType::CUBE)
             return;
-        int i = 0;
         for (auto &prim : m_scene->getPrimitives()) {
             if (prim->getID() == (*optPrim).primitve->getID()) {
                 prim->setDieASAP(true);
@@ -59,7 +58,6 @@ namespace Raytracer
                 m_needRendering = true;
                 break;
             }
-            i++;
         }
     }
 } // namespace Raytracer

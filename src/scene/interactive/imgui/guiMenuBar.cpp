@@ -98,6 +98,7 @@ namespace Raytracer
                     ImGuiInputTextFlags_EnterReturnsTrue)) {
                         if (std::filesystem::exists(m_skyboxPathBuf))
                             m_scene->setSkyboxPath(m_skyboxPathBuf);
+                        m_needRendering = true;
                         ImGui::CloseCurrentPopup();
                     }
                     if (ImGui::BeginCombo("Skybox Path", m_skyboxPathBuf)) {

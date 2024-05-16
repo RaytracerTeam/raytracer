@@ -52,4 +52,27 @@ namespace Raytracer
             m_needRendering = true;
         }
     }
+
+    void SceneInteractive::showCrosshair(void)
+    {
+        const sf::Image &img = m_scene->getRender();
+        const sf::Vector2u &size = img.getSize();
+        sf::Vector2u center = sf::Vector2u(size.x / 2, size.y / 2);
+
+        unsigned int crosshairSize = size.x / 50;
+        unsigned int lineSize = crosshairSize / 20;
+        if (crosshairSize == 0)
+            crosshairSize = 1;
+
+        for (unsigned int y = center.y - crosshairSize; y <= center.y + crosshairSize; y++) {
+            for (unsigned int x = center.x - crosshairSize; x <= center.x + crosshairSize; x++) {
+                if (y <= center.y + lineSize && y >= center.y - lineSize
+                && x <= center.x + lineSize && x >= center.x - lineSize)
+                    m_scene->setRenderPixel(x, y, Color(200U, 255, 200));
+                else if ((y <= center.y + lineSize && y >= center.y - lineSize) ||
+                (x <= center.x + lineSize && x >= center.x - lineSize))
+                    m_scene->setRenderPixel(x, y, Color(255U, 255, 255));
+            }
+        }
+    }
 } // namespace Raytracer
