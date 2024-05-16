@@ -47,6 +47,7 @@ namespace Raytracer {
                     scene->addPrimitive(std::make_unique<Triangle>(
                         origin,
                         std::make_unique<MaterialSolid>(static_cast<MaterialSolid &>(*material)),
+                        Transformations(),
                         v1, v2));
                 }
             }
