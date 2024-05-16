@@ -17,6 +17,7 @@ CORESRC	=	$(wildcard ./src/*.cpp) \
 			$(wildcard ./src/scene/materials/texture/*.cpp) \
 			$(wildcard ./src/scene/lights/*.cpp) \
 			$(wildcard ./src/scene/interactive/*.cpp) \
+			$(wildcard ./src/scene/interactive/actions/*.cpp)
 
 LIBIMGUISRC	=	$(wildcard ./bonus/imgui/*.cpp)
 
@@ -79,9 +80,10 @@ UNAME_S := $(shell uname -s)
 
 ifeq ($(UNAME_S),Darwin)
 	LDBONUSFLAGS += -framework OpenGL
-	CFLAGS += $(MACSFMLINCLUDE) -DMACOSTONIO
+	CFLAGS += $(MACSFMLINCLUDE) -DMACOSTONIO $(IMGUIFLAGS)
 	LDFLAGS += $(MACSFMLLIB)
 else
+	CFLAGS += $(shell pkg-config --cflags opencv4)
 	LDBONUSFLAGS += -lGL
 endif
 

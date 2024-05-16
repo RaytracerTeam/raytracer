@@ -19,10 +19,7 @@ namespace Raytracer
 
             cameraSetting.add(CFG_RESOLUTION, libconfig::Setting::TypeInt) = (int)camera.get()->getDimension().getHeight();
 
-            libconfig::Setting &cameraPos = cameraSetting.add(CFG_POSITION, libconfig::Setting::TypeGroup);
-            cameraPos.add("x", libconfig::Setting::TypeFloat) = camera.get()->getPos().getX();
-            cameraPos.add("y", libconfig::Setting::TypeFloat) = camera.get()->getPos().getY();
-            cameraPos.add("z", libconfig::Setting::TypeFloat) = camera.get()->getPos().getZ();
+            savePos(cameraSetting, camera.get()->getPos());
 
             libconfig::Setting &cameraRotation = cameraSetting.add(CFG_ROTATION, libconfig::Setting::TypeGroup);
             cameraRotation.add("yaw", libconfig::Setting::TypeFloat) = fmod(camera.get()->getAngle().getYaw(), 360);

@@ -9,8 +9,6 @@
 
 #include "Scene/Primitives/Tanglecube.hpp"
 
-#include "Scene/Materials/MaterialSolid.hpp"
-
 namespace Raytracer
 {
     void Parsing::saveTanglecube(libconfig::Setting &list, Tanglecube *tanglecube)

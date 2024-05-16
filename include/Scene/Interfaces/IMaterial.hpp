@@ -18,16 +18,22 @@ namespace Raytracer {
         SOLID,
         CODE, // algorithm
         TEXTURE,
-        CAMERA,
         CHECKERBOARD,
+        TEXTURE_SPHERE,
+        TEXTURE_TRIANGLE,
+        TEXTURE_CUBE,
+        TEXTURE_PLANE,
         NONE
     };
     char const *const MaterialTypeStrings[] = {
         "Solid",
         "Code",
         "Texture",
-        "Camera",
         "Checkerboard",
+        "TextureSphere",
+        "TextureTriangle",
+        "TextureCube",
+        "TexturePlane",
         "None"
     };
 
@@ -39,21 +45,15 @@ namespace Raytracer {
         virtual const std::string getTypeString(void) const = 0;
 
         virtual double getReflection(void) const = 0;
-        virtual bool hasPhong(void) const = 0;
         virtual double getTransparency(void) const = 0;
         virtual double getRefraction(void) const = 0;
-        virtual double getFuzzFactor(void) const = 0;
-        virtual double getEmission(void) const = 0;
         virtual float getDiffuse(void) const = 0;
         virtual float getSpecular(void) const = 0;
         virtual float getShininess(void) const = 0;
 
         virtual void setReflection(double reflection) = 0;
-        virtual void setHasPhong(bool hasPhong) = 0;
         virtual void setTransparency(double transparency) = 0;
         virtual void setRefraction(double refraction) = 0;
-        virtual void setFuzzFactor(double fuzz) = 0;
-        virtual void setEmission(double emission) = 0;
         virtual void setDiffuse(float diffuse) = 0;
         virtual void setSpecular(float specular) = 0;
         virtual void setShininess(float shininess) = 0;
@@ -65,5 +65,9 @@ namespace Raytracer {
         virtual std::optional<Ray> getTransparencyRefractionRay(const Ray &rayIn, const RayHit &rayHit) const = 0;
         virtual std::optional<Ray> getTransparencyRay(const Ray &rayIn, const RayHit &rayHit) const = 0;
 
+        #ifdef BONUSCAMERA
+        virtual void setIsCamera(bool isCamera) = 0;
+        virtual bool isCamera(void) const = 0;
+        #endif
     };
 } // namespace Raytracer

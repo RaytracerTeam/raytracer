@@ -8,8 +8,10 @@
 *.ppm
 *.png
 *.jpg
+*.mp4
 
 !assets/*.png
+!assets/textures/minecraft/*.png
 !assets/skyboxes/*.jpg
 
 raytracer
@@ -23,18 +25,19 @@ scores
 
 .vscode/c_cpp_properties.json
 a.out
-test.cpp
-test
 
 imgui.ini
 todo
 screenshots/*.png
+
+test.*
 
 assets/skyboxes/local/*.jpg
 assets/obj/local/*.obj
 assets/obj/local/*.png
 assets/textures/local/*.jpg
 assets/textures/local/*.png
+assets/obj/local/*
 
 scenes/local/*.cfg
 scenes/quick_save.cfg

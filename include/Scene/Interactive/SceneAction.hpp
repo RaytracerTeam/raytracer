@@ -34,5 +34,6 @@ namespace Raytracer
         TOGGLE_MOUSE,
         TOGGLE_SIMPLE_MOUSE,
         RESET,
+        SELECT_PRIMITIVE,
     };
 } // namespace Raytracer

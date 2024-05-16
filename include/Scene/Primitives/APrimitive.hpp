@@ -18,8 +18,14 @@ namespace Raytracer {
             m_origin = v;
             updateTransformations();
         }
-        void setMaterial(std::unique_ptr<IMaterial> material) override final { m_material = std::move(material); }
-        void setIsShown(bool isShown) override final { m_isShown = isShown; }
+        void setMaterial(std::unique_ptr<IMaterial> material) override
+        {
+            m_material = std::move(material);
+        }
+        void setIsShown(bool isShown) override
+        {
+            m_isShown = isShown;
+        }
 
         void setTranslation(const Math::Vector3D &translation) override final
         {

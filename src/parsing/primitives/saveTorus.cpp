@@ -9,8 +9,6 @@
 
 #include "Scene/Primitives/Torus.hpp"
 
-#include "Scene/Materials/MaterialSolid.hpp"
-
 namespace Raytracer
 {
     void Parsing::saveTorus(libconfig::Setting &list, Torus *torus)

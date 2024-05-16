@@ -13,10 +13,12 @@ namespace Raytracer {
     class SphereTexture : public MaterialTexture {
     public:
         SphereTexture() = default;
-        SphereTexture(const std::string &pathname);
+        SphereTexture(const std::string &pathname) : MaterialTexture(pathname) {}
+        SphereTexture(std::shared_ptr<sf::Image> image) : MaterialTexture(image) {}
         ~SphereTexture() = default;
 
-        Color getColor(const RayHit &rayhit) const override;
-        Color getColor(double u, double v) const override final;
+        MaterialType getType() const override { return MaterialType::TEXTURE_SPHERE; }
+
+        Color getColor(const RayHit &rayhit) const override final;
     };
 } // namespace Raytracer

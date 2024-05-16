@@ -15,7 +15,11 @@ namespace Raytracer
 
     void RealCamera::init(void)
     {
+        #ifdef MACOSTONIO
         m_camera = cv::VideoCapture(0, cv::CAP_AVFOUNDATION);
+        #else
+        m_camera = cv::VideoCapture(0);
+        #endif
         m_image = std::make_shared<sf::Image>();
         if (!m_camera.isOpened()) {
             std::cerr << "Camera failed to open" << std::endl;

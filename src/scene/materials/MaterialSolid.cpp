@@ -19,11 +19,8 @@ namespace Raytracer {
     {
         m_color = src.m_color;
         m_reflection = src.m_reflection;
-        m_emission = src.m_emission;
         m_transparency = src.m_transparency;
-        m_fuzz = src.m_fuzz;
         m_refractionIndex = src.m_refractionIndex;
-        m_hasPhong = src.m_hasPhong;
     }
 
     Color MaterialSolid::getColor(const RayHit &) const

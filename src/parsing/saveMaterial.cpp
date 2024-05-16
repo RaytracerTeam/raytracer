@@ -25,6 +25,12 @@ namespace Raytracer
 
         static void saveMaterialTexture(libconfig::Setting &setting, APrimitive *primitive)
         {
+            #ifdef BONUSCAMERA
+            if (primitive->getMaterial()->isCamera()) {
+                setting.add(CFG_TYPE, libconfig::Setting::TypeString) = CFG_CAMERA;
+                return;
+            }
+            #endif
             setting.add(CFG_TYPE, libconfig::Setting::TypeString) = CFG_MATERIAL_TEXTURE;
             MaterialTexture *materialTexture = static_cast<MaterialTexture *>(primitive->getMaterial().get());
             setting.add(CFG_PATH, libconfig::Setting::TypeString) = materialTexture->getPathname();
@@ -45,17 +51,16 @@ namespace Raytracer
         void saveMaterial(libconfig::Setting &setting, APrimitive *primitive)
         {
             libconfig::Setting &materialSetting = setting.add(CFG_MATERIAL, libconfig::Setting::TypeGroup);
-            if (primitive->getMaterial()->getType() == MaterialType::SOLID)
-                saveMaterialSolid(materialSetting, primitive);
-            else if (primitive->getMaterial()->getType() == MaterialType::TEXTURE)
-                saveMaterialTexture(materialSetting, primitive);
-            else if (primitive->getMaterial()->getType() == MaterialType::CHECKERBOARD)
-                saveMaterialCheckerboard(materialSetting, primitive);
-            else if (primitive->getMaterial()->getType() == MaterialType::CAMERA)
-                materialSetting.add(CFG_TYPE, libconfig::Setting::TypeString) = CFG_CAMERA;
-            else {
-                std::cerr << "Unknown material type in saveMaterial" << std::endl;
-                return;
+            switch (primitive->getMaterial()->getType()) {
+            case MaterialType::SOLID: saveMaterialSolid(materialSetting, primitive); break;
+            case MaterialType::TEXTURE_SPHERE:
+            case MaterialType::TEXTURE_TRIANGLE:
+            case MaterialType::TEXTURE_PLANE:
+            case MaterialType::TEXTURE_CUBE:
+            case MaterialType::TEXTURE: saveMaterialTexture(materialSetting, primitive); break;
+            case MaterialType::CHECKERBOARD: saveMaterialCheckerboard(materialSetting, primitive); break;
+            default:
+                break;
             }
 
             std::unique_ptr<IMaterial> &material = primitive->getMaterial();
@@ -66,9 +71,6 @@ namespace Raytracer
                 materialSetting.add(CFG_REFLECTION, libconfig::Setting::TypeFloat) = material->getReflection();
                 materialSetting.add(CFG_TRANSPARENCY, libconfig::Setting::TypeFloat) = material->getTransparency();
                 materialSetting.add(CFG_REFRACTION, libconfig::Setting::TypeFloat) = material->getRefraction();
-                materialSetting.add(CFG_FUZZ, libconfig::Setting::TypeFloat) = material->getFuzzFactor();
-                materialSetting.add(CFG_EMISSION, libconfig::Setting::TypeFloat) = material->getEmission();
-                materialSetting.add(CFG_HAS_PHONG, libconfig::Setting::TypeBoolean) = material->hasPhong();
             }
         }
     } // namespace Parsing

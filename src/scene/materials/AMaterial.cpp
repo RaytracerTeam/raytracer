@@ -21,7 +21,7 @@ namespace Raytracer {
         if (specular > 0)
             shininess = std::pow(specular, m_shininess);
 
-        return light->getColor() * m_specular * shininess;
+        return light->getColor() * m_specular * shininess * light->getIntensity();
     }
 
     // todo : add fuzzing that makes reflections go random direction

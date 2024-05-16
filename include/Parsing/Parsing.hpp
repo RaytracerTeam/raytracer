@@ -25,45 +25,40 @@ namespace Raytracer {
         #define CFG_SKYBOX "skybox"
         #define CFG_PATH "path"
         #define CFG_HASTEXTURE "hasTexture"
-        #define CFG_CAMERA "camera"
-
+        // Lights
         #define CFG_AMBIENT_LIGHT "ambientLight"
-        #define CFG_OBJ "obj"
+        #define CFG_INTENSITY "intensity"
+        // Camera
+        #define CFG_CAMERA "camera"
+        #define CFG_ANIMATIONS "animations"
+        #define CFG_OBJ "objs"
         #define CFG_FOV "fov"
         #define CFG_RESOLUTION "resolution"
+        // Primitives
         #define CFG_POSITION "position"
         #define CFG_ROTATION "rotation"
+        #define CFG_HEIGHT "height"
         #define CFG_SCALE "scale"
         #define CFG_TRANSLATION "translation"
         #define CFG_COLOR "color"
         #define CFG_RADIUS "radius"
-        #define CFG_HEIGHT "height"
-        #define CFG_WIDTH "width"
         #define CFG_DISTANCE "distance"
-        #define CFG_INTENSITY "intensity"
-        #define CFG_DIFFUSE "diffuse"
-        #define CFG_SPECULAR "specular"
-        #define CFG_SHININESS "shininess"
-        #define CFG_REFLECTION "reflection"
-        #define CFG_FUZZ "fuzz"
-        #define CFG_EMISSION "emission"
         #define CFG_TRANSPARENCY "transparency"
         #define CFG_REFRACTION "refraction"
-        #define CFG_HAS_PHONG "hasPhong"
         #define CFG_POINT_LIGHTS "pointLights"
         #define CFG_DIRECTIONAL_LIGHTS "directionalLights"
         #define CFG_DIRECTION "direction"
         #define CFG_TRANSFORMATIONS "transformations"
+        // Optimization
         #define CFG_OPTIMIZATION "optimization"
         #define CFG_MAX_RAY_BOUNCES "maxRayBounces"
         #define CFG_BVH_MAX_PRIM "maxPrimitivesPerBvhBox"
         #define CFG_USE_MULTITHREADING "useMultithreading"
-        #define CFG_ALWAYS_RENDER "alwaysRender"
 
         #define CFG_V0 "v0"
         #define CFG_V1 "v1"
         #define CFG_V2 "v2"
-
+        // Material
         #define CFG_MATERIAL "material"
         #define CFG_TYPE "type"
         #define CFG_MATERIAL_SOLID_COLOR "solid_color"
@@ -71,13 +66,41 @@ namespace Raytracer {
         #define CFG_MATERIAL_CHECKERBOARD "checkerboard"
         #define CFG_COLOR_BIS "color_bis"
         #define CFG_SIZE "size"
+        #define CFG_DIFFUSE "diffuse"
+        #define CFG_SPECULAR "specular"
+        #define CFG_SHININESS "shininess"
+        #define CFG_REFLECTION "reflection"
+        // Interactive
+        #define CFG_INTERACTIVE "interactive"
+        #define CFG_SPEED "speed"
+        #define CFG_SENSITIVITY "sensitivity"
+        #define CFG_ALWAYS_RENDER "alwaysRender"
+
+        class ParsingResult {
+            public:
+                bool interactiveMode;
+                bool animationMode;
+                std::string path;
+        };
 
         WriteFile::WriteType parseFormat(const std::string_view &format);
-        bool parseArgv(int argc, char **argv,
+        ParsingResult parseArgv(int argc, char **argv,
             std::vector<std::string_view> &inputFiles, WriteFile::WriteType &type); // return true if interactive mode
-        void parse(std::unique_ptr<Scene> &scene, const std::vector<std::string_view> &inputFiles);
+        void parse(std::unique_ptr<Scene> &scene, const std::string_view &file);
+        void parse(std::unique_ptr<Scene> &scene, const std::vector<std::string_view> &file);
 
-        float parseFloat(const libconfig::Setting &setting, const std::string &key, float defaultValue);
+        template <typename T>
+        T parseNumber(const libconfig::Setting &setting, const std::string &key, T defaultValue = 0)
+        {
+            if (setting.exists(key.c_str())) {
+                if (setting.lookup(key.c_str()).getType() == libconfig::Setting::TypeInt)
+                    return (T)((int)setting.lookup(key.c_str()));
+                return setting.lookup(key.c_str());
+            }
+            return defaultValue;
+        }
+
+
         Math::Vector3D parsePosition(const libconfig::Setting &setting);
         Math::Angle3D parseRotation(const libconfig::Setting &setting);
         MaterialSolid parseMaterialColor(const libconfig::Setting &setting);
@@ -88,7 +111,7 @@ namespace Raytracer {
             Math::Vector3D defaultValue = Math::Vector3D(0, 0, 0));
         float parseIntensity(const libconfig::Setting &setting);
         std::unique_ptr<IMaterial> parseMaterial(const libconfig::Setting &setting,
-            PrimitiveType primType = PrimitiveType::SPHERE);
+            PrimitiveType primType);
         Transformations parseTransformations(const libconfig::Setting &setting);
 
         void parsePrimitives(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
@@ -105,8 +128,10 @@ namespace Raytracer {
         void parseOptimization(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
         void parseCameras(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
         void parseLights(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
-        void parseObj(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
+        void parseAnimations(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
+        void parseObjs(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
 
+        void saveVector3D(libconfig::Setting &setting, const std::string &key, const Math::Vector3D vec);
         void savePos(libconfig::Setting &setting, const Math::Vector3D pos);
         void saveColor(libconfig::Setting &setting, const Color color);
         void saveMaterial(libconfig::Setting &setting, APrimitive *primitive);
@@ -117,6 +142,7 @@ namespace Raytracer {
         void saveOptimization(const Scene &scene, libconfig::Setting &root);
         void saveCameras(const Scene &scene, libconfig::Setting &root);
         void saveLights(const Scene &scene, libconfig::Setting &root);
+        void saveObjs(const Scene &scene, libconfig::Setting &root);
         void savePrimitives(const Scene &scene, libconfig::Setting &root);
         void saveSphere(libconfig::Setting &list, Sphere *sphere);
         void saveCylinder(libconfig::Setting &list, Cylinder *cylinder);

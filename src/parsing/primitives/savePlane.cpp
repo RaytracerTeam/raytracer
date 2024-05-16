@@ -9,8 +9,6 @@
 
 #include "Scene/Primitives/Plane.hpp"
 
-#include "Scene/Materials/MaterialSolid.hpp"
-
 namespace Raytracer
 {
     void Parsing::savePlane(libconfig::Setting &list, Plane *plane)
@@ -21,7 +19,13 @@ namespace Raytracer
         planeNormal = plane->getAxisString();
 
         libconfig::Setting &planePos = setting.add(CFG_POSITION, libconfig::Setting::TypeFloat);
-        planePos = plane->getPos();
+        Plane::Axis axis = plane->getAxis();
+        Math::Vector3D planeOrigin = plane->getOrigin();
+        switch (axis) {
+        case Plane::Axis::X: planePos = planeOrigin.getX(); break;
+        case Plane::Axis::Y: planePos = planeOrigin.getY(); break;
+        case Plane::Axis::Z: planePos = planeOrigin.getZ(); break;
+        }
 
         saveMaterial(setting, plane);
         saveTransformations(setting, plane);

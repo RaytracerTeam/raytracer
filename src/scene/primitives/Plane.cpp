@@ -82,7 +82,14 @@ namespace Raytracer {
         }
         if (t <= 0 || std::isinf(t))
             return std::nullopt;
-        return RayHit(t, (rayOrigin + rayDir * t), getNormal());
+        Math::Vector3D hit = rayOrigin + rayDir * t;
+        Math::Vector3D relativeHit;
+        switch (m_axis) {
+        case X: relativeHit = Math::Vector3D(hit.getY(), 0, hit.getZ()); break;
+        case Z: relativeHit = Math::Vector3D(hit.getX(), 0, hit.getY()); break;
+        default: relativeHit = hit; break;
+        }
+        return RayHit(t, hit, getNormal(), relativeHit);
     }
 
     Math::Vector3D Plane::getNormal(void) const

@@ -5,16 +5,11 @@
 ** SceneInteraction.cpp
 */
 
-#include "Scene/Interactive/CameraInteractive.hpp"
 #include "Scene/Interactive/SceneInteractive.hpp"
-#include <cstring>
-
 #include "Parsing/Parsing.hpp"
+
 #include <cstring>
 #include <thread>
-
-//todo : remove this when camera implementation done
-#include "Scene/Materials/MaterialTexture/SphereTexture.hpp"
 
 namespace Raytracer {
     SceneInteractive::SceneInteractive(Dimension &dimension, const std::string &title,
@@ -27,11 +22,15 @@ namespace Raytracer {
         m_scene->updatePrimitives();
         m_alwaysRender = m_scene->getAlwaysRender();
 
+        #ifdef BONUS
         if (inputFiles.size() > 0)
             strcpy(m_loadFileBuf, inputFiles[0].data());
+        #endif
 
         sf::Vector2u windowSize;
+        #ifndef MACOSTONIO
         sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
+        #endif
 
         #ifdef BONUS
             #ifdef MACOSTONIO
@@ -46,8 +45,10 @@ namespace Raytracer {
         #endif
 
         m_window.create(sf::VideoMode(windowSize.x, windowSize.y), title);
+        #ifndef MACOSTONIO
         m_window.setPosition(sf::Vector2i(desktop.width / 2, desktop.height / 2)
             - sf::Vector2i(windowSize.x / 2, windowSize.y / 2));
+        #endif
 
         #ifdef BONUS
             if (!ImGui::SFML::Init(m_window))
@@ -79,67 +80,6 @@ namespace Raytracer {
         m_scene->resizeRender(width, height);
     }
 
-    void SceneInteractive::handleEvents(void)
-    {
-        sf::Event event;
-
-        if (m_isWriting)
-            resetActions();
-        while (m_window.pollEvent(event)) {
-            #ifdef BONUS
-                ImGui::SFML::ProcessEvent(m_window, event);
-            #endif
-
-            if (event.type == sf::Event::Closed) {
-                Parsing::saveScene(*m_scene, TEMP_CFG_FILE);
-                return m_window.close();
-            }
-            if (event.type == sf::Event::Resized) {
-                sf::FloatRect visibleArea(0.f, 0.f, event.size.width, event.size.height);
-                #ifndef BONUS
-                    updateDimension(event.size.width, event.size.height);
-                #else
-                    setupImageSize();
-                #endif
-                m_window.setView(sf::View(visibleArea));
-                m_needRendering = true;
-            }
-            if (!m_isWriting && event.type == sf::Event::KeyReleased)
-                applyKeyReleasedActions(event.key.code);
-            if (!m_isWriting && m_interacCam.handleInput(event, m_actions)) {
-            }
-            if (event.type == sf::Event::MouseButtonReleased
-            && event.mouseButton.button == sf::Mouse::Right) {
-                m_useSimpleMouse = false;
-            }
-            if (event.type == sf::Event::MouseButtonPressed) {
-                if (event.mouseButton.button == sf::Mouse::Right) {
-                    m_useSimpleMouse = true;
-                    m_lastMousePos = sf::Mouse::getPosition();
-                }
-                // Select primitive by aiming at it with the center of the screen
-                else if (event.mouseButton.button == sf::Mouse::Left && (m_useMouse || m_useSimpleMouse)) {
-                    const IShape *shape = m_scene->getPrimitiveHit(sf::Vector2i(
-                        m_dimension.getWidth() / 2, m_dimension.getHeight() / 2
-                    ));
-                    if (shape) {
-                        int i = 0;
-                        for (auto &prim : m_scene->getPrimitives()) {
-                            if (prim->getID() == shape->getID()) {
-                                m_selectedObject = i;
-                                m_selectPrimitiveTab = true;
-                                break;
-                            }
-                            i++;
-                        }
-                    }
-                }
-            }
-        }
-        handleMouse();
-        applyActions();
-    }
-
     void SceneInteractive::setScenes(const std::vector<std::string_view> &inputFiles)
     {
         for (const auto &file : inputFiles) {
@@ -153,7 +93,7 @@ namespace Raytracer {
     {
         if (!m_addToCurrentScene)
             m_scene->reset();
-        Parsing::parse(m_scene, {filename});
+        Parsing::parse(m_scene, filename);
         int i = 0;
         for (const auto &primitive : m_scene->getPrimitives()) {
             primitive->setID(++i);

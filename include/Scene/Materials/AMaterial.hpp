@@ -16,20 +16,14 @@ namespace Raytracer {
             const std::string getTypeString(void) const override { return MaterialTypeStrings[static_cast<int>(getType())]; };
 
             double getReflection(void) const override { return m_reflection; }
-            double getEmission(void) const override { return m_emission; }
-            double getFuzzFactor(void) const override { return m_fuzz; }
             double getTransparency(void) const override { return m_transparency; }
-            bool hasPhong(void) const override { return m_hasPhong; }
             double getRefraction(void) const override { return m_refractionIndex; }
             float getDiffuse(void) const override { return m_diffuse; }
             float getSpecular(void) const override { return m_specular; }
             float getShininess(void) const override { return m_shininess; }
 
             void setReflection(double reflection) override { m_reflection = reflection; }
-            void setEmission(double emission) override { m_emission = emission; }
-            void setFuzzFactor(double fuzz) override { m_fuzz = fuzz; }
             void setTransparency(double transparency) override { m_transparency = transparency; }
-            void setHasPhong(bool hasPhong) override { m_hasPhong = hasPhong; }
             void setRefraction(double refraction) override { m_refractionIndex = refraction; }
             void setDiffuse(float diffuse) override { m_diffuse = diffuse; }
             void setSpecular(float specular) override { m_specular = specular; }
@@ -40,6 +34,10 @@ namespace Raytracer {
             virtual std::optional<Ray> getScatteredRay(const Ray &rayIn, const RayHit &rayHit) const override;
             virtual std::optional<Ray> getTransparencyRefractionRay(const Ray &rayIn, const RayHit &rayHit) const override;
             virtual std::optional<Ray> getTransparencyRay(const Ray &rayIn, const RayHit &rayHit) const override;
+            #ifdef BONUSCAMERA
+            void setIsCamera(bool isCamera) override { m_isCamera = isCamera; }
+            bool isCamera(void) const override { return m_isCamera; }
+            #endif
         protected:
             AMaterial() = default;
             ~AMaterial() = default;
@@ -52,9 +50,8 @@ namespace Raytracer {
             float m_specular = 0.0;
             float m_shininess = 10.0;
 
-            // todo : remove these one
-            bool m_hasPhong = false;
-            double m_emission = 0;
-            double m_fuzz = 0;
+            #ifdef BONUSCAMERA
+            bool m_isCamera = false;
+            #endif
     };
 } // namespace Raytracer

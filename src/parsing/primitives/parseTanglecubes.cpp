@@ -7,7 +7,6 @@
 
 #include "Parsing/Parsing.hpp"
 
-#include "Scene/Materials/MaterialSolid.hpp"
 #include "Scene/Primitives/Tanglecube.hpp"
 
 void Raytracer::Parsing::parseTanglecubes(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene)
@@ -16,7 +15,8 @@ void Raytracer::Parsing::parseTanglecubes(const libconfig::Setting &primitiveSet
         return;
     for (const auto &config : primitiveSetting.lookup("tanglecubes")) {
         auto tanglecube = std::make_unique<Tanglecube>(parsePosition(config),
-            parseMaterial(config), parseTransformations(config),
+            parseMaterial(config, PrimitiveType::TANGLECUBE),
+            parseTransformations(config),
             parseRadius(config));
         scene->addPrimitive(std::move(tanglecube));
     }

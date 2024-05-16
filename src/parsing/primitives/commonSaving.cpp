@@ -11,12 +11,17 @@ namespace Raytracer
 {
     namespace Parsing
     {
+        void saveVector3D(libconfig::Setting &setting, const std::string &key, const Math::Vector3D vec)
+        {
+            libconfig::Setting &vecSetting = setting.add(key, libconfig::Setting::TypeGroup);
+            vecSetting.add("x", libconfig::Setting::TypeFloat) = vec.getX();
+            vecSetting.add("y", libconfig::Setting::TypeFloat) = vec.getY();
+            vecSetting.add("z", libconfig::Setting::TypeFloat) = vec.getZ();
+        }
+
         void savePos(libconfig::Setting &setting, const Math::Vector3D pos)
         {
-            libconfig::Setting &posSetting = setting.add(CFG_POSITION, libconfig::Setting::TypeGroup);
-            posSetting.add("x", libconfig::Setting::TypeFloat) = pos.getX();
-            posSetting.add("y", libconfig::Setting::TypeFloat) = pos.getY();
-            posSetting.add("z", libconfig::Setting::TypeFloat) = pos.getZ();
+            saveVector3D(setting, CFG_POSITION, pos);
         }
 
         void saveColor(libconfig::Setting &setting, const Color color)

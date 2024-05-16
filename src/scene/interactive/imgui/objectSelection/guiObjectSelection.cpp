@@ -16,7 +16,7 @@ namespace Raytracer
         if (ImGui::BeginTabBar("Object Selection",
         ImGuiTabBarFlags_NoCloseWithMiddleMouseButton
         | ImGuiTabBarFlags_Reorderable)) {
-            if (ImGui::BeginTabItem("Primitives", nullptr,
+            if (ImGui::BeginTabItem("Primitive", nullptr,
             m_selectPrimitiveTab ? ImGuiTabItemFlags_SetSelected : 0)) {
                 if (m_objectSelection != ObjectSelection::PRIMITIVE)
                     m_selectedObject = -1;
@@ -42,7 +42,7 @@ namespace Raytracer
                 ImGui::EndTabItem();
             }
 
-            if (ImGui::BeginTabItem("Lights")) {
+            if (ImGui::BeginTabItem("Light")) {
                 if (m_objectSelection != ObjectSelection::LIGHT)
                     m_selectedObject = -1;
                 m_objectSelection = ObjectSelection::LIGHT;
@@ -74,7 +74,7 @@ namespace Raytracer
                 ImGui::EndTabItem();
             }
 
-            if (ImGui::BeginTabItem("Cameras")) {
+            if (ImGui::BeginTabItem("Camera")) {
                 if (m_objectSelection != ObjectSelection::CAMERA)
                     m_selectedObject = -1;
                 m_objectSelection = ObjectSelection::CAMERA;
@@ -96,6 +96,29 @@ namespace Raytracer
                                 currentCamera.getDimension().getHeight());
                             m_needRendering = true;
                             m_selectedObject = i;
+                        }
+                        i++;
+                    }
+                }
+                ImGui::EndChild();
+                ImGui::EndTabItem();
+            }
+
+            if (ImGui::BeginTabItem("Obj")) {
+                if (m_objectSelection != ObjectSelection::OBJ)
+                    m_selectedObject = -1;
+                m_objectSelection = ObjectSelection::OBJ;
+                guiAddObj();
+                if (ImGui::BeginChild("obj selection", ImVec2(m_leftPaneWidth,
+                m_imageHeight / 2 - 20), ImGuiChildFlags_Border)) {
+                    int i = 0;
+                    for (auto &obj : m_scene->getObjs()) {
+                        std::string name = std::to_string(i) + " " + obj->getTypeString();
+                        if (ImGui::Selectable(name.c_str(), m_selectedObject == i))
+                            m_selectedObject = i;
+                        if (obj->getMaterial()->getType() == MaterialType::SOLID) {
+                            ImGui::SameLine();
+                            guiColoredSquare(static_cast<MaterialSolid *>(obj->getMaterial().get())->getColor());
                         }
                         i++;
                     }

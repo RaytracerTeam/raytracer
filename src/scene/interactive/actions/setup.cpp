@@ -2,15 +2,12 @@
 ** EPITECH PROJECT, 2024
 ** Raytracer
 ** File description:
-** sceneInterationsActions
+** setup
 */
 
 #include "Scene/Interactive/SceneInteractive.hpp"
 #include "Math/Algorithm.hpp"
 #include "Parsing/Parsing.hpp"
-
-#include <iostream>
-#include <libconfig.h++>
 
 namespace Raytracer
 {
@@ -40,11 +37,12 @@ namespace Raytracer
         m_releaseActions.push_back(sf::Keyboard::X);               // SAVE_AND_QUIT
         m_releaseActions.push_back(sf::Keyboard::F3);              // SHOW_DEBUG
         m_releaseActions.push_back(sf::Keyboard::F2);              // SCREENSHOT
-        m_releaseActions.push_back(sf::Keyboard::Delete);           // REMOVE_OBJECT
+        m_releaseActions.push_back(sf::Keyboard::Delete);          // REMOVE_OBJECT
         m_releaseActions.push_back(sf::Keyboard::F11);             // TOGGLE_FULLSCREEN
         m_releaseActions.push_back(sf::Keyboard::M);               // TOGGLE_MOUSE
         m_releaseActions.push_back(sf::Keyboard::N);               // TOGGLE_SIMPLE_MOUSE
-        m_releaseActions.push_back(sf::Keyboard::O);          // RESET
+        m_releaseActions.push_back(sf::Keyboard::O);               // RESET
+        m_releaseActions.push_back(sf::Keyboard::R);               // SELECT_PRIMITIVE
         parseConfigFile("config/keys.cfg");
     }
 
@@ -135,6 +133,8 @@ namespace Raytracer
             return SceneReleaseActions::TOGGLE_SIMPLE_MOUSE;
         else if (action == "RESET")
             return SceneReleaseActions::RESET;
+        else if (action == "SELECT_PRIMITIVE")
+            return SceneReleaseActions::SELECT_PRIMITIVE;
         else
             throw std::invalid_argument("keys.cfg: Invalid action name: " + action);
     }
@@ -169,182 +169,6 @@ namespace Raytracer
             sf::Keyboard::Key sfKey = getSFMLKey(keyCode);
             SceneReleaseActions action = getSceneReleaseActionIndex(key.lookup("name"));
             m_releaseActions[action] = sfKey;
-        }
-    }
-
-    void SceneInteractive::applyActions(void)
-    {
-        Camera *camera = m_interacCam.getCamera();
-        auto camPos = camera->getPos();
-        auto camAngle = camera->getAngle();
-        auto movementCamAngle = camAngle;
-        movementCamAngle.setPitch(0);
-
-        if (m_actions[SceneAction::MOVE_FORWARD].second) {
-            camPos += Math::Vector3D(0, 0, -m_movementSpeed).rotate(movementCamAngle);
-            m_needRendering = true;
-        }
-        if (m_actions[SceneAction::MOVE_BACKWARD].second) {
-            camPos += Math::Vector3D(0, 0, m_movementSpeed).rotate(movementCamAngle);
-            m_needRendering = true;
-        }
-        if (m_actions[SceneAction::MOVE_LEFT].second) {
-            camPos += Math::Vector3D(-m_movementSpeed, 0, 0).rotate(movementCamAngle);
-            m_needRendering = true;
-        }
-        if (m_actions[SceneAction::MOVE_RIGHT].second) {
-            camPos += Math::Vector3D(m_movementSpeed, 0, 0).rotate(movementCamAngle);
-            m_needRendering = true;
-        }
-        if (m_actions[SceneAction::MOVE_UP].second) {
-            camPos += Math::Vector3D(0, m_movementSpeed, 0);
-            m_needRendering = true;
-        }
-        if (m_actions[SceneAction::MOVE_DOWN].second) {
-            camPos += Math::Vector3D(0, -m_movementSpeed, 0);
-            m_needRendering = true;
-        }
-        if (m_actions[SceneAction::ROTATE_UP].second) {
-            camAngle.setPitch(Math::Algorithm::clampD(camAngle.getPitch() + m_rotationSpeed, -90., 90.));
-            camera->setAngle(camAngle);
-            m_needRendering = true;
-        }
-        if (m_actions[SceneAction::ROTATE_DOWN].second) {
-            camAngle.setPitch(Math::Algorithm::clampD(camAngle.getPitch() - m_rotationSpeed, -90., 90.));
-            camera->setAngle(camAngle);
-            m_needRendering = true;
-        }
-        if (m_actions[SceneAction::ROTATE_LEFT].second) {
-            camAngle.setYaw(camAngle.getYaw() + m_rotationSpeed);
-            camera->setAngle(camAngle);
-            m_needRendering = true;
-        }
-        if (m_actions[SceneAction::ROTATE_RIGHT].second) {
-            camAngle.setYaw(camAngle.getYaw() - m_rotationSpeed);
-            camera->setAngle(camAngle);
-            m_needRendering = true;
-        }
-        if (m_actions[SceneAction::SPRINT].second) {
-            m_movementSpeed = m_defaultMovementSpeed * 4;
-        } else {
-            m_movementSpeed = m_defaultMovementSpeed;
-        }
-        camera->setPos(camPos);
-    }
-
-    void SceneInteractive::applyKeyReleasedActions(sf::Keyboard::Key key)
-    {
-        int i = 0;
-        for (auto &action : m_releaseActions) {
-            if (action == key) {
-                applyKeyReleasedAction((SceneReleaseActions)i);
-            }
-            i++;
-        }
-    }
-
-    void SceneInteractive::applyKeyReleasedAction(SceneReleaseActions action)
-    {
-        switch (action) {
-        case SceneReleaseActions::SCREENSHOT: {
-            const auto time = std::chrono::system_clock::now().time_since_epoch().count();
-            const auto render = m_scene->getRender();
-            render.saveToFile(std::string("screenshots/screenshot-")
-                + std::to_string(time / 100000) + std::string(".png"));
-            break;
-        }
-        case SceneReleaseActions::RESET: {
-            m_interacCam.getCamera()->reset();
-            m_needRendering = true;
-            break;
-        }
-        case SceneReleaseActions::EXIT:
-            Parsing::saveScene(*m_scene, TEMP_CFG_FILE);
-            m_window.close();
-            break;
-        case SceneReleaseActions::SAVE_CURRENT_AND_EXIT:
-            Parsing::saveScene(*m_scene, m_loadFileBuf);
-            m_window.close();
-            break;
-        case SceneReleaseActions::QUICK_SAVE_AND_EXIT:
-            Parsing::saveScene(*m_scene, QUICK_SAVE_CFG_FILE);
-            m_window.close();
-            break;
-        case SceneReleaseActions::SHOW_DEBUG:
-            m_showDebug = !m_showDebug;
-            break;
-        case SceneReleaseActions::TOGGLE_FULLSCREEN:
-            m_fullscreen = !m_fullscreen;
-            #ifdef BONUS
-            setupImageSize();
-            #endif
-            break;
-        case SceneReleaseActions::REMOVE_OBJECT:
-            #ifdef BONUS
-            removeSelectedObject();
-            #endif
-            break;
-        case SceneReleaseActions::TOGGLE_MOUSE:
-            m_useMouse = !m_useMouse;
-            if (m_useMouse) {
-                m_mousePosBeforeUse = sf::Mouse::getPosition();
-                sf::Mouse::setPosition(MOUSE_CENTER);
-                m_window.setMouseCursorVisible(false);
-                m_mouseCentered = 2;
-            } else {
-                m_window.setMouseCursorVisible(true);
-                sf::Mouse::setPosition(m_mousePosBeforeUse - m_mouseCenterCorrection);
-            }
-            break;
-        case SceneReleaseActions::TOGGLE_SIMPLE_MOUSE:
-            m_useSimpleMouse = !m_useSimpleMouse;
-            m_lastMousePos = sf::Mouse::getPosition();
-            break;
-        default:
-            break;
-        }
-    }
-
-    void SceneInteractive::handleMouse(void)
-    {
-        Camera &currentCamera = m_scene->getCurrentCamera();
-
-        float sensivity = m_rotationSpeed / 10;
-
-        if (m_useSimpleMouse) {
-            auto pos = sf::Mouse::getPosition();
-            auto delta = pos - m_lastMousePos;
-            if (delta.x == 0 && delta.y == 0)
-                return;
-            auto angle = currentCamera.getAngle();
-            angle.setYaw(angle.getYaw() - delta.x * sensivity);
-            angle.setPitch(Math::Algorithm::clampD(angle.getPitch() - delta.y * sensivity, -90., 90.));
-            currentCamera.setAngle(angle);
-            m_needRendering = true;
-            m_lastMousePos = pos;
-        }
-
-        else if (m_useMouse) {
-            if (m_mouseCentered > 1) {
-                m_mouseCentered--;
-                return;
-            }
-            if (m_mouseCentered == 1) {
-                m_mouseCenterCorrection = sf::Mouse::getPosition() - MOUSE_CENTER;
-                m_mouseCentered = 0;
-            }
-
-            auto pos = sf::Mouse::getPosition();
-            auto delta = pos - MOUSE_CENTER;
-            delta -= m_mouseCenterCorrection;
-            if (delta.x == 0 && delta.y == 0)
-                return;
-            sf::Mouse::setPosition(MOUSE_CENTER);
-            auto angle = currentCamera.getAngle();
-            angle.setYaw(angle.getYaw() - delta.x * sensivity);
-            angle.setPitch(Math::Algorithm::clampD(angle.getPitch() - delta.y * sensivity, -90., 90.));
-            currentCamera.setAngle(angle);
-            m_needRendering = true;
         }
     }
 } // namespace Raytracer

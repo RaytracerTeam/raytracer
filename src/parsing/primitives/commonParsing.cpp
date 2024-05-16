@@ -50,42 +50,33 @@ namespace Raytracer {
             }
             return rotation;
         }
-        float parseFloat(const libconfig::Setting &setting, const std::string &key, float defaultValue = 0.0f)
-        {
-            if (setting.exists(key.c_str())) {
-                if (setting.lookup(key.c_str()).getType() == libconfig::Setting::TypeInt)
-                    return (float)((int)setting.lookup(key.c_str()));
-                return setting.lookup(key.c_str());
-            }
-            return defaultValue;
-        }
         Math::Vector3D parseVec3D(const libconfig::Setting &setting, const std::string &key,
         Math::Vector3D defaultValue)
         {
             if (setting.exists(key.c_str())) {
                 return Math::Vector3D(
-                    parseFloat(setting, key + ".x"),
-                    parseFloat(setting, key + ".y"),
-                    parseFloat(setting, key + ".z")
+                    parseNumber<float>(setting, key + ".x"),
+                    parseNumber<float>(setting, key + ".y"),
+                    parseNumber<float>(setting, key + ".z")
                 );
             }
             return defaultValue;
         }
         float parseRadius(const libconfig::Setting &setting)
         {
-            return parseFloat(setting, CFG_RADIUS, 1);
+            return parseNumber<float>(setting, CFG_RADIUS, 1);
         }
         float parseHeight(const libconfig::Setting &setting)
         {
-            return parseFloat(setting, CFG_HEIGHT, 2);
+            return parseNumber<float>(setting, CFG_HEIGHT, 2);
         }
         float parseDistance(const libconfig::Setting &setting)
         {
-            return parseFloat(setting, CFG_DISTANCE, 0.5);
+            return parseNumber<float>(setting, CFG_DISTANCE, 0.5);
         }
         float parseIntensity(const libconfig::Setting &setting)
         {
-            return parseFloat(setting, CFG_INTENSITY, 1);
+            return parseNumber<float>(setting, CFG_INTENSITY, 1);
         }
     } // namespace Parsing
 } // namespace Raytracer

@@ -9,8 +9,6 @@
 
 #include "Scene/Primitives/Cube.hpp"
 
-#include "Scene/Materials/MaterialSolid.hpp"
-
 namespace Raytracer
 {
     void Parsing::saveCube(libconfig::Setting &list, Cube *cube)

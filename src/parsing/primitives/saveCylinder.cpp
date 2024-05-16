@@ -9,8 +9,6 @@
 
 #include "Scene/Primitives/Cylinder.hpp"
 
-#include "Scene/Materials/MaterialSolid.hpp"
-
 namespace Raytracer
 {
     void Parsing::saveCylinder(libconfig::Setting &list, Cylinder *cylinder)
