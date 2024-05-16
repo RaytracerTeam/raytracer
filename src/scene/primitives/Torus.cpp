@@ -26,14 +26,17 @@ namespace Raytracer {
         return BoundingBox(min, max);
     }
 
-    RayHit Torus::getNormal(double distance, const Math::Vector3D &hitPt,
+    RayHit Torus::getNormal(double distance, const Math::Vector3D &bckHitPt,
         const Math::Vector3D &origin) const
     {
-        Math::Vector3D u(hitPt.getX() - origin.getX(), hitPt.getY() - origin.getY(), 0.);
+        Math::Vector3D u(bckHitPt.getX() - origin.getX(), bckHitPt.getY() - origin.getY(), 0.);
         u = u.normalize() * m_distance;
         u += origin;
 
-        Math::Vector3D normal = (hitPt - u).normalize();
+        Math::Vector3D bckNormal = (bckHitPt - u).normalize();
+
+        Math::Vector3D hitPt = m_matrixT.applyForward(bckHitPt);
+        Math::Vector3D normal = m_matrixT.applyForward(bckNormal);
         return RayHit(distance, hitPt, normal);
     }
 
@@ -79,8 +82,7 @@ namespace Raytracer {
         for (int i = 0; i < 4; i++) {
             if (roots[i] > TOLERANCE) {
                 Math::Vector3D bckHitPt = bckRay.getOrigin() + bckRay.getDirection() * roots[i];
-                Math::Vector3D hitPt = m_matrixT.applyForward(bckHitPt);
-                return getNormal(roots[i], hitPt, m_fwdOrigin - m_fwdTranslation);
+                return getNormal(roots[i], bckHitPt, m_bckOrigin + m_bckTranslation);
             }
         }
         return std::nullopt;
