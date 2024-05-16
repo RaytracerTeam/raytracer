@@ -151,8 +151,12 @@ namespace Raytracer {
 
     void Obj::setTranslation(const Math::Vector3D &translation)
     {
-        for (auto &triangle : m_triangles)
-            triangle->setTranslation(translation);
+        Math::Vector3D diff = translation - m_transformations.getTranslation();
+        for (auto &triangle : m_triangles) {
+            triangle->setOrigin(triangle->getOrigin() + diff);
+            triangle->setVec1(triangle->getVec1() + diff);
+            triangle->setVec2(triangle->getVec2() + diff);
+        }
         m_transformations.setTranslation(translation);
     }
 
