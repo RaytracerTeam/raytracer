@@ -17,9 +17,6 @@ namespace Raytracer
 
         if (ImGui::BeginTabBar("Edit Primitives")) {
             if (ImGui::BeginTabItem("Base")) {
-                // Prevention
-                ImGui::Text("ATTENTION : Changing obj properties is not supported in realtime yet. Please save and reload scene with C.");
-
                 if (ImGui::Button("Delete Obj")) {
                     removeSelectedObject();
                     ImGui::EndTabItem();
@@ -86,17 +83,31 @@ namespace Raytracer
             }
 
             if (ImGui::BeginTabItem("Transformations")) {
+                // Translation
+                Math::Vector3D trans3D = obj->getTranslation();
+                float translation[3] = {(float)trans3D.getX(), (float)trans3D.getY(), (float)trans3D.getZ()};
+                if (ImGui::SliderFloat3("Translation", translation, DEFAULT_POS_MIN, DEFAULT_POS_MAX)) {
+                    obj->setTranslation(Math::Vector3D(translation[0], translation[1], translation[2]));
+                    m_updateBVH = true;
+                    m_needRendering = true;
+                }
+                // Rotation
+                Math::Vector3D rot3D = obj->getRotation();
+                float rotation[3] = {(float)rot3D.getX(), (float)rot3D.getY(), (float)rot3D.getZ()};
+                if (ImGui::SliderFloat3("Rotation", rotation, 0, 360)) {
+                    obj->setRotation(Math::Vector3D(rotation[0], rotation[1], rotation[2]));
+                    m_updateBVH = true;
+                    m_needRendering = true;
+                }
                 // Scale
-                float scale[3] = {(float)obj->getScale().getX(),
-                        (float)obj->getScale().getY(),
-                        (float)obj->getScale().getZ()};
-                if (ImGui::SliderFloat3("Scale", scale, 0.01f, 100.0f, "%.2f",
-                ImGuiSliderFlags_Logarithmic | ImGuiSliderFlags_AlwaysClamp)) {
+                Math::Vector3D sca3D = obj->getScale();
+                float scale[3] = {(float)sca3D.getX(), (float)sca3D.getY(), (float)sca3D.getZ()};
+                if (ImGui::SliderFloat3("Scale", scale, DEFAULT_RADIUS_MIN, DEFAULT_RADIUS_MAX,
+                "%.3f", ImGuiSliderFlags_Logarithmic | ImGuiSliderFlags_AlwaysClamp)) {
                     obj->setScale(Math::Vector3D(scale[0], scale[1], scale[2]));
                     m_updateBVH = true;
                     m_needRendering = true;
                 }
-
                 ImGui::EndTabItem();
             }
         }

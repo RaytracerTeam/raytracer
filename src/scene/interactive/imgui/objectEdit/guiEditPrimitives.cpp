@@ -115,7 +115,8 @@ namespace Raytracer
                 // Scale
                 Math::Vector3D sca3D = primitive->getScale();
                 float scale[3] = {(float)sca3D.getX(), (float)sca3D.getY(), (float)sca3D.getZ()};
-                if (ImGui::SliderFloat3("Scale", scale, DEFAULT_RADIUS_MIN, DEFAULT_RADIUS_MAX)) {
+                if (ImGui::SliderFloat3("Scale", scale, DEFAULT_RADIUS_MIN, DEFAULT_RADIUS_MAX,
+                "%.3f", ImGuiSliderFlags_Logarithmic | ImGuiSliderFlags_AlwaysClamp)) {
                     primitive->setScale(Math::Vector3D(scale[0], scale[1], scale[2]));
                     m_updateBVH = true;
                     m_needRendering = true;

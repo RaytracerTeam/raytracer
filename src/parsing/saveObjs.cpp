@@ -20,11 +20,9 @@ namespace Raytracer
             setting.add(CFG_PATH, libconfig::Setting::TypeString) = obj->getObjPath();
             // setting.add(CFG_MATERIAL_TEXTURE, libconfig::Setting::TypeString) = obj->getTexturePath();
             savePos(setting, obj->getOrigin());
-            // Save Transformation (Scale)
-            auto &trfSetting = setting.add(CFG_TRANSFORMATIONS, libconfig::Setting::TypeGroup);
-            saveVector3D(trfSetting, CFG_SCALE, obj->getScale());
 
             saveMaterial(setting, obj.get());
+            saveTransformations(setting, obj.get());
         }
     }
 } // namespace Raytracer

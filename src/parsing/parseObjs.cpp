@@ -16,20 +16,22 @@ namespace Raytracer {
             if (!config.exists(CFG_OBJ))
                 return;
 
-            Math::Vector3D translation = Math::Vector3D(0, 0, 0);
-            Math::Vector3D scale = Math::Vector3D(1, 1, 1);
+            Math::Vector3D position;
+            Transformations transformations;
 
             for (const auto &objSetting : config.lookup(CFG_OBJ)) {
                 if (objSetting.exists(CFG_POSITION))
-                    translation = parsePosition(objSetting);
+                    position = parsePosition(objSetting);
                 if (objSetting.exists(CFG_TRANSFORMATIONS)) {
                     auto &transformationSetting = objSetting.lookup(CFG_TRANSFORMATIONS);
-                    scale = parseVec3D(transformationSetting, CFG_SCALE, Math::Vector3D(1, 1, 1));
+                    transformations.setTranslation(parseVec3D(transformationSetting, CFG_TRANSLATION));
+                    transformations.setRotation(parseVec3D(transformationSetting, CFG_ROTATION));
+                    transformations.setScale(parseVec3D(transformationSetting, CFG_SCALE, Math::Vector3D(1, 1, 1)));
                 }
                 if (objSetting.exists(CFG_PATH)) {
                     scene->addObj(std::make_unique<Obj>(
-                        objSetting.lookup(CFG_PATH), parseMaterial(objSetting, PrimitiveType::TRIANGLE),
-                        translation, scale));
+                        position, parseMaterial(objSetting, PrimitiveType::TRIANGLE),
+                        transformations, objSetting.lookup(CFG_PATH)));
                 }
             }
         }

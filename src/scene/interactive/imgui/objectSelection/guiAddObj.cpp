@@ -20,7 +20,8 @@ namespace Raytracer
             for (const auto &entry : std::filesystem::directory_iterator(OBJ_PATH)) {
                 if (ImGui::Selectable(entry.path().filename().string().c_str())) {
                     m_scene->addObj(std::make_unique<Obj>(
-                        entry.path().string(), std::make_unique<MaterialSolid>(Color(1., 1, 1))
+                        Math::Vector3D(0, 0, 0), std::make_unique<MaterialSolid>(Color(1., 1, 1)),
+                        Transformations(), entry.path().string()
                     ));
                     m_updateBVH = true;
                     m_needRendering = true;
