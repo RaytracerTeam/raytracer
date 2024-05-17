@@ -11,7 +11,6 @@
 #include "Triangle.hpp"
 #include <vector>
 
-
 namespace Raytracer {
     class Obj : public APrimitive {
     public:
@@ -39,9 +38,7 @@ namespace Raytracer {
 
     private:
         std::string m_objPath;
-
         Math::Vector3D m_scale;
-
         std::vector<std::unique_ptr<Triangle>> m_triangles;
     };
 } // namespace Raytracer
