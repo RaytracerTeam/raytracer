@@ -30,7 +30,7 @@ namespace Raytracer
 
         std::unique_ptr<Cube> newCube = std::make_unique<Cube>(
             cube->getOrigin() + normalScaled,
-            std::make_unique<CubeTexture>("assets/textures/minecraft/cobblestone.png"),
+            copyMaterial(m_scene->getInventory().getCurrentMaterial().get()),
             cube->getVec1() + normalScaled
         );
         newCube->setID(m_scene->getPrimitives().size() + 1);

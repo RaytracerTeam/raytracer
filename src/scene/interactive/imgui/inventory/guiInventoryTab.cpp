@@ -26,9 +26,24 @@ namespace Raytracer
                         m_selectedObject = i;
                         inventory.setCurrentMaterialIndex(i);
                     }
-                    if (material->getType() == MaterialType::SOLID) {
+                    switch (material->getType()) {
+                    case MaterialType::SOLID: {
                         ImGui::SameLine();
                         guiColoredSquare(static_cast<MaterialSolid *>(material.get())->getColor());
+                        break;
+                    }
+                    case MaterialType::TEXTURE:
+                    case MaterialType::TEXTURE_CUBE:
+                    case MaterialType::TEXTURE_SPHERE:
+                    case MaterialType::TEXTURE_PLANE:
+                    case MaterialType::TEXTURE_TRIANGLE: {
+                        ImGui::SameLine();
+                        std::string path = static_cast<MaterialTexture *>(material.get())->getPathname();
+                        ImGui::Text("%s", path.substr(path.find_last_of('/') + 1, path.size() - 1).c_str());
+                        break;
+                    }
+                    default:
+                        break;
                     }
                     i++;
                 }
