@@ -13,14 +13,14 @@
 #include "Materials/MaterialTexture.hpp"
 
 namespace Raytracer {
-    enum SkyboxUVType {
+    enum class SkyboxUVType {
         SPHERE,
         BOX
     };
 
     class Skybox {
     public:
-        Skybox(std::unique_ptr<MaterialTexture> texture, SkyboxUVType type = SPHERE);
+        Skybox(std::unique_ptr<MaterialTexture> texture, SkyboxUVType type = SkyboxUVType::SPHERE);
         Skybox() = default;
         ~Skybox() = default;
 

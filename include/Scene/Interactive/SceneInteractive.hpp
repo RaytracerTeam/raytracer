@@ -22,10 +22,9 @@
 #include <SFML/Graphics.hpp>
 
 namespace Raytracer {
-    #define DEFAULT_MOVEMENT_SPEED 0.3f
-    #define DEFAULT_ROTATION_SPEED 3
     #define DEFAULT_CAMERA_RESOLUTION 240
     #define FILE_BUF_SIZE 100
+    #define LEFT_PANE_PADDING 30
 
     // ImGui default slider values
     #define DEFAULT_POS_MIN -60.0f
@@ -44,16 +43,26 @@ namespace Raytracer {
     #define TEMP_CFG_FILE "scenes/temp.cfg"
     #define QUICK_SAVE_CFG_FILE "scenes/quick_save.cfg"
 
-    #define OBJ_PATH "assets/obj/local/"
+    #define OBJ_PATH "assets/obj/"
+    #define OBJ_LOCAL_PATH "assets/obj/local/"
+    #define OBJ_PATHS {OBJ_PATH, OBJ_LOCAL_PATH}
     #define TEXTURE_PATH "assets/textures/local/"
+    #define TEXTURE_MINECRAFT_PATH "assets/textures/minecraft"
+    #define TEXTURE_PATHS {TEXTURE_PATH, TEXTURE_MINECRAFT_PATH}
     #define SCENE_PATH "scenes/"
-    #define SKYBOX_PATH "assets/skyboxes/local"
+    #define SCENE_LOCAL_PATH "scenes/local/"
+    #define SCENE_DEMO_PATH "scenes/demo/"
+    #define SCENE_PATHS {SCENE_PATH, SCENE_DEMO_PATH, SCENE_LOCAL_PATH}
+    #define SKYBOX_LOCAL_PATH "assets/skyboxes/local/"
+    #define SKYBOX_PATH "assets/skyboxes"
+    #define SKYBOX_PATHS {SKYBOX_PATH, SKYBOX_LOCAL_PATH}
 
     enum class ObjectSelection {
         PRIMITIVE,
         LIGHT,
         CAMERA,
-        OBJ
+        OBJ,
+        INVENTORY
     };
 
     class SceneInteractive {
@@ -97,8 +106,13 @@ namespace Raytracer {
         void selectShootedPrimitive(void);
         void releaseSelectedPrimitive(void);
 
+        // Welcome in Minecraft
+        void showCrosshair(void);
         void minecraftPlaceBlock(void);
         void minecraftDestroyBlock(void);
+
+        Math::Vector3D getCameraFrontPos(void);
+        std::unique_ptr<IMaterial> copyMaterial(IMaterial *material);
 
         // -- ImGui --
         #ifdef BONUS
@@ -108,6 +122,12 @@ namespace Raytracer {
         void guiTopBar(void);
         void guiDebugInfos(void);
         void guiObjectSelection(void);
+        void guiPrimitiveTab(void);
+        void guiLightTab(void);
+        void guiCameraTab(void);
+        void guiObjTab(void);
+        void guiInventoryTab(void);
+
         void removeSelectedObject(void);
         void customEditPrimitives(std::unique_ptr<IPrimitive> &primitive);
         void customEditLights(ILight *light);
@@ -118,6 +138,7 @@ namespace Raytracer {
         void guiEditPrimitives(void);
         void guiEditObjs(void);
         void guiEditCameras(void);
+        void guiEditInventory(void);
         void guiAddPrimitive(void);
         void guiAddObj(void);
         void guiAddLight(void);
@@ -137,9 +158,6 @@ namespace Raytracer {
         void addSelectableScene(const std::filesystem::directory_entry &entry);
 
         void guiColoredSquare(const Color &color);
-
-        void showCrosshair(void);
-
         #endif
 
         /////////////////////////////////
@@ -164,10 +182,11 @@ namespace Raytracer {
         char m_saveFileBuf[FILE_BUF_SIZE] = SCENE_PATH;
         char m_skyboxPathBuf[FILE_BUF_SIZE] = DEFAULT_SKYBOX;
         char m_loadFileBuf[FILE_BUF_SIZE] = SCENE_PATH;
-        bool m_showDebug = false;
+        bool m_showDebug = true;
         int m_selectedObject = -1;
         ObjectSelection m_objectSelection = ObjectSelection::PRIMITIVE;
         size_t m_leftPaneWidth;
+        size_t m_leftPaneChildHeight;
         bool m_fullscreen = false;
         bool m_selectPrimitiveTab = false;
         bool m_saveObjAsPrimitives = false;
@@ -182,6 +201,7 @@ namespace Raytracer {
         size_t m_imageHeight;
         size_t m_imageWidth;
         bool m_alwaysRender = false;
+        float m_reach = 10;
 
         // Storing the result of the render
         std::unique_ptr<sf::Uint8 []> m_lastRender;

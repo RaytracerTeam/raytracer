@@ -8,6 +8,7 @@
 #include "Scene/Interactive/SceneInteractive.hpp"
 #include "Math/Algorithm.hpp"
 
+#include "Scene/Materials/MaterialSolid.hpp"
 
 namespace Raytracer
 {
@@ -67,6 +68,16 @@ namespace Raytracer
             m_movementSpeed = m_defaultMovementSpeed * 4;
         } else {
             m_movementSpeed = m_defaultMovementSpeed;
+        }
+        if (m_actions[SceneAction::PAINT].second) {
+            auto sphere = std::make_unique<Sphere>(
+                getCameraFrontPos(),
+                copyMaterial(m_scene->getInventory().getCurrentMaterial().get()),
+                1.0);
+            sphere->setID(m_scene->getPrimitives().size() + 1);
+            m_scene->addPrimitive(std::move(sphere));
+            m_needRendering = true;
+            m_updateBVH = true;
         }
         camera->setPos(camPos);
     }

@@ -1,0 +1,270 @@
+\doxysection{Raytracer\+::Math\+::Algorithm Class Reference}
+\hypertarget{classRaytracer_1_1Math_1_1Algorithm}{}\label{classRaytracer_1_1Math_1_1Algorithm}\index{Raytracer::Math::Algorithm@{Raytracer::Math::Algorithm}}
+
+
+\doxylink{classRaytracer_1_1Math_1_1Algorithm}{Algorithm} class Contains all functions related to the math of the raytracer.  
+
+
+
+
+{\ttfamily \#include $<$Algorithm.\+hpp$>$}
+
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static double \mbox{\hyperlink{classRaytracer_1_1Math_1_1Algorithm_a033c894ab2dec70415a0f0af3f5e2a02}{clampD}} (double value, double min, double max)
+\begin{DoxyCompactList}\small\item\em Clamps a value between a min and a max. \end{DoxyCompactList}\item 
+static Color \mbox{\hyperlink{classRaytracer_1_1Math_1_1Algorithm_a15bf1e98507089fe77002eb2e8e8fa72}{clamp\+Color}} (const Color \&color)
+\begin{DoxyCompactList}\small\item\em Clamps a color from a color object. \end{DoxyCompactList}\item 
+static bool \mbox{\hyperlink{classRaytracer_1_1Math_1_1Algorithm_acfb4e59d1e324e0bd96a58077166462e}{is\+Zero}} (complex x)
+\begin{DoxyCompactList}\small\item\em Checks if a complex number is zero. \end{DoxyCompactList}\item 
+static void \mbox{\hyperlink{classRaytracer_1_1Math_1_1Algorithm_a359d68b4af63f64f97bd68bbf6f936b9}{sort\+Roots}} (double \texorpdfstring{$\ast$}{*}roots, int n)
+\begin{DoxyCompactList}\small\item\em sorts the roots of a polynomial \end{DoxyCompactList}\item 
+static int \mbox{\hyperlink{classRaytracer_1_1Math_1_1Algorithm_a6c5e1df302bf8f10ad706eccb4d8a995}{filter\+Real\+Numbers}} (int num\+Complex\+Values, const complex in\+Array\mbox{[}$\,$\mbox{]}, double out\+Array\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Filters the real numbers from a complex array. \end{DoxyCompactList}\item 
+static complex \mbox{\hyperlink{classRaytracer_1_1Math_1_1Algorithm_ad1ea7fed261aa85035008e1025e0f3bb}{cbrt}} (complex a, int n)
+\begin{DoxyCompactList}\small\item\em Cubic root of a complex number. \end{DoxyCompactList}\item 
+static int \mbox{\hyperlink{classRaytracer_1_1Math_1_1Algorithm_abb02ca6e74892eff087cd8d92e584af4}{solve\+Cubic\+Equation}} (complex a, complex b, complex c, complex d, complex roots\mbox{[}3\mbox{]})
+\begin{DoxyCompactList}\small\item\em Solves a cubic equation on complex numbers. \end{DoxyCompactList}\item 
+static int \mbox{\hyperlink{classRaytracer_1_1Math_1_1Algorithm_ad2670ba12f0617c8dfaf5f86f84234cc}{solve\+Cubic\+Equation}} (double a, double b, double c, double d, double roots\mbox{[}3\mbox{]})
+\begin{DoxyCompactList}\small\item\em Solves a cubic equation on double numbers. \end{DoxyCompactList}\item 
+static int \mbox{\hyperlink{classRaytracer_1_1Math_1_1Algorithm_abdf427b3c9538b8e670b882bc2cc311c}{solve\+Quartic\+Equation}} (complex a, complex b, complex c, complex d, complex e, complex roots\mbox{[}4\mbox{]})
+\begin{DoxyCompactList}\small\item\em Solves a quartic equation on complex numbers. \end{DoxyCompactList}\item 
+static int \mbox{\hyperlink{classRaytracer_1_1Math_1_1Algorithm_a59f5a66f05988e75622dc910b57cedf3}{solve\+Quartic\+Equation}} (double a, double b, double c, double d, double e, double roots\mbox{[}4\mbox{]})
+\begin{DoxyCompactList}\small\item\em Solves a quartic equation on double numbers. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\doxylink{classRaytracer_1_1Math_1_1Algorithm}{Algorithm} class Contains all functions related to the math of the raytracer. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classRaytracer_1_1Math_1_1Algorithm_ad1ea7fed261aa85035008e1025e0f3bb}\label{classRaytracer_1_1Math_1_1Algorithm_ad1ea7fed261aa85035008e1025e0f3bb} 
+\index{Raytracer::Math::Algorithm@{Raytracer::Math::Algorithm}!cbrt@{cbrt}}
+\index{cbrt@{cbrt}!Raytracer::Math::Algorithm@{Raytracer::Math::Algorithm}}
+\doxysubsubsection{\texorpdfstring{cbrt()}{cbrt()}}
+{\footnotesize\ttfamily static complex Raytracer\+::\+Math\+::\+Algorithm\+::cbrt (\begin{DoxyParamCaption}\item[{complex}]{a,  }\item[{int}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Cubic root of a complex number. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & \\
+\hline
+{\em n} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The cubic root of the complex number 
+\end{DoxyReturn}
+\Hypertarget{classRaytracer_1_1Math_1_1Algorithm_a15bf1e98507089fe77002eb2e8e8fa72}\label{classRaytracer_1_1Math_1_1Algorithm_a15bf1e98507089fe77002eb2e8e8fa72} 
+\index{Raytracer::Math::Algorithm@{Raytracer::Math::Algorithm}!clampColor@{clampColor}}
+\index{clampColor@{clampColor}!Raytracer::Math::Algorithm@{Raytracer::Math::Algorithm}}
+\doxysubsubsection{\texorpdfstring{clampColor()}{clampColor()}}
+{\footnotesize\ttfamily static Color Raytracer\+::\+Math\+::\+Algorithm\+::clamp\+Color (\begin{DoxyParamCaption}\item[{const Color \&}]{color }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Clamps a color from a color object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em color} & The color to clamp \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The clamped color 
+\end{DoxyReturn}
+\Hypertarget{classRaytracer_1_1Math_1_1Algorithm_a033c894ab2dec70415a0f0af3f5e2a02}\label{classRaytracer_1_1Math_1_1Algorithm_a033c894ab2dec70415a0f0af3f5e2a02} 
+\index{Raytracer::Math::Algorithm@{Raytracer::Math::Algorithm}!clampD@{clampD}}
+\index{clampD@{clampD}!Raytracer::Math::Algorithm@{Raytracer::Math::Algorithm}}
+\doxysubsubsection{\texorpdfstring{clampD()}{clampD()}}
+{\footnotesize\ttfamily static double Raytracer\+::\+Math\+::\+Algorithm\+::clampD (\begin{DoxyParamCaption}\item[{double}]{value,  }\item[{double}]{min,  }\item[{double}]{max }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Clamps a value between a min and a max. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em value} & The value to clamp \\
+\hline
+{\em min} & The minimum value \\
+\hline
+{\em max} & The maximum value \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The clamped value 
+\end{DoxyReturn}
+\Hypertarget{classRaytracer_1_1Math_1_1Algorithm_a6c5e1df302bf8f10ad706eccb4d8a995}\label{classRaytracer_1_1Math_1_1Algorithm_a6c5e1df302bf8f10ad706eccb4d8a995} 
+\index{Raytracer::Math::Algorithm@{Raytracer::Math::Algorithm}!filterRealNumbers@{filterRealNumbers}}
+\index{filterRealNumbers@{filterRealNumbers}!Raytracer::Math::Algorithm@{Raytracer::Math::Algorithm}}
+\doxysubsubsection{\texorpdfstring{filterRealNumbers()}{filterRealNumbers()}}
+{\footnotesize\ttfamily static int Raytracer\+::\+Math\+::\+Algorithm\+::filter\+Real\+Numbers (\begin{DoxyParamCaption}\item[{int}]{num\+Complex\+Values,  }\item[{const complex}]{in\+Array\mbox{[}$\,$\mbox{]},  }\item[{double}]{out\+Array\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Filters the real numbers from a complex array. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em num\+Complex\+Values} & The number of complex values \\
+\hline
+{\em in\+Array} & The input array \\
+\hline
+{\em out\+Array} & The output array \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The number of real values 
+\end{DoxyReturn}
+\Hypertarget{classRaytracer_1_1Math_1_1Algorithm_acfb4e59d1e324e0bd96a58077166462e}\label{classRaytracer_1_1Math_1_1Algorithm_acfb4e59d1e324e0bd96a58077166462e} 
+\index{Raytracer::Math::Algorithm@{Raytracer::Math::Algorithm}!isZero@{isZero}}
+\index{isZero@{isZero}!Raytracer::Math::Algorithm@{Raytracer::Math::Algorithm}}
+\doxysubsubsection{\texorpdfstring{isZero()}{isZero()}}
+{\footnotesize\ttfamily static bool Raytracer\+::\+Math\+::\+Algorithm\+::is\+Zero (\begin{DoxyParamCaption}\item[{complex}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Checks if a complex number is zero. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & The complex number to check \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the complex number is zero, false otherwise 
+\end{DoxyReturn}
+\Hypertarget{classRaytracer_1_1Math_1_1Algorithm_abb02ca6e74892eff087cd8d92e584af4}\label{classRaytracer_1_1Math_1_1Algorithm_abb02ca6e74892eff087cd8d92e584af4} 
+\index{Raytracer::Math::Algorithm@{Raytracer::Math::Algorithm}!solveCubicEquation@{solveCubicEquation}}
+\index{solveCubicEquation@{solveCubicEquation}!Raytracer::Math::Algorithm@{Raytracer::Math::Algorithm}}
+\doxysubsubsection{\texorpdfstring{solveCubicEquation()}{solveCubicEquation()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily static int Raytracer\+::\+Math\+::\+Algorithm\+::solve\+Cubic\+Equation (\begin{DoxyParamCaption}\item[{complex}]{a,  }\item[{complex}]{b,  }\item[{complex}]{c,  }\item[{complex}]{d,  }\item[{complex}]{roots\mbox{[}3\mbox{]} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Solves a cubic equation on complex numbers. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & \\
+\hline
+{\em b} & \\
+\hline
+{\em c} & \\
+\hline
+{\em d} & \\
+\hline
+{\em roots} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The sum of all real numbers 
+\end{DoxyReturn}
+\Hypertarget{classRaytracer_1_1Math_1_1Algorithm_ad2670ba12f0617c8dfaf5f86f84234cc}\label{classRaytracer_1_1Math_1_1Algorithm_ad2670ba12f0617c8dfaf5f86f84234cc} 
+\index{Raytracer::Math::Algorithm@{Raytracer::Math::Algorithm}!solveCubicEquation@{solveCubicEquation}}
+\index{solveCubicEquation@{solveCubicEquation}!Raytracer::Math::Algorithm@{Raytracer::Math::Algorithm}}
+\doxysubsubsection{\texorpdfstring{solveCubicEquation()}{solveCubicEquation()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily static int Raytracer\+::\+Math\+::\+Algorithm\+::solve\+Cubic\+Equation (\begin{DoxyParamCaption}\item[{double}]{a,  }\item[{double}]{b,  }\item[{double}]{c,  }\item[{double}]{d,  }\item[{double}]{roots\mbox{[}3\mbox{]} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Solves a cubic equation on double numbers. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & \\
+\hline
+{\em b} & \\
+\hline
+{\em c} & \\
+\hline
+{\em d} & \\
+\hline
+{\em roots} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The sum of all real numbers 
+\end{DoxyReturn}
+\Hypertarget{classRaytracer_1_1Math_1_1Algorithm_abdf427b3c9538b8e670b882bc2cc311c}\label{classRaytracer_1_1Math_1_1Algorithm_abdf427b3c9538b8e670b882bc2cc311c} 
+\index{Raytracer::Math::Algorithm@{Raytracer::Math::Algorithm}!solveQuarticEquation@{solveQuarticEquation}}
+\index{solveQuarticEquation@{solveQuarticEquation}!Raytracer::Math::Algorithm@{Raytracer::Math::Algorithm}}
+\doxysubsubsection{\texorpdfstring{solveQuarticEquation()}{solveQuarticEquation()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily static int Raytracer\+::\+Math\+::\+Algorithm\+::solve\+Quartic\+Equation (\begin{DoxyParamCaption}\item[{complex}]{a,  }\item[{complex}]{b,  }\item[{complex}]{c,  }\item[{complex}]{d,  }\item[{complex}]{e,  }\item[{complex}]{roots\mbox{[}4\mbox{]} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Solves a quartic equation on complex numbers. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & \\
+\hline
+{\em b} & \\
+\hline
+{\em c} & \\
+\hline
+{\em d} & \\
+\hline
+{\em e} & \\
+\hline
+{\em roots} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The sum of all real numbers 
+\end{DoxyReturn}
+\Hypertarget{classRaytracer_1_1Math_1_1Algorithm_a59f5a66f05988e75622dc910b57cedf3}\label{classRaytracer_1_1Math_1_1Algorithm_a59f5a66f05988e75622dc910b57cedf3} 
+\index{Raytracer::Math::Algorithm@{Raytracer::Math::Algorithm}!solveQuarticEquation@{solveQuarticEquation}}
+\index{solveQuarticEquation@{solveQuarticEquation}!Raytracer::Math::Algorithm@{Raytracer::Math::Algorithm}}
+\doxysubsubsection{\texorpdfstring{solveQuarticEquation()}{solveQuarticEquation()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily static int Raytracer\+::\+Math\+::\+Algorithm\+::solve\+Quartic\+Equation (\begin{DoxyParamCaption}\item[{double}]{a,  }\item[{double}]{b,  }\item[{double}]{c,  }\item[{double}]{d,  }\item[{double}]{e,  }\item[{double}]{roots\mbox{[}4\mbox{]} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Solves a quartic equation on double numbers. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & \\
+\hline
+{\em b} & \\
+\hline
+{\em c} & \\
+\hline
+{\em d} & \\
+\hline
+{\em e} & \\
+\hline
+{\em roots} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int 
+\end{DoxyReturn}
+\Hypertarget{classRaytracer_1_1Math_1_1Algorithm_a359d68b4af63f64f97bd68bbf6f936b9}\label{classRaytracer_1_1Math_1_1Algorithm_a359d68b4af63f64f97bd68bbf6f936b9} 
+\index{Raytracer::Math::Algorithm@{Raytracer::Math::Algorithm}!sortRoots@{sortRoots}}
+\index{sortRoots@{sortRoots}!Raytracer::Math::Algorithm@{Raytracer::Math::Algorithm}}
+\doxysubsubsection{\texorpdfstring{sortRoots()}{sortRoots()}}
+{\footnotesize\ttfamily static void Raytracer\+::\+Math\+::\+Algorithm\+::sort\+Roots (\begin{DoxyParamCaption}\item[{double \texorpdfstring{$\ast$}{*}}]{roots,  }\item[{int}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+sorts the roots of a polynomial 
+
+
+\begin{DoxyParams}{Parameters}
+{\em roots} & The roots of the polynomial \\
+\hline
+{\em n} & The number of roots \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/\+Math/Algorithm.\+hpp\end{DoxyCompactItemize}

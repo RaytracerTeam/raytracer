@@ -22,10 +22,14 @@ CORESRC	=	$(wildcard ./src/*.cpp) \
 LIBIMGUISRC	=	$(wildcard ./bonus/imgui/*.cpp)
 
 IMGUISRC	=	$(wildcard ./src/scene/interactive/imgui/*.cpp) \
-				$(wildcard ./src/scene/interactive/imgui/objectEdit/*.cpp) \
-				$(wildcard ./src/scene/interactive/imgui/objectEdit/primitives/*.cpp) \
-				$(wildcard ./src/scene/interactive/imgui/objectEdit/lights/*.cpp) \
-				$(wildcard ./src/scene/interactive/imgui/objectSelection/*.cpp)
+				$(wildcard ./src/scene/interactive/imgui/camera/*.cpp) \
+				$(wildcard ./src/scene/interactive/imgui/inventory/*.cpp) \
+				$(wildcard ./src/scene/interactive/imgui/light/*.cpp) \
+				$(wildcard ./src/scene/interactive/imgui/material/*.cpp) \
+				$(wildcard ./src/scene/interactive/imgui/obj/*.cpp) \
+				$(wildcard ./src/scene/interactive/imgui/objectSelection/*.cpp) \
+				$(wildcard ./src/scene/interactive/imgui/primitives/*.cpp) \
+				$(wildcard ./src/scene/interactive/imgui/primitives/edit/*.cpp) \
 
 CAMERASRC	=	$(wildcard ./bonus/camera/*.cpp)
 
@@ -80,7 +84,7 @@ UNAME_S := $(shell uname -s)
 
 ifeq ($(UNAME_S),Darwin)
 	LDBONUSFLAGS += -framework OpenGL
-	CFLAGS += $(MACSFMLINCLUDE) -DMACOSTONIO $(IMGUIFLAGS)
+	CFLAGS += $(MACSFMLINCLUDE) -DMACOSTONIO
 	LDFLAGS += $(MACSFMLLIB)
 else
 	CAMERAFLAGS += $(shell pkg-config --cflags opencv4)

@@ -18,6 +18,8 @@ namespace Raytracer
         skyboxSetting.add(CFG_HASTEXTURE, libconfig::Setting::TypeBoolean) = skybox.hasTexture();
         saveColor(skyboxSetting, skybox.getSolidColor());
         skyboxSetting.add(CFG_PATH, libconfig::Setting::TypeString) = scene.getSkyboxPath();
+        setting.add(CFG_CAMERA_SPEED, libconfig::Setting::TypeFloat) = scene.getCameraSpeed();
+        setting.add(CFG_CAMERA_SENSITIVITY, libconfig::Setting::TypeFloat) = scene.getCameraSensitivity();
         #ifdef BONUSCAMERA
         setting.add(CFG_CAMERA, libconfig::Setting::TypeBoolean) = true;
         #endif

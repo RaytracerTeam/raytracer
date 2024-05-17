@@ -44,9 +44,9 @@ void saveSphere(libconfig::Setting &list, Sphere *sphere);
 
 void Raytracer::Parsing::parseSpheres(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene)
 {
-    if (!primitiveSetting.exists("spheres"))
+    if (!primitiveSetting.exists(CFG_SPHERES))
         return;
-    for (const auto &config : primitiveSetting.lookup("spheres")) {
+    for (const auto &config : primitiveSetting.lookup(CFG_SPHERES)) {
         auto sphere = std::make_unique<Sphere>(parsePosition(config),
             parseMaterial(config),
             parseRadius(config));
@@ -91,7 +91,7 @@ namespace Raytracer
         libconfig::Setting &sphereRadius = setting.add(CFG_RADIUS, libconfig::Setting::TypeFloat);
         sphereRadius = sphere->getRadius();
 
-        saveMaterial(setting, torus);
+        saveMaterial(setting, torus->getMaterial());
     }
 } // namespace Raytracer
 ```
@@ -100,7 +100,7 @@ namespace Raytracer
 // ADD IN src/scene/parsing/savePrimitives.cpp
 
 // ...
-libconfig::Setting &sphereList = primitivesSetting.add("spheres", libconfig::Setting::TypeList);
+libconfig::Setting &sphereList = primitivesSetting.add(CFG_SPHERES, libconfig::Setting::TypeList);
 // ...
 
 // ...

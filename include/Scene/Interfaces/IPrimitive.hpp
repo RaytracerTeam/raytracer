@@ -28,7 +28,8 @@ namespace Raytracer {
         TANGLECUBE,
         MOBIUSSTRIP,
         OBJ,
-        NONE
+        NONE,
+        SIZE
     };
     char const *const PrimitiveTypeStrings[] = {
         "Sphere",
@@ -41,7 +42,8 @@ namespace Raytracer {
         "Tanglecube",
         "MobiusStrip",
         "Obj",
-        "None"
+        "None",
+        "Size"
     };
     class IPrimitive : public IShape {
     public:

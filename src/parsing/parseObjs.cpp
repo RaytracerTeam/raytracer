@@ -30,7 +30,7 @@ namespace Raytracer {
                 }
                 if (objSetting.exists(CFG_PATH)) {
                     scene->addObj(std::make_unique<Obj>(
-                        position, parseMaterial(objSetting, PrimitiveType::TRIANGLE),
+                        position, parseMaterial(objSetting, MaterialType::TEXTURE_TRIANGLE),
                         transformations, objSetting.lookup(CFG_PATH)));
                 }
             }

@@ -6,48 +6,42 @@
 */
 
 #include "Parsing/Parsing.hpp"
-
-#include "Scene/Materials/MaterialSolid.hpp"
-#include "Scene/Materials/MaterialTexture/SphereTexture.hpp"
-#include "Scene/Materials/MaterialTexture/TriangleTexture.hpp"
-#include "Scene/Materials/MaterialTexture/PlaneTexture.hpp"
-#include "Scene/Materials/MaterialTexture/CubeTexture.hpp"
-
-#include "Scene/Materials/MaterialCode/Checkerboard.hpp"
+#include "Scene/Materials/AllMaterials.hpp"
 
 namespace Raytracer {
     namespace Parsing {
-        static std::unique_ptr<MaterialTexture> parseMaterialTexture(const libconfig::Setting &setting, PrimitiveType primType)
+        static std::unique_ptr<MaterialTexture> parseMaterialTexture(
+        const libconfig::Setting &setting, MaterialType materialTextureType)
         {
             // if (!setting.exists(CFG_PATH))
             //     return std::make_unique<MaterialTexture>("");
-            switch (primType) {
-            case PrimitiveType::SPHERE:
+            switch (materialTextureType) {
+            case MaterialType::TEXTURE_SPHERE:
                 return std::make_unique<SphereTexture>(setting.lookup(CFG_PATH));
-            case PrimitiveType::TRIANGLE: {
+            case MaterialType::TEXTURE_TRIANGLE: {
                 if (!setting.exists(CFG_PATH))
                     return std::make_unique<TriangleTexture>();
                 return std::make_unique<TriangleTexture>(setting.lookup(CFG_PATH));
             }
-            case PrimitiveType::PLANE:
+            case MaterialType::TEXTURE_PLANE:
                 return std::make_unique<PlaneTexture>(setting.lookup(CFG_PATH));
-            case PrimitiveType::CUBE:
+            case MaterialType::TEXTURE_CUBE:
                 return std::make_unique<CubeTexture>(setting.lookup(CFG_PATH));
             default:
                 return std::make_unique<MaterialTexture>(setting.lookup(CFG_PATH));
             }
         }
 
-        static std::unique_ptr<MaterialTexture> parseMaterialCamera(PrimitiveType primType)
+        static std::unique_ptr<MaterialTexture> parseMaterialCamera(MaterialType materialTextureType)
         {
-            switch (primType) {
-            case PrimitiveType::SPHERE:
+            switch (materialTextureType) {
+            case MaterialType::TEXTURE_SPHERE:
                 return std::make_unique<SphereTexture>();
-            case PrimitiveType::TRIANGLE:
+            case MaterialType::TEXTURE_TRIANGLE:
                 return std::make_unique<TriangleTexture>();
-            case PrimitiveType::PLANE:
+            case MaterialType::TEXTURE_PLANE:
                 return std::make_unique<PlaneTexture>();
-            case PrimitiveType::CUBE:
+            case MaterialType::TEXTURE_CUBE:
                 return std::make_unique<CubeTexture>();
             default:
                 break;
@@ -56,7 +50,7 @@ namespace Raytracer {
         }
 
         std::unique_ptr<IMaterial> parseMaterial(const libconfig::Setting &setting,
-        PrimitiveType primType) {
+        MaterialType materialTextureType) {
             if (!setting.exists(CFG_MATERIAL))
                 return std::make_unique<MaterialSolid>(Color(1., 0, 1));
             libconfig::Setting &materialSetting = setting.lookup("material");
@@ -69,7 +63,7 @@ namespace Raytracer {
                 material = std::make_unique<MaterialSolid>(getSettingColor(materialSetting));
             }
             else if (materialType == CFG_MATERIAL_TEXTURE) {
-                material = parseMaterialTexture(materialSetting, primType);
+                material = parseMaterialTexture(materialSetting, materialTextureType);
             }
             else if (materialType == CFG_MATERIAL_CHECKERBOARD && materialSetting.exists("color_bis")) {
                 material = std::make_unique<MaterialCheckerBoard>(
@@ -78,7 +72,7 @@ namespace Raytracer {
                     parseNumber<float>(materialSetting, CFG_SIZE, 1.0));
             }
             else if (materialType == CFG_CAMERA) {
-                material = parseMaterialCamera(primType);
+                material = parseMaterialCamera(materialTextureType);
                 #ifdef BONUSCAMERA
                 material->setIsCamera(true);
                 #endif

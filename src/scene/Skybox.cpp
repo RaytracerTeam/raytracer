@@ -21,10 +21,10 @@ namespace Raytracer {
     {
         m_uvtype = type;
         switch (type) {
-        case SPHERE:
+        case SkyboxUVType::SPHERE:
             m_methodAmbientColor = &Skybox::getAmbientColorUVSphere;
             break;
-        case BOX:
+        case SkyboxUVType::BOX:
             m_methodAmbientColor = &Skybox::getAmbientColorBox;
             break;
         default:

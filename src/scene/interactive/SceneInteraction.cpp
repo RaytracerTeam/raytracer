@@ -21,6 +21,8 @@ namespace Raytracer {
         setupCamera();
         m_scene->updatePrimitives();
         m_alwaysRender = m_scene->getAlwaysRender();
+        m_defaultMovementSpeed = m_scene->getCameraSpeed();
+        m_rotationSpeed = m_scene->getCameraSensitivity();
 
         #ifdef BONUS
         if (inputFiles.size() > 0)
@@ -55,6 +57,7 @@ namespace Raytracer {
                 throw std::runtime_error("Failed to initialize ImGui");
             m_leftPaneWidth = 270;
             setupImageSize();
+            m_leftPaneChildHeight = m_imageHeight / 2 - 40;
         #endif
 
         m_window.setFramerateLimit(WINDOW_FPS);

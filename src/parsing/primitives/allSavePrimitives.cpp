@@ -12,7 +12,7 @@ namespace Raytracer
     void Parsing::savePrimitives(const Scene &scene, libconfig::Setting &root)
     {
         libconfig::Setting &primitivesSetting = root.add("primitives", libconfig::Setting::TypeGroup);
-        libconfig::Setting &sphereList = primitivesSetting.add("spheres", libconfig::Setting::TypeList);
+        libconfig::Setting &sphereList = primitivesSetting.add(CFG_SPHERES, libconfig::Setting::TypeList);
         libconfig::Setting &planeList = primitivesSetting.add("planes", libconfig::Setting::TypeList);
         libconfig::Setting &cylinderList = primitivesSetting.add("cylinders", libconfig::Setting::TypeList);
         libconfig::Setting &coneList = primitivesSetting.add("cones", libconfig::Setting::TypeList);

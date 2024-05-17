@@ -107,16 +107,6 @@ namespace Raytracer {
                             std::make_unique<MaterialSolid>(static_cast<MaterialSolid &>(*m_material)),
                             Transformations(), v3, origin, true));
                     }
-                    // scene->addPrimitive(std::make_unique<Triangle>(
-                    //     origin,
-                    //     std::make_unique<MaterialSolid>(static_cast<MaterialSolid &>(*m_material)),
-                    //     v1, v2, true));
-                    // if (isQuad) {
-                    //     scene->addPrimitive(std::make_unique<Triangle>(
-                    //         v2,
-                    //         std::make_unique<MaterialSolid>(static_cast<MaterialSolid &>(*m_material)),
-                    //         v3, origin, true));
-                    // }
                 }
             }
         }

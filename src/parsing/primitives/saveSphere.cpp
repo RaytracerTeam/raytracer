@@ -20,7 +20,7 @@ namespace Raytracer
         libconfig::Setting &sphereRadius = setting.add(CFG_RADIUS, libconfig::Setting::TypeFloat);
         sphereRadius = sphere->getRadius();
 
-        saveMaterial(setting, sphere);
+        saveMaterial(setting, sphere->getMaterial());
         saveTransformations(setting, sphere);
     }
 } // namespace Raytracer

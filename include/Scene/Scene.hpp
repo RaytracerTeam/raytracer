@@ -23,6 +23,7 @@
 #include "Scene/Keyframe.hpp"
 
 #include "Scene/Primitives/Obj.hpp"
+#include "Scene/Inventory.hpp"
 
 #ifdef BONUSCAMERA
     #include "RealCamera.hpp"
@@ -31,6 +32,8 @@
 namespace Raytracer {
     #define DEFAULT_SKYBOX "assets/skyboxes/sky.jpg"
     #define SCREEN_RATIO 16.0f / 9.0f
+    #define DEFAULT_MOVEMENT_SPEED 0.3f
+    #define DEFAULT_ROTATION_SPEED 3
     class Scene {
     public:
         Scene() = default;
@@ -55,6 +58,8 @@ namespace Raytracer {
         void setMaxRayBounces(size_t maxRayBounces) { m_maxRayBounces = maxRayBounces; }
         void setBvhMaxPrimLimit(size_t maxPrimLimit) { m_bvhMaxPrimLimit = maxPrimLimit; }
         void setAlwaysRender(bool alwaysRender) { m_alwaysRender = alwaysRender; }
+        void setCameraSpeed(float cameraSpeed) { m_cameraSpeed = cameraSpeed; }
+        void setCameraSensitivity(float cameraSensitivity) { m_cameraSensitivity = cameraSensitivity; }
 
         Camera &getCurrentCamera(void) const;
         const std::vector<std::unique_ptr<Camera>> &getCameras(void) const { return m_cameras; }
@@ -79,8 +84,12 @@ namespace Raytracer {
         size_t getMaxRayBounces(void) const { return m_maxRayBounces; }
         size_t getBvhMaxPrimLimit(void) const { return m_bvhMaxPrimLimit; }
         bool getAlwaysRender(void) const { return m_alwaysRender; }
+        float getCameraSpeed(void) const { return m_cameraSpeed; }
+        float getCameraSensitivity(void) const { return m_cameraSensitivity; }
         std::vector<std::unique_ptr<Obj>> &getObjs(void) { return m_objs; }
         const std::vector<std::unique_ptr<Obj>> &getObjs(void) const { return m_objs; }
+        Inventory &getInventory(void) { return m_inventory; }
+        const Inventory &getInventory(void) const { return m_inventory; }
 
         void setRenderPixel(size_t x, size_t y, const Color &color) {
             m_render.setPixel(x, y, sf::Color(color.getR() * 255, color.getG() * 255, color.getB() * 255));
@@ -125,6 +134,7 @@ namespace Raytracer {
         std::vector<const IPrimitive *> m_readonlyPrimitives;
 
         std::vector<std::unique_ptr<Obj>> m_objs;
+        Inventory m_inventory;
 
         std::unique_ptr<BVH::Node> m_bvhTree;
         size_t m_bvhMaxPrimLimit = 5; // temp : get via optimisation
@@ -134,7 +144,7 @@ namespace Raytracer {
 
         SceneLightning m_lightSystem;
 
-        Skybox m_skybox = Skybox(std::make_unique<MaterialTexture>(DEFAULT_SKYBOX), SPHERE);
+        Skybox m_skybox = Skybox(std::make_unique<MaterialTexture>(DEFAULT_SKYBOX), SkyboxUVType::SPHERE);
         size_t m_maxRayBounces = 5;
         // double m_maxDropShadowsRay = 1;
 
@@ -150,6 +160,8 @@ namespace Raytracer {
         size_t m_renderY;
 
         bool m_alwaysRender = false;
+        float m_cameraSpeed = DEFAULT_MOVEMENT_SPEED;
+        float m_cameraSensitivity = DEFAULT_ROTATION_SPEED;
 
         std::vector<Keyframe> m_vecKeyframes;
         size_t m_tickKeyframes;

@@ -20,16 +20,14 @@ unit-tests
 *.bin
 
 .DS_Store
-
-scores
-
+.idea
 .vscode/c_cpp_properties.json
 a.out
 
+scores
 imgui.ini
 todo
 screenshots/*.png
-
 test.*
 
 assets/skyboxes/local/*.jpg

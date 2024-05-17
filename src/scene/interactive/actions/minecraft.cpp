@@ -30,7 +30,7 @@ namespace Raytracer
 
         std::unique_ptr<Cube> newCube = std::make_unique<Cube>(
             cube->getOrigin() + normalScaled,
-            std::make_unique<CubeTexture>("assets/textures/minecraft/cobblestone.png"),
+            copyMaterial(m_scene->getInventory().getCurrentMaterial().get()),
             Transformations(),
             cube->getVec1() + normalScaled
         );
@@ -52,7 +52,6 @@ namespace Raytracer
         const IPrimitive *prim = (*optPrim).primitve;
         if (prim->getType() != PrimitiveType::CUBE)
             return;
-        int i = 0;
         for (auto &prim : m_scene->getPrimitives()) {
             if (prim->getID() == (*optPrim).primitve->getID()) {
                 prim->setDieASAP(true);
@@ -60,7 +59,6 @@ namespace Raytracer
                 m_needRendering = true;
                 break;
             }
-            i++;
         }
     }
 } // namespace Raytracer

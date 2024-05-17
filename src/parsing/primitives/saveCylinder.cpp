@@ -23,7 +23,7 @@ namespace Raytracer
         libconfig::Setting &height = setting.add(CFG_HEIGHT, libconfig::Setting::TypeFloat);
         height = cylinder->getHeight();
 
-        saveMaterial(setting, cylinder);
+        saveMaterial(setting, cylinder->getMaterial());
         saveTransformations(setting, cylinder);
     }
 } // namespace Raytracer

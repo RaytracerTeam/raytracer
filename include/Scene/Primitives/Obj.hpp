@@ -11,7 +11,6 @@
 #include "Triangle.hpp"
 #include <vector>
 
-
 namespace Raytracer {
     class Obj : public APrimitive {
     public:

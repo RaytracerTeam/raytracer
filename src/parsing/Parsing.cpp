@@ -87,6 +87,7 @@ namespace Raytracer {
             parseLights(cfg, scene);
             parseAnimations(cfg, scene);
             parseObjs(cfg, scene);
+            parseInventory(cfg, scene);
 
 #ifdef BONUSCAMERA
             for (auto &primitive : scene->getPrimitives()) {

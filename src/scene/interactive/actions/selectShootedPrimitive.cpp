@@ -55,6 +55,14 @@ namespace Raytracer
         m_needRendering = true;
         #endif
     }
-
-
+    Math::Vector3D SceneInteractive::getCameraFrontPos(void)
+    {
+        Camera &currentCamera = m_scene->getCurrentCamera();
+        Math::Angle3D angle = currentCamera.getAngle() * (M_PI / 180);
+        Math::Vector3D cameraAngle(
+            -sin(angle.getYaw()) * cos(angle.getPitch()),
+            sin(angle.getPitch()),
+            -cos(angle.getYaw()) * cos(angle.getPitch()));
+        return currentCamera.getPos() + cameraAngle * m_reach;
+    }
 } // namespace Raytracer

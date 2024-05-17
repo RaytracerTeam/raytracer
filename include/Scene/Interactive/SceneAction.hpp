@@ -21,6 +21,7 @@ namespace Raytracer
         ROTATE_LEFT,
         ROTATE_RIGHT,
         SPRINT,
+        PAINT,
     };
 
     enum SceneReleaseActions {
