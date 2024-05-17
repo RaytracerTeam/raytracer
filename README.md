@@ -50,6 +50,12 @@ or if you want a way more impressive demo, you can write in your terminal
 make bonus
 ```
 
+or if you love yourself and want to watch you in our incredible raytracer, you can write in your terminal
+
+```bash
+make bonusbonus
+```
+
 > **_Note:_** To change from normal interface to bonus interface or from bonus to normal, you need to apply clean your repository with `make fclean`
 
 and now you can lauch it with :
@@ -80,8 +86,21 @@ and if you want to recovered an old scene, you can do the command
 
 To have all the information about the config file, you can check the [CONFIG.md](scenes/CONFIG.md) file.
 
+## Documentation
 
-## Bonus :
+To build the documentation, you can do the command
+
+```bash
+make doc
+```
+
+and to run it, you can do the command
+
+```bash
+make rundoc
+```
+
+## Bonus
 
 [ImGui](https://github.com/ocornut/imgui) used with [ImGuiSfml](https://github.com/SFML/imgui-sfml) to create a GUI in SFML that allows to **edit the scene** in real time and **save it**, and more, check the shortcuts!
 
@@ -250,8 +269,8 @@ To have all the information about the config file, you can check the [CONFIG.md]
 ### Primitives
 - [x] **Sphere**
 - [x] **Plane**
-- [ ] **Cylinder**
-- [ ] **Cone**
+- [x] **Cylinder**
+- [x] **Cone**
 - [x] **Limited Cylinder**
 - [x] **Limited Cone**
 - [x] **Triangle**
@@ -284,14 +303,10 @@ To have all the information about the config file, you can check the [CONFIG.md]
 - [x] **Texturing from procedural generation of chessboard** (with any size and color)
 - [ ] **Texturing from procedural generation of Perlin noise**
 
-<!-- #### Bonus
-- [x]
-- Select material  -->
-
 ### Transformations
 - [x] **Translation**
-- [ ] **Rotation**
-- [x] **Scale** (on obj)
+- [x] **Rotation**
+- [x] **Scale**
 - [ ] **Scene graph**
 
 ### Scene configuration
@@ -302,14 +317,15 @@ To have all the information about the config file, you can check the [CONFIG.md]
 #### Bonus
 Can configure in real time with ImGui
 See [CONFIG.md](scenes/CONFIG.md)
-- [x] Optimization
 - [x] Skybox
 - [x] Inventory
+- [x] Cube Primitive
+- [x] Minecraft mode
+- [x] Save scene
+- [x] Cinematic mode
+- [x] Texture camera in bonusbonus
 
 ### Optimization
 - [x] **Space partitioning** (bounding boxes)
 - [x] **Multithreading**
 - [ ] **Clustering**
-
-
-### Interface
