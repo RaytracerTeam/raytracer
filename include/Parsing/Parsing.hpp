@@ -76,6 +76,8 @@ namespace Raytracer {
         #define CFG_SPEED "speed"
         #define CFG_SENSITIVITY "sensitivity"
         #define CFG_ALWAYS_RENDER "alwaysRender"
+        #define CFG_CAMERA_SPEED "speed"
+        #define CFG_CAMERA_SENSITIVITY "sensitivity"
         // Inventory
         #define CFG_INVENTORY "inventory"
         // Primitives

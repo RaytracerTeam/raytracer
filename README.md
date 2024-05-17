@@ -196,7 +196,7 @@ To have all the information about the config file, you can check the [CONFIG.md]
     <tbody>
         <tr>
             <td><b>Escape</b></td>
-            <td>Exit</td>
+            <td>Exit (and saves your scene in <i>scenes/temp.cfg</i>)</td>
         </tr>
         <tr>
             <td><b>C</b></td>

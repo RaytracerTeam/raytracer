@@ -38,6 +38,7 @@ namespace Raytracer
             if (ImGui::SliderFloat("Speed", &m_defaultMovementSpeed, 0.01, 10, "%.3f",
             ImGuiSliderFlags_Logarithmic)) {
                 m_needRendering = true;
+                m_scene->setCameraSpeed(m_defaultMovementSpeed);
             }
 
             ImGui::SameLine(0, 50);
@@ -46,6 +47,7 @@ namespace Raytracer
             if (ImGui::SliderFloat("Sensitivity", &m_rotationSpeed, 0.1, 100, "%.3f",
             ImGuiSliderFlags_Logarithmic | ImGuiSliderFlags_AlwaysClamp)) {
                 m_needRendering = true;
+                m_scene->setCameraSensitivity(m_rotationSpeed);
             }
         }
         ImGui::EndChild();

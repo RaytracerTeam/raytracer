@@ -32,6 +32,8 @@
 namespace Raytracer {
     #define DEFAULT_SKYBOX "assets/skyboxes/sky.jpg"
     #define SCREEN_RATIO 16.0f / 9.0f
+    #define DEFAULT_MOVEMENT_SPEED 0.3f
+    #define DEFAULT_ROTATION_SPEED 3
     class Scene {
     public:
         Scene() = default;
@@ -56,6 +58,8 @@ namespace Raytracer {
         void setMaxRayBounces(size_t maxRayBounces) { m_maxRayBounces = maxRayBounces; }
         void setBvhMaxPrimLimit(size_t maxPrimLimit) { m_bvhMaxPrimLimit = maxPrimLimit; }
         void setAlwaysRender(bool alwaysRender) { m_alwaysRender = alwaysRender; }
+        void setCameraSpeed(float cameraSpeed) { m_cameraSpeed = cameraSpeed; }
+        void setCameraSensitivity(float cameraSensitivity) { m_cameraSensitivity = cameraSensitivity; }
 
         Camera &getCurrentCamera(void) const;
         const std::vector<std::unique_ptr<Camera>> &getCameras(void) const { return m_cameras; }
@@ -80,6 +84,8 @@ namespace Raytracer {
         size_t getMaxRayBounces(void) const { return m_maxRayBounces; }
         size_t getBvhMaxPrimLimit(void) const { return m_bvhMaxPrimLimit; }
         bool getAlwaysRender(void) const { return m_alwaysRender; }
+        float getCameraSpeed(void) const { return m_cameraSpeed; }
+        float getCameraSensitivity(void) const { return m_cameraSensitivity; }
         std::vector<std::unique_ptr<Obj>> &getObjs(void) { return m_objs; }
         const std::vector<std::unique_ptr<Obj>> &getObjs(void) const { return m_objs; }
         Inventory &getInventory(void) { return m_inventory; }
@@ -154,6 +160,8 @@ namespace Raytracer {
         size_t m_renderY;
 
         bool m_alwaysRender = false;
+        float m_cameraSpeed = DEFAULT_MOVEMENT_SPEED;
+        float m_cameraSensitivity = DEFAULT_ROTATION_SPEED;
 
         std::vector<Keyframe> m_vecKeyframes;
         size_t m_tickKeyframes;

@@ -21,6 +21,8 @@ namespace Raytracer {
         setupCamera();
         m_scene->updatePrimitives();
         m_alwaysRender = m_scene->getAlwaysRender();
+        m_defaultMovementSpeed = m_scene->getCameraSpeed();
+        m_rotationSpeed = m_scene->getCameraSensitivity();
 
         #ifdef BONUS
         if (inputFiles.size() > 0)

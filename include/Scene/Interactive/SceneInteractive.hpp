@@ -22,8 +22,6 @@
 #include <SFML/Graphics.hpp>
 
 namespace Raytracer {
-    #define DEFAULT_MOVEMENT_SPEED 0.3f
-    #define DEFAULT_ROTATION_SPEED 3
     #define DEFAULT_CAMERA_RESOLUTION 240
     #define FILE_BUF_SIZE 100
     #define LEFT_PANE_PADDING 30
