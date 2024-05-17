@@ -86,7 +86,6 @@ namespace Raytracer {
                 double sepThreshold = seperateFunc(biggestAxisM, primitives);
                 auto res = getSubdivision(sepThreshold, biggestAxisM, primitives);
                 if (res.first.size() == primitives.size() || res.second.size() == primitives.size()) {
-                    // give up, can't seperated them, todo : maybe add another algorithms
                     node->primitives = std::make_unique<std::vector<const IPrimitive *>>(primitives);
                     return node;
                 }

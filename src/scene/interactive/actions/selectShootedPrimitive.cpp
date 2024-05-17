@@ -18,8 +18,6 @@ namespace Raytracer
         if (optPrim == std::nullopt)
             return;
 
-        //todo : add the material selection
-
         #ifdef BONUS
         int i = 0;
         for (auto &prim : m_scene->getPrimitives()) {

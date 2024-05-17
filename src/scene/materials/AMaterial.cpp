@@ -24,7 +24,6 @@ namespace Raytracer {
         return light->getColor() * m_specular * shininess * light->getIntensity();
     }
 
-    // todo : add fuzzing that makes reflections go random direction
     std::optional<Ray> AMaterial::getScatteredRay(const Ray &rayIn, const RayHit &rayHit) const
     {
         Math::Vector3D reflected = Math::Vector3D::gReflect(rayIn.getDirection().normalize(), rayHit.getNormal());

@@ -52,7 +52,6 @@ namespace Raytracer {
 
         if (bckHitPt.getX() * bckHitPt.getX() + bckHitPt.getZ() * bckHitPt.getZ()
             <= m_radius * m_radius) {
-            // TODO fix normal with pos negative
             auto bckNormal = (t0 < t1 && t0 > 1e-8) ? Math::Vector3D(0, -1, 0).normalize()
                                                     : Math::Vector3D(0, 1, 0).normalize();
 
