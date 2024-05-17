@@ -19,7 +19,7 @@ namespace Raytracer
                 m_scene->addCamera(std::make_unique<Camera>());
             }
             if (ImGui::BeginChild("camera selection", ImVec2(m_leftPaneWidth,
-            m_imageHeight / 2 - 20), ImGuiChildFlags_Border)) {
+            m_leftPaneChildHeight), ImGuiChildFlags_Border)) {
                 int i = 0;
                 for (auto &camera : m_scene->getCameras()) {
                     (void)camera;

@@ -18,7 +18,7 @@ namespace Raytracer
             guiAddLight();
             SceneLightning &lightSystem = m_scene->getLightSystem();
             if (ImGui::BeginChild("light selection", ImVec2(m_leftPaneWidth,
-            m_imageHeight / 2 - 20), ImGuiChildFlags_Border)) {
+            m_leftPaneChildHeight), ImGuiChildFlags_Border)) {
                 int i = 0;
                 // Create a vector with all the lights
                 std::vector<ILight *> lightVector;

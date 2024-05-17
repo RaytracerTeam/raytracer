@@ -17,7 +17,7 @@ namespace Raytracer
                 m_selectedObject = inventory.getCurrentMaterialIndex();
             m_objectSelection = ObjectSelection::INVENTORY;
             if (ImGui::BeginChild("primitive selection", ImVec2(m_leftPaneWidth,
-            m_imageHeight / 2 - 20), ImGuiChildFlags_Border)) {
+            m_leftPaneChildHeight), ImGuiChildFlags_Border)) {
                 int i = 0;
                 for (auto &material : inventory.getMaterials()) {
                     std::string name = std::to_string(i) + " " + material->getTypeString();

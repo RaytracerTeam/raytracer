@@ -184,10 +184,11 @@ namespace Raytracer {
         char m_saveFileBuf[FILE_BUF_SIZE] = SCENE_PATH;
         char m_skyboxPathBuf[FILE_BUF_SIZE] = DEFAULT_SKYBOX;
         char m_loadFileBuf[FILE_BUF_SIZE] = SCENE_PATH;
-        bool m_showDebug = false;
+        bool m_showDebug = true;
         int m_selectedObject = -1;
         ObjectSelection m_objectSelection = ObjectSelection::PRIMITIVE;
         size_t m_leftPaneWidth;
+        size_t m_leftPaneChildHeight;
         bool m_fullscreen = false;
         bool m_selectPrimitiveTab = false;
         bool m_saveObjAsPrimitives = false;

@@ -53,6 +53,10 @@ namespace Raytracer
             break;
         case SceneReleaseActions::SHOW_DEBUG:
             m_showDebug = !m_showDebug;
+            if (m_showDebug)
+                m_leftPaneChildHeight = m_imageHeight / 2 - 40;
+            else
+                m_leftPaneChildHeight = m_imageHeight - 70;
             break;
         case SceneReleaseActions::TOGGLE_FULLSCREEN:
             m_fullscreen = !m_fullscreen;

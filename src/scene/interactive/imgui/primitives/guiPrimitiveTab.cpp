@@ -18,7 +18,7 @@ namespace Raytracer
             m_objectSelection = ObjectSelection::PRIMITIVE;
             guiAddPrimitive();
             if (ImGui::BeginChild("primitive selection", ImVec2(m_leftPaneWidth,
-            m_imageHeight / 2 - 20), ImGuiChildFlags_Border)) {
+            m_leftPaneChildHeight), ImGuiChildFlags_Border)) {
                 int i = 0;
                 for (auto &prim : m_scene->getPrimitives()) {
                     std::string name = std::to_string(i) + " id" +

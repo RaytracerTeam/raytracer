@@ -55,6 +55,7 @@ namespace Raytracer {
                 throw std::runtime_error("Failed to initialize ImGui");
             m_leftPaneWidth = 270;
             setupImageSize();
+            m_leftPaneChildHeight = m_imageHeight / 2 - 40;
         #endif
 
         m_window.setFramerateLimit(WINDOW_FPS);

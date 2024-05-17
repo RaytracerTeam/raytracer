@@ -33,7 +33,8 @@ namespace Raytracer
                 | ImGuiChildFlags_AutoResizeX | ImGuiChildFlags_AlwaysAutoResize,
                 ImGuiWindowFlags_NoScrollbar)) {
                     guiObjectSelection();
-                    guiDebugInfos();
+                    if (m_showDebug)
+                        guiDebugInfos();
                 }
                 ImGui::EndChild();
                 ImGui::SameLine();
