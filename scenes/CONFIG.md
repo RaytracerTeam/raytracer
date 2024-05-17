@@ -1,12 +1,14 @@
-# Config
+# Scene Configuration
 
 ## Introduction
 
-The configuration file is a file that will allow you to create your own scene. It is composed of several parts that will allow you to create a scene with the Here is your objects you want.
+The configuration file is a file that **contains** all of the **informations** of a **scene**.
+
+It is composed of several parts that will allow you to create your own scene.
 
 ## Table of contents
 
-- [Config](#config)
+- [Scene Configuration](#scene-configuration)
   - [Introduction](#introduction)
   - [Table of contents](#table-of-contents)
   - [Getting started](#getting-started)
