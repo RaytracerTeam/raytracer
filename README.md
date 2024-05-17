@@ -170,7 +170,7 @@ To have all the information about the config file, you can check the [CONFIG.md]
         </tr>
         <tr>
             <td><b>G / Middle click</b></td>
-            <td>Select primitive at the center of the screen</td>
+            <td>Select primitive at the center of the screen (in bonus mode)</td>
             <td><i>Same behavior</i></td>
         </tr>
         <tr>
@@ -247,13 +247,69 @@ To have all the information about the config file, you can check the [CONFIG.md]
 
 ## Features
 
-- [x] **Primitives** :
-    - [x] **Sphere**
-    - [x] **Plane**
-    - [x] **Cylinder**
-    - [x] **Cone**
-    - [x] **Triangle**
-    - [x] **Cube**
-    - [x] **Tanglecube**
-    - [x] **Objfile**
+### Primitives
+- [x] **Sphere**
+- [x] **Plane**
+- [ ] **Cylinder**
+- [ ] **Cone**
+- [x] **Limited Cylinder**
+- [x] **Limited Cone**
+- [x] **Triangle**
+- [x] **Cube**
+- [x] **Torus**
+- [x] **Tanglecube**
+- [x] **Objfile** (with textures)
+- [ ] **Mobius strip**
+- [ ] **Fractals**
 
+### Lights
+- [x] **Point light**
+- [x] **Directional light**
+- [x] **Ambient light**
+- [x] **Drop shadows**
+- [x] **Multiple ambient lights**
+- [x] **Multiple directional lights**
+- [x] **Multiple point lights**
+- [x] **Colored light**
+- [x] **Phong reflection model**
+- [ ] **Ambient occlusion**
+
+### Materials
+- [x] **Flat color**
+- [x] **Transparency**
+- [x] **Refraction**
+- [x] **Reflection**
+- [x] **Refraction**
+- [x] **Texturing from file** (on Spheres, Cubes, Triangles and Plane)
+- [x] **Texturing from procedural generation of chessboard** (with any size and color)
+- [ ] **Texturing from procedural generation of Perlin noise**
+
+<!-- #### Bonus
+- [x]
+- Select material  -->
+
+### Transformations
+- [x] **Translation**
+- [ ] **Rotation**
+- [x] **Scale** (on obj)
+- [ ] **Scene graph**
+
+### Scene configuration
+- [x] **Add primitives to the scene** (including objfile)
+- [x] **Set up lightning**
+- [x] **Set up camera**
+
+#### Bonus
+Can configure in real time with ImGui
+See [CONFIG.md](scenes/CONFIG.md)
+- [x] Optimization
+- [x] Skybox
+- [x] Inventory
+
+### Optimization
+- [x] **Space partitioning** (bounding boxes)
+- [x] **Multithreading**
+- [ ] **Clustering**
+
+
+### Interface
