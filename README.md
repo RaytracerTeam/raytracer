@@ -2,7 +2,11 @@
 
 ## Introduction
 
-This is the Raytracer project, an **OOP project**, where the objective is to build a scene and to have an image from it. We push the idea a little further, so we added some features like _interactive scene_, on the interractive scene being able to _create primitives_, _loading objfile_, _saving image_, all that **in runtime**, etc.
+This is the Raytracer project, an Epitech project from the **OOP module** (Object Oriented Programming).
+
+The objective is to build a 3D scene with light rays generate beautiful images.
+
+We pushed the idea a little further with an _interactive scene_ that _creates, edit and delete primitives_, _loads objfile_, _saves image_ **in runtime**. See [Features](#feature).
 
 ## Requirements
 
@@ -82,28 +86,168 @@ To have all the information about the config file, you can check the [CONFIG.md]
 [ImGui](https://github.com/ocornut/imgui) used with [ImGuiSfml](https://github.com/SFML/imgui-sfml) to create a GUI in SFML that allows to **edit the scene** in real time and **save it**, and more, check the shortcuts!
 
 <details>
-    <summary>Shortcuts default</summary>
-    <li><b>W:</b> move forward</li>
-    <li><b>S:</b> move backward</li>
-    <li><b>A:</b> move left</li>
-    <li><b>D:</b> move right</li>
-    <li><b>Space bar:</b> move up</li>
-    <li><b>Left Shift:</b> move down</li>
-    <li><b>U:</b> rotate up</li>
-    <li><b>J:</b> rotate down</li>
-    <li><b>H:</b> rotate left</li>
-    <li><b>K:</b> rotate right</li>
-    <li><b>Left Controle:</b> sprint</li>
-    <li><b>Escape:</b> exit</li>
-    <li><b>C:</b> save scene and exit</li>
-    <li><b>X:</b> Quick save and exit</li>
-    <li><b>F3:</b> Show debug</li>
-    <li><b>F2:</b> Screenshot</li>
-    <li><b>Delete:</b> remove selected object</li>
-    <li><b>F11:</b> toggle fullscreen</li>
-    <li><b>M:</b> toggle mouse / normal mode</li>
-    <li><b>N:</b> Toggle simple mouse / normal mode</li>
-    <li><b>O:</b> Reset</li>
+    <summary><b>Keybinds (by default)</b></summary>
+    <h2> Move in the scene </h2>
+    <table>
+    <caption><h3>Move in the scene</h3></caption>
+    <thread>
+        <tr>
+            <th>Key</th>
+            <th>Action</th>
+        </tr>
+    </thread>
+    <tbody>
+        <tr>
+            <td><b>Z</b></td>
+            <td>Move forward</td>
+        </tr>
+        <tr>
+            <td><b>Q</b></td>
+            <td>Move left</td>
+        </tr>
+        <tr>
+            <td><b>S</b></td>
+            <td>Move backward</td>
+        </tr>
+        <tr>
+            <td><b>D</b></td>
+            <td>Move right</td>
+        </tr>
+        <tr>
+            <td><b>Space bar</b></td>
+            <td>Move up</td>
+        </tr>
+        <tr>
+            <td><b>Left Shift</b></td>
+            <td>Move down</td>
+        </tr>
+        <tr>
+            <td><b>U</b></td>
+            <td>Rotate up</td>
+        </tr>
+        <tr>
+            <td><b>J</b></td>
+            <td>Rotate down</td>
+        </tr>
+        <tr>
+            <td><b>H</b></td>
+            <td>Rotate left</td>
+        </tr>
+        <tr>
+            <td><b>K</b></td>
+            <td>Rotate right</td>
+        </tr>
+        <tr>
+            <td><b>Left Control</b></td>
+            <td>Sprint</td>
+        </tr>
+    </tbody>
+    </table>
+    <table>
+    <caption><h3>Interact with the scene<h3></caption>
+    <thread>
+        <tr>
+            <th>Key</th>
+            <th>Action</th>
+            <th>In <i>Minecraft mode</i></th>
+        </tr>
+    </thread>
+    <tbody>
+        <tr>
+            <td><b>M</b></td>
+            <td>Switch to <i>Minecraft mode</i></td>
+            <td>Goes back to normal mode</td>
+        </tr>
+        <tr>
+            <td><b>Left click</b></td>
+            <td></td>
+            <td>Destroy minecraft block</td>
+        </tr>
+        <tr>
+            <td><b>Right click</b></td>
+            <td>Use simple mouse to rotate the camera</td>
+            <td>Place minecraft block</td>
+        </tr>
+        <tr>
+            <td><b>G / Middle click</b></td>
+            <td>Select primitive at the center of the screen</td>
+            <td><i>Same behavior</i></td>
+        </tr>
+        <tr>
+            <td><b>R</b></td>
+            <td>Draw spheres at the reach distance</td>
+            <td><i>Same behavior</i></td>
+    </tbody>
+    </table>
+    <table>
+    <caption><h3>Save and quit</h3></caption>
+    <thread>
+        <tr>
+            <th>Key</th>
+            <th>Action</th>
+        </tr>
+    </thread>
+    <tbody>
+        <tr>
+            <td><b>Escape</b></td>
+            <td>Exit</td>
+        </tr>
+        <tr>
+            <td><b>C</b></td>
+            <td>Save scene to the opened one and exit</td>
+        </tr>
+        <tr>
+            <td><b>X</b></td>
+            <td>Quick save and exit (in <i>scenes/quick_save.cfg</i>)</td>
+        </tr>
+    </tbody>
+    </table>
+    <table>
+    <caption><h3>Other</h3></caption>
+    <thread>
+        <tr>
+            <th>Key</th>
+            <th>Action</th>
+        </tr>
+    </thread>
+    <tbody>
+        <tr>
+            <td><b>F2</b></td>
+            <td>Take a screenshot (saved in screenshots/171503-.png</td>
+        </tr>
+        <tr>
+            <td><b>F3</b></td>
+            <td>Toggle debug tab</td>
+        </tr>
+        <tr>
+            <td><b>Delete</b></td>
+            <td>Remove selected object (it has to be selected in the GUI)</td>
+        </tr>
+        <tr>
+            <td><b>F</b></td>
+            <td>Toggle fullscreen</td>
+        </tr>
+        <tr>
+            <td><b>O</b></td>
+            <td>Reset camera to the loaded position</td>
+        </tr>
+    </tbody>
+    </table>
 </details>
 
-Of course, you can change the shortcuts in the `config/keys_exemple.cfg` file.
+> **_Note:_** You can change the keybinds in `config/keys.cfg` file.
+
+> **_Attention:_** If you **messed up your config**, delete it and it will be recreated with default values.
+
+## <a name="features"></a>Features
+
+- [x] **Primitives** :
+    - [x] **Sphere**
+    - [x] **Plane**
+    - [x] **Cylinder**
+    - [x] **Cone**
+    - [x] **Triangle**
+    - [x] **Cube**
+    - [x] **Tanglecube**
+    - [x] **Objfile**
+
