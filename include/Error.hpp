@@ -10,26 +10,27 @@
 #include <exception>
 
 namespace Raytracer {
-        class Error : public std::exception {
-        public:
-            Error(const char *message, const char *where)
-                : m_message(message)
-                , m_where(where)
-            {
-            }
-            ~Error() = default;
+    #define FLOAT_THRESHOLD 0.000001
+    class Error : public std::exception {
+    public:
+        Error(const char *message, const char *where)
+            : m_message(message)
+            , m_where(where)
+        {
+        }
+        ~Error() = default;
 
-            const char *what() const noexcept
-            {
-                return m_message;
-            }
-            const char *where() const noexcept
-            {
-                return m_where;
-            }
+        const char *what() const noexcept
+        {
+            return m_message;
+        }
+        const char *where() const noexcept
+        {
+            return m_where;
+        }
 
-        private:
-            const char *m_message;
-            const char *m_where;
-        };
+    private:
+        const char *m_message;
+        const char *m_where;
+    };
 }

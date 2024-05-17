@@ -19,6 +19,8 @@ namespace Raytracer
         saveGlobal(scene, root);
         saveOptimization(scene, root);
         saveCameras(scene, root);
+        saveInventory(scene, root);
+        saveObjs(scene, root);
         savePrimitives(scene, root);
         saveLights(scene, root);
 

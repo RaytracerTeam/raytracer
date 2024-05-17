@@ -12,8 +12,9 @@
 namespace Raytracer {
     class Tanglecube : public APrimitive {
     public:
-        Tanglecube(const Math::Vector3D &origin, std::unique_ptr<IMaterial> material, double radius)
-            : APrimitive(origin, std::move(material))
+        Tanglecube(const Math::Vector3D &origin, std::unique_ptr<IMaterial> material,
+            const Transformations &transformations, double radius)
+            : APrimitive(origin, std::move(material), transformations)
             , m_radius(radius)
         {
         }
@@ -26,7 +27,7 @@ namespace Raytracer {
 
         BoundingBox getBoundingBox(void) const override;
         std::optional<RayHit> hit(const Ray &ray) const override;
-        RayHit getNormal(double distance, const Math::Vector3D &hitPt, const Math::Vector3D &origin) const;
+        RayHit getNormal(double distance, const Math::Vector3D &bckHitPt, const Math::Vector3D &origin) const;
 
     private:
         double m_radius;

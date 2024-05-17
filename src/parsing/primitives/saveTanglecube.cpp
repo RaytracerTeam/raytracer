@@ -9,8 +9,6 @@
 
 #include "Scene/Primitives/Tanglecube.hpp"
 
-#include "Scene/Materials/MaterialSolid.hpp"
-
 namespace Raytracer
 {
     void Parsing::saveTanglecube(libconfig::Setting &list, Tanglecube *tanglecube)
@@ -22,6 +20,7 @@ namespace Raytracer
         libconfig::Setting &radius = setting.add(CFG_RADIUS, libconfig::Setting::TypeFloat);
         radius = tanglecube->getRadius();
 
-        saveMaterial(setting, tanglecube);
+        saveMaterial(setting, tanglecube->getMaterial());
+        saveTransformations(setting, tanglecube);
     }
 } // namespace Raytracer

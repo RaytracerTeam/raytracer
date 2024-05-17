@@ -21,6 +21,8 @@ namespace Raytracer {
         setupCamera();
         m_scene->updatePrimitives();
         m_alwaysRender = m_scene->getAlwaysRender();
+        m_defaultMovementSpeed = m_scene->getCameraSpeed();
+        m_rotationSpeed = m_scene->getCameraSensitivity();
 
         #ifdef BONUS
         if (inputFiles.size() > 0)
@@ -55,6 +57,7 @@ namespace Raytracer {
                 throw std::runtime_error("Failed to initialize ImGui");
             m_leftPaneWidth = 270;
             setupImageSize();
+            m_leftPaneChildHeight = m_imageHeight / 2 - 40;
         #endif
 
         m_window.setFramerateLimit(WINDOW_FPS);
@@ -80,68 +83,6 @@ namespace Raytracer {
         m_scene->resizeRender(width, height);
     }
 
-    void SceneInteractive::handleEvents(void)
-    {
-        sf::Event event;
-        if (m_isWriting)
-            resetActions();
-        while (m_window.pollEvent(event)) {
-            #ifdef BONUS
-                ImGui::SFML::ProcessEvent(m_window, event);
-            #endif
-
-            if (event.type == sf::Event::Closed) {
-                Parsing::saveScene(*m_scene, TEMP_CFG_FILE);
-                return m_window.close();
-            }
-            if (event.type == sf::Event::Resized) {
-                sf::FloatRect visibleArea(0.f, 0.f, event.size.width, event.size.height);
-                #ifndef BONUS
-                    updateDimension(event.size.width, event.size.height);
-                #else
-                    setupImageSize();
-                #endif
-                m_window.setView(sf::View(visibleArea));
-                m_needRendering = true;
-            }
-            if (!m_isWriting && event.type == sf::Event::KeyReleased)
-                applyKeyReleasedActions(event.key.code);
-            if (!m_isWriting && m_interacCam.handleInput(event, m_actions)) {
-            }
-            if (event.type == sf::Event::MouseButtonReleased
-            && event.mouseButton.button == sf::Mouse::Right) {
-                m_useSimpleMouse = false;
-            }
-            if (event.type == sf::Event::MouseButtonPressed) {
-                if (event.mouseButton.button == sf::Mouse::Right) {
-                    m_useSimpleMouse = true;
-                    m_lastMousePos = sf::Mouse::getPosition();
-                }
-                #ifdef BONUS
-                // Select primitive by aiming at it with the center of the screen
-                else if (event.mouseButton.button == sf::Mouse::Left && (m_useMouse || m_useSimpleMouse)) {
-                    const IShape *shape = m_scene->getPrimitiveHit(sf::Vector2i(
-                        m_dimension.getWidth() / 2, m_dimension.getHeight() / 2
-                    ));
-                    if (shape) {
-                        int i = 0;
-                        for (auto &prim : m_scene->getPrimitives()) {
-                            if (prim->getID() == shape->getID()) {
-                                m_selectedObject = i;
-                                m_selectPrimitiveTab = true;
-                                break;
-                            }
-                            i++;
-                        }
-                    }
-                }
-                #endif
-            }
-        }
-        handleMouse();
-        applyActions();
-    }
-
     void SceneInteractive::setScenes(const std::vector<std::string_view> &inputFiles)
     {
         for (const auto &file : inputFiles) {
@@ -156,7 +97,6 @@ namespace Raytracer {
         if (!m_addToCurrentScene)
             m_scene->reset();
         Parsing::parse(m_scene, filename);
-        // parseInteractive(filename);
         int i = 0;
         for (const auto &primitive : m_scene->getPrimitives()) {
             primitive->setID(++i);

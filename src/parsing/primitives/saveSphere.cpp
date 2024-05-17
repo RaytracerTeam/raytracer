@@ -9,8 +9,6 @@
 
 #include "Scene/Primitives/Sphere.hpp"
 
-#include "Scene/Materials/MaterialSolid.hpp"
-
 namespace Raytracer
 {
     void Parsing::saveSphere(libconfig::Setting &list, Sphere *sphere)
@@ -22,6 +20,7 @@ namespace Raytracer
         libconfig::Setting &sphereRadius = setting.add(CFG_RADIUS, libconfig::Setting::TypeFloat);
         sphereRadius = sphere->getRadius();
 
-        saveMaterial(setting, sphere);
+        saveMaterial(setting, sphere->getMaterial());
+        saveTransformations(setting, sphere);
     }
 } // namespace Raytracer

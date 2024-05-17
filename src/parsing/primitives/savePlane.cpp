@@ -9,8 +9,6 @@
 
 #include "Scene/Primitives/Plane.hpp"
 
-#include "Scene/Materials/MaterialSolid.hpp"
-
 namespace Raytracer
 {
     void Parsing::savePlane(libconfig::Setting &list, Plane *plane)
@@ -29,6 +27,7 @@ namespace Raytracer
         case Plane::Axis::Z: planePos = planeOrigin.getZ(); break;
         }
 
-        saveMaterial(setting, plane);
+        saveMaterial(setting, plane->getMaterial());
+        saveTransformations(setting, plane);
     }
 } // namespace Raytracer

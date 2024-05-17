@@ -72,11 +72,15 @@ namespace Raytracer
                 ImGui::SameLine(0, 20),
                 ImGui::Checkbox("Add to current scene", &m_addToCurrentScene);
                 if (ImGui::BeginCombo("Scene Path", m_loadFileBuf)) {
-                    for (const auto &entry : std::filesystem::directory_iterator("scenes/"))
-                        addSelectableScene(entry);
-                    if (std::filesystem::exists("scenes/local"))
-                        for (const auto &entry : std::filesystem::directory_iterator("scenes/local"))
+                    for (const auto &path : SCENE_PATHS) {
+                        if (!std::filesystem::exists(path))
+                            continue;
+                        for (const auto &entry : std::filesystem::directory_iterator(path)) {
+                            if (entry.path().filename().extension() != ".cfg")
+                                continue;
                             addSelectableScene(entry);
+                        }
+                    }
 
                     ImGui::EndCombo();
                 }
@@ -98,20 +102,27 @@ namespace Raytracer
                     ImGuiInputTextFlags_EnterReturnsTrue)) {
                         if (std::filesystem::exists(m_skyboxPathBuf))
                             m_scene->setSkyboxPath(m_skyboxPathBuf);
+                        m_needRendering = true;
                         ImGui::CloseCurrentPopup();
                     }
                     if (ImGui::BeginCombo("Skybox Path", m_skyboxPathBuf)) {
-                        for (const auto &entry : std::filesystem::directory_iterator("assets/skyboxes"))
-                            addSelectableSkybox(entry);
-                        if (std::filesystem::exists("assets/skyboxes/local"))
-                            for (const auto &entry : std::filesystem::directory_iterator("assets/skyboxes/local"))
+                        for (const auto &path : SKYBOX_PATHS) {
+                            if (!std::filesystem::exists(path))
+                                continue;
+                            for (const auto &entry : std::filesystem::directory_iterator(path))
                                 addSelectableSkybox(entry);
-
+                        }
+                        #ifdef BONUSCAMERA
+                        if (ImGui::Selectable("Use camera")) {
+                            m_scene->getSkybox().getTexture()->setImage(m_scene->getRealCamera().getImage());
+                            m_needRendering = true;
+                        }
+                        #endif
                         ImGui::EndCombo();
                     }
-                    bool useSphere = skybox.getSkyboxUVTypee() == SPHERE;
+                    bool useSphere = skybox.getSkyboxUVTypee() == SkyboxUVType::SPHERE;
                     if (ImGui::Checkbox("Use UV Sphere", &useSphere)) {
-                       skybox.setSkyboxUVTypee(useSphere ? SPHERE : BOX);
+                       skybox.setSkyboxUVTypee(useSphere ? SkyboxUVType::SPHERE : SkyboxUVType::BOX);
                         m_needRendering = true;
                     }
                 } else {

@@ -20,6 +20,10 @@
 #include "Scene/SceneLightning.hpp"
 #include "Skybox.hpp"
 #include "Optimisation/BVH.hpp"
+#include "Scene/Keyframe.hpp"
+
+#include "Scene/Primitives/Obj.hpp"
+#include "Scene/Inventory.hpp"
 
 #ifdef BONUSCAMERA
     #include "RealCamera.hpp"
@@ -28,12 +32,15 @@
 namespace Raytracer {
     #define DEFAULT_SKYBOX "assets/skyboxes/sky.jpg"
     #define SCREEN_RATIO 16.0f / 9.0f
+    #define DEFAULT_MOVEMENT_SPEED 0.3f
+    #define DEFAULT_ROTATION_SPEED 3
     class Scene {
     public:
         Scene() = default;
         ~Scene() = default;
 
         void addPrimitive(std::unique_ptr<IPrimitive> obj);
+        void addObj(std::unique_ptr<Obj> obj);
         void addCamera(std::unique_ptr<Camera> obj);
         void addLight(std::unique_ptr<PointLight> obj);
 
@@ -51,6 +58,8 @@ namespace Raytracer {
         void setMaxRayBounces(size_t maxRayBounces) { m_maxRayBounces = maxRayBounces; }
         void setBvhMaxPrimLimit(size_t maxPrimLimit) { m_bvhMaxPrimLimit = maxPrimLimit; }
         void setAlwaysRender(bool alwaysRender) { m_alwaysRender = alwaysRender; }
+        void setCameraSpeed(float cameraSpeed) { m_cameraSpeed = cameraSpeed; }
+        void setCameraSensitivity(float cameraSensitivity) { m_cameraSensitivity = cameraSensitivity; }
 
         Camera &getCurrentCamera(void) const;
         const std::vector<std::unique_ptr<Camera>> &getCameras(void) const { return m_cameras; }
@@ -75,20 +84,37 @@ namespace Raytracer {
         size_t getMaxRayBounces(void) const { return m_maxRayBounces; }
         size_t getBvhMaxPrimLimit(void) const { return m_bvhMaxPrimLimit; }
         bool getAlwaysRender(void) const { return m_alwaysRender; }
+        float getCameraSpeed(void) const { return m_cameraSpeed; }
+        float getCameraSensitivity(void) const { return m_cameraSensitivity; }
+        std::vector<std::unique_ptr<Obj>> &getObjs(void) { return m_objs; }
+        const std::vector<std::unique_ptr<Obj>> &getObjs(void) const { return m_objs; }
+        Inventory &getInventory(void) { return m_inventory; }
+        const Inventory &getInventory(void) const { return m_inventory; }
+
+        void setRenderPixel(size_t x, size_t y, const Color &color) {
+            m_render.setPixel(x, y, sf::Color(color.getR() * 255, color.getG() * 255, color.getB() * 255));
+        }
+
+        const std::vector<Keyframe> &getCameraKeyframes(void) const { return m_vecKeyframes; }
+        size_t getKeyframesTick(void) const { return m_tickKeyframes; }
+        void addKeyframe(const Keyframe &keyframe) { m_vecKeyframes.push_back(keyframe); }
+        void setKeyframesTick(size_t tickrate) { m_tickKeyframes = tickrate; }
 
         void resizeRender(unsigned int width, unsigned int height);
         void updatePrimitives(void);
         void removePrimitive(size_t index);
         void removeLight(size_t index);
         bool removeCamera(size_t index);
+        void removeObj(size_t index);
         void reset(void);
 
         void showCurrentRenderedLine(void);
-        const IShape *getPrimitiveHit(sf::Vector2i mousePos) const;
+        std::optional<BVH::Intersection> getIntersectionHit(sf::Vector2i mousePos) const;
+        std::optional<const IPrimitive *> getPrimitiveHit(sf::Vector2i mousePos) const;
 
         void killObjects(void);
         Color getDiffuseColor(const Ray &lightRay, const RayHit &rhitPrim,
-            const ILight *light, const Math::Vector3D &lightOrigin,
+            const ILight &light, const Math::Vector3D &lightOrigin,
             const std::unique_ptr<IMaterial> &primMaterial, const Color &primColor) const;
         #ifdef BONUSCAMERA
         void initRealCamera(void);
@@ -96,15 +122,19 @@ namespace Raytracer {
         RealCamera &getRealCamera(void) { return m_realCamera; }
         #endif
 
+        void waitRendering(size_t nbImages = 0, size_t maxImage = 0);
+
     private:
-        Color castRayColor(const Ray &ray, const IPrimitive *primHit, const RayHit &rhitPrim) const;
+        Color castRayColor(const Ray &ray, const IPrimitive &primHit, const RayHit &rhitPrim) const;
         Color castRay(const Ray &ray) const;
-        double shadowPenombra(const Ray &lightRay, const IPrimitive *primHit, const PointLight &pointLight) const;
         bool hit(const std::optional<RayHit> &rayHit, const Math::Vector3D &objOrigin, const Math::Vector3D &objTarget) const;
 
         std::vector<std::unique_ptr<IPrimitive>> m_primitives;
         // useful to copy the vector around.
         std::vector<const IPrimitive *> m_readonlyPrimitives;
+
+        std::vector<std::unique_ptr<Obj>> m_objs;
+        Inventory m_inventory;
 
         std::unique_ptr<BVH::Node> m_bvhTree;
         size_t m_bvhMaxPrimLimit = 5; // temp : get via optimisation
@@ -114,9 +144,9 @@ namespace Raytracer {
 
         SceneLightning m_lightSystem;
 
-        Skybox m_skybox = Skybox(std::make_unique<MaterialTexture>(DEFAULT_SKYBOX), SPHERE);
+        Skybox m_skybox = Skybox(std::make_unique<MaterialTexture>(DEFAULT_SKYBOX), SkyboxUVType::SPHERE);
         size_t m_maxRayBounces = 5;
-        double m_maxDropShadowsRay = 1;
+        // double m_maxDropShadowsRay = 1;
 
         bool m_renderLights = false;
 
@@ -130,6 +160,11 @@ namespace Raytracer {
         size_t m_renderY;
 
         bool m_alwaysRender = false;
+        float m_cameraSpeed = DEFAULT_MOVEMENT_SPEED;
+        float m_cameraSensitivity = DEFAULT_ROTATION_SPEED;
+
+        std::vector<Keyframe> m_vecKeyframes;
+        size_t m_tickKeyframes;
 
         // Bonus Real camera
         #ifdef BONUSCAMERA

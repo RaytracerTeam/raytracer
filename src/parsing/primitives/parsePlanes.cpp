@@ -7,7 +7,6 @@
 
 #include "Parsing/Parsing.hpp"
 
-#include "Scene/Materials/MaterialSolid.hpp"
 #include "Scene/Primitives/Plane.hpp"
 
 void Raytracer::Parsing::parsePlanes(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene)
@@ -31,7 +30,8 @@ void Raytracer::Parsing::parsePlanes(const libconfig::Setting &primitiveSetting,
                 axis = Plane::Z;
         }
         auto plane = std::make_unique<Plane>(planePos,
-            parseMaterial(config, PrimitiveType::PLANE),
+            parseMaterial(config, MaterialType::TEXTURE_PLANE),
+            parseTransformations(config),
             axis);
         scene->addPrimitive(std::move(plane));
     }

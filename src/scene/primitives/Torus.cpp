@@ -12,31 +12,37 @@
 namespace Raytracer {
     BoundingBox Torus::getBoundingBox(void) const
     {
-        return BoundingBox(Math::Vector3D(m_origin - m_distance - m_radius),
-            Math::Vector3D(m_origin + m_distance + m_radius));
+        Math::Vector3D newOrigin = m_origin + m_transformations.getTranslation();
+
+        double biggestScale = Math::Algorithm::maxOfThree(m_transformations.getScale().getX(),
+            m_transformations.getScale().getY(), m_transformations.getScale().getZ());
+
+        Math::Vector3D min = newOrigin - biggestScale * (m_distance + m_radius);
+        Math::Vector3D max = newOrigin + biggestScale * (m_distance + m_radius);
+
+        return BoundingBox(min, max);
     }
 
-    RayHit Torus::getNormal(double distance, const Math::Vector3D &hitPt,
+    RayHit Torus::getNormal(double distance, const Math::Vector3D &bckHitPt,
         const Math::Vector3D &origin) const
     {
-        Math::Vector3D dstOrigin = hitPt - origin;
+        Math::Vector3D u(bckHitPt.getX() - origin.getX(), bckHitPt.getY() - origin.getY(), 0.);
+        u = u.normalize() * m_distance;
+        u += origin;
 
-        double a = 1.
-            - (m_distance
-                / std::sqrt(dstOrigin.getX() * dstOrigin.getX()
-                    + dstOrigin.getY() * dstOrigin.getY()));
+        Math::Vector3D bckNormal = (bckHitPt - u).normalize();
 
-        auto normal = Math::Vector3D(
-            a * dstOrigin.getX(), a * dstOrigin.getY(), dstOrigin.getZ())
-                          .normalize();
-
+        Math::Vector3D hitPt = m_matrixT.applyForward(bckHitPt);
+        Math::Vector3D normal = m_matrixT.applyNormal(bckNormal);
         return RayHit(distance, hitPt, normal);
     }
 
     std::optional<RayHit> Torus::hit(const Ray &ray) const
     {
-        Math::Vector3D dstOrigin = getTMatrix() * (ray.getOrigin() - m_origin);
-        Math::Vector3D rayDir = getTMatrix() * ray.getDirection();
+        Ray bckRay = m_matrixT.applyBackward(ray);
+
+        Math::Vector3D dstOrigin = bckRay.getOrigin() - m_bckOrigin - m_bckTranslation;
+        Math::Vector3D rayDir = bckRay.getDirection();
 
         double g = 4. * m_distance * m_distance
             * (rayDir.getX() * rayDir.getX() + rayDir.getY() * rayDir.getY());
@@ -72,9 +78,8 @@ namespace Raytracer {
 
         for (int i = 0; i < 4; i++) {
             if (roots[i] > TOLERANCE) {
-                Math::Vector3D hitPt
-                    = ray.getOrigin() + ray.getDirection() * roots[i];
-                return getNormal(roots[i], hitPt, m_origin);
+                Math::Vector3D bckHitPt = bckRay.getOrigin() + bckRay.getDirection() * roots[i];
+                return getNormal(roots[i], bckHitPt, m_bckOrigin + m_bckTranslation);
             }
         }
         return std::nullopt;

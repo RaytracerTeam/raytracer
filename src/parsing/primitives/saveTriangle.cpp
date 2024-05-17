@@ -9,8 +9,6 @@
 
 #include "Scene/Primitives/Triangle.hpp"
 
-#include "Scene/Materials/MaterialSolid.hpp"
-
 namespace Raytracer
 {
     void Parsing::saveTriangle(libconfig::Setting &list, Triangle *triangle)
@@ -31,6 +29,7 @@ namespace Raytracer
         v2.add("y", libconfig::Setting::TypeFloat) = triangle->getVec2().getY();
         v2.add("z", libconfig::Setting::TypeFloat) = triangle->getVec2().getZ();
 
-        saveMaterial(setting, triangle);
+        saveMaterial(setting, triangle->getMaterial());
+        saveTransformations(setting, triangle);
     }
 } // namespace Raytracer

@@ -8,9 +8,13 @@
 *.ppm
 *.png
 *.jpg
+*.mp4
 
 !assets/*.png
+!assets/textures/minecraft/*.png
 !assets/skyboxes/*.jpg
+!screenshots/demo/*.png
+!assets/skyboxes/blackhole.png
 
 raytracer
 unit-tests
@@ -18,15 +22,15 @@ unit-tests
 *.bin
 
 .DS_Store
-
-scores
-
+.idea
 .vscode/c_cpp_properties.json
 a.out
 
+scores
 imgui.ini
 todo
 screenshots/*.png
+test.*
 
 assets/skyboxes/local/*.jpg
 assets/obj/local/*.obj
@@ -39,3 +43,5 @@ scenes/local/*.cfg
 scenes/quick_save.cfg
 scenes/temp.cfg
 config/keys.cfg
+
+doc/html/*

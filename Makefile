@@ -17,14 +17,19 @@ CORESRC	=	$(wildcard ./src/*.cpp) \
 			$(wildcard ./src/scene/materials/texture/*.cpp) \
 			$(wildcard ./src/scene/lights/*.cpp) \
 			$(wildcard ./src/scene/interactive/*.cpp) \
+			$(wildcard ./src/scene/interactive/actions/*.cpp)
 
 LIBIMGUISRC	=	$(wildcard ./bonus/imgui/*.cpp)
 
 IMGUISRC	=	$(wildcard ./src/scene/interactive/imgui/*.cpp) \
-				$(wildcard ./src/scene/interactive/imgui/objectEdit/*.cpp) \
-				$(wildcard ./src/scene/interactive/imgui/objectEdit/primitives/*.cpp) \
-				$(wildcard ./src/scene/interactive/imgui/objectEdit/lights/*.cpp) \
-				$(wildcard ./src/scene/interactive/imgui/objectSelection/*.cpp)
+				$(wildcard ./src/scene/interactive/imgui/camera/*.cpp) \
+				$(wildcard ./src/scene/interactive/imgui/inventory/*.cpp) \
+				$(wildcard ./src/scene/interactive/imgui/light/*.cpp) \
+				$(wildcard ./src/scene/interactive/imgui/material/*.cpp) \
+				$(wildcard ./src/scene/interactive/imgui/obj/*.cpp) \
+				$(wildcard ./src/scene/interactive/imgui/objectSelection/*.cpp) \
+				$(wildcard ./src/scene/interactive/imgui/primitives/*.cpp) \
+				$(wildcard ./src/scene/interactive/imgui/primitives/edit/*.cpp) \
 
 CAMERASRC	=	$(wildcard ./bonus/camera/*.cpp)
 
@@ -82,7 +87,7 @@ ifeq ($(UNAME_S),Darwin)
 	CFLAGS += $(MACSFMLINCLUDE) -DMACOSTONIO
 	LDFLAGS += $(MACSFMLLIB)
 else
-	CFLAGS += $(shell pkg-config --cflags opencv4)
+	CAMERAFLAGS += $(shell pkg-config --cflags opencv4)
 	LDBONUSFLAGS += -lGL
 endif
 
@@ -134,6 +139,12 @@ tests_cov: tests_compile
 	./$(TESTNAME)
 	gcov -n -b -f $(TESTSRC)
 
+doc:
+	doxygen Doxyfile
+
+rundoc: doc
+	python3 -m http.server --directory doc/html
+
 clean:
 	rm -f $(OBJ)
 	rm -f $(DEPS)
@@ -154,4 +165,4 @@ redbg:
 	@$(MAKE) fclean
 	@$(MAKE) dbg
 
-.PHONY: all dbg tests_run tests_cov tests_compile clean fclean re redbg
+.PHONY: all dbg tests_run tests_cov tests_compile doc rundoc clean fclean re redbg

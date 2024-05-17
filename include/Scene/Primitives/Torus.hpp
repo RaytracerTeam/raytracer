@@ -12,8 +12,9 @@
 namespace Raytracer {
     class Torus : public APrimitive {
     public:
-        Torus(const Math::Vector3D &origin, std::unique_ptr<IMaterial> material, double radius, double distance)
-            : APrimitive(origin, std::move(material))
+        Torus(const Math::Vector3D &origin, std::unique_ptr<IMaterial> material,
+        const Transformations &transformations, double radius, double distance)
+            : APrimitive(origin, std::move(material), transformations)
             , m_radius(radius)
             , m_distance(distance)
         {
@@ -30,7 +31,7 @@ namespace Raytracer {
 
         BoundingBox getBoundingBox(void) const override;
         std::optional<RayHit> hit(const Ray &ray) const override;
-        RayHit getNormal(double distance, const Math::Vector3D &hitPt, const Math::Vector3D &origin) const;
+        RayHit getNormal(double distance, const Math::Vector3D &bckHitPt, const Math::Vector3D &origin) const;
 
     private:
         double m_radius;

@@ -12,7 +12,7 @@ namespace Raytracer
     void SceneInteractive::guiDebugInfos(void)
     {
         Camera *currentCamera = m_interacCam.getCamera();
-        if (ImGui::BeginChild("Debug Infos", ImVec2(m_leftPaneWidth, m_imageHeight / 2 - 50),
+        if (ImGui::BeginChild("Debug Infos", ImVec2(m_leftPaneWidth, m_imageHeight / 2 - 30),
         ImGuiChildFlags_Border)) {
 
             // FPS
@@ -68,6 +68,10 @@ namespace Raytracer
                 m_scene->setMaxRayBounces(maxRayBounces);
                 m_needRendering = true;
             }
+
+            // Reach
+            ImGui::SliderFloat("Reach", &m_reach, 1, 200, "%.2f",
+                ImGuiSliderFlags_Logarithmic);
 
             // BVH Max Prim Limit
             int bvhMaxPrimLimit = m_scene->getBvhMaxPrimLimit();

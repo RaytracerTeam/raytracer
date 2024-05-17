@@ -33,9 +33,6 @@ namespace Raytracer
             saveColor(ambientLightSetting, aLight->getColor());
             ambientLightSetting.add(CFG_INTENSITY, libconfig::Setting::TypeFloat) = aLight->getIntensity();
         }
-        // auto &ambientLightSetting = lightsSetting.add(CFG_AMBIENT_LIGHT, libconfig::Setting::TypeGroup);
-        // saveColor(ambientLightSetting, lightSystem.getAmbientLights()[0]->getColor());
-        // ambientLightSetting.add(CFG_INTENSITY, libconfig::Setting::TypeFloat) = lightSystem.getAmbientLights()[0]->getIntensity();
 
         // Directional Lights
         libconfig::Setting &dLights = lightsSetting.add(CFG_DIRECTIONAL_LIGHTS, libconfig::Setting::TypeList);
@@ -45,10 +42,7 @@ namespace Raytracer
             saveColor(dLightSetting, dLight->getColor());
             dLightSetting.add(CFG_INTENSITY, libconfig::Setting::TypeFloat) = dLight->getIntensity();
 
-            libconfig::Setting &dirSetting = dLightSetting.add(CFG_DIRECTION, libconfig::Setting::TypeGroup);
-            dirSetting.add("x", libconfig::Setting::TypeFloat) = dLight->getDirection().getX();
-            dirSetting.add("y", libconfig::Setting::TypeFloat) = dLight->getDirection().getY();
-            dirSetting.add("z", libconfig::Setting::TypeFloat) = dLight->getDirection().getZ();
+            saveVector3D(dLightSetting, CFG_DIRECTION, dLight->getDirection());
         }
     }
 } // namespace Raytracer

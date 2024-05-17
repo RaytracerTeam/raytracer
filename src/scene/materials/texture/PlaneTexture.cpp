@@ -15,10 +15,10 @@ namespace Raytracer {
         if (m_image.get() == nullptr)
             return Color(1., 0, 1);
 
-        (void)ray;
-        // auto d = ray.getHitPoint();
-        float u = 2;
-        float v = 2;
+        auto d = ray.getRelativeHitPoint();
+
+        float u = std::fmod(std::abs(d.getX()), m_factor) / m_factor;
+        float v = std::fmod(std::abs(d.getZ()), m_factor) / m_factor;
 
         return MaterialTexture::getColor(u, v);
     }

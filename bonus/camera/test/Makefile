@@ -1,5 +1,5 @@
 
-SRC		=	test.cpp 		\
+SRC		=	testCamera.cpp		\
 			../RealCamera.cpp
 
 OBJ		=	$(SRC:.cpp=.o)

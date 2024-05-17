@@ -21,18 +21,22 @@ namespace Raytracer {
         CHECKERBOARD,
         TEXTURE_SPHERE,
         TEXTURE_TRIANGLE,
+        TEXTURE_CUBE,
         TEXTURE_PLANE,
-        NONE
+        NONE,
+        SIZE
     };
     char const *const MaterialTypeStrings[] = {
         "Solid",
         "Code",
         "Texture",
+        "Checkerboard",
         "TextureSphere",
         "TextureTriangle",
+        "TextureCube",
         "TexturePlane",
-        "Checkerboard",
-        "None"
+        "None",
+        "Size"
     };
 
     class IMaterial {

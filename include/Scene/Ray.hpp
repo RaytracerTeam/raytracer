@@ -11,6 +11,7 @@
 #include "Math/Matrix44d.hpp"
 
 #include <limits>
+#include <vector>
 
 namespace Raytracer {
     class Ray {
@@ -21,9 +22,7 @@ namespace Raytracer {
         Math::Vector3D getOrigin(void) const { return m_origin; }
         Math::Vector3D getDirection(void) const { return m_direction; }
         size_t getDepth(void) const { return m_depth; }
-        void applyTranslate(Math::Vector3D vec) {
-            m_origin = vec + m_origin;
-        }
+
     private:
         Math::Vector3D m_origin = Math::Vector3D(0, 0, 0);
         Math::Vector3D m_direction = Math::Vector3D(0, 0, 0);
@@ -35,18 +34,18 @@ namespace Raytracer {
             RayHit() = default;
             ~RayHit() = default;
 
-            RayHit(double distance, Math::Vector3D hitPt, Math::Vector3D normal, Math::Vector3D relativeHitPt = Math::Vector3D(0, 0, 0));
+            RayHit(double distance, Math::Vector3D hitPt, Math::Vector3D normal,
+                Math::Vector3D relativeHitPt = Math::Vector3D(0, 0, 0));
             RayHit(const RayHit &rhit);
             RayHit &operator=(const RayHit &ray);
+
+            void setRelativeHitPoint(Math::Vector3D relativeHitPt) { m_relativeHitPt = relativeHitPt; }
 
             double getDistance(void) const { return m_distance; }
             Math::Vector3D getHitPoint(void) const { return m_hitPt; }
             Math::Vector3D getRelativeHitPoint(void) const { return m_relativeHitPt; }
             Math::Vector3D getNormal(void) const { return m_normal; }
-            void applyTranslate(Math::Vector3D vec) {
-                m_hitPt = vec + m_hitPt;
-                m_relativeHitPt = vec + m_relativeHitPt;
-            }
+
         private:
             double m_distance = std::numeric_limits<double>::infinity();
             Math::Vector3D m_hitPt;

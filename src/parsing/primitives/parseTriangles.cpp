@@ -7,7 +7,6 @@
 
 #include "Parsing/Parsing.hpp"
 
-#include "Scene/Materials/MaterialSolid.hpp"
 #include "Scene/Primitives/Triangle.hpp"
 
 void Raytracer::Parsing::parseTriangles(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene)
@@ -16,7 +15,8 @@ void Raytracer::Parsing::parseTriangles(const libconfig::Setting &primitiveSetti
         return;
     for (const auto &config : primitiveSetting.lookup("triangles")) {
         auto triangle = std::make_unique<Triangle>(parsePosition(config),
-            parseMaterial(config, PrimitiveType::TRIANGLE),
+            parseMaterial(config, MaterialType::TEXTURE_TRIANGLE),
+            parseTransformations(config),
             parseVec3D(config, CFG_V1),
             parseVec3D(config, CFG_V2));
 

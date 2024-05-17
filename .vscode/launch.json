@@ -5,7 +5,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/raytracer",
-            "args": ["-i", "scenes/cameras.cfg"],
+            "args": ["-i", "scenes/multiple_earths.cfg"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
@@ -48,7 +48,42 @@
             "program": "${workspaceFolder}/raytracer",
             "args": [
                 "-i",
-                "./scenes/thomas.cfg"
+                "./scenes/config_example.cfg"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description":  "Set Disassembly Flavor to Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                },
+                {
+                    "text": "-enable-pretty-printing\nskip -gfi /usr/include/c++/*/*/*\nskip -gfi /usr/include/c++/*/*\nskip -gfi /usr/include/c++/*",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
+            "name": "(gdb) Launch ANIMATIONS",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/raytracer",
+            "args": [
+                "./scenes/config_example.cfg",
+                "-o",
+                "rendu/anim",
+                "-a",
+                "-f",
+                "png"
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

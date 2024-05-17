@@ -9,8 +9,6 @@
 
 #include "Scene/Primitives/Cylinder.hpp"
 
-#include "Scene/Materials/MaterialSolid.hpp"
-
 namespace Raytracer
 {
     void Parsing::saveCylinder(libconfig::Setting &list, Cylinder *cylinder)
@@ -25,6 +23,7 @@ namespace Raytracer
         libconfig::Setting &height = setting.add(CFG_HEIGHT, libconfig::Setting::TypeFloat);
         height = cylinder->getHeight();
 
-        saveMaterial(setting, cylinder);
+        saveMaterial(setting, cylinder->getMaterial());
+        saveTransformations(setting, cylinder);
     }
 } // namespace Raytracer

@@ -12,10 +12,10 @@
 #include <iostream>
 
 namespace Raytracer {
-    void WriteFile::writeImagePPM(
+    void WriteFile::writeImagePPM(const std::string &path,
         const sf::Image &buffer, const Dimension &dimension)
     {
-        std::ofstream ofs("./out.ppm", std::ios::out | std::ios::binary);
+        std::ofstream ofs(path + ".ppm", std::ios::out | std::ios::binary);
 
         ofs << "P6\n"
             << dimension.getWidth() << " " << dimension.getHeight()
@@ -29,28 +29,28 @@ namespace Raytracer {
         }
     }
 
-    void WriteFile::writeImageJPG(const sf::Image &buffer)
+    void WriteFile::writeImageJPG(const std::string &path, const sf::Image &buffer)
     {
-        buffer.saveToFile("./out.jpg");
+        buffer.saveToFile(path + ".jpg");
     }
 
-    void WriteFile::writeImagePNG(const sf::Image &buffer)
+    void WriteFile::writeImagePNG(const std::string &path, const sf::Image &buffer)
     {
-        buffer.saveToFile("./out.png");
+        buffer.saveToFile(path + ".png");
     }
 
     void WriteFile::writeImage(
-        WriteType type, const sf::Image &buffer, const Dimension &dimension)
+        WriteType type, const std::string &path, const sf::Image &buffer, const Dimension &dimension)
     {
         switch (type) {
         case PPM:
-            writeImagePPM(buffer, dimension);
+            writeImagePPM(path, buffer, dimension);
             break;
         case JPG:
-            writeImageJPG(buffer);
+            writeImageJPG(path, buffer);
             break;
         case PNG:
-            writeImagePNG(buffer);
+            writeImagePNG(path, buffer);
             break;
         }
     }

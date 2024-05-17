@@ -24,6 +24,6 @@ namespace Raytracer {
 
         Color getColor(const RayHit &rayhit) const override final;
     private:
-        float m_factor;
+        float m_factor = 1;
     };
 } // namespace Raytracer

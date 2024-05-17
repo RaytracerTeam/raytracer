@@ -11,6 +11,7 @@
 #include "IShape.hpp"
 #include "Optimisation/BoundingBox.hpp"
 #include "Scene/Ray.hpp"
+#include "Math/MatrixT.hpp"
 
 #include <memory>
 #include <optional>
@@ -26,7 +27,9 @@ namespace Raytracer {
         TORUS,
         TANGLECUBE,
         MOBIUSSTRIP,
-        NONE
+        OBJ,
+        NONE,
+        SIZE
     };
     char const *const PrimitiveTypeStrings[] = {
         "Sphere",
@@ -38,7 +41,9 @@ namespace Raytracer {
         "Torus",
         "Tanglecube",
         "MobiusStrip",
-        "None"
+        "Obj",
+        "None",
+        "Size"
     };
     class IPrimitive : public IShape {
     public:
@@ -53,7 +58,15 @@ namespace Raytracer {
 
         virtual std::optional<RayHit> hit(const Ray &ray) const = 0;
 
-        virtual void setRotXYZ(double rotX, double rotY, double rotZ) = 0;
-        virtual const Math::Matrix44 &getTMatrix(void) const = 0;
+        virtual void setTranslation(const Math::Vector3D &translation) = 0;
+        virtual void setRotation(const Math::Vector3D &rotation) = 0;
+        virtual void setScale(const Math::Vector3D &scale) = 0;
+
+        virtual const Math::MatrixT &getMatrixT(void) const = 0;
+        virtual const Math::Vector3D &getTranslation(void) const = 0;
+        virtual const Math::Vector3D &getRotation(void) const = 0;
+        virtual const Math::Vector3D &getScale(void) const = 0;
+
+        virtual void updateTransformations(void) = 0;
     };
 }

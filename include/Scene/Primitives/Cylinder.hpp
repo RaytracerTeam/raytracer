@@ -12,10 +12,13 @@
 namespace Raytracer {
     class Cylinder : public APrimitive {
     public:
-        Cylinder(const Math::Vector3D &origin,  std::unique_ptr<IMaterial> material, double radius, double height)
-            : APrimitive(origin, std::move(material))
+        Cylinder(const Math::Vector3D &origin, std::unique_ptr<IMaterial> material,
+            const Transformations &transformations, double radius, double height)
+            : APrimitive(origin, std::move(material), transformations)
             , m_radius(radius)
-            , m_height(height) {}
+            , m_height(height)
+        {
+        }
         ~Cylinder() = default;
 
         PrimitiveType getType(void) const override { return PrimitiveType::CYLINDER; };
@@ -29,7 +32,7 @@ namespace Raytracer {
         BoundingBox getBoundingBox(void) const override;
         std::optional<RayHit> hit(const Ray &ray) const override;
         std::optional<RayHit> hitFace(const Math::Vector3D &dstOrigin, const Math::Vector3D &rayDir) const;
-        RayHit getNormal(double distance, const Math::Vector3D &hitPt, const Math::Vector3D &origin) const;
+        RayHit getNormal(double distance, const Math::Vector3D &bckHitPt, const Math::Vector3D &origin) const;
 
     private:
         double m_radius;

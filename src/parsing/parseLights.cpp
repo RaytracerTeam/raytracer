@@ -26,7 +26,7 @@ namespace Raytracer {
             for (const auto &aLightSetting : lightsSetting[CFG_AMBIENT_LIGHT]) {
                 lightSystem.addAmbientLight(std::make_unique<AmbientLight>(
                     getSettingColor(aLightSetting),
-                    parseFloat(aLightSetting, CFG_INTENSITY, 0.1)));
+                    parseNumber<float>(aLightSetting, CFG_INTENSITY, 0.1)));
             }
         }
 

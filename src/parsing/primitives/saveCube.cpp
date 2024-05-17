@@ -9,8 +9,6 @@
 
 #include "Scene/Primitives/Cube.hpp"
 
-#include "Scene/Materials/MaterialSolid.hpp"
-
 namespace Raytracer
 {
     void Parsing::saveCube(libconfig::Setting &list, Cube *cube)
@@ -24,6 +22,7 @@ namespace Raytracer
         v1.add("y", libconfig::Setting::TypeFloat) = cube->getVec1().getY();
         v1.add("z", libconfig::Setting::TypeFloat) = cube->getVec1().getZ();
 
-        saveMaterial(setting, cube);
+        saveMaterial(setting, cube->getMaterial());
+        saveTransformations(setting, cube);
     }
 } // namespace Raytracer

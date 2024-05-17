@@ -11,7 +11,18 @@
 
 namespace Raytracer {
     namespace Math {
+        /**
+        * @brief Converts degrees to radians
+        * @param deg The degrees to convert
+        * @return The radians
+        **/
         double deg2rad(double deg);
+
+        /**
+        * @brief Converts radians to degrees
+        * @param rad The radians to convert
+        * @return The degrees
+        **/
         double rad2deg(double rad);
     } // namespace Math
 
