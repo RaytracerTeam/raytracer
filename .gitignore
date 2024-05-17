@@ -13,6 +13,7 @@
 !assets/*.png
 !assets/textures/minecraft/*.png
 !assets/skyboxes/*.jpg
+!screenshots/demo/*.png
 
 raytracer
 unit-tests
