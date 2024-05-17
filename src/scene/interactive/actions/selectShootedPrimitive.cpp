@@ -6,6 +6,7 @@
 */
 
 #include "Scene/Interactive/SceneInteractive.hpp"
+#include <cmath>
 
 namespace Raytracer
 {

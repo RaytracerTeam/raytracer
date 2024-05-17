@@ -16,7 +16,7 @@ void Raytracer::Parsing::parseCubes(const libconfig::Setting &primitiveSetting, 
     for (const auto &config : primitiveSetting.lookup("cubes")) {
         auto cube = std::make_unique<Cube>(parsePosition(config),
             parseMaterial(config, MaterialType::TEXTURE_CUBE),
-            parseVec3D(config, CFG_V1));
+            parseTransformations(config), parseVec3D(config, CFG_V1));
         scene->addPrimitive(std::move(cube));
     }
 }

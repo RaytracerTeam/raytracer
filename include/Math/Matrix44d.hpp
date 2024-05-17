@@ -9,7 +9,6 @@
 
 #include <array>
 #include <cstdint>
-#include <stddef.h>
 
 #include "Vector3D.hpp"
 
@@ -36,24 +35,11 @@ namespace Raytracer {
             Matrix44(std::array<std::array<double, 4>, 4> arr);
 
             /**
-            * @brief Constructor of the Matrix44 class
-            * @param rotX The yaw rotation
-            * @param rotY The pitch rotation
-            * @param rotZ The roll rotation
-            **/
-            Matrix44(double rotX, double rotY, double rotZ);
-
-            /**
             * @brief Operator= of the Matrix44 class
             * @param m The Matrix44 to copy
             * @return The new Matrix44
             **/
             Matrix44 &operator=(const Matrix44 &m);
-
-            /**
-            * @brief Getter of the angles of rotation
-            **/
-            Math::Angle3D getRot() const { return m_rot; }
 
             /**
             * @brief Operator() of the Matrix44 class
@@ -131,7 +117,6 @@ namespace Raytracer {
             Matrix44 inverse() const;
         private:
             std::array<std::array<double, 4>, 4> m_arr; ///< The matrix
-            Math::Angle3D m_rot; ///< The rotation
         };
     } // namespace Math
 

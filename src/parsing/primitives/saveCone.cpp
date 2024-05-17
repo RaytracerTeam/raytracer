@@ -24,5 +24,6 @@ namespace Raytracer
         height = cone->getHeight();
 
         saveMaterial(setting, cone->getMaterial());
+        saveTransformations(setting, cone);
     }
 } // namespace Raytracer

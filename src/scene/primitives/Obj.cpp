@@ -17,10 +17,10 @@
 #include "Scene/Materials/MaterialTexture/TriangleTexture.hpp"
 
 namespace Raytracer {
-    Obj::Obj(const std::string &objPath, std::unique_ptr<IMaterial> material,
-        const Math::Vector3D &position, Math::Vector3D scale)
-        : APrimitive(position, std::move(material)), m_objPath(objPath),
-        m_scale(scale)
+    Obj::Obj(const Math::Vector3D &origin, std::unique_ptr<IMaterial> material,
+        Transformations transformations, const std::string &objPath)
+        : APrimitive(origin, std::move(material), transformations)
+        , m_objPath(objPath)
     {
         std::ifstream file(objPath);
         if (!file.is_open()) {
@@ -41,7 +41,7 @@ namespace Raytracer {
                 double x, y, z;
                 iss >> x >> y >> z;
                 Math::Vector3D vertex(x, y, z);
-                vertices.push_back(vertex * scale + position);
+                vertices.push_back(vertex * m_transformations.getScale() + m_origin + m_transformations.getTranslation());
             } else if (token == "vt") {
                 double x, y;
                 iss >> x >> y;
@@ -89,23 +89,23 @@ namespace Raytracer {
                     m_triangles.push_back(std::make_unique<Triangle>(
                         origin,
                         std::make_unique<TriangleTexture>(image, vt2, vt3, vt1),
-                        v1, v2, true));
+                        Transformations(), v1, v2, true));
                     if (isQuad) {
                         m_triangles.push_back(std::make_unique<Triangle>(
                             v2,
                             std::make_unique<TriangleTexture>(image, vt1, vt4, vt3),
-                            origin, v3, true));
+                            Transformations(), origin, v3, true));
                     }
                 } else {
                     m_triangles.push_back(std::make_unique<Triangle>(
                         origin,
                         std::make_unique<MaterialSolid>(static_cast<MaterialSolid &>(*m_material)),
-                        v1, v2, true));
+                        Transformations(), v1, v2, true));
                     if (isQuad) {
                         m_triangles.push_back(std::make_unique<Triangle>(
                             v2,
                             std::make_unique<MaterialSolid>(static_cast<MaterialSolid &>(*m_material)),
-                            v3, origin, true));
+                            Transformations(), v3, origin, true));
                     }
                 }
             }
@@ -124,9 +124,8 @@ namespace Raytracer {
     void Obj::setIsShown(bool isShown)
     {
         m_isShown = isShown;
-        for (auto &triangle : m_triangles) {
+        for (auto &triangle : m_triangles)
             triangle->setIsShown(isShown);
-        }
     }
 
     void Obj::setOrigin(const Math::Vector3D &v)
@@ -140,14 +139,32 @@ namespace Raytracer {
         m_origin = v;
     }
 
+    void Obj::setTranslation(const Math::Vector3D &translation)
+    {
+        Math::Vector3D diff = translation - m_transformations.getTranslation();
+        for (auto &triangle : m_triangles) {
+            triangle->setOrigin(triangle->getOrigin() + diff);
+            triangle->setVec1(triangle->getVec1() + diff);
+            triangle->setVec2(triangle->getVec2() + diff);
+        }
+        m_transformations.setTranslation(translation);
+    }
+
+    void Obj::setRotation(const Math::Vector3D &rotation)
+    {
+        for (auto &triangle : m_triangles)
+            triangle->setRotation(rotation);
+        m_transformations.setRotation(rotation);
+    }
+
     void Obj::setScale(const Math::Vector3D &scale)
     {
         for (auto &triangle : m_triangles) {
-            triangle->setOrigin(triangle->getOrigin() / m_scale * scale);
-            triangle->setVec1(triangle->getVec1() / m_scale * scale);
-            triangle->setVec2(triangle->getVec2() / m_scale * scale);
+            triangle->setOrigin(triangle->getOrigin() / m_transformations.getScale() * scale);
+            triangle->setVec1(triangle->getVec1() / m_transformations.getScale() * scale);
+            triangle->setVec2(triangle->getVec2() / m_transformations.getScale() * scale);
         }
-        m_scale = scale;
+        m_transformations.setScale(scale);
     }
 
     void Obj::setMaterial(std::unique_ptr<IMaterial> material)

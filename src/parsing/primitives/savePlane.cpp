@@ -28,5 +28,6 @@ namespace Raytracer
         }
 
         saveMaterial(setting, plane->getMaterial());
+        saveTransformations(setting, plane);
     }
 } // namespace Raytracer

@@ -39,7 +39,7 @@ namespace Raytracer {
         #define CFG_ROTATION "rotation"
         #define CFG_HEIGHT "height"
         #define CFG_SCALE "scale"
-        #define CRG_TRANSLATION "translation"
+        #define CFG_TRANSLATION "translation"
         #define CFG_COLOR "color"
         #define CFG_RADIUS "radius"
         #define CFG_DISTANCE "distance"
@@ -126,6 +126,7 @@ namespace Raytracer {
         float parseIntensity(const libconfig::Setting &setting);
         std::unique_ptr<IMaterial> parseMaterial(const libconfig::Setting &setting,
             MaterialType materialTextureType = MaterialType::NONE);
+        Transformations parseTransformations(const libconfig::Setting &setting);
 
         void parsePrimitives(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
         void parseSpheres(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene);
@@ -149,6 +150,7 @@ namespace Raytracer {
         void savePos(libconfig::Setting &setting, const Math::Vector3D pos);
         void saveColor(libconfig::Setting &setting, const Color color);
         void saveMaterial(libconfig::Setting &setting, const std::unique_ptr<Raytracer::IMaterial> &material);
+        void saveTransformations(libconfig::Setting &setting, APrimitive *primitive);
 
         void saveScene(const Scene &scene, const std::string &outputFile);
         void saveGlobal(const Scene &scene, libconfig::Setting &root);

@@ -26,7 +26,7 @@ namespace Raytracer {
 
         /**
         * @brief Algorithm class
-        * Contains all functions related to the math of the raytracer 
+        * Contains all functions related to the math of the raytracer
         **/
         class Algorithm {
         public:
@@ -45,6 +45,12 @@ namespace Raytracer {
             * @return The clamped color
             **/
             static Color clampColor(const Color &color);
+
+            static double minOfThree(double a, double b, double c);
+            static double maxOfThree(double a, double b, double c);
+
+            static Vector3D minOfVector3D(const Vector3D &v1, const Vector3D &v2);
+            static Vector3D maxOfVector3D(const Vector3D &v1, const Vector3D &v2);
 
             /**
             * @brief Checks if a complex number is zero

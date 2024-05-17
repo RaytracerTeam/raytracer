@@ -16,6 +16,7 @@ void Raytracer::Parsing::parseToruses(const libconfig::Setting &primitiveSetting
     for (const auto &config : primitiveSetting.lookup("toruses")) {
         auto torus = std::make_unique<Torus>(parsePosition(config),
             parseMaterial(config),
+            parseTransformations(config),
             parseRadius(config),
             parseDistance(config));
         scene->addPrimitive(std::move(torus));

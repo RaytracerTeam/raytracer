@@ -24,5 +24,6 @@ namespace Raytracer
         height = torus->getDistance();
 
         saveMaterial(setting, torus->getMaterial());
+        saveTransformations(setting, torus);
     }
 } // namespace Raytracer

@@ -30,5 +30,6 @@ namespace Raytracer
         v2.add("z", libconfig::Setting::TypeFloat) = triangle->getVec2().getZ();
 
         saveMaterial(setting, triangle->getMaterial());
+        saveTransformations(setting, triangle);
     }
 } // namespace Raytracer

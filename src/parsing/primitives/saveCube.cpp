@@ -23,5 +23,6 @@ namespace Raytracer
         v1.add("z", libconfig::Setting::TypeFloat) = cube->getVec1().getZ();
 
         saveMaterial(setting, cube->getMaterial());
+        saveTransformations(setting, cube);
     }
 } // namespace Raytracer

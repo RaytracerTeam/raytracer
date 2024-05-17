@@ -21,5 +21,6 @@ namespace Raytracer
         sphereRadius = sphere->getRadius();
 
         saveMaterial(setting, sphere->getMaterial());
+        saveTransformations(setting, sphere);
     }
 } // namespace Raytracer

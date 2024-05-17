@@ -24,42 +24,14 @@ namespace Raytracer {
         {
         }
 
-
-        Matrix44::Matrix44(double rotX, double rotY, double rotZ)
-        {
-            double rotXRad = rotX * M_PI / 180;
-            double rotYRad = rotY * M_PI / 180;
-            double rotZRad = rotZ * M_PI / 180;
-            Matrix44 m1(
-                { { { 1, 0, 0, 0 },
-                    { 0, cos(rotXRad), sin(rotXRad), 0 },
-                    { 0, -sin(rotXRad), cos(rotXRad), 0 },
-                    { 0, 0, 0, 1 } } });
-            Matrix44 m2(
-                { { { cos(rotYRad), 0, sin(rotYRad), 0 },
-                    { 0, 1, 0, 0 },
-                    { -sin(rotYRad), 0, cos(rotYRad), 0 },
-                    { 0, 0, 0, 1 } } });
-            Matrix44 m3(
-                { { { cos(rotZRad), sin(rotZRad), 0, 0 },
-                    { -sin(rotZRad), cos(rotZRad), 0, 0 },
-                    { 0, 0, 1, 0 },
-                    { 0, 0, 0, 1 } } });
-            Matrix44 m12 = m1 * m2;
-            *this = m12 * m3;
-            this->m_rot = Math::Angle3D(rotX, rotY, rotZ);
-        }
-
         Matrix44::Matrix44(const Matrix44 &m)
         {
             m_arr = m.m_arr;
-            m_rot = m.m_rot;
         }
 
         Matrix44 &Matrix44::operator=(const Matrix44 &m)
         {
             m_arr = m.m_arr;
-            m_rot = m.m_rot;
             return *this;
         }
 
@@ -189,7 +161,6 @@ namespace Raytracer {
             }
             return s;
         }
-
     } // namespace Math
 
 } // namespace Raytracer

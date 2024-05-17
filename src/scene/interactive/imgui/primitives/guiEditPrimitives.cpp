@@ -96,16 +96,31 @@ namespace Raytracer
                 m_needRendering = true;
 
             if (ImGui::BeginTabItem("Transformations")) {
+                // Translation
+                Math::Vector3D trans3D = primitive->getTranslation();
+                float translation[3] = {(float)trans3D.getX(), (float)trans3D.getY(), (float)trans3D.getZ()};
+                if (ImGui::SliderFloat3("Translation", translation, DEFAULT_POS_MIN, DEFAULT_POS_MAX)) {
+                    primitive->setTranslation(Math::Vector3D(translation[0], translation[1], translation[2]));
+                    m_updateBVH = true;
+                    m_needRendering = true;
+                }
                 // Rotation
-                Math::Angle3D rot3D = primitive->getTMatrix().getRot();
-                float rot[3] = {(float)rot3D.getYaw(), (float)rot3D.getPitch(), (float)rot3D.getRoll()};
-                if (ImGui::SliderFloat3("Rotation", rot, 0, 360)) {
-                    primitive->setRotXYZ(rot[0], rot[1], rot[2]);
+                Math::Vector3D rot3D = primitive->getRotation();
+                float rotation[3] = {(float)rot3D.getX(), (float)rot3D.getY(), (float)rot3D.getZ()};
+                if (ImGui::SliderFloat3("Rotation", rotation, 0, 360)) {
+                    primitive->setRotation(Math::Vector3D(rotation[0], rotation[1], rotation[2]));
                     m_updateBVH = true;
                     m_needRendering = true;
                 }
                 // Scale
-                // Translation
+                Math::Vector3D sca3D = primitive->getScale();
+                float scale[3] = {(float)sca3D.getX(), (float)sca3D.getY(), (float)sca3D.getZ()};
+                if (ImGui::SliderFloat3("Scale", scale, DEFAULT_RADIUS_MIN, DEFAULT_RADIUS_MAX,
+                "%.3f", ImGuiSliderFlags_Logarithmic | ImGuiSliderFlags_AlwaysClamp)) {
+                    primitive->setScale(Math::Vector3D(scale[0], scale[1], scale[2]));
+                    m_updateBVH = true;
+                    m_needRendering = true;
+                }
                 ImGui::EndTabItem();
             }
         }

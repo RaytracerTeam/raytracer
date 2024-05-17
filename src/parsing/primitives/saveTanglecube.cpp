@@ -21,5 +21,6 @@ namespace Raytracer
         radius = tanglecube->getRadius();
 
         saveMaterial(setting, tanglecube->getMaterial());
+        saveTransformations(setting, tanglecube);
     }
 } // namespace Raytracer

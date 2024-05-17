@@ -11,7 +11,7 @@
 namespace Raytracer {
         PointLight::PointLight(const Math::Vector3D &origin, double radius, const Color &color = { 255, 255, 255. }, double intensity = 1.)
             : AShapeLight(origin, color, intensity)
-            , m_sphere(origin, nullptr, radius)
+            , m_sphere(origin, nullptr, Transformations(), radius)
         {
         }
 

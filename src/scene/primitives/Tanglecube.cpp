@@ -12,27 +12,39 @@
 namespace Raytracer {
     BoundingBox Tanglecube::getBoundingBox(void) const
     {
-        return BoundingBox(
-            Math::Vector3D(m_origin - 3.), Math::Vector3D(m_origin + 3.));
+        Math::Vector3D newOrigin = m_origin + m_transformations.getTranslation();
+
+        double biggestScale = Math::Algorithm::maxOfThree(m_transformations.getScale().getX(),
+            m_transformations.getScale().getY(), m_transformations.getScale().getZ());
+
+        Math::Vector3D min = newOrigin - biggestScale * 3;
+        Math::Vector3D max = newOrigin + biggestScale * 3;
+
+        return BoundingBox(min, max);
     }
 
-    RayHit Tanglecube::getNormal(double distance, const Math::Vector3D &hitPt,
+    RayHit Tanglecube::getNormal(double distance, const Math::Vector3D &bckHitPt,
         const Math::Vector3D &origin) const
     {
-        Math::Vector3D dstOrigin = hitPt - origin;
+        Math::Vector3D dstOrigin = bckHitPt - origin;
 
-        auto normal = Math::Vector3D(
+        auto bckNormal = Math::Vector3D(
             4. * std::pow(dstOrigin.getX(), 3) - 10. * dstOrigin.getX(),
             4. * std::pow(dstOrigin.getY(), 3) - 10. * dstOrigin.getY(),
             4. * std::pow(dstOrigin.getZ(), 3) - 10. * dstOrigin.getZ())
                           .normalize();
+
+        Math::Vector3D hitPt = m_matrixT.applyForward(bckHitPt);
+        Math::Vector3D normal = m_matrixT.applyForward(bckNormal);
         return RayHit(distance, hitPt, normal);
     }
 
     std::optional<RayHit> Tanglecube::hit(const Ray &ray) const
     {
-        Math::Vector3D dstOrigin = getTMatrix() * (ray.getOrigin() - m_origin);
-        Math::Vector3D rayDir = getTMatrix() * ray.getDirection();
+        Ray bckRay = m_matrixT.applyBackward(ray);
+
+        Math::Vector3D dstOrigin = bckRay.getOrigin() - m_bckOrigin - m_bckTranslation;
+        Math::Vector3D rayDir = bckRay.getDirection();
 
         double a = std::pow(rayDir.getX(), 4) + std::pow(rayDir.getY(), 4)
             + std::pow(rayDir.getZ(), 4);
@@ -76,9 +88,8 @@ namespace Raytracer {
 
         for (int i = 0; i < 4; i++) {
             if (roots[i] > TOLERANCE) {
-                Math::Vector3D hitPt
-                    = ray.getOrigin() + ray.getDirection() * roots[i];
-                return getNormal(roots[i], hitPt, m_origin);
+                Math::Vector3D bckHitPt = bckRay.getOrigin() + bckRay.getDirection() * roots[i];
+                return getNormal(roots[i], bckHitPt, m_bckOrigin + m_bckTranslation);
             }
         }
 

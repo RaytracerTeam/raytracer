@@ -73,6 +73,7 @@ namespace Raytracer
             auto sphere = std::make_unique<Sphere>(
                 getCameraFrontPos(),
                 copyMaterial(m_scene->getInventory().getCurrentMaterial().get()),
+                Transformations(),
                 1.0);
             sphere->setID(m_scene->getPrimitives().size() + 1);
             m_scene->addPrimitive(std::move(sphere));

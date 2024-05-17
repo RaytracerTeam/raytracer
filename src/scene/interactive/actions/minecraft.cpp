@@ -31,6 +31,7 @@ namespace Raytracer
         std::unique_ptr<Cube> newCube = std::make_unique<Cube>(
             cube->getOrigin() + normalScaled,
             copyMaterial(m_scene->getInventory().getCurrentMaterial().get()),
+            Transformations(),
             cube->getVec1() + normalScaled
         );
         newCube->setID(m_scene->getPrimitives().size() + 1);

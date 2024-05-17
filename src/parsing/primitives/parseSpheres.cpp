@@ -16,6 +16,7 @@ void Raytracer::Parsing::parseSpheres(const libconfig::Setting &primitiveSetting
     for (const auto &config : primitiveSetting.lookup(CFG_SPHERES)) {
         auto sphere = std::make_unique<Sphere>(parsePosition(config),
             parseMaterial(config, MaterialType::TEXTURE_SPHERE),
+            parseTransformations(config),
             parseRadius(config));
         scene->addPrimitive(std::move(sphere));
     }

@@ -17,6 +17,7 @@ namespace Raytracer
                 auto sphere = std::make_unique<Sphere>(
                     getCameraFrontPos(),
                     copyMaterial(currentMaterial),
+                    Transformations(),
                     1.0);
                 sphere->setID(m_scene->getPrimitives().size() + 1);
                 m_scene->addPrimitive(std::move(sphere));
@@ -27,6 +28,7 @@ namespace Raytracer
                 auto plane = std::make_unique<Plane>(
                     getCameraFrontPos()[1] - 10,
                     copyMaterial(currentMaterial),
+                    Transformations(),
                     Plane::Axis::Y);
                 plane->setID(m_scene->getPrimitives().size() + 1);
                 m_scene->addPrimitive(std::move(plane));
@@ -37,6 +39,7 @@ namespace Raytracer
                 auto cylinder = std::make_unique<Cylinder>(
                     getCameraFrontPos(),
                     copyMaterial(currentMaterial),
+                    Transformations(),
                     1.0,
                     1.0);
                 cylinder->setID(m_scene->getPrimitives().size() + 1);
@@ -48,6 +51,7 @@ namespace Raytracer
                 auto cone = std::make_unique<Cone>(
                     getCameraFrontPos(),
                     copyMaterial(currentMaterial),
+                    Transformations(),
                     1.0,
                     1.0);
                 cone->setID(m_scene->getPrimitives().size() + 1);
@@ -59,6 +63,7 @@ namespace Raytracer
                 auto torus = std::make_unique<Torus>(
                     getCameraFrontPos(),
                     copyMaterial(currentMaterial),
+                    Transformations(),
                     0.5,
                     1.0);
                 torus->setID(m_scene->getPrimitives().size() + 1);
@@ -70,6 +75,7 @@ namespace Raytracer
                 auto tanglecube = std::make_unique<Tanglecube>(
                     getCameraFrontPos(),
                     copyMaterial(currentMaterial),
+                    Transformations(),
                     11.8);
                 tanglecube->setID(m_scene->getPrimitives().size() + 1);
                 m_scene->addPrimitive(std::move(tanglecube));
@@ -80,6 +86,7 @@ namespace Raytracer
                 auto triangle = std::make_unique<Triangle>(
                     getCameraFrontPos(),
                     copyMaterial(currentMaterial),
+                    Transformations(),
                     getCameraFrontPos() + Math::Vector3D(0, 2, 0),
                     getCameraFrontPos() + Math::Vector3D(0, 0, 2));
                 triangle->setID(m_scene->getPrimitives().size() + 1);
@@ -91,6 +98,7 @@ namespace Raytracer
                 auto cube = std::make_unique<Cube>(
                     getCameraFrontPos(),
                     copyMaterial(currentMaterial),
+                    Transformations(),
                     getCameraFrontPos() + Math::Vector3D(1, 1, 1));
                 cube->setID(m_scene->getPrimitives().size() + 1);
                 m_scene->addPrimitive(std::move(cube));
