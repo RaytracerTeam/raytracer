@@ -29,9 +29,13 @@ namespace Raytracer {
             Vector3D applyForward(const Vector3D &vec) const;
             Vector3D applyBackward(const Vector3D &vec) const;
 
+            Vector3D applyNormal(const Vector3D &vec) const;
+            void extractLinearTransform(void);
+
         private:
             Matrix44 m_fwdTransform;
             Matrix44 m_bwkTransform;
+            Matrix44 m_linTransform;
         };
     }
 }

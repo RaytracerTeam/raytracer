@@ -49,6 +49,8 @@ namespace Raytracer {
 
             m_fwdTransform = translationMatrix * scaleMatrix * rotateXMatrix * rotateYMatrix * rotateZMatrix;
             m_bwkTransform = m_fwdTransform.inverse();
+
+            extractLinearTransform();
         }
 
         void MatrixT::setTransform(const Transformations &transformations)
@@ -76,6 +78,22 @@ namespace Raytracer {
         {
             std::array<double, 4> src = { vec.getX(), vec.getY(), vec.getZ(), 1 };
             return m_bwkTransform * src;
+        }
+
+        Vector3D MatrixT::applyNormal(const Vector3D &vec) const
+        {
+            std::array<double, 4> src = { vec.getX(), vec.getY(), vec.getZ(), 0 };
+            return m_linTransform * src;
+        }
+
+        void MatrixT::extractLinearTransform(void)
+        {
+            for (uint8_t i = 0; i < 3; i++)
+                for (uint8_t j = 0; j < 3; j++)
+                    m_linTransform[i][j] = m_fwdTransform[i][j];
+
+            m_linTransform = m_linTransform.inverse();
+            m_linTransform = m_linTransform.transpose();
         }
     }
 }

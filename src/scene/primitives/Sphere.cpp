@@ -45,9 +45,12 @@ namespace Raytracer {
             return std::nullopt;
 
         Math::Vector3D bckHitPt = bckRay.getOrigin() + bckRay.getDirection() * distance;
-        Math::Vector3D hitPt = m_matrixT.applyForward(bckHitPt);
+        Math::Vector3D bckNormal = (bckHitPt - m_bckOrigin - m_bckTranslation).normalize();
 
-        return RayHit(distance, hitPt, (hitPt - m_fwdOrigin - m_fwdTranslation).normalize(),
+        Math::Vector3D hitPt = m_matrixT.applyForward(bckHitPt);
+        Math::Vector3D normal = m_matrixT.applyNormal(bckNormal);
+
+        return RayHit(distance, hitPt, normal,
             (hitPt - m_fwdOrigin - m_fwdTranslation) / m_radius);
     }
 } // namespace Raytracer

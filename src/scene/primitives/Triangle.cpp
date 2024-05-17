@@ -81,7 +81,7 @@ namespace Raytracer {
                 bckNormal = -bckNormal;
 
             Math::Vector3D hitPt = m_matrixT.applyForward(bckHitPt);
-            Math::Vector3D normal = m_matrixT.applyForward(bckNormal);
+            Math::Vector3D normal = m_matrixT.applyNormal(bckNormal);
             return RayHit(t, hitPt, normal, getBarycentricCoordinates(hitPt));
         }
 
