@@ -27,6 +27,6 @@ namespace Raytracer
         case Plane::Axis::Z: planePos = planeOrigin.getZ(); break;
         }
 
-        saveMaterial(setting, plane);
+        saveMaterial(setting, plane->getMaterial());
     }
 } // namespace Raytracer

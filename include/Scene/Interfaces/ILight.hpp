@@ -19,14 +19,16 @@ namespace Raytracer {
         POINT,
         DIRECTIONAL,
         SPOT,
-        NONE
+        NONE,
+        SIZE
     };
     char const *const LightTypeStrings[] = {
         "Ambient",
         "Point",
         "Directional",
         "Spot",
-        "None"
+        "None",
+        "Size"
     };
     class ILight : public IObject {
     public:

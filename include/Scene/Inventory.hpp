@@ -17,6 +17,7 @@ namespace Raytracer {
 
         void setCurrentMaterialIndex(size_t index) { m_currentMaterialIndex = index; }
         void setCurrentMaterial(std::unique_ptr<IMaterial> material) { m_materials[m_currentMaterialIndex] = std::move(material); }
+        void setMaterial(size_t index, std::unique_ptr<IMaterial> material);
         void addMaterial(std::unique_ptr<IMaterial> material) { m_materials.push_back(std::move(material)); }
 
         const std::vector<std::unique_ptr<IMaterial>> &getMaterials(void) const { return m_materials; }

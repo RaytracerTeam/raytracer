@@ -52,6 +52,7 @@ namespace Raytracer
                 case ObjectSelection::LIGHT: guiEditLights(); break;
                 case ObjectSelection::CAMERA: guiEditCameras(); break;
                 case ObjectSelection::OBJ: guiEditObjs(); break;
+                case ObjectSelection::INVENTORY: guiEditInventory(); break;
                 default: break;
                 }
             }

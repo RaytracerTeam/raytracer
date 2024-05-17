@@ -59,6 +59,7 @@ namespace Raytracer {
         #define CFG_V1 "v1"
         #define CFG_V2 "v2"
         // Material
+        #define CFG_MATERIAL_TYPE "materialType"
         #define CFG_MATERIAL "material"
         #define CFG_TYPE "type"
         #define CFG_MATERIAL_SOLID_COLOR "solid_color"
@@ -77,6 +78,15 @@ namespace Raytracer {
         #define CFG_ALWAYS_RENDER "alwaysRender"
         // Inventory
         #define CFG_INVENTORY "inventory"
+        // Primitives
+        #define CFG_SPHERES "spheres"
+        #define CFG_PLANES "planes"
+        #define CFG_TRIANGLES "triangles"
+        #define CFG_CYLINDERS "cylinders"
+        #define CFG_CONES "cones"
+        #define CFG_CUBES "cubes"
+        #define CFG_TORUSES "toruses"
+        #define CFG_TANGLECUBES "tanglecubes"
 
         class ParsingResult {
             public:
@@ -113,7 +123,7 @@ namespace Raytracer {
             Math::Vector3D defaultValue = Math::Vector3D(0, 0, 0));
         float parseIntensity(const libconfig::Setting &setting);
         std::unique_ptr<IMaterial> parseMaterial(const libconfig::Setting &setting,
-            PrimitiveType primType);
+            MaterialType materialTextureType = MaterialType::NONE);
 
         void parsePrimitives(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
         void parseSpheres(const libconfig::Setting &primitiveSetting, std::unique_ptr<Scene> &scene);
@@ -131,11 +141,12 @@ namespace Raytracer {
         void parseLights(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
         void parseAnimations(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
         void parseObjs(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
+        void parseInventory(const libconfig::Config &config, std::unique_ptr<Scene> &scene);
 
         void saveVector3D(libconfig::Setting &setting, const std::string &key, const Math::Vector3D vec);
         void savePos(libconfig::Setting &setting, const Math::Vector3D pos);
         void saveColor(libconfig::Setting &setting, const Color color);
-        void saveMaterial(libconfig::Setting &setting, APrimitive *primitive);
+        void saveMaterial(libconfig::Setting &setting, const std::unique_ptr<Raytracer::IMaterial> &material);
 
         void saveScene(const Scene &scene, const std::string &outputFile);
         void saveGlobal(const Scene &scene, libconfig::Setting &root);
@@ -143,6 +154,7 @@ namespace Raytracer {
         void saveCameras(const Scene &scene, libconfig::Setting &root);
         void saveLights(const Scene &scene, libconfig::Setting &root);
         void saveObjs(const Scene &scene, libconfig::Setting &root);
+        void saveInventory(const Scene &scene, libconfig::Setting &root);
         void savePrimitives(const Scene &scene, libconfig::Setting &root);
         void saveSphere(libconfig::Setting &list, Sphere *sphere);
         void saveCylinder(libconfig::Setting &list, Cylinder *cylinder);

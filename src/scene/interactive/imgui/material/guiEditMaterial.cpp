@@ -138,13 +138,17 @@ namespace Raytracer
             ImGui::SetNextItemWidth(300);
             MaterialTexture *materialTexture = static_cast<MaterialTexture *>(material.get());
             if (ImGui::BeginCombo("Texture Path", materialTexture->getPathname().c_str())) {
-                for (const auto &entry : std::filesystem::directory_iterator(TEXTURE_PATH)) {
-                    if (ImGui::Selectable(entry.path().filename().string().c_str())) {
-                        materialTexture->setTexture(entry.path().string());
-                        #ifdef BONUSCAMERA
-                        materialTexture->setIsCamera(false);
-                        #endif
-                        materialChanged = true;
+                for (const auto &path : TEXTURE_PATHS) {
+                    if (!std::filesystem::exists(path))
+                        continue;
+                    for (const auto &entry : std::filesystem::directory_iterator(path)) {
+                        if (ImGui::Selectable(entry.path().filename().string().c_str())) {
+                            materialTexture->setTexture(entry.path().string());
+                            #ifdef BONUSCAMERA
+                            materialTexture->setIsCamera(false);
+                            #endif
+                            materialChanged = true;
+                        }
                     }
                 }
                 #ifdef BONUSCAMERA

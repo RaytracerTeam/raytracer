@@ -28,7 +28,7 @@ namespace Raytracer {
                 }
                 if (objSetting.exists(CFG_PATH)) {
                     scene->addObj(std::make_unique<Obj>(
-                        objSetting.lookup(CFG_PATH), parseMaterial(objSetting, PrimitiveType::TRIANGLE),
+                        objSetting.lookup(CFG_PATH), parseMaterial(objSetting, MaterialType::TEXTURE_TRIANGLE),
                         translation, scale));
                 }
             }

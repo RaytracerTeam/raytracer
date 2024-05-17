@@ -23,7 +23,8 @@ namespace Raytracer {
         TEXTURE_TRIANGLE,
         TEXTURE_CUBE,
         TEXTURE_PLANE,
-        NONE
+        NONE,
+        SIZE
     };
     char const *const MaterialTypeStrings[] = {
         "Solid",
@@ -34,7 +35,8 @@ namespace Raytracer {
         "TextureTriangle",
         "TextureCube",
         "TexturePlane",
-        "None"
+        "None",
+        "Size"
     };
 
     class IMaterial {

@@ -23,6 +23,6 @@ namespace Raytracer
         libconfig::Setting &height = setting.add(CFG_HEIGHT, libconfig::Setting::TypeFloat);
         height = cone->getHeight();
 
-        saveMaterial(setting, cone);
+        saveMaterial(setting, cone->getMaterial());
     }
 } // namespace Raytracer

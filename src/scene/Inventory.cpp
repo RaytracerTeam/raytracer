@@ -20,4 +20,12 @@ namespace Raytracer {
         m_materials.push_back(std::make_unique<MaterialSolid>(Color(0., 1, 0))); // 8
         m_materials.push_back(std::make_unique<MaterialSolid>(Color(0., 0, 1))); // 9
     }
+
+    void Inventory::setMaterial(size_t index, std::unique_ptr<IMaterial> material)
+    {
+        if (index >= m_materials.size())
+            m_materials.push_back(std::move(material));
+        else
+            m_materials[index] = std::move(material);
+    }
 } // namespace Raytracer

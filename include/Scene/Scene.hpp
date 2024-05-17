@@ -83,6 +83,7 @@ namespace Raytracer {
         std::vector<std::unique_ptr<Obj>> &getObjs(void) { return m_objs; }
         const std::vector<std::unique_ptr<Obj>> &getObjs(void) const { return m_objs; }
         Inventory &getInventory(void) { return m_inventory; }
+        const Inventory &getInventory(void) const { return m_inventory; }
 
         void setRenderPixel(size_t x, size_t y, const Color &color) {
             m_render.setPixel(x, y, sf::Color(color.getR() * 255, color.getG() * 255, color.getB() * 255));
@@ -137,7 +138,7 @@ namespace Raytracer {
 
         SceneLightning m_lightSystem;
 
-        Skybox m_skybox = Skybox(std::make_unique<MaterialTexture>(DEFAULT_SKYBOX), SPHERE);
+        Skybox m_skybox = Skybox(std::make_unique<MaterialTexture>(DEFAULT_SKYBOX), SkyboxUVType::SPHERE);
         size_t m_maxRayBounces = 5;
         // double m_maxDropShadowsRay = 1;
 

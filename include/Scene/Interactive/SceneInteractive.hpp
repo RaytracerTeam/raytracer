@@ -45,10 +45,18 @@ namespace Raytracer {
     #define TEMP_CFG_FILE "scenes/temp.cfg"
     #define QUICK_SAVE_CFG_FILE "scenes/quick_save.cfg"
 
-    #define OBJ_PATH "assets/obj/local/"
+    #define OBJ_PATH "assets/obj/"
+    #define OBJ_LOCAL_PATH "assets/obj/local/"
+    #define OBJ_PATHS {OBJ_PATH, OBJ_LOCAL_PATH}
     #define TEXTURE_PATH "assets/textures/local/"
+    #define TEXTURE_MINECRAFT_PATH "assets/textures/minecraft"
+    #define TEXTURE_PATHS {TEXTURE_PATH, TEXTURE_MINECRAFT_PATH}
     #define SCENE_PATH "scenes/"
-    #define SKYBOX_PATH "assets/skyboxes/local"
+    #define SCENE_LOCAL_PATH "scenes/local/"
+    #define SCENE_PATHS {SCENE_PATH, SCENE_LOCAL_PATH}
+    #define SKYBOX_LOCAL_PATH "assets/skyboxes/local/"
+    #define SKYBOX_PATH "assets/skyboxes"
+    #define SKYBOX_PATHS {SKYBOX_PATH, SKYBOX_LOCAL_PATH}
 
     enum class ObjectSelection {
         PRIMITIVE,
@@ -131,6 +139,7 @@ namespace Raytracer {
         void guiEditPrimitives(void);
         void guiEditObjs(void);
         void guiEditCameras(void);
+        void guiEditInventory(void);
         void guiAddPrimitive(void);
         void guiAddObj(void);
         void guiAddLight(void);

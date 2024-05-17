@@ -20,6 +20,6 @@ namespace Raytracer
         libconfig::Setting &radius = setting.add(CFG_RADIUS, libconfig::Setting::TypeFloat);
         radius = tanglecube->getRadius();
 
-        saveMaterial(setting, tanglecube);
+        saveMaterial(setting, tanglecube->getMaterial());
     }
 } // namespace Raytracer

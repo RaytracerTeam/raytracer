@@ -22,6 +22,6 @@ namespace Raytracer
         v1.add("y", libconfig::Setting::TypeFloat) = cube->getVec1().getY();
         v1.add("z", libconfig::Setting::TypeFloat) = cube->getVec1().getZ();
 
-        saveMaterial(setting, cube);
+        saveMaterial(setting, cube->getMaterial());
     }
 } // namespace Raytracer
