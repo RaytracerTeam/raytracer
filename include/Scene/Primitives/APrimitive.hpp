@@ -66,13 +66,7 @@ namespace Raytracer {
         void setDieASAP(bool dieASAP) override { m_dieASAP = dieASAP; }
         bool isShown(void) const override { return m_isShown; }
 
-        void updateTransformations(void) override final
-        {
-            m_bckOrigin = m_matrixT.applyBackward(m_origin);
-            m_fwdOrigin = m_matrixT.applyForward(m_bckOrigin);
-            m_bckTranslation = m_matrixT.applyBackward(m_transformations.getTranslation());
-            m_fwdTranslation = m_matrixT.applyForward(m_bckTranslation);
-        }
+        void updateTransformations(void) override final;
 
     protected:
         APrimitive(const Math::Vector3D &origin, std::unique_ptr<IMaterial> material,
