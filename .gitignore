@@ -41,3 +41,5 @@ scenes/local/*.cfg
 scenes/quick_save.cfg
 scenes/temp.cfg
 config/keys.cfg
+
+doc/*

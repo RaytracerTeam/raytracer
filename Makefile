@@ -139,6 +139,12 @@ tests_cov: tests_compile
 	./$(TESTNAME)
 	gcov -n -b -f $(TESTSRC)
 
+doc:
+	doxygen Doxyfile
+
+rundoc: doc
+	python3 -m http.server --directory doc/html
+
 clean:
 	rm -f $(OBJ)
 	rm -f $(DEPS)
@@ -159,4 +165,4 @@ redbg:
 	@$(MAKE) fclean
 	@$(MAKE) dbg
 
-.PHONY: all dbg tests_run tests_cov tests_compile clean fclean re redbg
+.PHONY: all dbg tests_run tests_cov tests_compile doc rundoc clean fclean re redbg
