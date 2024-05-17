@@ -177,6 +177,12 @@ To have all the information about the config file, you can check the [CONFIG.md]
             <td><b>R</b></td>
             <td>Draw spheres at the reach distance</td>
             <td><i>Same behavior</i></td>
+        </tr>
+        <tr>
+            <td><b>0-9</b></td>
+            <td></td>
+            <td>Change the selected Material of your inventory</td>
+        </tr>
     </tbody>
     </table>
     <table>
@@ -239,7 +245,7 @@ To have all the information about the config file, you can check the [CONFIG.md]
 
 > **_Attention:_** If you **messed up your config**, delete it and it will be recreated with default values.
 
-## <a name="features"></a>Features
+## Features
 
 - [x] **Primitives** :
     - [x] **Sphere**
