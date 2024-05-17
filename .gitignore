@@ -15,6 +15,7 @@
 !assets/skyboxes/*.jpg
 !screenshots/demo/*.png
 !assets/skyboxes/blackhole.png
+!assets/textures/obj/*.png
 
 raytracer
 unit-tests
