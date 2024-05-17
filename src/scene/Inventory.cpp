@@ -10,10 +10,10 @@
 namespace Raytracer {
     Inventory::Inventory()
     {
-        m_materials.push_back(std::make_unique<CubeTexture>("assets/textures/minecraft/cobblestone.png")); // 0
-        m_materials.push_back(std::make_unique<CubeTexture>("assets/textures/minecraft/old_grass_block.png")); // 1
-        m_materials.push_back(std::make_unique<MaterialSolid>(Color(0., 0, 0))); // 2
-        m_materials.push_back(std::make_unique<MaterialSolid>(Color(1., 1, 1))); // 3
+        m_materials.push_back(std::make_unique<MaterialSolid>(Color(1., 1, 1))); // 0
+        m_materials.push_back(std::make_unique<CubeTexture>("assets/textures/minecraft/cobblestone.png")); // 1
+        m_materials.push_back(std::make_unique<CubeTexture>("assets/textures/minecraft/old_grass_block.png")); // 2
+        m_materials.push_back(std::make_unique<MaterialSolid>(Color(0., 0, 0))); // 3
         m_materials.push_back(std::make_unique<MaterialSolid>(Color(1., 0, 0))); // 4
         m_materials.push_back(std::make_unique<MaterialSolid>(Color(0., 1, 0))); // 5
         m_materials.push_back(std::make_unique<MaterialSolid>(Color(0., 0, 1))); // 6
