@@ -1,0 +1,66 @@
+\doxysection{Color.\+hpp}
+\hypertarget{Color_8hpp_source}{}\label{Color_8hpp_source}\index{include/Color.hpp@{include/Color.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{**\ EPITECH\ PROJECT,\ 2024}}
+\DoxyCodeLine{00003\ \textcolor{comment}{**\ B-\/OOP-\/400-\/LYN-\/4-\/1-\/raytracer-\/thomas.pommier}}
+\DoxyCodeLine{00004\ \textcolor{comment}{**\ File\ description:}}
+\DoxyCodeLine{00005\ \textcolor{comment}{**\ Color.hpp}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}Math/Vector3D.hpp"{}}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <cstdint>}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{namespace\ }Raytracer\ \{}
+\DoxyCodeLine{00015\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classRaytracer_1_1Color}{Color}}\ \{}
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00017\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classRaytracer_1_1Color}{Color}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classRaytracer_1_1Color}{Color}}(\textcolor{keywordtype}{double}\ r,\ \textcolor{keywordtype}{double}\ g,\ \textcolor{keywordtype}{double}\ b);}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classRaytracer_1_1Color}{Color}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ r,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ g,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ b);}
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classRaytracer_1_1Color}{Color}}(\textcolor{keywordtype}{float}\ *vals);}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classRaytracer_1_1Color}{\string~Color}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ operator[](uint8\_t\ i)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ \&operator[](uint8\_t\ i);}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ getR(\textcolor{keywordtype}{void})\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_r;\ \}}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ getG(\textcolor{keywordtype}{void})\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_g;\ \}}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ getB(\textcolor{keywordtype}{void})\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_b;\ \}}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ RGBToPercent(uint8\_t\ value);}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ uint8\_t\ PercentToRGB(\textcolor{keywordtype}{double}\ value);}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \textcolor{keyword}{operator}\ \textcolor{keywordtype}{float}\ *();}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classRaytracer_1_1Color}{Color}}\ \&operator+=(\textcolor{keyword}{const}\ \mbox{\hyperlink{classRaytracer_1_1Color}{Color}}\ \&right);}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classRaytracer_1_1Color}{Color}}\ \&operator+=(\textcolor{keyword}{const}\ Math::Vector3D\ \&right);}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classRaytracer_1_1Color}{Color}}\ \&operator+=(\textcolor{keywordtype}{double}\ scalar);}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classRaytracer_1_1Color}{Color}}\ \&operator-\/=(\textcolor{keywordtype}{double}\ scalar);}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classRaytracer_1_1Color}{Color}}\ \&operator*=(\textcolor{keyword}{const}\ \mbox{\hyperlink{classRaytracer_1_1Color}{Color}}\ \&right);}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classRaytracer_1_1Color}{Color}}\ \&operator*=(\textcolor{keyword}{const}\ Math::Vector3D\ \&right);}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classRaytracer_1_1Color}{Color}}\ \&operator*=(\textcolor{keywordtype}{double}\ scalar);}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classRaytracer_1_1Color}{Color}}\ operator+(\textcolor{keyword}{const}\ \mbox{\hyperlink{classRaytracer_1_1Color}{Color}}\ \&right)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classRaytracer_1_1Color}{Color}}\ operator+(\textcolor{keyword}{const}\ Math::Vector3D\ \&right)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classRaytracer_1_1Color}{Color}}\ operator+(\textcolor{keywordtype}{double}\ scalar)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classRaytracer_1_1Color}{Color}}\ operator-\/(\textcolor{keywordtype}{double}\ scalar)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classRaytracer_1_1Color}{Color}}\ operator*(\textcolor{keyword}{const}\ Math::Vector3D\ \&right)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classRaytracer_1_1Color}{Color}}\ operator*(\textcolor{keyword}{const}\ \mbox{\hyperlink{classRaytracer_1_1Color}{Color}}\ \&right)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classRaytracer_1_1Color}{Color}}\ operator*(\textcolor{keywordtype}{double}\ scalar)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ m\_r\ =\ 0;}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ m\_g\ =\ 0;}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ m\_b\ =\ 0;}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ m\_vals[3];}
+\DoxyCodeLine{00058\ \ \ \ \ \};}
+\DoxyCodeLine{00059\ \}\ \textcolor{comment}{//\ namespace\ Raytracer}}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ std::ostream\ \&operator<<(std::ostream\ \&os,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classRaytracer_1_1Color}{Raytracer::Color}}\ \&color);}
+
+\end{DoxyCode}
