@@ -16,7 +16,7 @@ namespace Raytracer
         if (ImGui::BeginCombo(" ", "Add Light")) {
             if (ImGui::Selectable("Point Light")) {
                 auto pointLight = std::make_unique<PointLight>(
-                    Math::Vector3D(0, 0, 0),
+                    getCameraFrontPos(),
                     DEFAULT_POINTLIGHT_RADIUS,
                     Color(1., 1, 1),
                     DEFAULT_POINTLIGHT_INTENSITY);
@@ -26,7 +26,7 @@ namespace Raytracer
             }
             if (ImGui::Selectable("Directional Light")) {
                 auto directionalLight = std::make_unique<DirectionalLight>(
-                    Math::Vector3D(-1, 1, -1),
+                    Math::Vector3D(-0.7, 1, -0.7),
                     Color(1., 1, 1),
                     DEFAULT_AMBIENTLIGHT_INTENSITY);
                 // directionalLight->setID(m_scene->getLights().size() + 1);

@@ -8,7 +8,7 @@ This example is for a Sphere.
 ## Parsing and Saving
 
 ```cpp
-// ADD IN include/Scene/Primitives/AllSpheres.hpp
+// ADD IN include/Scene/Primitives/AllPrimitives.hpp
 
 // ...
 #include "Scene/Primitives/Sphere.hpp"
@@ -121,7 +121,7 @@ void editSphere(Sphere *sphere);
 ```
 
 ```cpp
-// CREATE FILE IN src/scene/interactive/imgui/primitives/editSphere.cpp
+// CREATE FILE IN src/scene/interactive/imgui/primitives/edit/editSphere.cpp
 
 /*
 ** EPITECH PROJECT, 2024
@@ -166,13 +166,15 @@ case PrimitiveType::SPHERE:
 ## Add the primitive with the GUI
 
 ```cpp
-// ADD IN src/scene/interactive/imgui/guiAddPrimitives.cpp
+// ADD IN src/scene/interactive/imgui/primitives/guiAddPrimitives.cpp
 
 // ...
 if (ImGui::Selectable("Sphere")) {
     auto sphere = std::make_unique<Sphere>(
-        Math::Vector3D(0, 0, 0),
-        std::make_unique<MaterialSolid>(Color(255U, 255, 255)), 1.0);
+        getCameraFrontPos(),
+        copyMaterial(currentMaterial),
+        Transformations()
+        , 1.0);
     sphere->setID(m_scene->getPrimitives().size() + 1);
     m_scene->addPrimitive(std::move(sphere));
     m_needRendering = true;

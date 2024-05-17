@@ -88,7 +88,7 @@ namespace Raytracer {
         if (t0 > 0.001) {
             Math::Vector3D bckHitPt = bckRay.getOrigin() + bckRay.getDirection() * t0;
 
-            if (std::isinf(m_height))
+            if (m_height < 0)
                 return getNormal(t0, bckHitPt, newOrigin);
 
             if (bckHitPt.getY() >= newOrigin.getY() - m_height &&

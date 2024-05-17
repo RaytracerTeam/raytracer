@@ -74,7 +74,7 @@ namespace Raytracer {
         double t0 = (-b - sqrtDelta) / (2 * a);
         if (t0 > 0.001) {
             Math::Vector3D hitPt = ray.getOrigin() + ray.getDirection() * t0;
-            if (std::isinf(m_height))
+            if (m_height < 0)
                 return getNormal(t0, hitPt, m_origin);
 
             if (hitPt.getY() >= m_origin.getY()

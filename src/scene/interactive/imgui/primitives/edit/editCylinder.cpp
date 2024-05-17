@@ -26,8 +26,8 @@ namespace Raytracer
 
         // Height
         float height = cylinder->getHeight();
-        if (ImGui::SliderFloat("Height", &height, DEFAULT_RADIUS_MIN,
-        DEFAULT_RADIUS_MAX, "%.3f", ImGuiSliderFlags_Logarithmic)) {
+        if (ImGui::SliderFloat("Height", &height, DEFAULT_HEIGHT_MIN,
+        DEFAULT_HEIGHT_MAX, "%.3f", ImGuiSliderFlags_Logarithmic)) {
             cylinder->setHeight(height);
             m_updateBVH = true;
             m_needRendering = true;

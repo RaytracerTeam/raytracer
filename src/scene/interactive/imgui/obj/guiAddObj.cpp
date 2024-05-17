@@ -25,7 +25,7 @@ namespace Raytracer
                         continue;
                     if (ImGui::Selectable(entry.path().filename().string().c_str())) {
                         m_scene->addObj(std::make_unique<Obj>(
-                            Math::Vector3D(0, 0, 0),
+                            getCameraFrontPos(),
                             copyMaterial(m_scene->getInventory().getCurrentMaterial().get()),
                             Transformations(),
                             entry.path().string()
