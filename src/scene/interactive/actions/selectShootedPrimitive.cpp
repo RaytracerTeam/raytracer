@@ -63,6 +63,6 @@ namespace Raytracer
             -sin(angle.getYaw()) * cos(angle.getPitch()),
             sin(angle.getPitch()),
             -cos(angle.getYaw()) * cos(angle.getPitch()));
-        return currentCamera.getPos() + cameraAngle * 10;
+        return currentCamera.getPos() + cameraAngle * m_reach;
     }
 } // namespace Raytracer

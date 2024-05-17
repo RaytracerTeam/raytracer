@@ -69,6 +69,10 @@ namespace Raytracer
                 m_needRendering = true;
             }
 
+            // Reach
+            ImGui::SliderFloat("Reach", &m_reach, 1, 200, "%.2f",
+                ImGuiSliderFlags_Logarithmic);
+
             // BVH Max Prim Limit
             int bvhMaxPrimLimit = m_scene->getBvhMaxPrimLimit();
             if (ImGui::SliderInt("BVH Max Prim Limit", &bvhMaxPrimLimit, 1, 20,

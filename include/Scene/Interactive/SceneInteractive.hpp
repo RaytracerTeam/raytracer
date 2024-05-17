@@ -201,6 +201,7 @@ namespace Raytracer {
         size_t m_imageHeight;
         size_t m_imageWidth;
         bool m_alwaysRender = false;
+        float m_reach = 10;
 
         // Storing the result of the render
         std::unique_ptr<sf::Uint8 []> m_lastRender;
