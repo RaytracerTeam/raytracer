@@ -48,11 +48,14 @@ namespace Raytracer {
     #define OBJ_PATHS {OBJ_PATH, OBJ_LOCAL_PATH}
     #define TEXTURE_PATH "assets/textures/local/"
     #define TEXTURE_MINECRAFT_PATH "assets/textures/minecraft"
-    #define TEXTURE_PATHS {TEXTURE_PATH, TEXTURE_MINECRAFT_PATH}
+    #define TEXTURE_OBJ_PATH "assets/textures/obj/"
+    #define TEXTURE_PATHS {TEXTURE_PATH, TEXTURE_MINECRAFT_PATH, TEXTURE_OBJ_PATH}
     #define SCENE_PATH "scenes/"
     #define SCENE_LOCAL_PATH "scenes/local/"
     #define SCENE_DEMO_PATH "scenes/demo/"
-    #define SCENE_PATHS {SCENE_PATH, SCENE_DEMO_PATH, SCENE_LOCAL_PATH}
+    #define SCENE_DEMO_OBJ_PATH "scenes/demo/obj/"
+    #define SCENE_DEMO_PRIMITIVES_PATH "scenes/demo/primitives/"
+    #define SCENE_PATHS {SCENE_PATH, SCENE_DEMO_PATH, SCENE_LOCAL_PATH, SCENE_DEMO_OBJ_PATH, SCENE_DEMO_PRIMITIVES_PATH}
     #define SKYBOX_LOCAL_PATH "assets/skyboxes/local/"
     #define SKYBOX_PATH "assets/skyboxes"
     #define SKYBOX_PATHS {SKYBOX_PATH, SKYBOX_LOCAL_PATH}

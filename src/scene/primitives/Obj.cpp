@@ -50,7 +50,7 @@ namespace Raytracer {
             } else if (token == "f") {
                 std::string i1, i2, i3, i4;
                 iss >> i1 >> i2 >> i3 >> i4;
-                bool isQuad = !i4.empty();
+                bool isQuad = !i4.empty() && i4.starts_with("f");
 
                 // Vertices
                 int vertexIndex1, vertexIndex2, vertexIndex3, vertexIndex4;

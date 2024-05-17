@@ -46,8 +46,8 @@ namespace Raytracer {
             double m_transparency = 0;
             double m_refractionIndex = 1.3; // Water refraction
 
-            float m_diffuse = 0.9;
-            float m_specular = 0.0;
+            float m_diffuse = 0.8;
+            float m_specular = 0.3;
             float m_shininess = 10.0;
 
             #ifdef BONUSCAMERA
