@@ -89,14 +89,14 @@ namespace Raytracer {
             parseObjs(cfg, scene);
             parseInventory(cfg, scene);
 
-#ifdef BONUSCAMERA
+            #ifdef BONUSCAMERA
             for (auto &primitive : scene->getPrimitives()) {
                 if (primitive->getMaterial()->isCamera()) {
                     MaterialTexture *cameraTexture = static_cast<MaterialTexture *>(primitive->getMaterial().get());
                     cameraTexture->setImage(scene->getRealCamera().getImage());
                 }
             }
-#endif
+            #endif
         }
         void parse(std::unique_ptr<Scene> &scene, const std::string_view &file)
         {
