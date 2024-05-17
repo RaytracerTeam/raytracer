@@ -27,10 +27,10 @@ namespace Raytracer {
                     skybox.setSolidColor(getSettingColor(skyboxSetting));
             }
             if (setting.exists(CFG_CAMERA_SPEED)) {
-                scene->setCameraSpeed(setting.lookup(CFG_CAMERA_SPEED));
+                scene->setCameraSpeed(parseNumber<float>(setting, CFG_CAMERA_SPEED));
             }
             if (setting.exists(CFG_CAMERA_SENSITIVITY)) {
-                scene->setCameraSensitivity(setting.lookup(CFG_CAMERA_SENSITIVITY));
+                scene->setCameraSensitivity(parseNumber<float>(setting, CFG_CAMERA_SENSITIVITY));
             }
             #ifdef BONUSCAMERA
             if (setting.exists(CFG_CAMERA)) {
