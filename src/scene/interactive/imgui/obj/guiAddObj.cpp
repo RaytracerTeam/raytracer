@@ -21,6 +21,8 @@ namespace Raytracer
                 if (!std::filesystem::exists(path))
                     continue;
                 for (const auto &entry : std::filesystem::directory_iterator(path)) {
+                    if (entry.path().filename().extension() != ".obj")
+                        continue;
                     if (ImGui::Selectable(entry.path().filename().string().c_str())) {
                         m_scene->addObj(std::make_unique<Obj>(
                             entry.path().string(),

@@ -75,8 +75,11 @@ namespace Raytracer
                     for (const auto &path : SCENE_PATHS) {
                         if (!std::filesystem::exists(path))
                             continue;
-                        for (const auto &entry : std::filesystem::directory_iterator(path))
+                        for (const auto &entry : std::filesystem::directory_iterator(path)) {
+                            if (entry.path().filename().extension() != ".cfg")
+                                continue;
                             addSelectableScene(entry);
+                        }
                     }
 
                     ImGui::EndCombo();
