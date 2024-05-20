@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{1fc4e768-3569-44ff-960c-5d11126ee736}</ProjectGuid>
+    <RootNamespace>Raytracer</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(ProjectDir)bonus\imgui;$(ProjectDir)include;$(ProjectDir)include\windows;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)lib;$(LibraryPath)</LibraryPath>
+    <PublicIncludeDirectories>$(ProjectDir)include;$(PublicIncludeDirectories)</PublicIncludeDirectories>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>$(ProjectDir)bonus\imgui;$(ProjectDir)include;$(ProjectDir)include\Windows;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)lib;$(LibraryPath)</LibraryPath>
+    <PublicIncludeDirectories>$(ProjectDir)include;$(PublicIncludeDirectories)</PublicIncludeDirectories>
+    <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>LIBCONFIGXX_STATIC;_CRT_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;BONUS;SFML_STATIC ;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>libconfig++s.lib;Shlwapi.lib;opengl32.lib;openal32.lib;freetype.lib;winmm.lib;gdi32.lib;flac.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;ws2_32.lib;sfml-graphics-s-d.lib;sfml-window-s-d.lib;sfml-system-s-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)lib</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>LIBCONFIGXX_STATIC;_CRT_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;BONUS;SFML_STATIC ;DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>libconfig++s.lib;Shlwapi.lib;opengl32.lib;openal32.lib;freetype.lib;winmm.lib;gdi32.lib;flac.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;ws2_32.lib;sfml-graphics-s.lib;sfml-window-s.lib;sfml-system-s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)lib</AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy /Y $(TargetPath) $(ProjectDir)$(TargetFileName)</Command>
+      <Message>Move the path like a linux build would</Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="bonus\imgui\imgui-SFML.cpp" />
+    <ClCompile Include="bonus\imgui\imgui.cpp" />
+    <ClCompile Include="bonus\imgui\imgui_demo.cpp" />
+    <ClCompile Include="bonus\imgui\imgui_draw.cpp" />
+    <ClCompile Include="bonus\imgui\imgui_tables.cpp" />
+    <ClCompile Include="bonus\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="src\Color.cpp" />
+    <ClCompile Include="src\main\main.cpp" />
+    <ClCompile Include="src\math\Algorithm.cpp" />
+    <ClCompile Include="src\math\Angle3.cpp" />
+    <ClCompile Include="src\math\MathUtils.cpp" />
+    <ClCompile Include="src\math\Matrix44d.cpp" />
+    <ClCompile Include="src\math\MatrixT.cpp" />
+    <ClCompile Include="src\math\Vector3.cpp" />
+    <ClCompile Include="src\optimisation\BoundingBox.cpp" />
+    <ClCompile Include="src\optimisation\BVH.cpp" />
+    <ClCompile Include="src\optimisation\BVHAlgorithms.cpp" />
+    <ClCompile Include="src\parsing\parseCameras.cpp" />
+    <ClCompile Include="src\parsing\parseGlobal.cpp" />
+    <ClCompile Include="src\parsing\parseInventory.cpp" />
+    <ClCompile Include="src\parsing\parseLights.cpp" />
+    <ClCompile Include="src\parsing\parseMaterial.cpp" />
+    <ClCompile Include="src\parsing\parseObjs.cpp" />
+    <ClCompile Include="src\parsing\parseOptimization.cpp" />
+    <ClCompile Include="src\parsing\parseTransformations.cpp" />
+    <ClCompile Include="src\parsing\Parsing.cpp" />
+    <ClCompile Include="src\parsing\parsingAnimations.cpp" />
+    <ClCompile Include="src\parsing\primitives\allParsePrimitives.cpp" />
+    <ClCompile Include="src\parsing\primitives\allSavePrimitives.cpp" />
+    <ClCompile Include="src\parsing\primitives\commonParsing.cpp" />
+    <ClCompile Include="src\parsing\primitives\commonSaving.cpp" />
+    <ClCompile Include="src\parsing\primitives\parseCones.cpp" />
+    <ClCompile Include="src\parsing\primitives\parseCubes.cpp" />
+    <ClCompile Include="src\parsing\primitives\parseCylinders.cpp" />
+    <ClCompile Include="src\parsing\primitives\parsePlanes.cpp" />
+    <ClCompile Include="src\parsing\primitives\parseSpheres.cpp" />
+    <ClCompile Include="src\parsing\primitives\parseTanglecubes.cpp" />
+    <ClCompile Include="src\parsing\primitives\parseToruses.cpp" />
+    <ClCompile Include="src\parsing\primitives\parseTriangles.cpp" />
+    <ClCompile Include="src\parsing\primitives\saveCone.cpp" />
+    <ClCompile Include="src\parsing\primitives\saveCube.cpp" />
+    <ClCompile Include="src\parsing\primitives\saveCylinder.cpp" />
+    <ClCompile Include="src\parsing\primitives\savePlane.cpp" />
+    <ClCompile Include="src\parsing\primitives\saveSphere.cpp" />
+    <ClCompile Include="src\parsing\primitives\saveTanglecube.cpp" />
+    <ClCompile Include="src\parsing\primitives\saveTorus.cpp" />
+    <ClCompile Include="src\parsing\primitives\saveTriangle.cpp" />
+    <ClCompile Include="src\parsing\saveCameras.cpp" />
+    <ClCompile Include="src\parsing\saveGlobal.cpp" />
+    <ClCompile Include="src\parsing\saveInventory.cpp" />
+    <ClCompile Include="src\parsing\saveLights.cpp" />
+    <ClCompile Include="src\parsing\saveMaterial.cpp" />
+    <ClCompile Include="src\parsing\saveObjs.cpp" />
+    <ClCompile Include="src\parsing\saveOptimization.cpp" />
+    <ClCompile Include="src\parsing\saveScene.cpp" />
+    <ClCompile Include="src\parsing\saveTransformations.cpp" />
+    <ClCompile Include="src\Pixels.cpp" />
+    <ClCompile Include="src\Raytracer.cpp" />
+    <ClCompile Include="src\scene\Animation.cpp" />
+    <ClCompile Include="src\scene\Camera.cpp" />
+    <ClCompile Include="src\scene\interactive\actions\applyKeyActions.cpp" />
+    <ClCompile Include="src\scene\interactive\actions\applyKeyPressedActions.cpp" />
+    <ClCompile Include="src\scene\interactive\actions\applyKeyReleasedActions.cpp" />
+    <ClCompile Include="src\scene\interactive\actions\minecraft.cpp" />
+    <ClCompile Include="src\scene\interactive\actions\selectShootedPrimitive.cpp" />
+    <ClCompile Include="src\scene\interactive\actions\setup.cpp" />
+    <ClCompile Include="src\scene\interactive\CameraInteractive.cpp" />
+    <ClCompile Include="src\scene\interactive\copyMaterial.cpp" />
+    <ClCompile Include="src\scene\interactive\handleEvents.cpp" />
+    <ClCompile Include="src\scene\interactive\handleMouse.cpp" />
+    <ClCompile Include="src\scene\interactive\imgui\camera\guiCameraTab.cpp" />
+    <ClCompile Include="src\scene\interactive\imgui\camera\guiEditCameras.cpp" />
+    <ClCompile Include="src\scene\interactive\imgui\commonEditing.cpp" />
+    <ClCompile Include="src\scene\interactive\imgui\guiDebugInfos.cpp" />
+    <ClCompile Include="src\scene\interactive\imgui\guiMenuBar.cpp" />
+    <ClCompile Include="src\scene\interactive\imgui\guiTopBar.cpp" />
+    <ClCompile Include="src\scene\interactive\imgui\handleImGui.cpp" />
+    <ClCompile Include="src\scene\interactive\imgui\inventory\guiEditInventory.cpp" />
+    <ClCompile Include="src\scene\interactive\imgui\inventory\guiInventoryTab.cpp" />
+    <ClCompile Include="src\scene\interactive\imgui\light\editDirectionalLight.cpp" />
+    <ClCompile Include="src\scene\interactive\imgui\light\editPointLight.cpp" />
+    <ClCompile Include="src\scene\interactive\imgui\light\guiAddLight.cpp" />
+    <ClCompile Include="src\scene\interactive\imgui\light\guiEditLights.cpp" />
+    <ClCompile Include="src\scene\interactive\imgui\light\guiLightTab.cpp" />
+    <ClCompile Include="src\scene\interactive\imgui\material\guiEditMaterial.cpp" />
+    <ClCompile Include="src\scene\interactive\imgui\objectSelection\guiObjectSelection.cpp" />
+    <ClCompile Include="src\scene\interactive\imgui\objectSelection\removeSelectedObject.cpp" />
+    <ClCompile Include="src\scene\interactive\imgui\obj\guiAddObj.cpp" />
+    <ClCompile Include="src\scene\interactive\imgui\obj\guiEditObj.cpp" />
+    <ClCompile Include="src\scene\interactive\imgui\obj\guiObjTab.cpp" />
+    <ClCompile Include="src\scene\interactive\imgui\primitives\edit\editCone.cpp" />
+    <ClCompile Include="src\scene\interactive\imgui\primitives\edit\editCube.cpp" />
+    <ClCompile Include="src\scene\interactive\imgui\primitives\edit\editCylinder.cpp" />
+    <ClCompile Include="src\scene\interactive\imgui\primitives\edit\editPlane.cpp" />
+    <ClCompile Include="src\scene\interactive\imgui\primitives\edit\editSphere.cpp" />
+    <ClCompile Include="src\scene\interactive\imgui\primitives\edit\editTanglecube.cpp" />
+    <ClCompile Include="src\scene\interactive\imgui\primitives\edit\editTorus.cpp" />
+    <ClCompile Include="src\scene\interactive\imgui\primitives\edit\editTriangle.cpp" />
+    <ClCompile Include="src\scene\interactive\imgui\primitives\guiAddPrimitive.cpp" />
+    <ClCompile Include="src\scene\interactive\imgui\primitives\guiEditPrimitives.cpp" />
+    <ClCompile Include="src\scene\interactive\imgui\primitives\guiPrimitiveTab.cpp" />
+    <ClCompile Include="src\scene\interactive\SceneInteraction.cpp" />
+    <ClCompile Include="src\scene\Inventory.cpp" />
+    <ClCompile Include="src\scene\lights\PointLight.cpp" />
+    <ClCompile Include="src\scene\materials\AMaterial.cpp" />
+    <ClCompile Include="src\scene\materials\code\Checkerboard.cpp" />
+    <ClCompile Include="src\scene\materials\MaterialCode.cpp" />
+    <ClCompile Include="src\scene\materials\MaterialSolid.cpp" />
+    <ClCompile Include="src\scene\materials\MaterialTexture.cpp" />
+    <ClCompile Include="src\scene\materials\texture\CubeTexture.cpp" />
+    <ClCompile Include="src\scene\materials\texture\PlaneTexture.cpp" />
+    <ClCompile Include="src\scene\materials\texture\Spheretexture.cpp" />
+    <ClCompile Include="src\scene\materials\texture\TriangleTexture.cpp" />
+    <ClCompile Include="src\scene\primitives\APrimitive.cpp" />
+    <ClCompile Include="src\scene\primitives\Cone.cpp" />
+    <ClCompile Include="src\scene\primitives\Cube.cpp" />
+    <ClCompile Include="src\scene\primitives\Cylinder.cpp" />
+    <ClCompile Include="src\scene\primitives\Obj.cpp" />
+    <ClCompile Include="src\scene\primitives\Plane.cpp" />
+    <ClCompile Include="src\scene\primitives\Sphere.cpp" />
+    <ClCompile Include="src\scene\primitives\Tanglecube.cpp" />
+    <ClCompile Include="src\scene\primitives\Torus.cpp" />
+    <ClCompile Include="src\scene\primitives\Triangle.cpp" />
+    <ClCompile Include="src\scene\Ray.cpp" />
+    <ClCompile Include="src\scene\Scene.cpp" />
+    <ClCompile Include="src\scene\Skybox.cpp" />
+    <ClCompile Include="src\Writer.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\Color.hpp" />
+    <ClInclude Include="include\Error.hpp" />
+    <ClInclude Include="include\Parsing\Factory.hpp" />
+    <ClInclude Include="include\Parsing\Parsing.hpp" />
+    <ClInclude Include="include\Pixels.hpp" />
+    <ClInclude Include="include\Raytracer.hpp" />
+    <ClInclude Include="include\Writer.hpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
