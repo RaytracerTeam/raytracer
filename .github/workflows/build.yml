@@ -64,7 +64,7 @@ jobs:
       CCACHE_DIR: ${{ github.workspace }}/.ccache
       CCACHE_COMPILERCHECK: content
       CCACHE_SLOPPINESS: time_macros
-      OS: linux
+      OS: macos
       TARGET: ${{ matrix.target }}
     steps:
       - uses: actions/checkout@v4
@@ -78,7 +78,7 @@ jobs:
       - name: Setup artifacts
         run: mkdir artifacts
       - name: Setup Build Environment
-        run: brew install make libconfig sfml glfw3 glew
+        run: brew install make libconfig sfml glfw glew
       - name: Build
         run: make bonus
       - name: Pack
