@@ -21,8 +21,7 @@ namespace Raytracer {
 
                 auto keyframe = Keyframe::keyframeFactory(pos, angle, interpolationVec, interpolationAngle);
                 scene->addKeyframe(keyframe);
-            } catch (std::exception &e) {
-                // std::cerr "Error: keyframe interpolation function is unknown, aborting..." << std::endl;
+            } catch (std::exception &) {
                 return;
             }
         }
