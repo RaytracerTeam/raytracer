@@ -113,7 +113,8 @@ jobs:
   #     - name: Build
   #       run: msbuild {{ env.MS_BIN_NAME }}.vcxproj /p:Configuration=Release
   #     - name: Pack
-  #       run: ./.github/pack/windows.ps1
+  #       shell: pwsh
+  #       run: .\.github\pack\windows.ps1
   #     - name: Upload
   #       uses: actions/upload-artifact@v4
   #       with:
