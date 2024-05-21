@@ -23,7 +23,7 @@
 
 namespace Raytracer {
     #define DEFAULT_CAMERA_RESOLUTION 240
-    #define FILE_BUF_SIZE 100
+    #define FILE_BUF_SIZE 4096
     #define LEFT_PANE_PADDING 30
 
     // ImGui default slider values
@@ -183,7 +183,7 @@ namespace Raytracer {
         #ifdef BONUS
         sf::Clock m_deltaClock;
         char m_saveFileBuf[FILE_BUF_SIZE] = SCENE_PATH;
-        char m_skyboxPathBuf[FILE_BUF_SIZE] = DEFAULT_SKYBOX;
+        char m_skyboxPathBuf[FILE_BUF_SIZE];
         char m_loadFileBuf[FILE_BUF_SIZE] = SCENE_PATH;
         bool m_showDebug = true;
         int m_selectedObject = -1;

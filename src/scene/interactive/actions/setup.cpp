@@ -44,7 +44,11 @@ namespace Raytracer
         m_releaseActions.push_back(sf::Keyboard::N);               // TOGGLE_SIMPLE_MOUSE
         m_releaseActions.push_back(sf::Keyboard::O);               // RESET
         m_releaseActions.push_back(sf::Keyboard::G);               // SELECT_PRIMITIVE
-        parseConfigFile("config/keys.cfg");
+        try {
+            parseConfigFile(KEYS_CONFIG);
+        } catch (std::invalid_argument &) {
+            std::cerr << "Error : " << KEYS_CONFIG << " not found, please create it." << std::endl;
+        }
     }
 
     static sf::Keyboard::Key getSFMLKey(const std::string &keyCode)

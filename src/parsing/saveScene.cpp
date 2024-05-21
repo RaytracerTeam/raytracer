@@ -14,16 +14,20 @@ namespace Raytracer
 {
     void Parsing::saveScene(const Scene &scene, const std::string &outputFile)
     {
-        libconfig::Config cfg;
-        libconfig::Setting &root = cfg.getRoot();
-        saveGlobal(scene, root);
-        saveOptimization(scene, root);
-        saveCameras(scene, root);
-        saveInventory(scene, root);
-        saveObjs(scene, root);
-        savePrimitives(scene, root);
-        saveLights(scene, root);
+        try {
+            libconfig::Config cfg;
+            libconfig::Setting &root = cfg.getRoot();
+            saveGlobal(scene, root);
+            saveOptimization(scene, root);
+            saveCameras(scene, root);
+            saveInventory(scene, root);
+            saveObjs(scene, root);
+            savePrimitives(scene, root);
+            saveLights(scene, root);
 
-        cfg.writeFile(outputFile);
+            cfg.writeFile(outputFile);
+        } catch (libconfig::FileIOException &e) {
+            std::cerr << "Couldn't save file : " << outputFile << std::endl;
+        }
     }
 } // namespace Raytracer
