@@ -30,13 +30,13 @@ jobs:
         run: mkdir artifacts
       - name: Install dependencies
         run: |
-          apt-get update && apt-get install -y libsfml-dev curl libglew-dev libglfw3-dev
+          sudo apt-get update && sudo apt-get install -y libsfml-dev curl libglew-dev libglfw3-dev
           cd /tmp
           curl -o /tmp/libconfig-1.7.3.tar -L https://github.com/hyperrealm/libconfig/releases/download/v1.7.3/libconfig-1.7.3.tar.gz
           tar xzvf /tmp/libconfig-1.7.3.tar
           cd libconfig-1.7.3
           ./configure
-          make install
+          sudo make install
           cd -
 
       - name: Set up cache
@@ -78,7 +78,7 @@ jobs:
       - name: Setup artifacts
         run: mkdir artifacts
       - name: Setup Build Environment
-        run: brew install make libconfig
+        run: brew install make libconfig sfml glfw3 glew
       - name: Build
         run: make bonus
       - name: Pack
