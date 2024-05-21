@@ -144,7 +144,7 @@ namespace Raytracer {
 
         SceneLightning m_lightSystem;
 
-        Skybox m_skybox = Skybox(std::make_unique<MaterialTexture>(DEFAULT_SKYBOX), SkyboxUVType::SPHERE);
+        Skybox m_skybox = Skybox(std::make_unique<MaterialTexture>(), SkyboxUVType::SPHERE);
         size_t m_maxRayBounces = 5;
         // double m_maxDropShadowsRay = 1;
 

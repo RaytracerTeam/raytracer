@@ -18,8 +18,9 @@
 
 namespace Raytracer {
     namespace Parsing {
-        #define KEYS_CONFIG "config/keys.cfg"
-        #define KEYS_CONFIG_EXAMPLE "config/keys_example.cfg"
+        #define CONFIG_DIR "config"
+        #define KEYS_CONFIG CONFIG_DIR"/keys.cfg"
+        #define KEYS_CONFIG_EXAMPLE CONFIG_DIR"/keys_example.cfg"
 
         #define CFG_GLOBAL "global"
         #define CFG_SKYBOX "skybox"
