@@ -68,7 +68,6 @@ namespace Raytracer {
             + dstOrigin.getZ() * dstOrigin.getZ() + m_distance * m_distance
             - m_radius * m_radius;
 
-        // TODO remplacer par une std::array
         double roots[4] = { 0 };
 
         Math::Algorithm::solveQuarticEquation(j * j, 2. * j * k,

@@ -6,8 +6,8 @@
 */
 
 #include "Raytracer.hpp"
-#include "Scene/Animation.hpp"
 #include "Parsing/Parsing.hpp"
+#include "Scene/Animation.hpp"
 #include "Scene/Interactive/SceneInteractive.hpp"
 #include "Scene/Scene.hpp"
 #include "Writer.hpp"
@@ -50,6 +50,19 @@ namespace Raytracer {
         return 0;
     }
 
+    static void initFolders(void)
+    {
+        for (const auto &path : OBJ_PATHS)
+            std::filesystem::create_directories(path);
+        for (const auto &path : TEXTURE_PATHS)
+            std::filesystem::create_directories(path);
+        for (const auto &path : SCENE_PATHS)
+            std::filesystem::create_directories(path);
+        for (const auto &path : SKYBOX_PATHS)
+            std::filesystem::create_directories(path);
+        std::filesystem::create_directories(CONFIG_DIR);
+    }
+
     int raytracer(int argc, char **argv)
     {
         Dimension windowDimensions(640, 480);
@@ -58,6 +71,7 @@ namespace Raytracer {
             std::vector<std::string_view> inputFiles;
             WriteFile::WriteType type = WriteFile::WriteType::PPM;
 
+            initFolders();
             Parsing::ParsingResult parsingRes = Parsing::parseArgv(argc, argv, inputFiles, type);
             if (parsingRes.interactiveMode)
                 return interactive(windowDimensions, inputFiles);

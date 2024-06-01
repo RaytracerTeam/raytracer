@@ -10,10 +10,6 @@
 
 #include <cmath>
 
-// temp
-#include <iostream>
-#include <libconfig.h++>
-
 namespace Raytracer {
     bool CameraInteractive::applyKeyToActions(std::vector<std::pair<sf::Keyboard::Key, bool>> &actions, sf::Keyboard::Key key, bool isPressed)
     {

@@ -28,7 +28,6 @@ namespace Raytracer {
         m_pathname = pathname;
     }
 
-    /* todo : implement */
     Color MaterialTexture::getColor(const RayHit &) const
     {
         return Color(1., 0, 1);

@@ -1,10 +1,9 @@
-name: raytracer-push-checker
+name: Raytracer CI actions
 
 on:
   push:
     branches:
       - "dev"
-      - "actions"
   pull_request:
     branches:
       - "main"
