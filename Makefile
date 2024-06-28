@@ -68,7 +68,7 @@ MACBREWSFML		= 	/opt/homebrew/Cellar/sfml/2.6.1
 MACBREWCONFIG	=	/opt/homebrew/Cellar/libconfig/1.7.3
 MACBREWGLFW		=	/opt/homebrew/Cellar/glfw/3.4
 MACBREWGLEW		=	/opt/homebrew/Cellar/glew/2.2.0_1
-MACBRWEOPENCV	=	/opt/homebrew/Cellar/opencv/4.9.0_8
+MACBRWEOPENCV	=	/opt/homebrew/Cellar/opencv/4.9.0_9
 
 MACSFMLINCLUDE	=	-I$(MACBREWSFML)/include -I$(MACBREWCONFIG)/include \
 					-I$(MACBREWGLFW)/include -I$(MACBREWGLEW)/include \
@@ -113,10 +113,14 @@ bonus: LDFLAGS += $(LDBONUSFLAGS)
 bonus: CFLAGS += $(IMGUIFLAGS)
 bonus: $(NAME)
 
+prof: CFLAGS += -pg
+prof: all
+
 dbg: CFLAGS += $(DBGFLAGS)
 dbg: $(NAME)
 dbgs: CFLAGS += $(DBGFLAGS) -fsanitize=address
 dbgs: $(NAME)
+
 tests_compile: CFLAGS += -g3 --coverage
 tests_compile: $(TESTNAME)
 
