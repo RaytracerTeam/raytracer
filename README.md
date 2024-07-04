@@ -10,32 +10,32 @@ We pushed the idea a little further with an _interactive scene_ that _creates, e
 
 ## Screenshots
 <p float="left">
-    <img src="screenshots/demo/lot_of_primitives.png" width="40%">
-    <img src="screenshots/demo/ender_dragon_house_tree.png" width="40%">
+    <img src="screenshots/demo/lot_of_primitives.png" width="48%">
+    <img src="screenshots/demo/ender_dragon_house_tree.png" width="48%">
 </p>
 <p float="left">
-    <img src="screenshots/demo/luxray_family.png" width="40%">
-    <img src="screenshots/demo/minecraft_tree.png" width="40%">
+    <img src="screenshots/demo/luxray_family.png" width="48%">
+    <img src="screenshots/demo/minecraft_tree.png" width="48%">
 </p>
 <p float="left">
-    <img src="screenshots/demo/astronaut.png" width="40%">
-    <img src="screenshots/demo/cristal_bunny.png" width="40%">
+    <img src="screenshots/demo/astronaut.png" width="48%">
+    <img src="screenshots/demo/cristal_bunny.png" width="48%">
 </p>
 <p float="left">
-    <img src="screenshots/demo/minion.png" width="40%">
-    <img src="screenshots/demo/city_bowl.png" width="40%">
+    <img src="screenshots/demo/minion.png" width="48%">
+    <img src="screenshots/demo/city_bowl.png" width="48%">
 </p>
 <p float="left">
-    <img src="screenshots/demo/camera3.png" width="40%">
-    <img src="screenshots/demo/light_through_colored_transparent_sphere.png" width="40%">
+    <img src="screenshots/demo/camera3.png" width="48%">
+    <img src="screenshots/demo/light_through_colored_transparent_sphere.png" width="48%">
 </p>
 <p float="left">
-    <img src="screenshots/demo/water_bubble.png" width="40%">
-    <img src="screenshots/demo/three_mirror_spheres.png" width="40%">
+    <img src="screenshots/demo/water_bubble.png" width="48%">
+    <img src="screenshots/demo/three_mirror_spheres.png" width="48%">
 </p>
 <p float="left">
-    <img src="screenshots/demo/two_tanglecubes.png" width="40%">
-    <img src="screenshots/demo/bunny_throne.png" width="40%">
+    <img src="screenshots/demo/two_tanglecubes.png" width="48%">
+    <img src="screenshots/demo/bunny_throne.png" width="48%">
 </p>
 
 ## Requirements
