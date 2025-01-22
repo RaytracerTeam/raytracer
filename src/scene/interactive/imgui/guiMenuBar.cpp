@@ -96,7 +96,10 @@ namespace Raytracer
                     m_needRendering = true;
                 }
                 if (skyboxHasTexture) {
-
+                    if (m_skyboxPathBuf[0] == '\0') {
+                        skybox.setSkyboxUVTypee(SkyboxUVType::SPHERE);
+                        m_scene->setSkyboxPath(DEFAULT_SKYBOX);
+                    }
                     if (ImGui::InputTextWithHint(" Path to sphere image (press ENTER to save)",
                     "assets/skyboxes/sky.jpg", m_skyboxPathBuf, FILE_BUF_SIZE,
                     ImGuiInputTextFlags_EnterReturnsTrue)) {
@@ -122,8 +125,8 @@ namespace Raytracer
                     }
                     bool useSphere = skybox.getSkyboxUVTypee() == SkyboxUVType::SPHERE;
                     if (ImGui::Checkbox("Use UV Sphere", &useSphere)) {
-                       skybox.setSkyboxUVTypee(useSphere ? SkyboxUVType::SPHERE : SkyboxUVType::BOX);
-                        m_needRendering = true;
+                        skybox.setSkyboxUVTypee(useSphere ? SkyboxUVType::SPHERE : SkyboxUVType::BOX);
+                            m_needRendering = true;
                     }
                 } else {
                     float *color = skybox.getAmbientColor();
