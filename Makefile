@@ -59,16 +59,16 @@ DBGFLAGS	=	-g3 -O0
 TESTFLAGS	=	-g3 -O0 --coverage -fprofile-arcs -ftest-coverage
 DEPSFLAGS	=	-MMD -MP
 
-LDFLAGS		=	-lconfig++ -lsfml-graphics -lsfml-window -lsfml-system
+LDFLAGS		=	-lconfig++ -lSFML-Graphics -lSFML-Window -lSFML-System
 LDBONUSFLAGS=	-lGLEW -lglfw
 LDCAMERAFLAGS	=	$(shell pkg-config --libs opencv4)
 TESTSFLAGS	=	$(LDFLAGS) -lcriterion
 
-MACBREWSFML		= 	/opt/homebrew/Cellar/sfml/2.6.1
+MACBREWSFML		= 	/opt/homebrew/Cellar/sfml/3.0.0
 MACBREWCONFIG	=	/opt/homebrew/Cellar/libconfig/1.7.3
 MACBREWGLFW		=	/opt/homebrew/Cellar/glfw/3.4
 MACBREWGLEW		=	/opt/homebrew/Cellar/glew/2.2.0_1
-MACBRWEOPENCV	=	/opt/homebrew/Cellar/opencv/4.9.0_9
+MACBRWEOPENCV	=	/opt/homebrew/Cellar/opencv/4.11.0
 
 MACSFMLINCLUDE	=	-I$(MACBREWSFML)/include -I$(MACBREWCONFIG)/include \
 					-I$(MACBREWGLFW)/include -I$(MACBREWGLEW)/include \

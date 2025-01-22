@@ -30,14 +30,13 @@ namespace Raytracer {
         if (m_camera == nullptr)
             return false;
 
-        switch (event.type) {
-        case sf::Event::KeyReleased:
-            return applyKeyToActions(actions, event.key.code, false);
-        case sf::Event::KeyPressed:
-            return applyKeyToActions(actions, event.key.code, true);
-        default:
-            return false;
+        if (const auto *keyPressed = event.getIf<sf::Event::KeyPressed>()) {
+            return applyKeyToActions(actions, keyPressed->code, true);
         }
+        else if (const auto *keyReleased = event.getIf<sf::Event::KeyReleased>()) {
+            return applyKeyToActions(actions, keyReleased->code, false);
+        }
+
         return false;
     }
 } // namespace Raytracer

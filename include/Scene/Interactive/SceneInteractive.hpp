@@ -207,7 +207,7 @@ namespace Raytracer {
         float m_reach = 10;
 
         // Storing the result of the render
-        std::unique_ptr<sf::Uint8 []> m_lastRender;
+        std::unique_ptr<std::uint8_t []> m_lastRender;
 
         // Actions
         std::vector<std::pair<sf::Keyboard::Key, bool>> m_actions;

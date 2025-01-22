@@ -18,8 +18,8 @@ namespace Raytracer
             }
             i++;
         }
-        if (key >= sf::Keyboard::Num0 && key <= sf::Keyboard::Num9) {
-            int slot = key - sf::Keyboard::Num0;
+        if (key >= sf::Keyboard::Key::Num0 && key <= sf::Keyboard::Key::Num9) {
+            int slot = static_cast<int>(key) - static_cast<int>(sf::Keyboard::Key::Num0);
             m_scene->getInventory().setCurrentMaterialIndex(slot);
             #ifdef BONUS
             if (m_objectSelection == ObjectSelection::INVENTORY)

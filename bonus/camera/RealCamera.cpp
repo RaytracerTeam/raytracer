@@ -44,7 +44,7 @@ namespace Raytracer
                 sf::Color color(cameraFrame.at<cv::Vec3b>(j, i)[0],
                                 cameraFrame.at<cv::Vec3b>(j, i)[1],
                                 cameraFrame.at<cv::Vec3b>(j, i)[2]);
-                m_image->setPixel(i, j, color);
+                m_image->setPixel(sf::Vector2u(i, j), color);
             }
         }
     }
@@ -57,7 +57,7 @@ namespace Raytracer
                 sf::Color color(edges.at<uchar>(j, i),
                                 edges.at<uchar>(j, i),
                                 edges.at<uchar>(j, i));
-                m_image->setPixel(i, j, color);
+                m_image->setPixel(sf::Vector2u(i, j), color);
             }
         }
     }

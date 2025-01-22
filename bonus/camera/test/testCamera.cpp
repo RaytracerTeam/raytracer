@@ -7,7 +7,7 @@ void setFrameToImage(cv::Mat &frame, sf::Image &image)
                         sf::Color color(frame.at<cv::Vec3b>(j, i)[0],
                                         frame.at<cv::Vec3b>(j, i)[1],
                                         frame.at<cv::Vec3b>(j, i)[2]);
-                        image.setPixel(i, j, color);
+                        image.setPixel(sf::Vector2u(i, j), color);
                 }
         }
 }
@@ -19,7 +19,7 @@ void setEdgesToImage(cv::Mat &edges, sf::Image &image)
                         sf::Color color(edges.at<uchar>(j, i),
                                         edges.at<uchar>(j, i),
                                         edges.at<uchar>(j, i));
-                        image.setPixel(i, j, color);
+                        image.setPixel(sf::Vector2u(i, j), color);
                 }
         }
 }
@@ -79,7 +79,7 @@ int main()
     while (window.isOpen()) {
         imageTexture.update(*myImage);
         while (window.pollEvent(event)) {
-            if (event.type == sf::Event::EventType::Closed || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+            if (event.is<sf::Event::Closed> || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
                 window.close();
         }
         sf::Sprite sprite(imageTexture);

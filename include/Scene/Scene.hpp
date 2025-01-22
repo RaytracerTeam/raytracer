@@ -92,7 +92,7 @@ namespace Raytracer {
         const Inventory &getInventory(void) const { return m_inventory; }
 
         void setRenderPixel(size_t x, size_t y, const Color &color) {
-            m_render.setPixel(x, y, sf::Color(color.getR() * 255, color.getG() * 255, color.getB() * 255));
+            m_render.setPixel(sf::Vector2u(x, y), sf::Color(color.getR() * 255, color.getG() * 255, color.getB() * 255));
         }
 
         const std::vector<Keyframe> &getCameraKeyframes(void) const { return m_vecKeyframes; }

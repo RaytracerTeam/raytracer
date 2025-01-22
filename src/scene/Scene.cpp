@@ -65,7 +65,7 @@ namespace Raytracer {
 
     void Scene::resizeRender(unsigned int width, unsigned int height)
     {
-        m_render.create(width, height);
+        m_render.resize(sf::Vector2u(width, height));
     }
 
     void Scene::quitRenderLine(void)
@@ -94,7 +94,7 @@ namespace Raytracer {
             Color color = castRay(Ray(camera.getPos(), dir)) * 255.;
             if (m_renderNbr != threadNbr)
                 return quitRenderLine();
-            m_render.setPixel(x, y, sf::Color(color.getR(), color.getG(), color.getB()));
+            m_render.setPixel(sf::Vector2u(x, y), sf::Color(color.getR(), color.getG(), color.getB()));
         }
 
         std::thread(&Scene::renderLine, this, imageAspectRatio, scale, threadNbr).detach();
@@ -131,7 +131,7 @@ namespace Raytracer {
                 double rayY = (1 - 2 * (y + 0.5) / dimension.getHeightD()) * scale;
                 Math::Vector3D dir = Math::Vector3D(rayX, rayY, -1).normalize().rotate(camera.getAngle());
                 Color color = castRay(Ray(camera.getPos(), dir)) * 255.;
-                m_render.setPixel(x, y, sf::Color(color.getR(), color.getG(), color.getB()));
+                m_render.setPixel(sf::Vector2u(x, y), sf::Color(color.getR(), color.getG(), color.getB()));
             }
         }
     }
@@ -311,7 +311,7 @@ namespace Raytracer {
         if (m_renderY >= m_render.getSize().y)
             return;
         for (size_t x = 0; x < m_render.getSize().x; x++)
-            m_render.setPixel(x, m_renderY + 1, m_render.getPixel(x, m_renderY + 1) * sf::Color(100, 100, 100));
+            m_render.setPixel(sf::Vector2u(x, m_renderY + 1), m_render.getPixel(sf::Vector2u(x, m_renderY + 1)) * sf::Color(100, 100, 100));
     }
 
     std::optional<BVH::Intersection> Scene::getIntersectionHit(sf::Vector2i mousePos) const {

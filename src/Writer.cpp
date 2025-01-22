@@ -23,7 +23,7 @@ namespace Raytracer {
 
         for (size_t y = 0; y < dimension.getHeight(); y++) {
             for (size_t x = 0; x < dimension.getWidth(); x++) {
-                sf::Color pixel = buffer.getPixel(x, y);
+                sf::Color pixel = buffer.getPixel(sf::Vector2u(x, y));
                 ofs << pixel.r << pixel.g << pixel.b;
             }
         }

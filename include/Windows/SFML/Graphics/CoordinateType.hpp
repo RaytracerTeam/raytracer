@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////
 //
 // SFML - Simple and Fast Multimedia Library
-// Copyright (C) 2007-2023 Laurent Gomila (laurent@sfml-dev.org)
+// Copyright (C) 2007-2024 Laurent Gomila (laurent@sfml-dev.org)
 //
 // This software is provided 'as-is', without any express or implied warranty.
 // In no event will the authors be held liable for any damages arising from the use of this software.
@@ -22,56 +22,22 @@
 //
 ////////////////////////////////////////////////////////////
 
+#pragma once
 
 namespace sf
 {
-////////////////////////////////////////////////////////////
-template <typename T>
-ThreadLocalPtr<T>::ThreadLocalPtr(T* value) :
-ThreadLocal(value)
-{
-}
-
 
 ////////////////////////////////////////////////////////////
-template <typename T>
-T& ThreadLocalPtr<T>::operator *() const
-{
-    return *static_cast<T*>(getValue());
-}
-
-
+/// \ingroup graphics
+/// \brief Types of texture coordinates that can be used for rendering
+///
+/// \see `sf::Texture::bind`
+///
 ////////////////////////////////////////////////////////////
-template <typename T>
-T* ThreadLocalPtr<T>::operator ->() const
+enum class CoordinateType
 {
-    return static_cast<T*>(getValue());
-}
-
-
-////////////////////////////////////////////////////////////
-template <typename T>
-ThreadLocalPtr<T>::operator T*() const
-{
-    return static_cast<T*>(getValue());
-}
-
-
-////////////////////////////////////////////////////////////
-template <typename T>
-ThreadLocalPtr<T>& ThreadLocalPtr<T>::operator =(T* value)
-{
-    setValue(value);
-    return *this;
-}
-
-
-////////////////////////////////////////////////////////////
-template <typename T>
-ThreadLocalPtr<T>& ThreadLocalPtr<T>::operator =(const ThreadLocalPtr<T>& right)
-{
-    setValue(right.getValue());
-    return *this;
-}
+    Normalized, //!< Texture coordinates in range [0 .. 1]
+    Pixels      //!< Texture coordinates in range [0 .. size]
+};
 
 } // namespace sf

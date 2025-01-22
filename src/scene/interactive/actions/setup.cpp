@@ -20,30 +20,30 @@ namespace Raytracer
 
     void SceneInteractive::setupActions(void)
     {
-        m_actions.push_back(std::make_pair(sf::Keyboard::Up, false));       // MOVE_FORWARD
-        m_actions.push_back(std::make_pair(sf::Keyboard::Down, false));     // MOVE_BACKWARD
-        m_actions.push_back(std::make_pair(sf::Keyboard::Left, false));     // MOVE_LEFT
-        m_actions.push_back(std::make_pair(sf::Keyboard::Right, false));    // MOVE_RIGHT
-        m_actions.push_back(std::make_pair(sf::Keyboard::Space, false));    // MOVE_UP
-        m_actions.push_back(std::make_pair(sf::Keyboard::LShift, false));   // MOVE_DOWN
-        m_actions.push_back(std::make_pair(sf::Keyboard::U, false));        // ROTATE_UP
-        m_actions.push_back(std::make_pair(sf::Keyboard::J, false));        // ROTATE_DOWN
-        m_actions.push_back(std::make_pair(sf::Keyboard::H, false));        // ROTATE_LEFT
-        m_actions.push_back(std::make_pair(sf::Keyboard::K, false));        // ROTATE_RIGHT
-        m_actions.push_back(std::make_pair(sf::Keyboard::LControl, false)); // SPRINT
-        m_actions.push_back(std::make_pair(sf::Keyboard::R, false));        // PAINT
+        m_actions.push_back(std::make_pair(sf::Keyboard::Key::Up, false));       // MOVE_FORWARD
+        m_actions.push_back(std::make_pair(sf::Keyboard::Key::Down, false));     // MOVE_BACKWARD
+        m_actions.push_back(std::make_pair(sf::Keyboard::Key::Left, false));     // MOVE_LEFT
+        m_actions.push_back(std::make_pair(sf::Keyboard::Key::Right, false));    // MOVE_RIGHT
+        m_actions.push_back(std::make_pair(sf::Keyboard::Key::Space, false));    // MOVE_UP
+        m_actions.push_back(std::make_pair(sf::Keyboard::Key::LShift, false));   // MOVE_DOWN
+        m_actions.push_back(std::make_pair(sf::Keyboard::Key::U, false));        // ROTATE_UP
+        m_actions.push_back(std::make_pair(sf::Keyboard::Key::J, false));        // ROTATE_DOWN
+        m_actions.push_back(std::make_pair(sf::Keyboard::Key::H, false));        // ROTATE_LEFT
+        m_actions.push_back(std::make_pair(sf::Keyboard::Key::K, false));        // ROTATE_RIGHT
+        m_actions.push_back(std::make_pair(sf::Keyboard::Key::LControl, false)); // SPRINT
+        m_actions.push_back(std::make_pair(sf::Keyboard::Key::R, false));        // PAINT
 
-        m_releaseActions.push_back(sf::Keyboard::Escape);          // EXIT
-        m_releaseActions.push_back(sf::Keyboard::C);               // SAVE_CURRENT_AND_EXIT
-        m_releaseActions.push_back(sf::Keyboard::X);               // SAVE_AND_QUIT
-        m_releaseActions.push_back(sf::Keyboard::F3);              // SHOW_DEBUG
-        m_releaseActions.push_back(sf::Keyboard::F2);              // SCREENSHOT
-        m_releaseActions.push_back(sf::Keyboard::Delete);          // REMOVE_OBJECT
-        m_releaseActions.push_back(sf::Keyboard::F11);             // TOGGLE_FULLSCREEN
-        m_releaseActions.push_back(sf::Keyboard::M);               // TOGGLE_MOUSE
-        m_releaseActions.push_back(sf::Keyboard::N);               // TOGGLE_SIMPLE_MOUSE
-        m_releaseActions.push_back(sf::Keyboard::O);               // RESET
-        m_releaseActions.push_back(sf::Keyboard::G);               // SELECT_PRIMITIVE
+        m_releaseActions.push_back(sf::Keyboard::Key::Escape);          // EXIT
+        m_releaseActions.push_back(sf::Keyboard::Key::C);               // SAVE_CURRENT_AND_EXIT
+        m_releaseActions.push_back(sf::Keyboard::Key::X);               // SAVE_AND_QUIT
+        m_releaseActions.push_back(sf::Keyboard::Key::F3);              // SHOW_DEBUG
+        m_releaseActions.push_back(sf::Keyboard::Key::F2);              // SCREENSHOT
+        m_releaseActions.push_back(sf::Keyboard::Key::Delete);          // REMOVE_OBJECT
+        m_releaseActions.push_back(sf::Keyboard::Key::F11);             // TOGGLE_FULLSCREEN
+        m_releaseActions.push_back(sf::Keyboard::Key::M);               // TOGGLE_MOUSE
+        m_releaseActions.push_back(sf::Keyboard::Key::N);               // TOGGLE_SIMPLE_MOUSE
+        m_releaseActions.push_back(sf::Keyboard::Key::O);               // RESET
+        m_releaseActions.push_back(sf::Keyboard::Key::G);               // SELECT_PRIMITIVE
         try {
             parseConfigFile(KEYS_CONFIG);
         } catch (std::invalid_argument &) {
@@ -74,13 +74,13 @@ namespace Raytracer
             else if (keyCode == "F3")
                 return sf::Keyboard::Key::F3;
             else if (keyCode == "F11")
-                return sf::Keyboard::F11;
+                return sf::Keyboard::Key::F11;
             else if (keyCode == "DELETE")
                 return sf::Keyboard::Key::Delete;
             else if (keyCode == "TAB")
                 return sf::Keyboard::Key::Tab;
             else if (keyCode >= "A" && keyCode <= "Z")
-                return (sf::Keyboard::Key)(sf::Keyboard::A + keyCode[0] - 'A');
+                return (sf::Keyboard::Key)(static_cast<char>(sf::Keyboard::Key::A) + keyCode[0] - 'A');
             else {
                 throw std::invalid_argument("keys.cfg: Invalid key name: " + keyCode);
             }

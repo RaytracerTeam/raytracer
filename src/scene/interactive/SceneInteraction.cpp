@@ -23,6 +23,9 @@ namespace Raytracer {
         m_alwaysRender = m_scene->getAlwaysRender();
         m_defaultMovementSpeed = m_scene->getCameraSpeed();
         m_rotationSpeed = m_scene->getCameraSensitivity();
+        #ifdef BONUS
+        m_skyboxPathBuf[0] = '\0';
+        #endif
 
         #ifdef BONUS
         if (inputFiles.size() > 0)
@@ -46,9 +49,9 @@ namespace Raytracer {
                 camera->getDimension().getHeight());
         #endif
 
-        m_window.create(sf::VideoMode(windowSize.x, windowSize.y), title);
+        m_window.create(sf::VideoMode(sf::Vector2u(windowSize.x, windowSize.y)), title);
         #ifndef MACOSTONIO
-        m_window.setPosition(sf::Vector2i(desktop.width / 2, desktop.height / 2)
+        m_window.setPosition(sf::Vector2i(desktop.size.x / 2, desktop.size.y / 2)
             - sf::Vector2i(windowSize.x / 2, windowSize.y / 2));
         #endif
 
@@ -75,7 +78,7 @@ namespace Raytracer {
         m_dimension.setWidth(width);
         m_dimension.setHeight(height);
         m_renderResolution = m_dimension.getHeight();
-        m_texture.create(m_dimension.getWidth(), m_dimension.getHeight());
+        m_texture.resize(sf::Vector2u(m_dimension.getWidth(), m_dimension.getHeight()));
         Camera *camera = m_interacCam.getCamera();
         if (camera)
             camera->setDimension(m_dimension);
