@@ -15,6 +15,7 @@ namespace Raytracer
 
     void RealCamera::init(void)
     {
+        std::cout << "Initializing camera..." << std::endl;
         #ifdef MACOSTONIO
         m_camera = cv::VideoCapture(0, cv::CAP_AVFOUNDATION);
         #else
@@ -28,7 +29,7 @@ namespace Raytracer
         m_isCameraOpen = true;
         m_camWidth = (unsigned int)m_camera.get(cv::CAP_PROP_FRAME_WIDTH);
         m_camHeight = (unsigned int)m_camera.get(cv::CAP_PROP_FRAME_HEIGHT);
-        m_image->create(m_camWidth, m_camHeight);
+        m_image->resize(sf::Vector2u(m_camWidth, m_camHeight));
     }
 
     RealCamera::~RealCamera()
@@ -62,14 +63,13 @@ namespace Raytracer
         }
     }
 
-    sf::Image RealCamera::update()
+    void RealCamera::update()
     {
         if (!m_isCameraOpen)
-            return *m_image;
+            return;
         m_camera >> cameraFrame;
         // cv::flip(cameraFrame, cameraFrame, -1);
         cv::cvtColor(cameraFrame, cameraFrame, cv::COLOR_BGR2RGB);
         setFrameToImage();
-        return *m_image;
     }
 } // namespace Raytracer

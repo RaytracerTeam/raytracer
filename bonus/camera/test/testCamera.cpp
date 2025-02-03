@@ -68,7 +68,6 @@ int main()
     camera.init();
     sf::RenderWindow window(sf::VideoMode(camera.getCamWidth(), camera.getCamHeight()), "Real Camera");
     window.setFramerateLimit(30);
-    sf::Event event;
     sf::Image image;
     sf::Texture imageTexture;
     imageTexture.create(camera.getCamWidth(), camera.getCamHeight());

@@ -411,7 +411,7 @@ namespace Raytracer {
         std::cout << "\033[K";
     }
 
-#ifdef BONUSCAMERA
+    #ifdef BONUSCAMERA
     void Scene::initRealCamera(void)
     {
         m_realCamera.init();
@@ -421,5 +421,5 @@ namespace Raytracer {
     {
         m_realCamera.update();
     }
-#endif
+    #endif
 } // namespace Raytracer

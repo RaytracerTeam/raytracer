@@ -20,7 +20,7 @@ namespace Raytracer
 
             void init(void);
 
-            sf::Image update(void);
+            void update(void);
 
             std::shared_ptr<sf::Image> getImage(void) const { return m_image; }
             bool isCameraOpen(void) const { return m_isCameraOpen; }
