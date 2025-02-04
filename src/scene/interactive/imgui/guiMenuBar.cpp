@@ -99,6 +99,8 @@ namespace Raytracer
                     if (m_skyboxPathBuf[0] == '\0') {
                         skybox.setSkyboxUVTypee(SkyboxUVType::SPHERE);
                         m_scene->setSkyboxPath(DEFAULT_SKYBOX);
+                        strcpy(m_skyboxPathBuf, DEFAULT_SKYBOX);
+                        m_skyboxPathBuf[strlen(DEFAULT_SKYBOX)] = '\0';
                     }
                     if (ImGui::InputTextWithHint(" Path to sphere image (press ENTER to save)",
                     "assets/skyboxes/sky.jpg", m_skyboxPathBuf, FILE_BUF_SIZE,

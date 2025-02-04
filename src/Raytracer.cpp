@@ -30,6 +30,10 @@ namespace Raytracer {
     {
         std::unique_ptr<Scene> scene = std::make_unique<Scene>();
         Parsing::parse(scene, inputFiles);
+        #ifdef BONUSCAMERA
+        scene->initRealCamera();
+        scene->updateRealCamera();
+        #endif
         if (scene->getCameraCount() == 0)
             scene->addCamera(std::make_unique<Camera>());
         scene->updatePrimitives();

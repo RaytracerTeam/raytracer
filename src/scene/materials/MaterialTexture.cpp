@@ -35,6 +35,8 @@ namespace Raytracer {
 
     Color MaterialTexture::getColor(double u, double v) const
     {
+        if (!m_image)
+            return Color(1., 0, 1);
         auto size = m_image->getSize();
         auto x = u * size.x;
         auto y = v * size.y;

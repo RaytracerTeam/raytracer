@@ -32,12 +32,6 @@ namespace Raytracer {
             if (setting.exists(CFG_CAMERA_SENSITIVITY)) {
                 scene->setCameraSensitivity(parseNumber<float>(setting, CFG_CAMERA_SENSITIVITY));
             }
-            #ifdef BONUSCAMERA
-            if (setting.exists(CFG_CAMERA)) {
-                scene->initRealCamera();
-                scene->updateRealCamera();
-            }
-            #endif
         }
     } // namespace Parsing
 } // namespace Raytracer

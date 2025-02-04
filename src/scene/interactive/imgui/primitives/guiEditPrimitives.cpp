@@ -47,6 +47,9 @@ namespace Raytracer
     {
         std::unique_ptr<IPrimitive> &primitive = m_scene->getPrimitives()[m_selectedObject];
 
+        if (!primitive)
+            return;
+
         if (ImGui::BeginTabBar("Edit Primitives")) {
             if (ImGui::BeginTabItem("Base")) {
                 if (ImGui::Button("Delete Primitive")) {

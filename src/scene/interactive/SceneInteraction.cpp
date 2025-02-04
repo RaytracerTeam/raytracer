@@ -25,11 +25,12 @@ namespace Raytracer {
         m_rotationSpeed = m_scene->getCameraSensitivity();
         #ifdef BONUS
         m_skyboxPathBuf[0] = '\0';
-        #endif
-
-        #ifdef BONUS
         if (inputFiles.size() > 0)
             strcpy(m_loadFileBuf, inputFiles[0].data());
+        #endif
+        #ifdef BONUSCAMERA
+        m_scene->initRealCamera();
+        m_scene->updateRealCamera();
         #endif
 
         sf::Vector2u windowSize;
