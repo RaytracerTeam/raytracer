@@ -6,7 +6,7 @@ This is the Raytracer project, an Epitech project from the **OOP module** (Objec
 
 The objective is to build a 3D scene with light rays generate beautiful images.
 
-We pushed the idea a little further with an _interactive scene_ that _creates, edit and delete primitives_, _loads objfile_, _saves image_ **in runtime**. See [Features](#features).
+We pushed the idea a little further with an _interactive scene_ that _creates, edit and delete primitives_, _loads objfile_, _saves image_ **at runtime**. See [Features](#features).
 
 ## Screenshots
 <p float="center">
