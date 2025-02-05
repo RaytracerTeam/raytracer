@@ -4,8 +4,6 @@ on:
   push:
     tags:
       - '*'
-    branches:
-      - "actions"
 
 env:
   EXECUTABLES: "binary"
@@ -100,28 +98,48 @@ jobs:
       CCACHE_SLOPPINESS: time_macros
       OS: windows
       TARGET: "x86_64"
+      BIN_NAME: "Raytracer"
+
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up cache
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Cache
         uses: actions/cache@v4
         with:
           path: ${{ env.CCACHE_DIR }}
           key: ${{ runner.os }}-${{ env.TARGET }}-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-${{ env.TARGET }}-
+
       - name: Make artifact folder
         run: New-Item -Path .\artifacts -ItemType Directory
+
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
-      - name: Build
-        run: msbuild {{ env.MS_BIN_NAME }}.vcxproj /p:Configuration=Release
-      - name: Pack
-        run: .\.github\pack\windows.ps1
-      - name: Upload
+
+      - name: Build Project
+        run: msbuild ${{ env.BIN_NAME }}.vcxproj /p:Configuration=Release
+
+      - name: Pack Executable into ZIP
+        run: |
+          mkdir artifacts
+          cp .\Release\${{ env.BIN_NAME }}.exe artifacts\
+          cp .\some_dependency.dll artifacts\  # Add other required files
+          Compress-Archive -Path artifacts\* -DestinationPath ${{ env.BIN_NAME }}-windows.zip
+
+      - name: Upload ZIP as an Artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.OS }}-${{ env.TARGET }}
-          path: artifacts\
+          path: ${{ env.BIN_NAME }}-windows.zip
+
+      - name: Create GitHub Release and Upload ZIP
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ${{ env.BIN_NAME }}-windows.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   release:
     runs-on: ubuntu-latest
