@@ -28,7 +28,7 @@ namespace Raytracer
                         m_selectedObject = i;
                     if (prim->getMaterial()->getType() == MaterialType::SOLID) {
                         ImGui::SameLine();
-                        guiColoredSquare(static_cast<MaterialSolid *>(prim->getMaterial().get())->getColor());
+                        guiColoredSquare(static_cast<MaterialSolid *>(prim->getMaterial().get())->getColor(), i);
                     }
                     i++;
                 }

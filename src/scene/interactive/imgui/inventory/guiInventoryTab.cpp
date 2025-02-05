@@ -29,7 +29,7 @@ namespace Raytracer
                     switch (material->getType()) {
                     case MaterialType::SOLID: {
                         ImGui::SameLine();
-                        guiColoredSquare(static_cast<MaterialSolid *>(material.get())->getColor());
+                        guiColoredSquare(static_cast<MaterialSolid *>(material.get())->getColor(), i);
                         break;
                     }
                     case MaterialType::TEXTURE:

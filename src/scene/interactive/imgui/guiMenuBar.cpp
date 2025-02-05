@@ -39,11 +39,9 @@ namespace Raytracer
 
     void SceneInteractive::guiMenuBar(void)
     {
-        m_isWriting = false;
         if (ImGui::BeginMenuBar()) {
             // Save scene to .cfg
             if (ImGui::BeginMenu("Save as ...")) {
-                m_isWriting = true;
                 std::string hint("custom_scene.cfg");
                 if (ImGui::InputTextWithHint(" File name (press ENTER to save)",
                 hint.c_str(), m_saveFileBuf, FILE_BUF_SIZE,
@@ -57,7 +55,6 @@ namespace Raytracer
             }
 
             if (ImGui::BeginMenu("Load scene")) {
-                m_isWriting = true;
                 if (ImGui::InputTextWithHint(" File name (press ENTER to load)",
                 "scenes/custom_scene.cfg", m_loadFileBuf, FILE_BUF_SIZE,
                 ImGuiInputTextFlags_EnterReturnsTrue)) {
@@ -88,7 +85,6 @@ namespace Raytracer
             }
 
             if (ImGui::BeginMenu("Skybox path")) {
-                m_isWriting = true;
                 Skybox &skybox = m_scene->getSkybox();
                 bool skyboxHasTexture = skybox.hasTexture();
                 if (ImGui::Checkbox("Has texture", &skyboxHasTexture)) {

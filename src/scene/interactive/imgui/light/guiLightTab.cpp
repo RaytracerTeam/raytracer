@@ -35,7 +35,7 @@ namespace Raytracer
                     if (ImGui::Selectable(name.c_str(), m_selectedObject == i))
                         m_selectedObject = i;
                     ImGui::SameLine();
-                    guiColoredSquare(light->getColor());
+                    guiColoredSquare(light->getColor(), i);
                     i++;
                 }
             }

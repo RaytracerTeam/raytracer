@@ -12,12 +12,14 @@
 namespace Raytracer {
     void SceneInteractive::handleEvents(void)
     {
-        if (m_isWriting)
+        #ifdef BONUS
+        if (ImGui::IsAnyItemActive())
             resetActions();
+        #endif
 
         while (const std::optional<sf::Event> event = m_window.pollEvent()) {
             #ifdef BONUS
-                ImGui::SFML::ProcessEvent(m_window, *event);
+            ImGui::SFML::ProcessEvent(m_window, *event);
             #endif
 
             if (event->is<sf::Event::Closed>()) {
@@ -36,18 +38,21 @@ namespace Raytracer {
                 m_needRendering = true;
             }
 
-            if (!m_isWriting) {
+            #ifdef BONUS
+            if (!ImGui::IsAnyItemActive()) {
+            #endif
                 if (const auto* keyReleased = event->getIf<sf::Event::KeyReleased>()) {
                     applyKeyReleasedActions(keyReleased->code);
                 }
                 if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>()) {
                     applyKeyPressedActions(keyPressed->code);
                 }
+                if (m_interacCam.handleInput(*event, m_actions)) {
+                    // Handle camera input
+                }
+            #ifdef BONUS
             }
-
-            if (!m_isWriting && m_interacCam.handleInput(*event, m_actions)) {
-                // Handle camera input
-            }
+            #endif
 
             if (const auto* mouseReleased = event->getIf<sf::Event::MouseButtonReleased>()) {
                 if (mouseReleased->button == sf::Mouse::Button::Right) {

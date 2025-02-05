@@ -160,7 +160,7 @@ namespace Raytracer {
         void addSelectableSkybox(const std::filesystem::directory_entry &entry);
         void addSelectableScene(const std::filesystem::directory_entry &entry);
 
-        void guiColoredSquare(const Color &color);
+        void guiColoredSquare(const Color &color, int id);
         #endif
 
         /////////////////////////////////
@@ -199,7 +199,6 @@ namespace Raytracer {
         float m_selectedPrimitiveTransparency;
         #endif
         bool m_addToCurrentScene = false;
-        bool m_isWriting = false;
         size_t m_renderResolution;
         size_t m_imageHeight;
         size_t m_imageWidth;
