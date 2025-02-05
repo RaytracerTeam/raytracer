@@ -48,6 +48,7 @@ namespace Raytracer
         default:
             break;
         }
+        m_selectedObject = -1;
         m_updateBVH = true;
         m_needRendering = true;
     }

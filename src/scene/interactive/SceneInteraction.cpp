@@ -42,7 +42,7 @@ namespace Raytracer {
             #ifdef MACOSTONIO
                 windowSize = sf::Vector2u(1440, 850);
             #else
-                windowSize = sf::Vector2u(desktop.width, desktop.height);
+                windowSize = sf::Vector2u(desktop.size.x, desktop.size.y);
             #endif
         #else
             Camera *camera = m_interacCam.getCamera();
